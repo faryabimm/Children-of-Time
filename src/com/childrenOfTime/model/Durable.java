@@ -5,4 +5,7 @@ package com.childrenOfTime.model;
  */
 public interface Durable {
 
+
+    public void wearOff();
+
 }
