@@ -12,6 +12,7 @@ public class Battle {
 
     protected String story;
     protected int id;
+    public BattleState battleState = BattleState.story;
 
     private ArrayList<Foe> foes = new ArrayList<>();
 

@@ -1,6 +1,12 @@
 package com.childrenOfTime.model;
 
+import com.childrenOfTime.Completed;
+import com.childrenOfTime.InProgress;
+
 import java.util.ArrayList;
+
+import static com.childrenOfTime.view.IOHandler.getInput;
+import static com.childrenOfTime.view.IOHandler.printOutput;
 
 /**
  * Created by mohammadmahdi on 5/7/16.
@@ -53,9 +59,86 @@ public final class ChildrenOfTime {
     public void startSinglePlayerMode() {
 
         for (Battle battle : battles) {
-            battle.playStory();
+            while (battle.battleState != BattleState.finished) {
+                switch (battle.battleState) {
+                    case story:
+                        battle.playStory();
+                        getUserInput(battle);
+                        break;
+                    case information:
+
+                        break;
+                    case upgradeSession:
+
+                        break;
+                    case storeSession:
+
+                        break;
+                    case fight:
+
+                        break;
+                }
+            }
+
             //TODO to be continued
 
+        }
+
+    }
+
+    @Completed
+    private void getUserInput(Battle battle) {
+        String userInput = getInput();
+
+        switch (userInput) {
+            case "Again":
+                againCommand(battle);
+                getUserInput(battle);
+                break;
+            case "Help":
+                helpCommand(battle);
+                getUserInput(battle);
+                break;
+            case "Done":
+                doneCommand(battle);
+                break;
+            default:
+                printOutput("Invalid Command!");
+                getUserInput(battle);
+                break;
+        }
+
+    }
+
+    @InProgress
+    private void doneCommand(Battle battle) {
+
+    }
+
+    @InProgress
+    private void helpCommand(Battle battle) {
+
+    }
+
+    @InProgress
+    private void againCommand(Battle battle) {
+
+        switch (battle.battleState) {
+            case story:
+                battle.playStory();
+                break;
+            case information:                                     //I WAS HERE LAST TIME!
+
+                break;
+            case upgradeSession:
+
+                break;
+            case storeSession:
+
+                break;
+            case fight:
+
+                break;
         }
 
     }
