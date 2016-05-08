@@ -22,4 +22,8 @@ public class Foe extends Warrior {
         return toReturn;
     }
 
+    @Override
+    public Warrior findTarget() {
+        return null;
+    }
 }

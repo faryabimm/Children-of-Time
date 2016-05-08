@@ -3,5 +3,5 @@ package com.childrenOfTime.model;
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
-public class FighterHero extends Hero {
+public abstract class FighterHero extends Hero {
 }
