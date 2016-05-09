@@ -56,6 +56,7 @@ public final class ChildrenOfTime {
 
     }
 
+    @Completed
     public void startSinglePlayerMode() {
 
         for (Battle battle : battles) {
@@ -66,24 +67,28 @@ public final class ChildrenOfTime {
                         getUserInput(battle);
                         break;
                     case information:
-
+                        battle.showCurrentFoeStats();
+                        getUserInput(battle);
                         break;
                     case upgradeSession:
-
+                        battle.startUpgradeSession();
                         break;
                     case storeSession:
-
+                        battle.startStoreSession();
                         break;
                     case fight:
-
+                        battle.startFight();
                         break;
                 }
             }
 
-            //TODO to be continued
-
+            if (players.get(0).isDefeated()) {
+                battle.defeat();
+            } else {
+                battle.victory();
+                battle.giveRewards();
+            }
         }
-
     }
 
     @Completed
@@ -120,24 +125,27 @@ public final class ChildrenOfTime {
 
     }
 
-    @InProgress
+    @Completed
     private void againCommand(Battle battle) {
 
         switch (battle.battleState) {
             case story:
                 battle.playStory();
                 break;
-            case information:                                     //I WAS HERE LAST TIME!
-
+            case information:
+                battle.showCurrentFoeStats();
                 break;
             case upgradeSession:
-
+                battle.startUpgradeSession();
                 break;
             case storeSession:
-
+                battle.startStoreSession();
                 break;
             case fight:
-
+                battle.showCurrentFoeStats();
+                for (Player player : players) {
+                    player.showCurrentHeroStats();
+                }
                 break;
         }
 
