@@ -1,5 +1,6 @@
 package com.childrenOfTime.model;
 
+import com.childrenOfTime.Completed;
 import com.childrenOfTime.view.IOHandler;
 import java.util.ArrayList;
 
@@ -21,16 +22,11 @@ public class Battle {
         this.id = id;
     }
 
+    @Completed
     public void playStory() {
         printOutput("Story:");
         printOutput(story);
 
-    }
-
-    public void upgradeSession() {
-    }
-
-    public void storeSession() {
     }
 
     public void defeat() {
@@ -42,7 +38,12 @@ public class Battle {
     public void giveRewards() {
     }
 
-    public void showCurrentStats() {
+    @Completed
+    public void showCurrentFoeStats() {
+        printOutput("Enemy Stats:");
+        for (Foe foe : foes) {
+            printOutput(foe.toString());
+        }
     }
 
     public void help() {
@@ -52,4 +53,15 @@ public class Battle {
     }
 
 
+    public void startUpgradeSession() {     // should handle again and help commands in it
+
+    }
+
+    public void startStoreSession() {       // should handle again and help commands in it
+
+    }
+
+    public void startFight() {              // should handle again and help commands in it
+
+    }
 }

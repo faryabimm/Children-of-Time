@@ -1,10 +1,13 @@
 package com.childrenOfTime.model;
 
+import com.childrenOfTime.Completed;
 import com.childrenOfTime.exceptions.NoImmortalityPotionLeftException;
 import com.childrenOfTime.exceptions.TradeException;
 import com.childrenOfTime.exceptions.UpgradeException;
 
 import java.util.ArrayList;
+
+import static com.childrenOfTime.view.IOHandler.printOutput;
 
 /**
  * Created by mohammadmahdi on 5/8/16.
@@ -29,4 +32,13 @@ public class Player {
     public void useImmortalityPotion(Hero target) throws NoImmortalityPotionLeftException {
     }
 
+    @Completed
+    public void showCurrentHeroStats() {
+        for (Hero hero : heros) {
+            printOutput(hero.toString());
+        }
+    }
+
+    public boolean isDefeated() {
+    }
 }
