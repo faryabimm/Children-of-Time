@@ -14,20 +14,11 @@ import java.util.ArrayList;
  * Created by mohammadmahdi on 5/8/16.
  */
 public abstract class Hero extends Warrior {
-    protected int maxHealth;
-    protected int healthRefillRate;
-    protected int inventorySize;
-    protected int attackPower;
-    protected int maxMagic;
-    protected int magicRefillRate;
-    protected int currentHealth;
-    protected int id;
-    protected String name;
-    protected boolean isAlive=true;
     protected int currentMagic;
     protected int currentEnergyPoints;
     protected Inventory inventory;
     protected ArrayList<Ability> abilities = new ArrayList<>();
+    private HeroType heroType;
 
     @Completed
     public void attack(Foe enemy) throws NotEnoughEnergyPointsException{
@@ -36,7 +27,7 @@ public abstract class Hero extends Warrior {
         }
         else {
             currentEnergyPoints -= 2;
-            enemy.changeHealth(this.attackPower);
+            enemy.changeHealth(this.heroType.attackPower);
         }
     }
 
@@ -69,48 +60,32 @@ public abstract class Hero extends Warrior {
     }
     public Hero(){}
 
+    @InProgress
     public Hero(String name,String className){
-        switch (className){
-            case "Supporter":
-                switch (name) {
-                    case "Meryl":
-                        break;
-                    case "Bolti":
-                        break;
-                }
+        heroType=HeroType.valueOf(className);
+        switch (heroType){
+            case Supporter:
                 break;
-            case "Fighter":
-                case "Eley":
-                    break;
-                case "Chrome":
-                    break;
+
+            case Fighter:
+                break;
         }
     }
-    /*
-    (int inventorySize, int maxMagic, int magicRefillRate, int currentMagic, int currentEnergyPoints, Inventory inventory, ArrayList<Ability> abilities) {
-        this.inventorySize = inventorySize;
-        this.maxMagic = maxMagic;
-        this.magicRefillRate = magicRefillRate;
-        this.currentMagic = currentMagic;
-        this.currentEnergyPoints = currentEnergyPoints;
-        this.inventory = inventory;
-        this.abilities = abilities;
-    }
-*/
+
     public int getInventorySize() {
-        return inventorySize;
+        return heroType.inventorySize;
     }
 
     public void setInventorySize(int inventorySize) {
-        this.inventorySize = inventorySize;
+        this.heroType.inventorySize = inventorySize;
     }
 
     public int getMaxMagic() {
-        return maxMagic;
+        return heroType.maxMagic;
     }
 
     public void setMaxMagic(int maxMagic) {
-        this.maxMagic = maxMagic;
+        this.heroType.maxMagic = maxMagic;
     }
 
     public int getCurrentMagic() {
@@ -122,11 +97,11 @@ public abstract class Hero extends Warrior {
     }
 
     public int getMagicRefillRate() {
-        return magicRefillRate;
+        return heroType.magicRefillRate;
     }
 
     public void setMagicRefillRate(int magicRefillRate) {
-        this.magicRefillRate = magicRefillRate;
+        this.heroType.magicRefillRate = magicRefillRate;
     }
 
     public int getCurrentEnergyPoints() {
