@@ -1,7 +1,6 @@
 package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
-import com.childrenOfTime.InProgress;
 
 import java.util.ArrayList;
 
@@ -17,7 +16,7 @@ public final class ChildrenOfTime {
     private ArrayList<Player> players = new ArrayList<>();
     private ArrayList<Battle> battles = new ArrayList<>();
 
-
+    @Completed
     public static ChildrenOfTime getInstance() {
         if (instance == null) {
             instance = new ChildrenOfTime();
@@ -25,6 +24,8 @@ public final class ChildrenOfTime {
         return instance;
     }
 
+
+    @Completed
     private ChildrenOfTime() {
         String storyTemp = "You’ve entered the castle, it takes a while for your eyes to get used to the darkness but\n" +
                 "the horrifying halo of your enemies is vaguely visible. Angel’s unsettling presence and\n" +
@@ -84,11 +85,35 @@ public final class ChildrenOfTime {
 
             if (players.get(0).isDefeated()) {
                 battle.defeat();
+                break;
             } else {
                 battle.victory();
                 battle.giveRewards();
             }
         }
+
+        if (players.get(0).isDefeated()) {
+            singlePlayerGameOver();
+        } else {
+            singlePlayerGameCompleted();
+        }
+    }
+
+    @Completed
+    private void singlePlayerGameCompleted() {
+        String victoryMessage;
+        victoryMessage = "The collector falls down on his knees, he’s strained and desperate but still tries to\n" +
+                "drag himself toward Epoch. He knows his era has come to an end. The ancient time machine\n" +
+                "calls you to end the disorder and bring unity under its glorious wings, now it’s your\n" +
+                "turn to be the MASTERS OF TIME!";
+        printOutput("Congratulations! You Won!");
+        printOutput(victoryMessage);
+    }
+
+
+    @Completed
+    private void singlePlayerGameOver() {
+        printOutput("OOPS! You Lose! Try Again!");
     }
 
     @Completed
@@ -115,13 +140,48 @@ public final class ChildrenOfTime {
 
     }
 
-    @InProgress
+    @Completed
     private void doneCommand(Battle battle) {
+
+        switch (battle.battleState) {
+            case story:
+                battle.battleState = BattleState.information;
+                break;
+            case information:
+                battle.battleState = BattleState.upgradeSession;
+                break;
+            case upgradeSession:
+                battle.battleState = BattleState.storeSession;
+                break;
+            case storeSession:
+                battle.battleState = BattleState.fight;
+                break;
+            case fight:
+                battle.battleState = BattleState.finished;
+                break;
+        }
 
     }
 
-    @InProgress
+    @Completed
     private void helpCommand(Battle battle) {
+        switch (battle.battleState) {
+            case story:
+                battle.storyHelp();
+                break;
+            case information:
+                battle.informationHelp();
+                break;
+            case upgradeSession:
+                battle.upgradeHelp();
+                break;
+            case storeSession:
+                battle.storeHelp();
+                break;
+            case fight:
+                battle.fightHelp();
+                break;
+        }
 
     }
 

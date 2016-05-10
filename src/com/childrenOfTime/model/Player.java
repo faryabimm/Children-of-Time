@@ -1,6 +1,7 @@
 package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
+import com.childrenOfTime.InProgress;
 import com.childrenOfTime.exceptions.NoImmortalityPotionLeftException;
 import com.childrenOfTime.exceptions.TradeException;
 import com.childrenOfTime.exceptions.UpgradeException;
@@ -39,6 +40,9 @@ public class Player {
         }
     }
 
+    @InProgress
     public boolean isDefeated() {
+
+        return false;
     }
 }
