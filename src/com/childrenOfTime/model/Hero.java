@@ -64,6 +64,7 @@ public abstract class Hero extends Warrior {
 
     @NotImplementedYet
     public void applyItem(Item item) {
+
     }
 
     @ShouldBeImplementedInChildren
