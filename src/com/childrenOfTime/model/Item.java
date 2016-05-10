@@ -10,7 +10,7 @@ public abstract class Item implements Durable {
     private int duration;
     private String name;
 
-    public void use() {
+    public void use(Warrior warrior) {
     }
 
     @Override
