@@ -25,6 +25,7 @@ public class Player {
     }
 
     public void buy(Item item, Hero target) throws TradeException {
+        //TODO You should check if we have enough inventory space or not , I defined a method that named "getAvailableSpace" in inventory
     }
 
     public void sell(Item item, Hero target) throws TradeException {

@@ -84,7 +84,7 @@ public final class ChildrenOfTime {
                 break;
             } else {
                 battle.victory();
-                battle.giveRewards();
+                battle.giveReward();
             }
         }
 

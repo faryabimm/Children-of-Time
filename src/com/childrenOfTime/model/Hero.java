@@ -1,7 +1,11 @@
 package com.childrenOfTime.model;
 
+import com.childrenOfTime.Completed;
+import com.childrenOfTime.InProgress;
 import com.childrenOfTime.NotImplementedYet;
 import com.childrenOfTime.ShouldBeImplementedInChildren;
+import com.childrenOfTime.exceptions.NotEnoughEnergyPointsException;
+import com.childrenOfTime.exceptions.NotEnoughInventorySpaceException;
 
 import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
@@ -32,23 +36,30 @@ public abstract class Hero extends Warrior {
     @ShouldBeImplementedInChildren
     public abstract void castAbility4();
 
-    @NotImplementedYet
-    public void attack() {
+    @Completed
+    public void attack(Foe enemy) throws NotEnoughEnergyPointsException{
+        if (currentEnergyPoints<2){
+            throw new NotEnoughEnergyPointsException();
+        }
+        else {
+            currentEnergyPoints -= 2;
+            enemy.changeHealth(this.attackPower);
+        }
     }
 
     @NotImplementedYet
     public ArrayList<Item> getInventoryItems() {
-
-        //TODO implement
-        return null;
+        return inventory.getItems();
     }
 
-    @NotImplementedYet
-    public void addToInventory(Item item) {
+    @Completed
+    public void addToInventory(Item item){
+        inventory.getItems().add(item);
     }
 
-    @NotImplementedYet
+    @Completed
     public void removeFromInventory(Item item) {
+        this.inventory.getItems().remove(item);
     }
 
     @NotImplementedYet
