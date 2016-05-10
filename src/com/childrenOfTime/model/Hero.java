@@ -23,19 +23,6 @@ public abstract class Hero extends Warrior {
     protected Inventory inventory;
     protected ArrayList<Ability> abilities = new ArrayList<>();
 
-
-    @ShouldBeImplementedInChildren
-    public abstract void castAbility1();
-
-    @ShouldBeImplementedInChildren
-    public abstract void castAbility2();
-
-    @ShouldBeImplementedInChildren
-    public abstract void castAbility3();
-
-    @ShouldBeImplementedInChildren
-    public abstract void castAbility4();
-
     @Completed
     public void attack(Foe enemy) throws NotEnoughEnergyPointsException{
         if (currentEnergyPoints<2){
@@ -67,20 +54,70 @@ public abstract class Hero extends Warrior {
         item.use(this);
     }
 
-    @ShouldBeImplementedInChildren
+    @NotImplementedYet
     public abstract void die();
 
     @Completed
     public String toString() {
         return this.getName();
     }
+    public Hero(){}
 
+    public Hero(int inventorySize, int maxMagic, int magicRefillRate, int currentMagic, int currentEnergyPoints, Inventory inventory, ArrayList<Ability> abilities) {
+        this.inventorySize = inventorySize;
+        this.maxMagic = maxMagic;
+        this.magicRefillRate = magicRefillRate;
+        this.currentMagic = currentMagic;
+        this.currentEnergyPoints = currentEnergyPoints;
+        this.inventory = inventory;
+        this.abilities = abilities;
+    }
 
+    public int getInventorySize() {
+        return inventorySize;
+    }
 
+    public void setInventorySize(int inventorySize) {
+        this.inventorySize = inventorySize;
+    }
 
+    public int getMaxMagic() {
+        return maxMagic;
+    }
 
+    public void setMaxMagic(int maxMagic) {
+        this.maxMagic = maxMagic;
+    }
 
+    public int getCurrentMagic() {
+        return currentMagic;
+    }
 
+    public void setCurrentMagic(int currentMagic) {
+        this.currentMagic = currentMagic;
+    }
 
+    public int getMagicRefillRate() {
+        return magicRefillRate;
+    }
 
+    public void setMagicRefillRate(int magicRefillRate) {
+        this.magicRefillRate = magicRefillRate;
+    }
+
+    public int getCurrentEnergyPoints() {
+        return currentEnergyPoints;
+    }
+
+    public void setCurrentEnergyPoints(int currentEnergyPoints) {
+        this.currentEnergyPoints = currentEnergyPoints;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
 }
