@@ -17,4 +17,11 @@ public abstract class Item implements Durable {
     public void wearOff() {
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
 }
