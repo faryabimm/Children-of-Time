@@ -1,5 +1,7 @@
 package com.childrenOfTime.model;
 
+import com.childrenOfTime.NotImplementedYet;
+
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
@@ -18,6 +20,10 @@ public class Ability implements Durable {
         //TODO implement
         return false;
     }
+
+    @NotImplementedYet
+    public void cast(Warrior warrior){}
+
 
     @Override
     public void wearOff() {
