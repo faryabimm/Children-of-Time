@@ -64,4 +64,19 @@ public class Battle {
     public void startFight() {              // should handle again and help commands in it
 
     }
+
+    public void fightHelp() {
+    }
+
+    public void storeHelp() {
+    }
+
+    public void upgradeHelp() {
+    }
+
+    public void informationHelp() {
+    }
+
+    public void storyHelp() {
+    }
 }
