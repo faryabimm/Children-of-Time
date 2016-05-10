@@ -47,7 +47,7 @@ public abstract class Hero extends Warrior {
         }
     }
 
-    @NotImplementedYet
+    @Completed
     public ArrayList<Item> getInventoryItems() {
         return inventory.getItems();
     }
@@ -62,17 +62,17 @@ public abstract class Hero extends Warrior {
         this.inventory.getItems().remove(item);
     }
 
-    @NotImplementedYet
+    @InProgress
     public void applyItem(Item item) {
-
+        item.use(this);
     }
 
     @ShouldBeImplementedInChildren
     public abstract void die();
 
-    @NotImplementedYet
+    @Completed
     public String toString() {
-        return null;
+        return this.getName();
     }
 
 

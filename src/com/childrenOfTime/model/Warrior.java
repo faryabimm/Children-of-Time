@@ -9,6 +9,7 @@ public abstract class Warrior {
     protected int healthRefillRate;
     protected int attackPower;
     protected int id;
+    protected String name;
     protected boolean isAlive=true;
 
 
@@ -25,5 +26,17 @@ public abstract class Warrior {
             currentHealth=0;
             isAlive=false;
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
