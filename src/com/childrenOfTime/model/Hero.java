@@ -14,10 +14,16 @@ import java.util.ArrayList;
  * Created by mohammadmahdi on 5/8/16.
  */
 public abstract class Hero extends Warrior {
-
+    protected int maxHealth;
+    protected int healthRefillRate;
     protected int inventorySize;
+    protected int attackPower;
     protected int maxMagic;
     protected int magicRefillRate;
+    protected int currentHealth;
+    protected int id;
+    protected String name;
+    protected boolean isAlive=true;
     protected int currentMagic;
     protected int currentEnergyPoints;
     protected Inventory inventory;
@@ -63,7 +69,25 @@ public abstract class Hero extends Warrior {
     }
     public Hero(){}
 
-    public Hero(int inventorySize, int maxMagic, int magicRefillRate, int currentMagic, int currentEnergyPoints, Inventory inventory, ArrayList<Ability> abilities) {
+    public Hero(String name,String className){
+        switch (className){
+            case "Supporter":
+                switch (name) {
+                    case "Meryl":
+                        break;
+                    case "Bolti":
+                        break;
+                }
+                break;
+            case "Fighter":
+                case "Eley":
+                    break;
+                case "Chrome":
+                    break;
+        }
+    }
+    /*
+    (int inventorySize, int maxMagic, int magicRefillRate, int currentMagic, int currentEnergyPoints, Inventory inventory, ArrayList<Ability> abilities) {
         this.inventorySize = inventorySize;
         this.maxMagic = maxMagic;
         this.magicRefillRate = magicRefillRate;
@@ -72,7 +96,7 @@ public abstract class Hero extends Warrior {
         this.inventory = inventory;
         this.abilities = abilities;
     }
-
+*/
     public int getInventorySize() {
         return inventorySize;
     }
