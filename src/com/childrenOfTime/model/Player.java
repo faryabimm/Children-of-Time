@@ -14,7 +14,7 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
  * Created by mohammadmahdi on 5/8/16.
  */
 public class Player {
-
+    //TODO When You wanna add a Hero for a player You have to check if the player has another hero with the same name or not,assigning id for a hero by method setID is your duty
     private int currentWealth;
     private int currentExperience;
     private int immprtalityPotions = 3;
@@ -40,11 +40,19 @@ public class Player {
             printOutput(hero.toString());
         }
     }
+    @InProgress
+    public void Alaki(){
+        WarriorMessages.getDiedMessageForHero(new Hero("saeed","salam"));
+    }
 
     @InProgress
     public boolean isDefeated() {
 
         return false;
+    }
+
+    public int getImmprtalityPotions() {
+        return immprtalityPotions;
     }
 }
 

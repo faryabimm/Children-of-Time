@@ -15,5 +15,3 @@ public enum SupporterHero {
         this.ability4 = ability2;
     }
 }
-
-
