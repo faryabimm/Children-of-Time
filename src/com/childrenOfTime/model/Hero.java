@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
-public abstract class Hero extends Warrior {
+public class Hero extends Warrior {
     protected int currentMagic;
     protected int currentEnergyPoints;
     protected Inventory inventory;
@@ -80,9 +80,6 @@ public abstract class Hero extends Warrior {
     public void applyItem(Item item) {
         item.use(this);
     }
-
-    @NotImplementedYet
-    public abstract void die();
 
     @Completed
     public String toString() {
