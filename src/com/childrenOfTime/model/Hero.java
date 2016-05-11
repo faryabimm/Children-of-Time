@@ -7,8 +7,11 @@ import com.childrenOfTime.ShouldBeImplementedInChildren;
 import com.childrenOfTime.exceptions.NotEnoughEnergyPointsException;
 import com.childrenOfTime.exceptions.NotEnoughInventorySpaceException;
 
+import javax.sound.midi.MidiDevice;
 import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by mohammadmahdi on 5/8/16.
@@ -17,8 +20,9 @@ public abstract class Hero extends Warrior {
     protected int currentMagic;
     protected int currentEnergyPoints;
     protected Inventory inventory;
-    protected ArrayList<Ability> abilities = new ArrayList<>();
     private HeroType heroType;
+    InformationOfHeroes info;
+    Map<String,Ability> abilities=new HashMap<String,Ability>();
 
     @Completed
     public void attack(Foe enemy) throws NotEnoughEnergyPointsException{
@@ -29,6 +33,32 @@ public abstract class Hero extends Warrior {
             currentEnergyPoints -= 2;
             enemy.changeHealth(this.heroType.attackPower);
         }
+    }
+
+    @Completed
+    public Hero(String name,String className){
+        super(name);
+        heroType=HeroType.valueOf(className);
+        this.info=new InformationOfHeroes(heroType.maxHealth,heroType.healthRefillRate,heroType.inventorySize,
+                heroType.attackPower,heroType.maxMagic,heroType.magicRefillRate,heroType.initialEP,heroType.ability1,heroType.ability2);
+
+        switch (heroType){
+            case Supporter:
+                SupporterHero heroName=SupporterHero.valueOf(name);
+                info.ability3=heroName.ability3;
+                info.ability4=heroName.ability4;
+                break;
+            case Fighter:
+                FighterHero heroName2=FighterHero.valueOf(name);
+                info.ability3=heroName2.ability3;
+                info.ability4=heroName2.ability4;
+                break;
+        }
+        setAbilities(info);
+        setCurrentMagic(info.maxMagic);
+        setCurrentEnergyPoints(info.initialEP);
+        setInventory(new Inventory(info.inventorySize));
+        super.currentHealth=info.maxHealth;
     }
 
     @Completed
@@ -58,19 +88,15 @@ public abstract class Hero extends Warrior {
     public String toString() {
         return this.getName();
     }
-    public Hero(){}
 
-    @InProgress
-    public Hero(String name,String className){
-        heroType=HeroType.valueOf(className);
-        switch (heroType){
-            case Supporter:
-                break;
-
-            case Fighter:
-                break;
-        }
+    @Completed
+    private void setAbilities(InformationOfHeroes info){
+        abilities.put(info.ability1,new Ability(info.ability1));
+        abilities.put(info.ability2,new Ability(info.ability2));
+        abilities.put(info.ability3,new Ability(info.ability3));
+        abilities.put(info.ability4,new Ability(info.ability4));
     }
+
 
     public int getInventorySize() {
         return heroType.inventorySize;

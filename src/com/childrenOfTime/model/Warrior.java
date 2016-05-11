@@ -10,6 +10,10 @@ public abstract class Warrior {
     protected boolean isAlive=true;
 
 
+    public Warrior(String name) {
+        this.name = name;
+    }
+
     public abstract Warrior findTarget();
 
     public boolean isAlive() {

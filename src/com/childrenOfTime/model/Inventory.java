@@ -9,6 +9,9 @@ public class Inventory {
     private int maxCapacity;
     private ArrayList<Item> items = new ArrayList<>();
 
+    public Inventory(int maxCapacity) {
+        this.maxCapacity = maxCapacity;
+    }
 
     public ArrayList<Item> getItems() {
         return items;
