@@ -28,5 +28,4 @@ public enum HeroType{
         this.ability2=ability2;
     }
 
-
 }

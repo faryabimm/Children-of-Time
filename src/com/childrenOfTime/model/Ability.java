@@ -30,6 +30,10 @@ public class Ability implements Durable {
 
     }
 
+    public Ability(String name) {
+        this.name = name;
+    }
+
     public String getSuccessMessage() {
         //TODO implement
         return null;

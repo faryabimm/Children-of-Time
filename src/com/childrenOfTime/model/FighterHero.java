@@ -8,11 +8,11 @@ import java.util.ArrayList;
 public enum FighterHero{
     Eley("Elixir","Caretaker"),
     Chrome("Boost","Mana beam");
-    String ability1,ability2;
+    String ability3,ability4;
 
     FighterHero(String ability1, String ability2) {
-        this.ability1 = ability1;
-        this.ability2 = ability2;
+        this.ability3 = ability1;
+        this.ability4 = ability2;
     }
 }
 
