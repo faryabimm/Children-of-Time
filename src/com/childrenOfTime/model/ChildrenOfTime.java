@@ -2,7 +2,8 @@ package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.childrenOfTime.view.IOHandler.getInput;
 import static com.childrenOfTime.view.IOHandler.printOutput;
@@ -13,8 +14,10 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
 public final class ChildrenOfTime {
 
     private static ChildrenOfTime instance;
-    private ArrayList<Player> players = new ArrayList<>();
-    private ArrayList<Battle> battles = new ArrayList<>();
+    private Map<String, Player> players = new HashMap<>();
+    private Map<String, Battle> battles = new HashMap<>();
+
+    //TODO you should change battles and players to Hashmaps , man oonaro injoori farz kardam
 
     @Completed
     public static ChildrenOfTime getInstance() {
@@ -206,4 +209,13 @@ public final class ChildrenOfTime {
         }
 
     }
+
+    public Map<String, Player> getPlayers() {
+        return players;
+    }
+
+    public Map<String, Battle> getBattles() {
+        return battles;
+    }
+
 }

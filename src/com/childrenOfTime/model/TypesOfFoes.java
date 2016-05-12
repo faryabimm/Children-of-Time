@@ -16,6 +16,7 @@ public enum TypesOfFoes {
 
     //Just For Final Boss
     int attackPowerInLowHealth;
+    int attackPowerInHighHealth;
     int heroAttackingNumberPerTurn;
     int[] heroBurningEnergy;
 
@@ -62,7 +63,8 @@ public enum TypesOfFoes {
                 }
             case FinalBoss:
                 attackPowerInLowHealth = 150;
-                attackPower = 250;
+                attackPowerInHighHealth = 250;
+                attackPower = attackPowerInHighHealth;
                 maximumHealth=1000;
                 heroAttackingNumberPerTurn=2;
                 int[] h={2,4};
