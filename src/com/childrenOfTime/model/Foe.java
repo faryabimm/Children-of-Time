@@ -61,7 +61,7 @@ public class Foe extends Warrior {
 
     }
 
-
+    @Completed
     public void Act1(ChildrenOfTime game) {
         ArrayList<Warrior> targets = new ArrayList();
         Warrior singleTarget;
@@ -85,6 +85,7 @@ public class Foe extends Warrior {
         }
     }
 
+    @Completed
     public void Act2(ChildrenOfTime game) {
         Warrior singleTarget;
         switch (name) {

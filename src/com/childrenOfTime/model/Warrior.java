@@ -43,5 +43,7 @@ public abstract class Warrior {
         return isDying;
     }
 
-
+    public void changeAttackPower(int num) {
+        this.attackPower += num;
+    }
 }
