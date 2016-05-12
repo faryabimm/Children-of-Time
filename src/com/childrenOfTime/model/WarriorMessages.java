@@ -68,7 +68,7 @@ public class WarriorMessages {
     }
 
     @Completed
-    public static String getAction_3_MessageForFoe(Foe foe) {
+    public static String getMutationMessageForFinalBoss(Foe foe) {
         String toReturn = "";
         switch (foe.getName()) {
             case "FinalBoss":

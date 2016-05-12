@@ -27,7 +27,7 @@ public class Hero extends Warrior {
         }
         else {
             currentEnergyPoints -= 2;
-            enemy.changeHealth(this.heroType.attackPower);
+            enemy.changeHealth(-this.heroType.attackPower);
         }
     }
 
