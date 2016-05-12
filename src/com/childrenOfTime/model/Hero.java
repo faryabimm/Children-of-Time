@@ -4,6 +4,7 @@ import com.childrenOfTime.Completed;
 import com.childrenOfTime.InProgress;
 import com.childrenOfTime.NotImplementedYet;
 import com.childrenOfTime.ShouldBeImplementedInChildren;
+import com.childrenOfTime.exceptions.AttackException;
 import com.childrenOfTime.exceptions.NotEnoughEnergyPointsException;
 import com.childrenOfTime.exceptions.NotEnoughInventorySpaceException;
 
@@ -94,6 +95,11 @@ public class Hero extends Warrior {
         abilities.put(info.ability4,new Ability(info.ability4));
     }
 
+    @InProgress
+    public void castAbility(String abilityName,Warrior warrior) throws AttackException{
+        abilities.get(abilityName).cast(warrior);
+
+    }
 
     public int getInventorySize() {
         return heroType.inventorySize;
