@@ -18,7 +18,13 @@ public class Hero extends Warrior {
     protected int currentEnergyPoints;
     protected Inventory inventory;
     private HeroType heroType;
+
+    //for Swirling ability
     boolean swirlingisActivated = false;
+    public double damagePercent;
+
+
+
     InformationOfHeroes info;
     Map<String,Ability> abilities=new HashMap<String,Ability>();
 
@@ -29,7 +35,7 @@ public class Hero extends Warrior {
         if (this.swirlingisActivated) {
             for (Foe f : foes) {   //TODO how to get access All Foes ?
                 if (f.equals(enemy)) continue;
-                f.changeAttackPower((int) (Ability.damagePercent * attackPower));
+                f.changeAttackPower((int) (this.damagePercent * attackPower));
             }
         }
     }
@@ -110,8 +116,8 @@ public class Hero extends Warrior {
     }
 
     @InProgress
-    public void castAbility(String abilityName, Player player, Warrior... warrior) throws AttackException {
-        abilities.get(abilityName).cast(this, player, warrior);
+    public void castAbility(String abilityName, Warrior warrior) throws AttackException {
+        abilities.get(abilityName).cast(this, warrior);
     }
 
     public int getInventorySize() {

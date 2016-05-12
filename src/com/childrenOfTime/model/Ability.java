@@ -2,49 +2,106 @@ package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
 import com.childrenOfTime.InProgress;
-import com.childrenOfTime.NotImplementedYet;
 import com.childrenOfTime.exceptions.*;
 
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
 public class Ability implements Durable {
-
-    public static double damagePercent;
-
-    protected String name;
-    protected int coolDownTime;
-    protected int duration;
+    InformationOfAbilities info;
     protected int currentLevel;
-    protected int cost1;
-    protected int cost2;
-    protected int cost3;
     protected int currentCost;
-
     protected boolean isInCoolDown = false;
 
-
+    @Completed
     public boolean isFullyUpgraded() {
-        //TODO implement
-        return false;
+        return currentLevel == 3;
     }
 
-    @NotImplementedYet
-    public void cast(Hero hero, Player player, Warrior... warrior) throws NotEnoughEnergyPointsException {
-        if (player.getCurrentExperience() < currentCost) {
-            throw new NotEnoughEnergyPointsException("");
+    @InProgress
+    public String cast(Hero hero, Warrior warrior) throws AttackException {
+        if (this.currentLevel == 0) {
+            throw new AbilityNotAquiredException();
         }
-        player.changeCurrentExperience(2);
+        String s = "";
+        switch (InformationOfAbilities.valueOf(this.info.name.split(" ")[0])) {
+            case Fight:
+                FightTraining(hero);
+                break;
+            case Work:
+                WorkOut(hero);
+                break;
+            case Quick:
+                QuickAsABunny(hero);
+                break;
+            case Magic:
+                MagicLessons(hero);
+                break;
+            case Overpowered:
+                s = OverpoweredAttack(hero, (Foe) warrior);
+                break;
+            case Swirling:
+                SwirlingAttack(hero);
+                break;
+            case Sacrifice:
+                //TODO Sacrifice()
+                break;
+            case Critical:
+                CriticalStrike(hero);
+                break;
+            case Elixir:
+                s = Elixir(hero, (Hero) warrior);
+                break;
+            case Caretaker:
+                s = CareTaker(hero, (Hero) warrior);
+                break;
+            case Boost:
+                s = Boost(hero, (Hero) warrior);
+                break;
+            case Mana:
+                s = ManaBeam(hero, (Hero) warrior);
+                break;
+        }
+        return s;
     }
 
+
+    @Completed
+    public String upgrade(Hero hero, Player player) throws UpgradeException {
+        info.setUpgradeRequirements(hero);
+        switch (this.currentLevel) {
+            case 0:
+                if (!info.upgradeRequirement1) throw new RequirementsNotMetException();
+                player.changeCurrentExperience(info.xp1);
+                currentLevel += 1;
+                break;
+            case 1:
+                if (!info.upgradeRequirement2) throw new RequirementsNotMetException();
+                player.changeCurrentExperience(info.xp2);
+                currentLevel += 1;
+                break;
+            case 2:
+                if (!info.upgradeRequirement3) throw new RequirementsNotMetException();
+                player.changeCurrentExperience(info.xp3);
+                currentLevel += 1;
+                break;
+            case 3:
+                throw new AbilityMaxLevelReachedException();
+                break;
+        }
+    }
 
     @Override
     public void wearOff() {
 
     }
 
+
+    @Completed
     public Ability(String name) {
-        this.name = name;
+        String firstWord = name.split(" ")[0];
+        this.info = InformationOfAbilities.valueOf(firstWord);
+
     }
 
     /*
@@ -94,12 +151,13 @@ public class Ability implements Durable {
     @Completed
     public void SwirlingAttack(Hero hero) {
         hero.swirlingisActivated = true;
-        damagePercent = 0.1 * currentLevel;
+        hero.damagePercent = 0.1 * currentLevel;
     }
 
     @InProgress
-    public String Sacrifice(Hero hero,) {
+    public String Sacrifice(Hero hero) {
         //TODO we need a list of all foes
+        return null;
     }
 
     @InProgress
@@ -138,6 +196,7 @@ public class Ability implements Durable {
         return "Meryl just healed " + hero2 + " with " + h + " health points";
     }
 
+    @Completed
     public String CareTaker(Hero hero, Hero hero2) throws AttackException {
         if (!hero2.equals(hero)) {
             hero.changeMagic(-30);
@@ -158,6 +217,7 @@ public class Ability implements Durable {
                         hero2.changeEP(-1);
                         throw new NotEnoughEnergyPointsException();
                     }
+                    isInCoolDown = true;
                     break;
                 case 3:
                     try {
@@ -177,8 +237,66 @@ public class Ability implements Durable {
         return "";
     }
 
-    private String Boost() {
+    @Completed
+    private String Boost(Hero hero, Hero hero2) throws AttackException {
+        hero.changeEP(-2);
+        try {
+            hero.changeMagic(-50);
+        } catch (NotEnoughMagicPointsException e) {
+            hero.changeEP(2);
+            throw new NotEnoughMagicPointsException();
+        }
+        int a = 0;
+        switch (this.currentLevel) {
+            case 1:
+                if (this.isInCoolDown) throw new AbilityInCooldownException();
+                hero2.changeAttackPower(20);
+                isInCoolDown = true;
+                a = 20;
+                break;
+            case 2:
+                if (this.isInCoolDown) throw new AbilityInCooldownException();
+                hero2.changeAttackPower(30);
+                isInCoolDown = true;
+                a = 30;
+                break;
+            case 3:
+                hero2.changeAttackPower(30);
+                a = 30;
+                break;
+        }
+        return "Bolti just boosted " + hero2 + " with " + a + " power";
+    }
 
+    @Completed
+    private String ManaBeam(Hero hero, Hero hero2) throws AttackException {
+        hero.changeEP(-1);
+        try {
+            hero.changeMagic(-50);
+        } catch (NotEnoughMagicPointsException e) {
+            hero.changeEP(1);
+            throw new NotEnoughMagicPointsException();
+        }
+        int m = 0;
+        switch (this.currentLevel) {
+            case 1:
+                if (this.isInCoolDown) throw new AbilityInCooldownException();
+                hero2.changeMagic(50);
+                isInCoolDown = true;
+                m = 50;
+                break;
+            case 2:
+                if (this.isInCoolDown) throw new AbilityInCooldownException();
+                hero2.changeMagic(80);
+                isInCoolDown = true;
+                m = 80;
+                break;
+            case 3:
+                hero2.changeMagic(80);
+                m = 80;
+                break;
+        }
+        return "Bolti just helped " + hero2 + " with " + m + " magic points";
     }
 
 
