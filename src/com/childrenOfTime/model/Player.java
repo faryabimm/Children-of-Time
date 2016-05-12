@@ -3,6 +3,7 @@ package com.childrenOfTime.model;
 import com.childrenOfTime.Completed;
 import com.childrenOfTime.InProgress;
 import com.childrenOfTime.exceptions.NoImmortalityPotionLeftException;
+import com.childrenOfTime.exceptions.NotEnoughXPException;
 import com.childrenOfTime.exceptions.TradeException;
 import com.childrenOfTime.exceptions.UpgradeException;
 
@@ -53,6 +54,18 @@ public class Player {
 
     public int getImmprtalityPotions() {
         return immprtalityPotions;
+    }
+
+    public void changeCurrentExperience(int num) throws NotEnoughXPException {
+        if (this.currentExperience + num < 0) {
+            throw new NotEnoughXPException();
+        } else {
+            this.currentExperience += num;
+        }
+    }
+
+    public int getCurrentExperience() {
+        return currentExperience;
     }
 }
 

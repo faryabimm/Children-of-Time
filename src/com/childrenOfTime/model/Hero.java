@@ -4,6 +4,7 @@ import com.childrenOfTime.Completed;
 import com.childrenOfTime.InProgress;
 import com.childrenOfTime.exceptions.AttackException;
 import com.childrenOfTime.exceptions.NotEnoughEnergyPointsException;
+import com.childrenOfTime.exceptions.NotEnoughMagicPointsException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,17 +18,31 @@ public class Hero extends Warrior {
     protected int currentEnergyPoints;
     protected Inventory inventory;
     private HeroType heroType;
+    boolean swirlingisActivated = false;
     InformationOfHeroes info;
     Map<String,Ability> abilities=new HashMap<String,Ability>();
 
+
     @Completed
-    public void attack(Foe enemy) throws NotEnoughEnergyPointsException{
-        if (currentEnergyPoints<2){
-            throw new NotEnoughEnergyPointsException();
+    public void attackAuto(Foe enemy, int attackPower) {
+        enemy.changeHealth(-attackPower);
+        if (this.swirlingisActivated) {
+            for (Foe f : foes) {   //TODO how to get access All Foes ?
+                if (f.equals(enemy)) continue;
+                f.changeAttackPower((int) (Ability.damagePercent * attackPower));
+            }
         }
-        else {
-            currentEnergyPoints -= 2;
-            enemy.changeHealth(-this.heroType.attackPower);
+    }
+
+    @Completed
+    public void attackManual(Foe enemy, int attackPower) throws NotEnoughEnergyPointsException {
+        changeEP(-2);
+        enemy.changeHealth(-attackPower);
+        if (this.swirlingisActivated) {
+            for (Foe f : foes) {   //TODO how to get access All Foes ?
+                if (f.equals(enemy)) continue;
+                f.changeAttackPower((int) (Ability.damagePercent * attackPower));
+            }
         }
     }
 
@@ -60,9 +75,7 @@ public class Hero extends Warrior {
         super.maxHealth = heroType.maxHealth;
     }
 
-    public static void main(String[] args) {
 
-    }
     @Completed
     public ArrayList<Item> getInventoryItems() {
         return inventory.getItems();
@@ -97,9 +110,8 @@ public class Hero extends Warrior {
     }
 
     @InProgress
-    public void castAbility(String abilityName,Warrior warrior) throws AttackException{
-        abilities.get(abilityName).cast(warrior);
-
+    public void castAbility(String abilityName, Player player, Warrior... warrior) throws AttackException {
+        abilities.get(abilityName).cast(this, player, warrior);
     }
 
     public int getInventorySize() {
@@ -148,5 +160,24 @@ public class Hero extends Warrior {
 
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
+    }
+
+    public void changeEP(int num) throws NotEnoughEnergyPointsException {
+        if (this.currentEnergyPoints + num < 0) {
+            throw new NotEnoughEnergyPointsException();
+        }
+        this.currentEnergyPoints += num;
+    }
+
+
+    public void changeMagic(int i) throws NotEnoughMagicPointsException {
+        if (this.currentMagic + i < 0) {
+            throw new NotEnoughMagicPointsException();
+        }
+        this.currentMagic += i;
+    }
+
+    public void changeMaxMagic(int i) throws NotEnoughMagicPointsException {
+        this.info.maxMagic += i;
     }
 }
