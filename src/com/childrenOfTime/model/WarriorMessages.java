@@ -31,6 +31,10 @@ public class WarriorMessages {
         public static String getSuccessfulAttackMessage(Hero hero,Foe foe){
             return hero.getName() + " has successfully attacked " + foe.getName() + foe.getName() + foe.getId() + " with " + hero.info.attackPower + " power"
         }
+
+
+
+
 }
 
 

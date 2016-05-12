@@ -22,7 +22,8 @@ public class Ability implements Durable {
     }
 
     @NotImplementedYet
-    public void cast(Warrior warrior){}
+    public void cast(Warrior warrior){
+    }
 
 
     @Override
