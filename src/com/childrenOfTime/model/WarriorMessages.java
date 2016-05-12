@@ -29,10 +29,54 @@ public class WarriorMessages {
 
         @Completed
         public static String getSuccessfulAttackMessage(Hero hero,Foe foe){
-            return hero.getName() + " has successfully attacked " + foe.getName() + foe.getName() + foe.getId() + " with " + hero.info.attackPower + " power"
+            return hero.getName() + " has successfully attacked " + foe.getName() + foe.getName() + foe.getId() + " with " + hero.attackPower + " power"
         }
 
+    @Completed
+    public static String getAction_1_MessageForFoe(Foe foe, Warrior... targets) {
 
+        String toReturn = "";
+        switch (foe.getName()) {
+            case "Thug":
+                toReturn = "Thug just attacked " + targets[0] + " with " + foe.attackPower + " power";
+                break;
+            case "Angel":
+                Foe t = (Foe) targets[0];
+                toReturn = "Angel just healed " + t + " with " + t + " health points";
+                break;
+            case "Tank":
+                toReturn = "Tank just damaged all of your heroes with " + foe.attackPower + " power";
+                break;
+            case "FinalBoss":
+                toReturn = "Collector just attacked " + targets[0] + " with " + foe.attackPower + " power";
+                break;
+
+        }
+        return toReturn;
+    }
+
+    @Completed
+    public static String getAction_2_MessageForFoe(Foe foe, Warrior... targets) {
+        String toReturn = "";
+        switch (foe.getName()) {
+            case "FinalBoss":
+                Hero h = (Hero) targets[0];
+                toReturn = "Collector just burned " + h.getCurrentEnergyPoints() + " energy points from " + h;
+                break;
+        }
+        return toReturn;
+    }
+
+    @Completed
+    public static String getAction_3_MessageForFoe(Foe foe) {
+        String toReturn = "";
+        switch (foe.getName()) {
+            case "FinalBoss":
+                toReturn = "Collector has mutated";
+                break;
+        }
+        return toReturn;
+    }
 
 
 }

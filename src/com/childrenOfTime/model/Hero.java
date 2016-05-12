@@ -2,14 +2,9 @@ package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
 import com.childrenOfTime.InProgress;
-import com.childrenOfTime.NotImplementedYet;
-import com.childrenOfTime.ShouldBeImplementedInChildren;
 import com.childrenOfTime.exceptions.AttackException;
 import com.childrenOfTime.exceptions.NotEnoughEnergyPointsException;
-import com.childrenOfTime.exceptions.NotEnoughInventorySpaceException;
 
-import javax.sound.midi.MidiDevice;
-import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,8 +35,8 @@ public class Hero extends Warrior {
     public Hero(String name,String className){
         super(name);
         heroType=HeroType.valueOf(className);
-        this.info=new InformationOfHeroes(heroType.maxHealth,heroType.healthRefillRate,heroType.inventorySize,
-                heroType.attackPower,heroType.maxMagic,heroType.magicRefillRate,heroType.initialEP,heroType.ability1,heroType.ability2);
+        this.info = new InformationOfHeroes(heroType.healthRefillRate, heroType.inventorySize,
+                heroType.maxMagic, heroType.magicRefillRate, heroType.initialEP, heroType.ability1, heroType.ability2);
 
         switch (heroType){
             case Supporter:
@@ -59,9 +54,15 @@ public class Hero extends Warrior {
         setCurrentMagic(info.maxMagic);
         setCurrentEnergyPoints(info.initialEP);
         setInventory(new Inventory(info.inventorySize));
-        super.currentHealth=info.maxHealth;
+
+        super.currentHealth = heroType.maxHealth;
+        super.attackPower = heroType.attackPower;
+        super.maxHealth = heroType.maxHealth;
     }
 
+    public static void main(String[] args) {
+
+    }
     @Completed
     public ArrayList<Item> getInventoryItems() {
         return inventory.getItems();
