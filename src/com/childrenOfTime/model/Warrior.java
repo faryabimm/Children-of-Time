@@ -1,17 +1,19 @@
 package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
-import com.childrenOfTime.ShouldBeImplementedInChildren;
 
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
 public abstract class Warrior {
     protected int currentHealth;
+    protected int maxHealth;
     protected int id;
+    protected int attackPower;
     protected String name;
     protected boolean isDying=false;
     protected boolean isDead=false;
+
 
     @Completed
     public Warrior(String name) {
