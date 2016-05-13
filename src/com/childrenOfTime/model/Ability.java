@@ -349,6 +349,7 @@ public class Ability implements Durable {
 
     @Completed
     public void showDescription() {
+        this.info.setDescription();
         printOutput(this.info.description);
     }
 
