@@ -18,20 +18,38 @@ public class Player {
     private int immprtalityPotions = 3;
     private ArrayList<Hero> heros = new ArrayList<>();
 
-
-    public void upgradeAbility(Ability ability, Hero target) throws UpgradeException {
+    @Completed
+    public void upgradeAbility(Ability ability, Hero targetHero) throws UpgradeException {
+        ability.upgrade(targetHero, this);
     }
 
+    @Completed
     public void buy(Item item, Hero target) throws TradeException {
-        //TODO You should check if we have enough inventory space or not , I defined a method that named "getAvailableSpace" in inventory
+        if (item.getSize() > target.inventory.getAvailableCapacity()) {
+            throw new NotEnoughInventorySpaceException();
+        } else {
+            if (item.initialPrice > currentWealth) {
+                throw new NotEnoughMoneyException();
+            } else {
+                currentWealth -= item.initialPrice;
+                target.inventory.getItems().add(item);
+            }
+        }
+
     }
 
+    @Completed
     public void sell(Item item, Hero target) throws TradeException {
+
+        ArrayList<Item> heroItems = target.inventory.getItems();
+        currentWealth += heroItems.get(heroItems.indexOf(item)).initialPrice / 2;
+        target.inventory.getItems().remove(item);
     }
 
+    @Completed
     public void useImmortalityPotion(Hero target) throws NoImmortalityPotionLeftException {
+        target.revivedWithImmortalityPotion();
     }
-
     @Completed
     public void showCurrentHeroStats() {
         for (Hero hero : heros) {
@@ -43,16 +61,22 @@ public class Player {
         WarriorMessages.getDiedMessageForHero(new Hero("saeed","salam"));
     }
 
-    @InProgress
+    @Completed
     public boolean isDefeated() {
-
-        return false;
+        boolean isDefeated = false;
+        for (int i = 0; i < heros.size(); i++) {
+            if (heros.get(i).isDead) isDefeated = true;
+            break;
+        }
+        return isDefeated;
     }
 
+    @Completed
     public int getImmprtalityPotions() {
         return immprtalityPotions;
     }
 
+    @Completed
     public void changeCurrentExperience(int num) throws NotEnoughXPException {
         if (this.currentExperience + num < 0) {
             throw new NotEnoughXPException();
@@ -61,27 +85,29 @@ public class Player {
         }
     }
 
+    @Completed
     public int getCurrentExperience() {
         return currentExperience;
     }
 
+    @Completed
     public ArrayList<Hero> getHeros() {
         return heros;
     }
 
+    @Completed
     public int getCurrentWealth() {
         return currentWealth;
     }
 
-    public Item getItembyName(String temp) {
-    }
-
+    @Completed
     public void castAbility(Hero castingHero, Ability castedAbility, Warrior targetFoe) {
 
         castingHero.useAbility(castedAbility, targetFoe);
 
     }
 
+    @Completed
     public void useItem(Hero usingHero, Item usedItem, Warrior targetWarrior) {
         if (usingHero.inventory.getItems().contains(usedItem)) {
             usedItem.use(usingHero, targetWarrior);
@@ -90,23 +116,43 @@ public class Player {
                     + usingHero.getId() + "' doesnt" + "have this Item!");
         }
     }
-
     @Completed
-    public Ability findAbilityByname(String name) {             //COOL!!!!!!!!!!!!!!
+    public Ability findAbilityByNameAndOwner(String name, Hero owner) {             //COOL!!!!!!!!!!!!!!
+        Hero currentHero = null;
+
         for (int i = 0; i < heros.size(); i++) {
-            Hero currentHero = heros.get(i);
+            if (heros.get(i).equals(owner)) {
+                currentHero = heros.get(i);
+                break;
+            } else {
+                return null;
+            }
+        }
+        for (String keyAbilityName : currentHero.abilities.keySet()) {
+            if (keyAbilityName.equals(name)) {
+                return currentHero.abilities.get(keyAbilityName);
+            }
+        }
+        return null;
+    }
+    @Completed
+    public Ability findAbilityByName(String name) {
+        Hero currentHero = null;
+
+        for (int i = 0; i < heros.size(); i++) {
             for (String keyAbilityName : currentHero.abilities.keySet()) {
                 if (keyAbilityName.equals(name)) {
                     return currentHero.abilities.get(keyAbilityName);
                 }
             }
         }
+
         return null;
     }
-
+    @Completed
     public void giveAttack(Hero attackingHero, Foe targetFoe) {
+        attackingHero.attackManual(targetFoe);
     }
-
     @Completed
     public Hero findHeroByNameAndId(String name, int id) {
         Hero currentHero;
@@ -116,13 +162,34 @@ public class Player {
         }
         return null;
     }
-
     @Completed
     public Hero findHeroByName(String name) {
         Hero currentHero;
         for (int i = 0; i < heros.size(); i++) {
             currentHero = heros.get(i);
             if (currentHero.equals(new Hero(name, "Fighter"))) return currentHero;
+        }
+        return null;
+    }
+    @Completed
+    public Item getItembyNameAndOwner(String name, Hero usingHero) {
+        Item item = new Item(name);
+        if (usingHero.inventory.getItems().contains(item)) {
+            Inventory temp = usingHero.inventory;
+            return temp.getItems().get(temp.getItems().indexOf(item));
+        }
+        return null;
+    }
+
+    @Completed
+    public Item getItembyName(String name) {
+        Item toReturn = null;
+        for (int i = 0; i < heros.size(); i++) {
+            Hero usingHero = heros.get(i);
+            toReturn = getItembyNameAndOwner(name, usingHero);
+            if (toReturn != null) {
+                return toReturn;
+            }
         }
         return null;
     }
