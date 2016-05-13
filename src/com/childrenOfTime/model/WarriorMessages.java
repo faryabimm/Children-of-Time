@@ -47,7 +47,7 @@ public class WarriorMessages {
             case "Tank":
                 toReturn = "Tank just damaged all of your heroes with " + foe.attackPower + " power";
                 break;
-            case "FinalBoss":
+            case "Final":
                 toReturn = "Collector just attacked " + targets[0] + " with " + foe.attackPower + " power";
                 break;
 

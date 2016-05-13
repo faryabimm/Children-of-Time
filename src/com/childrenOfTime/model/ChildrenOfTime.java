@@ -26,24 +26,27 @@ public final class ChildrenOfTime {
         }
         return instance;
     }
+
     @Completed
     private ChildrenOfTime() {
+
+
         ArrayList<Foe> battleFoes = new ArrayList<>();
 
         battleFoes.add(new Foe("Thug", StrengthOfFoes.Weak, 0));
         battleFoes.add(new Foe("Thug", StrengthOfFoes.Weak, 1));
         battleFoes.add(new Foe("Thug", StrengthOfFoes.Weak, 2));
-        battleFoes.add(new Foe("Angle", StrengthOfFoes.Weak, 0));
+        battleFoes.add(new Foe("Angel", StrengthOfFoes.Weak, 0));
         String storyTemp = "You’ve entered the castle, it takes a while for your eyes to get used to the darkness but\n" +
                 "the horrifying halo of your enemies is vaguely visible. Angel’s unsettling presence and\n" +
                 "the growling of thugs tell you that your first battle has BEGUN!";
         battles.add(new Battle(storyTemp, new Reward(20, 50), battleFoes));
 
 
-        battleFoes.clear();
+        battleFoes = new ArrayList<>();
         battleFoes.add(new Foe("Thug", StrengthOfFoes.Able, 0));
         battleFoes.add(new Foe("Thug", StrengthOfFoes.Able, 1));
-        battleFoes.add(new Foe("Angle", StrengthOfFoes.Weak, 0));
+        battleFoes.add(new Foe("Angel", StrengthOfFoes.Weak, 0));
         battleFoes.add(new Foe("Tank", StrengthOfFoes.Weak, 0));
         storyTemp = "As you wander into the hall you realize the surrounding doors can lead your destiny to\n" +
                 "something far worse than you expected. You know what’s anticipating you behind the only\n" +
@@ -51,20 +54,20 @@ public final class ChildrenOfTime {
         battles.add(new Battle(storyTemp, new Reward(25, 60), battleFoes));
 
 
-        battleFoes.clear();
+        battleFoes = new ArrayList<>();
         battleFoes.add(new Foe("Thug", StrengthOfFoes.Able, 0));
         battleFoes.add(new Foe("Thug", StrengthOfFoes.Mighty, 0));
-        battleFoes.add(new Foe("Angle", StrengthOfFoes.Able, 0));
+        battleFoes.add(new Foe("Angel", StrengthOfFoes.Able, 0));
         battleFoes.add(new Foe("Tank", StrengthOfFoes.Weak, 0));
         storyTemp = "The door behind you is shut with a thunderous sound and you progress into the next hall\n" +
                 "holding the first key that you’ve found, hoping to seek the second one.";
         battles.add(new Battle(storyTemp, new Reward(30, 70), battleFoes));
 
 
-        battleFoes.clear();
+        battleFoes = new ArrayList<>();
         battleFoes.add(new Foe("Thug", StrengthOfFoes.Mighty, 0));
         battleFoes.add(new Foe("Thug", StrengthOfFoes.Mighty, 1));
-        battleFoes.add(new Foe("Angle", StrengthOfFoes.Able, 0));
+        battleFoes.add(new Foe("Angel", StrengthOfFoes.Able, 0));
         battleFoes.add(new Foe("Tank", StrengthOfFoes.Able, 0));
         battleFoes.add(new Foe("Tank", StrengthOfFoes.Able, 1));
         storyTemp = "Running with the second key in your hand, you unlock the door back to the first hall and\n" +
@@ -72,8 +75,8 @@ public final class ChildrenOfTime {
         battles.add(new Battle(storyTemp, new Reward(35, 80), battleFoes));
 
 
-        battleFoes.clear();
-        battleFoes.add(new Foe("FinalBoss", StrengthOfFoes.Dramatic, 0));
+        battleFoes = new ArrayList<>();
+        battleFoes.add(new Foe("Final Boss", StrengthOfFoes.Dramatic, 0));
         storyTemp = "You feel hopeless and exhausted as you stalk to the final door. What’s behind that door\n" +
                 "makes your hearts pound and your spines shake with fear, but you came here to do one\n" +
                 "thing and backing down is not an option.";
@@ -91,6 +94,7 @@ public final class ChildrenOfTime {
         Store store = new Store();
         Store.addStore(store);
     }
+
     @Completed
     public void startSinglePlayerMode() {
         try {
@@ -161,10 +165,12 @@ public final class ChildrenOfTime {
         printOutput("Congratulations! You Won!");
         printOutput(victoryMessage);
     }
+
     @Completed
     private void singlePlayerGameOver() {
         printOutput("OOPS! You Lose! Try Again!");
     }
+
     @Completed
     private void getUserInput(Battle battle) {
         String userInput = getInput();
@@ -188,6 +194,7 @@ public final class ChildrenOfTime {
         }
 
     }
+
     @Completed
     private void doneCommand(Battle battle) {
 
@@ -210,6 +217,7 @@ public final class ChildrenOfTime {
         }
 
     }
+
     @Completed
     public void helpCommand(Battle battle) {
         switch (battle.battleState) {
@@ -231,6 +239,7 @@ public final class ChildrenOfTime {
         }
 
     }
+
     @Completed
     private void againCommand(Battle battle) {
 
@@ -257,6 +266,7 @@ public final class ChildrenOfTime {
 
 
     }
+
     public ArrayList<Player> getPlayers() {
         return players;
     }

@@ -12,7 +12,7 @@ public enum TypesOfFoes {
             "Able version: Attack Power=90, Maximum health=300\n" +
             "Mighty version: Attack Power=150, Maximum health=400\n" +
             "Action message: “Thug just attacked “ + (target) + “ with “ + (attack power) + “ power”"),
-    Angle("Angel", "Angel:\n" +
+    Angel("Angel", "Angel:\n" +
             "Heals one of her allies in each turn\n" +
             "Weak version: Healing Amount=100, Maximum health=150\n" +
             "Able version: Healing Amount =150, Maximum health=250\n" +
@@ -22,7 +22,7 @@ public enum TypesOfFoes {
             "Weak version: Attack Power=30, Maximum health=400\n" +
             "Able version: Attack Power=90, Maximum health=500\n" +
             "Action message: “Tank just damaged all of your heroes with “ + (attack power) + “ power”"),
-    FinalBoss("Final Boss", "Final Boss:\n" +
+    Final("Final Boss", "Final Boss:\n" +
             "Burns 2 to 4 energy points of each hero and attacks 2 of them in each turn\n" +
             "Maximum health: 1000\n" +
             "Attack power when his current health is higher than 400: 150\n" +
@@ -81,7 +81,7 @@ public enum TypesOfFoes {
                         maximumHealth = 300;
                         break;
                 }
-            case Angle:
+            case Angel:
                 switch (strength) {
                     case Weak:
                         healingAmount = 100;
@@ -92,7 +92,7 @@ public enum TypesOfFoes {
                         maximumHealth = 250;
                         break;
                 }
-            case FinalBoss:
+            case Final:
                 attackPowerInLowHealth = 150;
                 attackPowerInHighHealth = 250;
                 attackPower = attackPowerInHighHealth;

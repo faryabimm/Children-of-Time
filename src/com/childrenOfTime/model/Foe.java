@@ -32,15 +32,15 @@ public class Foe extends Warrior {
         type.setStrength(this.strength);
 
         this.healingAmount = type.healingAmount;
-        super.maxHealth = type.maximumHealth;
-        super.attackPower = type.attackPower;
+        this.maxHealth = type.maximumHealth;
+        this.attackPower = type.attackPower;
         this.heroBurningEnergy = type.heroBurningEnergy;
         this.heroAttackingNumberPerTurn = type.heroAttackingNumberPerTurn;
         this.attackPowerInHighHealth = type.attackPowerInHighHealth;
         this.attackPowerInLowHealth = type.attackPowerInLowHealth;
         this.description = type.description;
 
-        super.currentHealth = maxHealth;
+        this.currentHealth = maxHealth;
 
     }
 
@@ -137,27 +137,7 @@ public class Foe extends Warrior {
 
     @Override
     public String showCurrentTraits() {
-        String toPrint = "";
-        toPrint += "You’ve encountered:\n";
-
-        for (TypesOfFoes type : TypesOfFoes.values()) {
-            for (StrengthOfFoes strength : StrengthOfFoes.values()) {
-                int num = 0;
-                for (Foe foes : Battle.getFoes()) {
-                    if (type.equals(foes.type) && strength.equals(foes.strength)) {
-                        num++;
-                    }
-                }
-                if (num > 0) {
-                    toPrint += num + " " + strength.name + " " + type.name() + " ";
-                }
-                // } else {
-                //    toPrint += num + " " + type.name() + " ";
-
-            }
-        }
-        //  printOutput(toPrint);
-        return toPrint;
+        return null;
     }
 
 }

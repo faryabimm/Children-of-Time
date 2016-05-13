@@ -21,7 +21,7 @@ public class Battle {
     protected int id;
     public BattleState battleState;
     private static ArrayList<Foe> foes200 = new ArrayList<>();
-    private ArrayList<Foe> foes = new ArrayList<>();
+    private ArrayList<Foe> foes;
     private Reward reward;
 
     public Battle(String story, Reward reward, ArrayList<Foe> foes) {
