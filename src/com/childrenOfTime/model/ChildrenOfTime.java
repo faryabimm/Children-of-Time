@@ -36,10 +36,10 @@ public final class ChildrenOfTime {
         ArrayList<Foe> battleFoes = new ArrayList<>();
 
 
-        battleFoes.add(new Foe("thug", StrengthOfFoes.Weak, 0));
-        battleFoes.add(new Foe("thug", StrengthOfFoes.Weak, 1));
-        battleFoes.add(new Foe("thug", StrengthOfFoes.Weak, 2));
-        battleFoes.add(new Foe("angle", StrengthOfFoes.Weak, 0));
+        battleFoes.add(new Foe("Thug", StrengthOfFoes.Weak, 0));
+        battleFoes.add(new Foe("Thug", StrengthOfFoes.Weak, 1));
+        battleFoes.add(new Foe("Thug", StrengthOfFoes.Weak, 2));
+        battleFoes.add(new Foe("Angle", StrengthOfFoes.Weak, 0));
 
         String storyTemp = "You’ve entered the castle, it takes a while for your eyes to get used to the darkness but\n" +
                 "the horrifying halo of your enemies is vaguely visible. Angel’s unsettling presence and\n" +
@@ -48,10 +48,10 @@ public final class ChildrenOfTime {
 
 
         battleFoes.clear();
-        battleFoes.add(new Foe("thug", StrengthOfFoes.Able, 0));
-        battleFoes.add(new Foe("thug", StrengthOfFoes.Able, 1));
-        battleFoes.add(new Foe("angle", StrengthOfFoes.Weak, 0));
-        battleFoes.add(new Foe("tank", StrengthOfFoes.Weak, 0));
+        battleFoes.add(new Foe("Thug", StrengthOfFoes.Able, 0));
+        battleFoes.add(new Foe("Thug", StrengthOfFoes.Able, 1));
+        battleFoes.add(new Foe("Angle", StrengthOfFoes.Weak, 0));
+        battleFoes.add(new Foe("Tank", StrengthOfFoes.Weak, 0));
 
         storyTemp = "As you wander into the hall you realize the surrounding doors can lead your destiny to\n" +
                 "something far worse than you expected. You know what’s anticipating you behind the only\n" +
@@ -60,28 +60,28 @@ public final class ChildrenOfTime {
 
 
         battleFoes.clear();
-        battleFoes.add(new Foe("thug", StrengthOfFoes.Able, 0));
-        battleFoes.add(new Foe("thug", StrengthOfFoes.Mighty, 0));
-        battleFoes.add(new Foe("angle", StrengthOfFoes.Able, 0));
-        battleFoes.add(new Foe("tank", StrengthOfFoes.Weak, 0));
+        battleFoes.add(new Foe("Thug", StrengthOfFoes.Able, 0));
+        battleFoes.add(new Foe("Thug", StrengthOfFoes.Mighty, 0));
+        battleFoes.add(new Foe("Angle", StrengthOfFoes.Able, 0));
+        battleFoes.add(new Foe("Tank", StrengthOfFoes.Weak, 0));
 
 
         storyTemp = "The door behind you is shut with a thunderous sound and you progress into the next hall\n" +
                 "holding the first key that you’ve found, hoping to seek the second one.";
-        battles.add(new Battle(storyTemp, new Reward(30, 70)), battleFoes);
+        battles.add(new Battle(storyTemp, new Reward(30, 70), battleFoes));
 
 
         battleFoes.clear();
-        battleFoes.add(new Foe("thug", StrengthOfFoes.Mighty, 0));
-        battleFoes.add(new Foe("thug", StrengthOfFoes.Mighty, 1));
-        battleFoes.add(new Foe("angle", StrengthOfFoes.Able, 0));
-        battleFoes.add(new Foe("tank", StrengthOfFoes.Able, 0));
-        battleFoes.add(new Foe("tank", StrengthOfFoes.Able, 1));
+        battleFoes.add(new Foe("Thug", StrengthOfFoes.Mighty, 0));
+        battleFoes.add(new Foe("Thug", StrengthOfFoes.Mighty, 1));
+        battleFoes.add(new Foe("Angle", StrengthOfFoes.Able, 0));
+        battleFoes.add(new Foe("Tank", StrengthOfFoes.Able, 0));
+        battleFoes.add(new Foe("Tank", StrengthOfFoes.Able, 1));
 
 
         storyTemp = "Running with the second key in your hand, you unlock the door back to the first hall and\n" +
                 "use the first key to burst into your most terrifying nightmares.";
-        battles.add(new Battle(storyTemp, new Reward(35, 80)), battleFoes);
+        battles.add(new Battle(storyTemp, new Reward(35, 80), battleFoes));
 
 
         battleFoes.clear();
@@ -90,7 +90,7 @@ public final class ChildrenOfTime {
         storyTemp = "You feel hopeless and exhausted as you stalk to the final door. What’s behind that door\n" +
                 "makes your hearts pound and your spines shake with fear, but you came here to do one\n" +
                 "thing and backing down is not an option.";
-        battles.add(new Battle(storyTemp, new Reward(0, 0)));
+        battles.add(new Battle(storyTemp, new Reward(0, 0), battleFoes));
 
     }
 
