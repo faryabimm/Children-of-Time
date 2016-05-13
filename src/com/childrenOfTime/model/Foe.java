@@ -5,12 +5,12 @@ import com.childrenOfTime.NotImplementedYet;
 
 import java.util.ArrayList;
 
+import static com.childrenOfTime.view.IOHandler.printOutput;
+
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
-public class
-
-Foe extends Warrior {
+public class Foe extends Warrior {
     protected int healingAmount;
     TypesOfFoes type;
     StrengthOfFoes strength;
@@ -21,7 +21,7 @@ Foe extends Warrior {
     int attackPowerInLowHealth;
     int heroAttackingNumberPerTurn;
     int[] heroBurningEnergy;
-
+    String description;
 
     @Completed
     public Foe(String name, StrengthOfFoes strength, int id) {
@@ -37,7 +37,7 @@ Foe extends Warrior {
         this.heroAttackingNumberPerTurn = type.heroAttackingNumberPerTurn;
         this.attackPowerInHighHealth = type.attackPowerInHighHealth;
         this.attackPowerInLowHealth = type.attackPowerInLowHealth;
-
+        this.description = type.description;
 
         super.currentHealth = maxHealth;
 
@@ -46,7 +46,7 @@ Foe extends Warrior {
 
     @Completed
     private void updateFinalBoss() {
-        if (this.name.equals("FinalBoss")) {
+        if (this.name.equals("Final Boss")) {
             if (currentHealth <= 400) {
                 strength = StrengthOfFoes.Mutated;
                 attackPower = attackPowerInLowHealth;
@@ -72,9 +72,13 @@ Foe extends Warrior {
                 singleTarget.changeHealth(+this.healingAmount);
                 break;
             case "Tank":
-                //TODO waiting for MMD
+                targets = Battle.getFoes();
+                for (Warrior w : targets) {
+                    ((Hero) w).changeHealth(-attackPower);
+                }
+                //TODO
                 break;
-            case "FinalBoss":
+            case "Final Boss":
                 singleTarget = this.findTarget(game);
                 updateFinalBoss();
                 singleTarget.changeHealth(-attackPower);
@@ -86,7 +90,7 @@ Foe extends Warrior {
     public void Act2(ChildrenOfTime game) {
         Warrior singleTarget;
         switch (name) {
-            case "FinalBoss":
+            case "Final Boss":
                 singleTarget = this.findTarget(game);
                 Hero h = (Hero) singleTarget;
                 h.setCurrentEnergyPoints(h.getCurrentEnergyPoints() + this.heroBurningEnergy[1]);
@@ -121,7 +125,25 @@ Foe extends Warrior {
 
     @Override
     public void showCurrentTraits() {
+        String toPrint = "";
+        toPrint += "You’ve encountered";
 
+        for (TypesOfFoes type : TypesOfFoes.values()) {
+            for (StrengthOfFoes strength : StrengthOfFoes.values()) {
+                int num = 0;
+                for (Foe foes : Battle.getFoes()) {
+                    if (type.equals(foes.type)) {
+                        num++;
+                    }
+                }
+                if (strength != null) {
+                    toPrint += num + " " + strength.name + " " + type.name() + " ";
+                } else {
+                    toPrint += num + " " + type.name() + " ";
+                }
+            }
+        }
+        printOutput(toPrint);
     }
 }
 
