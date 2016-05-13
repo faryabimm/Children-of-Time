@@ -12,6 +12,7 @@ public class Ability implements Durable {
     protected int currentLevel;
     protected int currentCost;
     protected boolean isInCoolDown = false;
+    private String name;
 
     @Completed
     public boolean isFullyUpgraded() {
@@ -311,4 +312,14 @@ public class Ability implements Durable {
 
     public void showDescription() {
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        Ability other = (Ability) obj;
+        if (!this.name.equals(other.name)) return false;
+        return true;
+    }
 }
+

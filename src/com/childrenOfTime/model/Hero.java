@@ -9,7 +9,6 @@ import com.childrenOfTime.exceptions.NotEnoughMagicPointsException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by mohammadmahdi on 5/8/16.
@@ -27,7 +26,7 @@ public class Hero extends Warrior {
 
 
     InformationOfHeroes info;
-    Map<String,Ability> abilities=new HashMap<String,Ability>();
+    Map<String, Ability> abilities = new HashMap<>();
 
     @Completed
     public void attackAuto(Foe enemy, int attackPower) {
@@ -92,7 +91,7 @@ public class Hero extends Warrior {
     }
     @InProgress
     public void applyItem(Item item) {
-        item.use(this);
+        item.use(usingHero, this);
     }
     @Completed
     public String toString() {

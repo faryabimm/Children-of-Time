@@ -2,10 +2,7 @@ package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
 import com.childrenOfTime.InProgress;
-import com.childrenOfTime.exceptions.NoImmortalityPotionLeftException;
-import com.childrenOfTime.exceptions.NotEnoughXPException;
-import com.childrenOfTime.exceptions.TradeException;
-import com.childrenOfTime.exceptions.UpgradeException;
+import com.childrenOfTime.exceptions.*;
 
 import java.util.ArrayList;
 
@@ -76,25 +73,55 @@ public class Player {
         return currentWealth;
     }
 
-    public Hero findHeroByName(String s) {
-    }
-
     public Item getItembyName(String temp) {
-    }
-
-    public Ability findAbilityByname(String temp) {
     }
 
     public void castAbility(Hero castingHero, Ability castedAbility, Warrior targetFoe) {
     }
 
     public void useItem(Hero usingHero, Item usedItem, Warrior targetWarrior) {
+        if (usingHero.inventory.getItems().contains(usedItem)) {
+            usedItem.use(usingHero, targetWarrior);
+        } else {
+            throw new ItemNotAquiredException("Hero '" + usingHero.getName() + " "
+                    + usingHero.getId() + "' doesnt" + "have this Item!");
+        }
+    }
+
+    @Completed
+    public Ability findAbilityByname(String name) {             //COOL!!!!!!!!!!!!!!
+        for (int i = 0; i < heros.size(); i++) {
+            Hero currentHero = heros.get(i);
+            for (String keyAbilityName : currentHero.abilities.keySet()) {
+                if (keyAbilityName.equals(name)) {
+                    return currentHero.abilities.get(keyAbilityName);
+                }
+            }
+        }
+        return null;
     }
 
     public void giveAttack(Hero attackingHero, Foe targetFoe) {
     }
 
+    @Completed
     public Hero findHeroByNameAndId(String name, int id) {
+        Hero currentHero;
+        for (int i = 0; i < heros.size(); i++) {
+            currentHero = heros.get(i);
+            if (currentHero.equals(new Hero(name, "Fighter")) && currentHero.getId() == id) return currentHero;
+        }
+        return null;
+    }
+
+    @Completed
+    public Hero findHeroByName(String s) {
+        Hero currentHero;
+        for (int i = 0; i < heros.size(); i++) {
+            currentHero = heros.get(i);
+            if (currentHero.equals(new Hero(name, "Fighter"))) return currentHero;
+        }
+        return null;
     }
 }
 
