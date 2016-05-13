@@ -18,8 +18,9 @@ public class Player {
     private int immprtalityPotions = 3;
     private ArrayList<Hero> heros = new ArrayList<>();
 
-
-    public void upgradeAbility(Ability ability, Hero target) throws UpgradeException {
+    @Completed
+    public void upgradeAbility(Ability ability, Hero targetHero) throws UpgradeException {
+        ability.upgrade(targetHero, this);
     }
 
     public void buy(Item item, Hero target) throws TradeException {
@@ -73,7 +74,12 @@ public class Player {
         return currentWealth;
     }
 
-    public Item getItembyName(String temp) {
+    public Item getItembyName(String name) {
+        for (int i = 0; i < heros.size(); i++) {
+            Hero currentHero = heros.get(i);
+
+        }
+
     }
 
     public void castAbility(Hero castingHero, Ability castedAbility, Warrior targetFoe) {
@@ -82,6 +88,7 @@ public class Player {
 
     }
 
+    @Completed
     public void useItem(Hero usingHero, Item usedItem, Warrior targetWarrior) {
         if (usingHero.inventory.getItems().contains(usedItem)) {
             usedItem.use(usingHero, targetWarrior);
@@ -91,18 +98,39 @@ public class Player {
         }
     }
     @Completed
-    public Ability findAbilityByname(String name) {             //COOL!!!!!!!!!!!!!!
+    public Ability findAbilityByNameAndOwner(String name, Hero owner) {             //COOL!!!!!!!!!!!!!!
+        Hero currentHero = null;
+
         for (int i = 0; i < heros.size(); i++) {
-            Hero currentHero = heros.get(i);
+            if (heros.get(i).equals(owner)) {
+                currentHero = heros.get(i);
+                break;
+            } else {
+                return null;
+            }
+        }
+        for (String keyAbilityName : currentHero.abilities.keySet()) {
+            if (keyAbilityName.equals(name)) {
+                return currentHero.abilities.get(keyAbilityName);
+            }
+        }
+        return null;
+    }
+
+    @Completed
+    public Ability findAbilityByName(String name) {
+        Hero currentHero = null;
+
+        for (int i = 0; i < heros.size(); i++) {
             for (String keyAbilityName : currentHero.abilities.keySet()) {
                 if (keyAbilityName.equals(name)) {
                     return currentHero.abilities.get(keyAbilityName);
                 }
             }
         }
+
         return null;
     }
-
     @Completed
     public void giveAttack(Hero attackingHero, Foe targetFoe) {
         attackingHero.attackManual(targetFoe);

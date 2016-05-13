@@ -48,12 +48,4 @@ public abstract class Warrior {
     }
 
     public abstract void showCurrentTraits();
-
-    public abstract Item findItemByName(String s);
-
-    public abstract Ability findAbilityName(String s);
-
-    public abstract void abilityDescription(Ability targetAbility);
-
-    public abstract void showDescription();
 }
