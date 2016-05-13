@@ -393,6 +393,7 @@ public class Battle {
                 "4\tDone  -proceed to next stage-");
     }
 
+    @Completed
     public static ArrayList<Foe> getFoes() {
         return foes;
     }
