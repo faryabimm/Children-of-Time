@@ -106,7 +106,7 @@ public class Battle {
         Store currentStore = Store.getStores().get(0);
         currentStore.showItems();
         currentPlayer.getHeros().forEach(Hero::showCurrentItems);
-        printOutput("Your current wealth is:" + currentPlayer.getCurrentWealth());
+        printOutput("Your current wealth is: $" + currentPlayer.getCurrentWealth());
 
         String inputTemp = getInput();
         boolean invalidCommand = true;
