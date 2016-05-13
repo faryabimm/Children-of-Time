@@ -2,6 +2,8 @@ package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
 
+import static com.childrenOfTime.view.IOHandler.printOutput;
+
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
@@ -21,11 +23,27 @@ public abstract class Warrior {
     }
     @Completed
     public void changeHealth(int quantitiy){
-        currentHealth=currentHealth+quantitiy;
-        if (currentHealth<0) {
+
+        if (currentHealth + quantitiy < 0) {
             currentHealth=0;
-            isDying=true;
+            if (this instanceof Hero) {
+                this.isDying = true;
+                if (ChildrenOfTime.getInstance().getPlayers().get(0).isAnyImmortalityPotionLeft()) {
+                    ChildrenOfTime.getInstance().getPlayers().get(0).useImmortalityPotion((Hero) this);
+                    printOutput(WarriorMessages.getDyingMessageForHero(ChildrenOfTime.getInstance().getPlayers().get(0), (Hero) this));
+                } else {
+                    isDead = true;
+                    printOutput(WarriorMessages.getDiedMessageForHero((Hero) this));
+                }
+            }
+            if (this instanceof Foe) {
+                this.isDead = true;
+                printOutput(WarriorMessages.getDiedMessageForFoe((Foe) this));
+            }
         }
+        if (currentHealth + quantitiy > maxHealth) {
+            currentHealth = maxHealth;
+        } else currentHealth += quantitiy;
     }
 
     public String getName() {

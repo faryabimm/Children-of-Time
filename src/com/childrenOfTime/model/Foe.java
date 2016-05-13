@@ -6,6 +6,8 @@ import com.childrenOfTime.NotImplementedYet;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static com.childrenOfTime.view.IOHandler.printOutput;
+
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
@@ -49,6 +51,8 @@ public class Foe extends Warrior {
             if (currentHealth <= 400) {
                 strength = StrengthOfFoes.Mutated;
                 attackPower = attackPowerInLowHealth;
+                printOutput(WarriorMessages.getMutationMessageForFinalBoss(this));
+
             } else {
                 strength = null;
                 attackPower = attackPowerInHighHealth;
@@ -65,22 +69,30 @@ public class Foe extends Warrior {
             case "Thug":
                 singleTarget = this.findTarget(game);
                 singleTarget.changeHealth(-attackPower);
+                printOutput(WarriorMessages.getAction_1_MessageForFoe(this, singleTarget));
+
                 break;
             case "Angel":
                 singleTarget = this.findTarget(game);
                 singleTarget.changeHealth(+this.healingAmount);
+                printOutput(WarriorMessages.getAction_1_MessageForFoe(this, singleTarget));
+
                 break;
             case "Tank":
                 for (Warrior w : ChildrenOfTime.getInstance().getPlayers().get(0).getHeros()) {
                     ((Hero) w).changeHealth(-attackPower);
+                    printOutput(WarriorMessages.getAction_1_MessageForFoe(this, w));
                 }
                 break;
             case "Final Boss":
                 singleTarget = this.findTarget(game);
                 updateFinalBoss();
                 singleTarget.changeHealth(-attackPower);
+                printOutput(WarriorMessages.getAction_1_MessageForFoe(this, singleTarget));
+
                 break;
         }
+
     }
 
     @Completed
@@ -91,6 +103,8 @@ public class Foe extends Warrior {
                 singleTarget = this.findTarget(game);
                 Hero h = (Hero) singleTarget;
                 h.setCurrentEnergyPoints(h.getCurrentEnergyPoints() + this.heroBurningEnergy[1]);
+                printOutput(WarriorMessages.getAction_2_MessageForFoe(this, singleTarget));
+
                 break;
 
         }
