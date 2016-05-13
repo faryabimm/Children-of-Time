@@ -19,41 +19,37 @@ public class Battle {
 
     protected String story;
     protected int id;
-    public BattleState battleState = BattleState.story;
+    public BattleState battleState;
     private ArrayList<Foe> foes = new ArrayList<>();
     private Reward reward;
 
-    public Battle(String story, Reward reward) {
+    public Battle(String story, Reward reward, ArrayList<Foe> foes) {
         this.story = story;
         this.id = ++count;
         this.reward = reward;
+        this.foes = foes;
+        battleState = BattleState.story;
     }
-
     @Completed
     public void playStory() {
         printOutput("Story:");
         printOutput(story);
 
     }
-
     @Completed
     public void defeat() {
         printOutput("Battle #" + (id + 1) + "Has Concluded!");
         printOutput("Defeat! You’ve failed to defeat all of your enemies");
     }
-
     @Completed
     public void victory() {
         printOutput("Battle #" + (id + 1) + "Has Completed!");
         printOutput("Victory! You’ve defeated all of your enemies");
     }
-
-
     @Completed
     public Reward giveReward() {
         return reward;
     }
-
     @Completed
     public void showCurrentFoeStats() {
         printOutput("Enemy Stats:");
@@ -61,18 +57,10 @@ public class Battle {
             printOutput(foe.toString());
         }
     }
-
-
     @Completed
     public void help() {
         ChildrenOfTime.getInstance().helpCommand(this);
     }
-
-
-    public void fightSession() {
-
-    }
-
     @Completed
     private Warrior findWarriorByNameAndId(String name, int id, Player currentPlayer) {
 
@@ -83,7 +71,6 @@ public class Battle {
         return null;
 
     }
-
     @Completed
     private Warrior findWarriorByName(String name, Player currentPlayer) {
         Foe foeToReturn = findFoeByName(name);
@@ -92,7 +79,6 @@ public class Battle {
         if (heroToReturn != null) return heroToReturn;
         return null;
     }
-
     @Completed
     private Foe findFoeByNameAndId(String name, Integer id) {
 
@@ -104,7 +90,6 @@ public class Battle {
         return null;
 
     }
-
     @Completed
     private Foe findFoeByName(String s) {
         Foe currentFoe;
@@ -114,7 +99,6 @@ public class Battle {
         }
         return null;
     }
-
     @Completed
     public void startStoreSession() {       // should handle again and help commands in it
         Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
@@ -184,7 +168,6 @@ public class Battle {
             printOutput("Invalid Command");
         }
     }
-
     @Completed
     public void startUpgradeSession() {
 
@@ -243,7 +226,6 @@ public class Battle {
             printOutput("Invalid Command");
         }
     }
-
     @Completed
     public void startFight() {              // should handle again and help commands in it
 
@@ -349,7 +331,6 @@ public class Battle {
         }
 
     }
-
     @Completed
     public void fightHelp() {
         printOutput("Valid Commands in This Stage are:\n" +
