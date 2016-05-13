@@ -110,6 +110,7 @@ public final class ChildrenOfTime {
                             getUserInput(battle);
                             break;
                         case information:
+                            players.get(0).showCurrentHeroStats();
                             battle.showCurrentFoeStats();
                             getUserInput(battle);
                             break;

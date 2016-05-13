@@ -61,9 +61,12 @@ public class Player {
     }
     @Completed
     public void showCurrentHeroStats() {
+        String toReturn = "";
         for (Hero hero : heros) {
-            printOutput(hero.toString());
+            toReturn += hero.toString();
         }
+
+        printOutput(toReturn.substring(0, toReturn.length() - 2));
     }
     @Completed
     public boolean isDefeated() {

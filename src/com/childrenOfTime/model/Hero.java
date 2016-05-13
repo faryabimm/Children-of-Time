@@ -121,7 +121,8 @@ public class Hero extends Warrior {
     }
     @Completed
     public String toString() {
-        return this.getName();
+
+        return this.getName() + " (" + this.typesOfHero + ") - ";
     }
     @Completed
     private void setAbilities(InformationOfHeroes info){
