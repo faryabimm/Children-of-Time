@@ -47,7 +47,15 @@ public class Hero extends Warrior {
         }
         printOutput(WarriorMessages.getSuccessfulAttackMessage(this, enemy, attackPower));
 
+
     }
+
+    @Completed
+    public void showAbDes() {
+
+    }
+
+
     @Completed
     public void attackManual(Foe enemy) throws NotEnoughEnergyPointsException {
         changeEP(-2);
@@ -212,7 +220,7 @@ public class Hero extends Warrior {
         printOutput(toPrint);
     }
 
-
+    @Deprecated
     public void abilityDescription(Ability targetAbility) {
         targetAbility.showDescription();
     }
