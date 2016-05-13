@@ -81,10 +81,17 @@ public class Item implements Durable {
 
     @NotImplementedYet
     public Item showDescription() {
+
+        return null;
     }
 
     @Completed
     public InformationOfItems getInfo() {
         return info;
+    }
+
+    @Completed
+    public int getCorrentPrice() {
+        return info.getInitialPrice() + info.getPriceIncreament() * timesBought;
     }
 }
