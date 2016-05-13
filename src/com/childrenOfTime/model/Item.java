@@ -86,5 +86,10 @@ public class Item implements Durable {
         return info;
     }
 
+    public void aTurnHasPassed() {
+    }
 
+    public int getCurrentPrice() {
+        return info.getInitialPrice() + info.getPriceIncreament() * timesBought;
+    }
 }

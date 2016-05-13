@@ -4,10 +4,7 @@ package com.childrenOfTime.model;
  * Created by SaeedHD on 05/12/2016.
  */
 public enum TypesOfFoes {
-    Thug,
-    Angel,
-    Tank,
-    Final;
+    Thug, Angel, Tank, FinalBoss;
     StrengthOfFoes strength;
     int attackPower;
     int healingAmount;
@@ -61,7 +58,7 @@ public enum TypesOfFoes {
                         maximumHealth = 250;
                         break;
                 }
-            case Final:
+            case FinalBoss:
                 attackPowerInLowHealth = 150;
                 attackPowerInHighHealth = 250;
                 attackPower = attackPowerInHighHealth;
