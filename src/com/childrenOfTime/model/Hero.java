@@ -168,4 +168,7 @@ public class Hero extends Warrior {
         if (!this.name.equals(other.name)) return false;
         return true;
     }
+
+    public void showCurrentItems() {
+    }
 }

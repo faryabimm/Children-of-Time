@@ -72,7 +72,26 @@ public class Player {
         return heros;
     }
 
+    public int getCurrentWealth() {
+        return currentWealth;
+    }
+
     public Hero findHeroByName(String s) {
+    }
+
+    public Item getItembyName(String temp) {
+    }
+
+    public Ability findAbilityByname(String temp) {
+    }
+
+    public void castAbility(Hero castingHero, Ability castedAbility, Warrior targetFoe) {
+    }
+
+    public void useItem(Hero usingHero, Item usedItem, Warrior targetWarrior) {
+    }
+
+    public void giveAttack(Hero attackingHero, Foe targetFoe) {
     }
 }
 
