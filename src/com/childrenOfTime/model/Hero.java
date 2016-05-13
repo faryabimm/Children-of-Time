@@ -39,13 +39,13 @@ public class Hero extends Warrior {
         }
     }
     @Completed
-    public void attackManual(Foe enemy, int attackPower) throws NotEnoughEnergyPointsException {
+    public void attackManual(Foe enemy) throws NotEnoughEnergyPointsException {
         changeEP(-2);
         enemy.changeHealth(-attackPower);
         if (this.swirlingisActivated) {
             for (Foe f : foes) {   //TODO how to get access All Foes ?
                 if (f.equals(enemy)) continue;
-                f.changeAttackPower((int) (Ability.damagePercent * attackPower));
+                f.changeAttackPower((int) (this.damagePercent * attackPower));
             }
         }
     }
