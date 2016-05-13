@@ -132,10 +132,12 @@ public final class ChildrenOfTime {
     }
 
     private void startFight(Battle battle) {
+        printOutput("Battle #" + battle.id + ":");
         while (battle.battleState != BattleState.finished) {
             if (!players.get(0).isDefeated()) {
-                battle.initiateNextTurn();
                 printOutput("A new Turn Has Begun!");
+                battle.initiateNextTurn();
+
             }
         }
     }
