@@ -1,6 +1,6 @@
 package com.childrenOfTime.model;
 
-import sun.misc.FpUtils;
+import java.util.Map;
 
 /**
  * Created by mohammadmahdi on 5/14/16.
@@ -8,10 +8,10 @@ import sun.misc.FpUtils;
 public class Testing {
 
     public static void main(String[] args) {
-        Foe foe = new Foe("Final Boss", StrengthOfFoes.Able, 1);
+        Hero hero = new Hero("Eley", "Fighter", 1);
 
-        System.out.println(foe.type.equals(TypesOfFoes.Final));
-
-        System.out.println(foe.description);
+        for (Map.Entry<String, Ability> entry : hero.abilities.entrySet()) {
+            System.out.println(entry.getKey());
+        }
     }
 }

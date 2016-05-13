@@ -4,7 +4,7 @@ package com.childrenOfTime.model;
  * Created by mohammadmahdi on 5/8/16.
  */
 public enum TypesOfHero {
-    Fighter(200, 10, 2, 120, 120, 5, 6, "Overpowered attack", "Swirling attack", "Fighter class:\n" +
+    Fighter(200, 10, 2, 120, 120, 5, 6, "Fight training", "Work out", "Fighter class:\n" +
             "Maximum health: 200\n" +
             "Health refill rate: 10 percent of maximum health\n" +
             "Maximum magic: 120\n" +
@@ -22,7 +22,7 @@ public enum TypesOfHero {
             "Upgrade 1: +50 maximum health for 2 xp points\n" +
             "Upgrade 2: +50 maximum health for 3 xp points\n" +
             "Upgrade 3: +50 maximum health for 4 xp points"),
-    Supporter(200, 10, 2, 120, 120, 5, 6, "Sacrifice", "Critical strike", "Supporter class:\n" +
+    Supporter(200, 10, 2, 120, 120, 5, 6, "Quick as a bunny", "Magic lessons", "Supporter class:\n" +
             "Maximum health: 220\n" +
             "Health refill rate: 5 percent of maximum health\n" +
             "Maximum magic: 200\n" +
