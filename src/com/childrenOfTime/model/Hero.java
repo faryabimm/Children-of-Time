@@ -149,13 +149,17 @@ public class Hero extends Warrior {
     }
     public void changeEP(int num) throws NotEnoughEnergyPointsException {
         if (this.currentEnergyPoints + num < 0) {
-            throw new NotEnoughEnergyPointsException();
+            throw new NotEnoughEnergyPointsException("Your " + name + id + " hero doesn't have Enough EP to perform this" +
+                    " move\ncurrent EP : " + currentEnergyPoints + "\nrequired EP : " + num + "\nYou need " +
+                    (num - currentEnergyPoints) + " additional EPs.");
         }
         this.currentEnergyPoints += num;
     }
     public void changeMagic(int i) throws NotEnoughMagicPointsException {
         if (this.currentMagic + i < 0) {
-            throw new NotEnoughMagicPointsException();
+            throw new NotEnoughMagicPointsException("Your " + name + id + " hero doesn't have Enough MP to perform this" +
+                    " move\ncurrent MP : " + currentMagic + "\nrequired MP : " + i + "\nYou need " +
+                    (i - currentEnergyPoints) + " additional MPs.");
         }
         this.currentMagic += i;
     }
@@ -180,7 +184,7 @@ public class Hero extends Warrior {
 
     }
 
-    public void showDescription() {
+    public void showHeroDescription() {
 
     }
 
@@ -190,5 +194,15 @@ public class Hero extends Warrior {
     }
 
     public void revivedWithImmortalityPotion() {
+    }
+
+    public void aTurnHasPassed() {
+        for (int i = 0; i < inventory.getItems().size(); i++) {
+            inventory.getItems().get(i).aTurnHasPassed();
+        }
+        for (int i = 0; i < abilities.size(); i++) {
+            abilities.get(i).aTurnHasPassed();
+
+        }
     }
 }
