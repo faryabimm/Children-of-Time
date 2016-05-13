@@ -24,13 +24,15 @@ public class Player {
     @Completed
     public void buy(Item item, Hero target) throws TradeException {
         if (item.getInfo().isHasVolume() && target.inventory.getAvailableCapacity() == 0) {
-            throw new NotEnoughInventorySpaceException();
+            throw new NotEnoughInventorySpaceException("Your inventory has no empty space!");
         } else {
             if (item.getInfo().getInitialPrice() > currentWealth) {
-                throw new NotEnoughMoneyException();
+                throw new NotEnoughMoneyException("You don't have Enough Money to apply this upgrade\n" +
+                        "your current Wealth : " + currentWealth + "$\nrequired Money : " +
+                        item.getInfo().getInitialPrice() + "$\nYou need " +
+                        (item.getInfo().getInitialPrice() - currentExperience) + "$ additional Money.");
             } else {
-                int cost = item.getInfo().getInitialPrice() +
-                        item.getInfo().getPriceIncreament() * item.timesBought;
+                int cost = item.getCorrentPrice();
                 item.timesBought++;
                 currentWealth -= cost;
                 target.inventory.getItems().add(item);
@@ -70,7 +72,9 @@ public class Player {
     @Completed
     public void changeCurrentExperience(int num) throws NotEnoughXPException {
         if (this.currentExperience + num < 0) {
-            throw new NotEnoughXPException();
+            throw new NotEnoughXPException("You don't have Enough XP points to apply this upgrade\n" +
+                    "your current XP : " + currentExperience + " \nrequired XP : " + num + "\nYou need " +
+                    (num - currentExperience) + " additional XP points.");
         } else {
             this.currentExperience += num;
         }
