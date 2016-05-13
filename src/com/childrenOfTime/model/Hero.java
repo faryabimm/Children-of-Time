@@ -52,7 +52,15 @@ public class Hero extends Warrior {
 
     @Completed
     public void showAbDes() {
-
+        String toPrint = "";
+        String state = "";
+        for (Map.Entry<String, Ability> entry : abilities.entrySet()) {
+            if (entry.getValue().currentLevel == 0) {
+                state = "not acquired";
+            } else state += entry.getValue().currentLevel;
+            toPrint += entry.getKey() + " : " + state;
+        }
+        printOutput(toPrint);
     }
 
 
