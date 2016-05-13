@@ -3,6 +3,7 @@ package com.childrenOfTime.model;
 import com.childrenOfTime.Completed;
 import com.childrenOfTime.InProgress;
 import com.childrenOfTime.exceptions.AttackException;
+import com.childrenOfTime.exceptions.ItemNotAquiredException;
 import com.childrenOfTime.exceptions.NotEnoughEnergyPointsException;
 import com.childrenOfTime.exceptions.NotEnoughMagicPointsException;
 
@@ -27,12 +28,13 @@ public class Hero extends Warrior {
 
     InformationOfHeroes info;
     Map<String, Ability> abilities = new HashMap<>();
+    Map<String, Item> items = new HashMap<>();
 
     @Completed
     public void attackAuto(Foe enemy, int attackPower) {
         enemy.changeHealth(-attackPower);
         if (this.swirlingisActivated) {
-            for (Foe f : foes) {   //TODO how to get access All Foes ?
+            for (Foe f : Battle.getFoes()) {   //access to AllFoes
                 if (f.equals(enemy)) continue;
                 f.changeAttackPower((int) (this.damagePercent * attackPower));
             }
@@ -43,7 +45,7 @@ public class Hero extends Warrior {
         changeEP(-2);
         enemy.changeHealth(-attackPower);
         if (this.swirlingisActivated) {
-            for (Foe f : foes) {   //TODO how to get access All Foes ?
+            for (Foe f : Battle.getFoes()) {     //access to AllFoes
                 if (f.equals(enemy)) continue;
                 f.changeAttackPower((int) (this.damagePercent * attackPower));
             }
@@ -89,9 +91,11 @@ public class Hero extends Warrior {
     public void removeFromInventory(Item item) {
         this.inventory.getItems().remove(item);
     }
-    @InProgress
-    public void applyItem(Item item) {
-        item.use(usingHero, this);
+
+    @Completed
+    public void useItem(String itemName, Warrior warrior) throws ItemNotAquiredException {
+        if (items.get(name) == null) throw new ItemNotAquiredException("You don’t have this item");
+        items.get(name).use(this, warrior);
     }
     @Completed
     public String toString() {
@@ -167,6 +171,7 @@ public class Hero extends Warrior {
         if (!this.name.equals(other.name)) return false;
         return true;
     }
+
 
     public void showCurrentItems() {
     }

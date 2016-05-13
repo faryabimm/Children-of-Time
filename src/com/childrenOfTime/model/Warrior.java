@@ -47,7 +47,6 @@ public abstract class Warrior {
         this.attackPower += num;
     }
 
-    public abstract void showCurrentTraits();
 
     public abstract Item findItemByName(String s);
 
