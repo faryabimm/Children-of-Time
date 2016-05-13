@@ -5,6 +5,6 @@ package com.childrenOfTime.exceptions;
  */
 public class ItemNotAquiredException extends AttackException {
     public ItemNotAquiredException(String message) {
-        super();
+        super(message);
     }
 }

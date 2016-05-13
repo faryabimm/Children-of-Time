@@ -77,6 +77,9 @@ public class Player {
     }
 
     public void castAbility(Hero castingHero, Ability castedAbility, Warrior targetFoe) {
+
+        castingHero.useAbility(castedAbility, targetFoe);
+
     }
 
     public void useItem(Hero usingHero, Item usedItem, Warrior targetWarrior) {
@@ -115,7 +118,7 @@ public class Player {
     }
 
     @Completed
-    public Hero findHeroByName(String s) {
+    public Hero findHeroByName(String name) {
         Hero currentHero;
         for (int i = 0; i < heros.size(); i++) {
             currentHero = heros.get(i);
