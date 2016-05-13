@@ -205,7 +205,7 @@ public class Hero extends Warrior {
 
 
     @Override
-    public void showCurrentTraits() {
+    public String showCurrentTraits() {
         String toPrint = "";
         toPrint = "Health: " + currentHealth + "/" + maxHealth + "\n" +
                 "Magic: " + currentMagic + "/" + info.maxMagic + "\n" +
@@ -218,7 +218,8 @@ public class Hero extends Warrior {
         for (Item item : inventory.getItems()) {
             toPrint += "Can Use " + item.getInfo().getName() + " for " + 0 + " energy points, " + 0 + " magic points and a " + 0 + " turn cooldown\n";
         }
-        printOutput(toPrint);
+        //  printOutput(toPrint);
+        return toPrint;
     }
 
     public void revivedWithImmortalityPotion() {

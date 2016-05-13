@@ -179,7 +179,7 @@ public class Ability implements Durable {
 
     @InProgress
     private String Sacrifice(Hero hero) {
-        //TODO we need a list of all foes
+        // Battle.all
         return null;
     }
 

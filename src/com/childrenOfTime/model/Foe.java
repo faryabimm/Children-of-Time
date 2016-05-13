@@ -6,8 +6,6 @@ import com.childrenOfTime.NotImplementedYet;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static com.childrenOfTime.view.IOHandler.printOutput;
-
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
@@ -111,8 +109,7 @@ public class Foe extends Warrior {
     @Override
     public String toString() {
 
-        String toReturn = "a/an" + this.strength + this.name;
-        return null;
+        return showCurrentTraits();
     }
 
 
@@ -125,7 +122,7 @@ public class Foe extends Warrior {
     }
 
     @Override
-    public void showCurrentTraits() {
+    public String showCurrentTraits() {
         String toPrint = "";
         toPrint += "You’ve encountered";
 
@@ -144,7 +141,9 @@ public class Foe extends Warrior {
                 }
             }
         }
-        printOutput("salam");
+        //  printOutput(toPrint);
+        return toPrint;
     }
+
 }
 
