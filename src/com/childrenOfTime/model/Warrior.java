@@ -34,6 +34,8 @@ public abstract class Warrior {
                 } else {
                     isDead = true;
                     printOutput(WarriorMessages.getDiedMessageForHero((Hero) this));
+                    printOutput("No Imortatlity Potions left.");
+
                 }
             }
             if (this instanceof Foe) {
