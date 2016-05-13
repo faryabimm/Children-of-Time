@@ -32,7 +32,7 @@ public class Player {
                         item.getInfo().getInitialPrice() + "$\nYou need " +
                         (item.getInfo().getInitialPrice() - currentExperience) + "$ additional Money.");
             } else {
-                int cost = item.getCorrentPrice();
+                int cost = item.getCurrentPrice();
                 item.timesBought++;
                 currentWealth -= cost;
                 target.inventory.getItems().add(item);
