@@ -11,8 +11,19 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
  */
 public class Ability implements Durable {
     InformationOfAbilities info;
-    protected int currentLevel;
+    protected int currentLevel = 0;
+    protected int leftTurnsToCoolDown;
     protected boolean isInCoolDown = false;
+
+
+    @Completed
+    public Ability(String name) {
+        String firstWord = name.split(" ")[0];
+        this.info = InformationOfAbilities.valueOf(firstWord);
+        this.leftTurnsToCoolDown = this.info.coolDownTime;
+
+    }
+
 
     @Completed
     public boolean isFullyUpgraded() {
@@ -113,12 +124,6 @@ public class Ability implements Durable {
     }
 
 
-    @Completed
-    public Ability(String name) {
-        String firstWord = name.split(" ")[0];
-        this.info = InformationOfAbilities.valueOf(firstWord);
-
-    }
 
     /*
     switch (currentLevel) {
@@ -356,7 +361,14 @@ public class Ability implements Durable {
         return true;
     }
 
+    @Override
     public void aTurnHasPassed() {
+        if (leftTurnsToCoolDown == 1) {
+            this.isInCoolDown = true;
+            leftTurnsToCoolDown = this.info.coolDownTime;
+        } else {
+            leftTurnsToCoolDown--;
+        }
     }
 }
 

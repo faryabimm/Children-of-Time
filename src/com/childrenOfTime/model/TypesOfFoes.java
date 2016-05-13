@@ -7,7 +7,7 @@ public enum TypesOfFoes {
     Thug,
     Angel,
     Tank,
-    FinalBoss;
+    Final;
     StrengthOfFoes strength;
     int attackPower;
     int healingAmount;
@@ -61,7 +61,7 @@ public enum TypesOfFoes {
                         maximumHealth = 250;
                         break;
                 }
-            case FinalBoss:
+            case Final:
                 attackPowerInLowHealth = 150;
                 attackPowerInHighHealth = 250;
                 attackPower = attackPowerInHighHealth;

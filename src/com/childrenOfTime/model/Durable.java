@@ -8,4 +8,6 @@ public interface Durable {
 
     public void wearOff();
 
+    public void aTurnHasPassed();
+
 }
