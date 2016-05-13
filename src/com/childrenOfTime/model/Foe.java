@@ -108,6 +108,8 @@ public class Foe extends Warrior {
 
     @Override
     public String toString() {
-        return super.name;
+
+        String toReturn = "a/an" + this.strength + this.name;
+        return null;
     }
 }

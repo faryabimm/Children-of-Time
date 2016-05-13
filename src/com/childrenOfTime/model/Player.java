@@ -67,5 +67,12 @@ public class Player {
     public int getCurrentExperience() {
         return currentExperience;
     }
+
+    public ArrayList<Hero> getHeros() {
+        return heros;
+    }
+
+    public Hero findHeroByName(String s) {
+    }
 }
 
