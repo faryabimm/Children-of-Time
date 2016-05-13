@@ -54,4 +54,6 @@ public abstract class Warrior {
     public abstract Ability findAbilityName(String s);
 
     public abstract void abilityDescription(Ability targetAbility);
+
+    public abstract void showDescription();
 }

@@ -24,4 +24,6 @@ public abstract class Item implements Durable {
     public void setSize(int size) {
         this.size = size;
     }
+
+    public abstract Item showDescription();
 }

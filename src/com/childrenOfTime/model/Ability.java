@@ -308,4 +308,7 @@ public class Ability implements Durable {
     public int getCurrentLevel() {
         return currentLevel;
     }
+
+    public void showDescription() {
+    }
 }
