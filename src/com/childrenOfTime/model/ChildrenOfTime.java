@@ -2,6 +2,8 @@ package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
 import com.childrenOfTime.cgd.Store;
+import com.childrenOfTime.controller.GameEngine;
+import com.childrenOfTime.exceptions.GameException;
 
 import java.util.ArrayList;
 
@@ -91,43 +93,50 @@ public final class ChildrenOfTime {
     }
     @Completed
     public void startSinglePlayerMode() {
+        try {
 
-        for (Battle battle : battles) {
-            while (battle.battleState != BattleState.finished) {
-                switch (battle.battleState) {
-                    case story:
-                        battle.playStory();
-                        getUserInput(battle);
-                        break;
-                    case information:
-                        battle.showCurrentFoeStats();
-                        getUserInput(battle);
-                        break;
-                    case upgradeSession:
-                        battle.startUpgradeSession();
-                        break;
-                    case storeSession:
-                        battle.startStoreSession();
-                        break;
-                    case fight:
-                        startFight(battle);
-                        break;
+
+            for (Battle battle : battles) {
+                while (battle.battleState != BattleState.finished) {
+                    switch (battle.battleState) {
+                        case story:
+                            battle.playStory();
+                            getUserInput(battle);
+                            break;
+                        case information:
+                            battle.showCurrentFoeStats();
+                            getUserInput(battle);
+                            break;
+                        case upgradeSession:
+                            battle.startUpgradeSession();
+                            break;
+                        case storeSession:
+                            battle.startStoreSession();
+                            break;
+                        case fight:
+                            startFight(battle);
+                            break;
+                    }
+                }
+
+                if (players.get(0).isDefeated()) {
+                    battle.defeat();
+                    break;
+                } else {
+                    battle.victory();
+                    battle.giveReward();
                 }
             }
 
             if (players.get(0).isDefeated()) {
-                battle.defeat();
-                break;
+                singlePlayerGameOver();
             } else {
-                battle.victory();
-                battle.giveReward();
+                singlePlayerGameCompleted();
             }
-        }
 
-        if (players.get(0).isDefeated()) {
-            singlePlayerGameOver();
-        } else {
-            singlePlayerGameCompleted();
+
+        } catch (GameException gameException) {
+            printOutput(gameException.getMessage());
         }
     }
 
