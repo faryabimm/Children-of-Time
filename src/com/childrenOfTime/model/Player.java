@@ -198,5 +198,10 @@ public class Player {
             heros.get(i).aTurnHasPassed();
         }
     }
+
+    @Completed
+    public boolean isAnyImmortalityPotionLeft() {
+        return immprtalityPotions != 0;
+    }
 }
 
