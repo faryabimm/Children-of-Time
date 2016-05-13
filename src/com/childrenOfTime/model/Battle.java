@@ -20,7 +20,7 @@ public class Battle {
     protected String story;
     protected int id;
     public BattleState battleState;
-    private ArrayList<Foe> foes = new ArrayList<>();
+    private static ArrayList<Foe> foes = new ArrayList<>();
     private Reward reward;
 
     public Battle(String story, Reward reward, ArrayList<Foe> foes) {
@@ -392,4 +392,9 @@ public class Battle {
                 "3\tInformation\n" +
                 "4\tDone  -proceed to next stage-");
     }
+
+    public static ArrayList<Foe> getFoes() {
+        return foes;
+    }
+
 }
