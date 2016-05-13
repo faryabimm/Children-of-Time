@@ -20,7 +20,8 @@ public class Battle {
     protected String story;
     protected int id;
     public BattleState battleState;
-    private static ArrayList<Foe> foes = new ArrayList<>();
+    private static ArrayList<Foe> foes200 = new ArrayList<>();
+    private ArrayList<Foe> foes = new ArrayList<>();
     private Reward reward;
 
     public Battle(String story, Reward reward, ArrayList<Foe> foes) {
@@ -29,6 +30,7 @@ public class Battle {
         this.reward = reward;
         this.foes = foes;
         battleState = BattleState.story;
+
     }
     @Completed
     public void playStory() {
@@ -54,9 +56,27 @@ public class Battle {
     @Completed
     public void showCurrentFoeStats() {
         printOutput("Enemy Stats:");
-        for (Foe foe : foes) {
-            printOutput(foe.toString());
+
+        String toPrint = "";
+        toPrint += "You’ve encountered:\n";
+
+        for (TypesOfFoes type : TypesOfFoes.values()) {
+            for (StrengthOfFoes strength : StrengthOfFoes.values()) {
+                int num = 0;
+                for (Foe foes2 : foes) {
+                    if (type.equals(foes2.type) && strength.equals(foes2.strength)) {
+                        num++;
+                    }
+                }
+                if (num > 0) {
+                    toPrint += num + " " + strength.name + " " + type.name() + " ";
+                }
+                // } else {
+                //    toPrint += num + " " + type.name() + " ";
+
+            }
         }
+        printOutput(toPrint);
     }
     @Completed
     public void help() {
@@ -173,8 +193,9 @@ public class Battle {
     public void startUpgradeSession() {
 
         Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
-        currentPlayer.getHeros().forEach(Hero::showCurrentTraits);
         printOutput("Your current experience is:" + currentPlayer.getCurrentExperience());
+
+        currentPlayer.getHeros().forEach(Hero::showCurrentItems);
 
         String inputTemp = getInput();
         boolean invalidCommand = true;
@@ -397,7 +418,7 @@ public class Battle {
     }
     @Completed
     public static ArrayList<Foe> getFoes() {
-        return foes;
+        return foes200;
     }
 
 }
