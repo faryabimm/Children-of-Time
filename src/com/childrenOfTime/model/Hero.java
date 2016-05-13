@@ -170,4 +170,18 @@ public class Hero extends Warrior {
 
     public void showCurrentItems() {
     }
+
+
+    public void abilityDescription(Ability targetAbility) {
+
+    }
+
+    public void showDescription() {
+
+    }
+
+
+    public void showCurrentTraits() {
+
+    }
 }

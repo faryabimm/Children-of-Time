@@ -184,7 +184,7 @@ public class Battle {
         if (matchFound) {
             String temp[] = inputTemp.split("\\s");
             Hero targetHero = currentPlayer.findHeroByName(temp[3]);
-            Ability targetAbility = targetHero.findAbilityName(temp[1]);
+            Ability targetAbility = currentPlayer.findAbilityByNameAndOwner(temp[1], targetHero);
             currentPlayer.upgradeAbility(targetAbility, targetHero);
             invalidCommand = false;
         }
@@ -195,7 +195,7 @@ public class Battle {
         if (matchFound) {
             String temp[] = inputTemp.split("\\s");
             Hero targetHero = currentPlayer.findHeroByName(temp[0]);
-            Ability targetAbility = targetHero.findAbilityName(temp[1].substring(0, temp[1].length() - 1));
+            Ability targetAbility = currentPlayer.findAbilityByNameAndOwner(temp[1].substring(0, temp[1].length() - 1), targetHero);
             targetHero.abilityDescription(targetAbility);
             invalidCommand = false;
         }
@@ -243,7 +243,7 @@ public class Battle {
             String temp = inputTemp.substring(0, inputTemp.length() - 1);
 
             Item targetItem = currentPlayer.getItembyName(temp);
-            Ability targetAbility = currentPlayer.findAbilityByname(temp);
+            Ability targetAbility = currentPlayer.findAbilityByName(temp);
             Hero targetHero = currentPlayer.findHeroByName(temp);
             targetItem.showDescription();       //TODO should throw an exception if item is not found
             targetHero.showDescription();       //TODO should throw an exception if HERO is not found
@@ -257,7 +257,7 @@ public class Battle {
         if (matchFound) {
             String temp[] = inputTemp.split("\\s");
             Hero castingHero = currentPlayer.findHeroByName(temp[0]);
-            Ability castedAbility = currentPlayer.findAbilityByname(temp[2]);
+            Ability castedAbility = currentPlayer.findAbilityByNameAndOwner(temp[2], castingHero);
 
             Warrior targetWarrior;
 
