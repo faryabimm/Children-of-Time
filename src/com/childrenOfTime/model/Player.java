@@ -39,6 +39,15 @@ public class Player {
             }
         }
     }
+
+    @Completed
+    public Player(ArrayList<Hero> heros) {
+
+        this.currentWealth = 40;
+        this.currentExperience = 15;
+        this.immprtalityPotions = 3;
+        this.heros = heros;
+    }
     @Completed
     public void sell(Item item, Hero target) throws TradeException {
 
@@ -183,6 +192,7 @@ public class Player {
         return null;
     }
 
+    @Completed
     public void aTurnHasPassed() {
         for (int i = 0; i < heros.size(); i++) {
             heros.get(i).aTurnHasPassed();
