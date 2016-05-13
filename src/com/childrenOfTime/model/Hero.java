@@ -45,7 +45,7 @@ public class Hero extends Warrior {
         if (this.swirlingisActivated) {
             for (Foe f : foes) {   //TODO how to get access All Foes ?
                 if (f.equals(enemy)) continue;
-                f.changeAttackPower((int) (Ability.damagePercent * attackPower));
+                f.changeAttackPower((int) (this.damagePercent * attackPower));
             }
         }
     }

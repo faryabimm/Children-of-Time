@@ -105,6 +105,7 @@ public class Player {
     }
 
     public void giveAttack(Hero attackingHero, Foe targetFoe) {
+        attackingHero.attackManual();
     }
 
     @Completed
