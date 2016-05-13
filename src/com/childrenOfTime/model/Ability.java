@@ -57,7 +57,7 @@ public class Ability implements Durable {
                 SwirlingAttack(hero);
                 break;
             case Sacrifice:
-                //TODO Sacrifice()
+                Sacrifice(hero);
                 break;
             case Critical:
                 CriticalStrike(hero);
@@ -178,13 +178,39 @@ public class Ability implements Durable {
     }
 
     @InProgress
-    private String Sacrifice(Hero hero) {
-        // Battle.all
-        return null;
+    private void Sacrifice(Hero hero) throws AttackException {
+        hero.changeEP(-3);
+        try {
+            hero.changeMagic(-60);
+        } catch (NotEnoughMagicPointsException e) {
+            hero.changeEP(3);
+        }
+        int H = 0;
+        if (this.isInCoolDown) throw new AbilityInCooldownException("Abiliy is in cooldown");
+        switch (currentLevel) {
+            case 1:
+                H = 40;
+                break;
+            case 2:
+                H = 50;
+                break;
+            case 3:
+                H = 60;
+                break;
+
+        }
+
+        for (Foe foe : Battle.getFoes()) {
+            foe.changeHealth(-3 * H);
+            hero.changeHealth(-H);
+        }
+        printOutput("Chrome just sacrificed himself to damage all his enemies with " + 3 * H + " power");
     }
 
     @InProgress
     private void CriticalStrike(Hero hero) {
+        hero.criticalIsActivated = true;
+        hero.probability = 10 * (1 + currentLevel);
 
     }
 
