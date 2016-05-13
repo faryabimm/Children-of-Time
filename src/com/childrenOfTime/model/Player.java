@@ -1,7 +1,6 @@
 package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
-import com.childrenOfTime.InProgress;
 import com.childrenOfTime.exceptions.*;
 
 import java.util.ArrayList;
@@ -22,30 +21,29 @@ public class Player {
     public void upgradeAbility(Ability ability, Hero targetHero) throws UpgradeException {
         ability.upgrade(targetHero, this);
     }
-
     @Completed
     public void buy(Item item, Hero target) throws TradeException {
-        if (item.getSize() > target.inventory.getAvailableCapacity()) {
+        if (item.getInfo().isHasVolume() && target.inventory.getAvailableCapacity() == 0) {
             throw new NotEnoughInventorySpaceException();
         } else {
-            if (item.initialPrice > currentWealth) {
+            if (item.getInfo().getInitialPrice() > currentWealth) {
                 throw new NotEnoughMoneyException();
             } else {
-                currentWealth -= item.initialPrice;
+                int cost = item.getInfo().getInitialPrice() +
+                        item.getInfo().getPriceIncreament() * item.timesBought;
+                item.timesBought++;
+                currentWealth -= cost;
                 target.inventory.getItems().add(item);
             }
         }
-
     }
-
     @Completed
     public void sell(Item item, Hero target) throws TradeException {
 
         ArrayList<Item> heroItems = target.inventory.getItems();
-        currentWealth += heroItems.get(heroItems.indexOf(item)).initialPrice / 2;
+        currentWealth += heroItems.get(heroItems.indexOf(item)).getInfo().getInitialPrice() / 2;
         target.inventory.getItems().remove(item);
     }
-
     @Completed
     public void useImmortalityPotion(Hero target) throws NoImmortalityPotionLeftException {
         target.revivedWithImmortalityPotion();
@@ -65,12 +63,10 @@ public class Player {
         }
         return isDefeated;
     }
-
     @Completed
     public int getImmprtalityPotions() {
         return immprtalityPotions;
     }
-
     @Completed
     public void changeCurrentExperience(int num) throws NotEnoughXPException {
         if (this.currentExperience + num < 0) {
@@ -79,29 +75,24 @@ public class Player {
             this.currentExperience += num;
         }
     }
-
     @Completed
     public int getCurrentExperience() {
         return currentExperience;
     }
-
     @Completed
     public ArrayList<Hero> getHeros() {
         return heros;
     }
-
     @Completed
     public int getCurrentWealth() {
         return currentWealth;
     }
-
     @Completed
     public void castAbility(Hero castingHero, Ability castedAbility, Warrior targetFoe) {
 
         castingHero.useAbility(castedAbility, targetFoe);
 
     }
-
     @Completed
     public void useItem(Hero usingHero, Item usedItem, Warrior targetWarrior) {
         if (usingHero.inventory.getItems().contains(usedItem)) {
@@ -153,7 +144,7 @@ public class Player {
         Hero currentHero;
         for (int i = 0; i < heros.size(); i++) {
             currentHero = heros.get(i);
-            if (currentHero.equals(new Hero(name, "Fighter")) && currentHero.getId() == id) return currentHero;
+            if (currentHero.equals(new Hero(name, "Fighter", 0)) && currentHero.getId() == id) return currentHero;
         }
         return null;
     }
@@ -162,7 +153,7 @@ public class Player {
         Hero currentHero;
         for (int i = 0; i < heros.size(); i++) {
             currentHero = heros.get(i);
-            if (currentHero.equals(new Hero(name, "Fighter"))) return currentHero;
+            if (currentHero.equals(new Hero(name, "Fighter", 0))) return currentHero;
         }
         return null;
     }
@@ -175,7 +166,6 @@ public class Player {
         }
         return null;
     }
-
     @Completed
     public Item getItembyName(String name) {
         Item toReturn = null;
