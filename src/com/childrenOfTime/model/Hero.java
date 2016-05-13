@@ -52,8 +52,8 @@ public class Hero extends Warrior {
         }
     }
     @Completed
-    public Hero(String name,String className){
-        super(name);
+    public Hero(String name, String className, int id) {
+        super(name, id);
         heroType=HeroType.valueOf(className);
         this.info = new InformationOfHeroes(heroType.healthRefillRate, heroType.inventorySize,
                 heroType.maxMagic, heroType.magicRefillRate, heroType.initialEP, heroType.ability1, heroType.ability2);

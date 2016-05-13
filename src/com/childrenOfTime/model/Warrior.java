@@ -16,7 +16,7 @@ public abstract class Warrior {
 
 
     @Completed
-    public Warrior(String name) {
+    public Warrior(String name, int id) {
         this.name = name;
     }
     @Completed
