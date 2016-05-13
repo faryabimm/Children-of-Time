@@ -1,5 +1,6 @@
 package com.childrenOfTime.model;
 
+import com.childrenOfTime.Completed;
 import com.childrenOfTime.InProgress;
 import com.childrenOfTime.NotImplementedYet;
 
@@ -82,5 +83,8 @@ public class Item implements Durable {
     public Item showDescription() {
     }
 
-    ;
+    @Completed
+    public InformationOfItems getInfo() {
+        return info;
+    }
 }
