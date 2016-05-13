@@ -137,7 +137,7 @@ public class Battle {
         if (matchFound) {
             String temp[] = inputTemp.split("\\s");
             Hero targetHero = currentPlayer.findHeroByName(temp[3]);
-            Item targetItem = currentStore.getItembyName(temp[1]);
+            Item targetItem = currentPlayer.getItembyNameAndOwner(temp[1], targetHero);
             currentPlayer.sell(targetItem, targetHero);
             invalidCommand = false;
         }
@@ -276,7 +276,7 @@ public class Battle {
         if (matchFound) {
             String temp[] = inputTemp.split("\\s");
             Hero usingHero = currentPlayer.findHeroByName(temp[0]);
-            Item usedItem = currentPlayer.getItembyName(temp[2]);
+            Item usedItem = currentPlayer.getItembyNameAndOwner(temp[2], usingHero);
 
             Warrior targetWarrior;
 

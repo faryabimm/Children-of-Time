@@ -184,4 +184,7 @@ public class Hero extends Warrior {
     public void showCurrentTraits() {
 
     }
+
+    public void revivedWithImmortalityPotion() {
+    }
 }
