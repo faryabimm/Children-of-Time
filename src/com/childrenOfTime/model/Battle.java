@@ -227,7 +227,9 @@ public class Battle {
         }
     }
     @Completed
-    public void startFight() {              // should handle again and help commands in it
+    public void initiateNextTurn() {              // should handle again and help commands in it
+
+
 
         Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
         currentPlayer.getHeros().forEach(Hero::showCurrentTraits);
