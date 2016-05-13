@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Foe extends Warrior {
 
     protected int healingAmount;
-    protected int lowHealthHealingCoef;
+    TypesOfFoes type;
     StrengthOfFoes strength;
 
 
@@ -20,6 +20,32 @@ public class Foe extends Warrior {
     int attackPowerInLowHealth;
     int heroAttackingNumberPerTurn;
     int[] heroBurningEnergy;
+
+
+    @Completed
+    public Foe(String name, StrengthOfFoes strength, int id) {
+        super(name, id);
+        type = TypesOfFoes.valueOf(name.split(" ")[0]);
+        try {
+            this.strength = strength;
+        } catch (Exception e) {
+            this.strength = null;
+        }
+
+        type.setStrength(this.strength);
+
+        this.healingAmount = type.healingAmount;
+        super.maxHealth = type.maximumHealth;
+        super.attackPower = type.attackPower;
+        this.heroBurningEnergy = type.heroBurningEnergy;
+        this.heroAttackingNumberPerTurn = type.heroAttackingNumberPerTurn;
+        this.attackPowerInHighHealth = type.attackPowerInHighHealth;
+        this.attackPowerInLowHealth = type.attackPowerInLowHealth;
+
+
+        super.currentHealth = maxHealth;
+
+    }
 
 
     @Completed
@@ -35,31 +61,6 @@ public class Foe extends Warrior {
         }
     }
 
-
-    @Completed
-    public Foe(String name, StrengthOfFoes strength, int id) {
-        super(name, id);
-        TypesOfFoes ty = TypesOfFoes.valueOf(name);
-        try {
-            this.strength = strength;
-        } catch (Exception e) {
-            this.strength = null;
-        }
-
-        ty.setStrength(this.strength);
-
-        this.healingAmount = ty.healingAmount;
-        super.maxHealth = ty.maximumHealth;
-        super.attackPower = ty.attackPower;
-        this.heroBurningEnergy = ty.heroBurningEnergy;
-        this.heroAttackingNumberPerTurn = ty.heroAttackingNumberPerTurn;
-        this.attackPowerInHighHealth = ty.attackPowerInHighHealth;
-        this.attackPowerInLowHealth = ty.attackPowerInLowHealth;
-
-
-        super.currentHealth = maxHealth;
-
-    }
 
     @Completed
     public void Act1(ChildrenOfTime game) {
