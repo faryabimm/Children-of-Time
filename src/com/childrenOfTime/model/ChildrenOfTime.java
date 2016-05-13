@@ -2,7 +2,6 @@ package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
 import com.childrenOfTime.cgd.Store;
-import com.childrenOfTime.controller.GameEngine;
 import com.childrenOfTime.exceptions.GameException;
 
 import java.util.ArrayList;
@@ -99,6 +98,7 @@ public final class ChildrenOfTime {
 
     @Completed
     public void startSinglePlayerMode() {
+        Boolean firstTime = true;
         try {
             for (Battle battle : battles) {
                 while (battle.battleState != BattleState.finished) {
@@ -113,7 +113,9 @@ public final class ChildrenOfTime {
                             getUserInput(battle);
                             break;
                         case upgradeSession:
-                            battle.startUpgradeSession();
+                            battle.startUpgradeSession(firstTime);
+                            firstTime = false;
+
                             break;
                         case storeSession:
                             battle.startStoreSession();
@@ -285,7 +287,7 @@ public final class ChildrenOfTime {
                 battle.showCurrentFoeStats();
                 break;
             case upgradeSession:
-                battle.startUpgradeSession();
+                battle.startUpgradeSession(true);
                 break;
             case storeSession:
                 battle.startStoreSession();

@@ -79,31 +79,33 @@ public class Ability implements Durable {
 
 
     @Completed
-    public void upgrade(Hero hero, Player player) throws UpgradeException {
+    public void upgrade(Hero hero, Player player) {
+
+
         info.setUpgradeRequirements(hero);
         switch (this.currentLevel) {
             case 0:
                 if (!info.upgradeRequirement1)
                     throw new RequirementsNotMetException("the requirements are not yet met" +
                             "for this upgrade.");
-                player.changeCurrentExperience(info.xp1);
+                player.changeCurrentExperience(-info.xp1);
                 currentLevel += 1;
                 break;
             case 1:
                 if (!info.upgradeRequirement2)
                     throw new RequirementsNotMetException("the requirements are not yet met" +
                             "for this upgrade.");
-                player.changeCurrentExperience(info.xp2);
+                player.changeCurrentExperience(-info.xp2);
                 currentLevel += 1;
                 break;
             case 2:
                 if (!info.upgradeRequirement3)
                     throw new RequirementsNotMetException("This ability (" + this.info.name + ") has reached its maximum level");
-                player.changeCurrentExperience(info.xp3);
+                player.changeCurrentExperience(-info.xp3);
                 currentLevel += 1;
                 break;
             case 3:
-                throw new AbilityMaxLevelReachedException("");
+                throw new AbilityMaxLevelReachedException("“This ability cannot be upgraded anymore”");
         }
 
         String aqORup = "";
@@ -113,8 +115,7 @@ public class Ability implements Durable {
         if (this.currentLevel == 1) {
             aqORup = "acquired";
         }
-        printOutput(this.info.name + aqORup + " successfully, your current experience is: " +
-                player.getCurrentExperience());
+        printOutput(this.info.name + " " + aqORup + " successfully, your current experience is: " + player.getCurrentExperience());
 
     }
 

@@ -120,16 +120,9 @@ public class Player {
     }
     @Completed
     public Ability findAbilityByNameAndOwner(String name, Hero owner) {             //COOL!!!!!!!!!!!!!!
-        Hero currentHero = null;
+        Hero currentHero = findHeroByName(owner.name);
 
-        for (int i = 0; i < heros.size(); i++) {
-            if (heros.get(i).equals(owner)) {
-                currentHero = heros.get(i);
-                break;
-            } else {
-                return null;
-            }
-        }
+
         for (String keyAbilityName : currentHero.abilities.keySet()) {
             if (keyAbilityName.equals(name)) {
                 return currentHero.abilities.get(keyAbilityName);
@@ -169,8 +162,18 @@ public class Player {
         Hero currentHero;
         for (int i = 0; i < heros.size(); i++) {
             currentHero = heros.get(i);
-            if (currentHero.equals(new Hero(name, "Fighter", 0)))
-                return currentHero;
+            try {
+                if (currentHero.equals(new Hero(name, "Fighter", 0)))
+                    return currentHero;
+            } catch (Exception e) {
+                try {
+                    if (currentHero.equals(new Hero(name, "Supporter", 0)))
+                        return currentHero;
+                } catch (Exception e2) {
+                    return null;
+                }
+                ;
+            }
         }
         return null;
     }

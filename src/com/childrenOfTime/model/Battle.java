@@ -190,66 +190,75 @@ public class Battle {
         }
     }
     @Completed
-    public void startUpgradeSession() {
-
-        Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
-        printOutput("Your current experience is:" + currentPlayer.getCurrentExperience());
-
-        for (int i = 0; i < currentPlayer.getHeros().size(); i++) {
-            printOutput(currentPlayer.getHeros().get(i).getName());
-            currentPlayer.getHeros().get(i).showAbDes();
-//            currentPlayer.getHeros().get(i).showCurrentItems();
-        }
-        String inputTemp = getInput();
-        boolean invalidCommand = true;
-
-        Pattern p = Pattern.compile("Acquire+\\s+.*\\w+(\\s+.*\\w)?+.*\\w");
-        Matcher m = p.matcher(inputTemp);
-        boolean matchFound = m.matches();
-        if (matchFound) {
-            String abilityName = inputTemp.substring(inputTemp.indexOf("Acquire") + 8, inputTemp.indexOf("for") - 1);
-            String targetHeroName = inputTemp.substring(inputTemp.indexOf("for") + 4, inputTemp.length());
-            Hero targetHero = currentPlayer.findHeroByName(targetHeroName);
-            Ability targetAbility = targetHero.abilities.get(abilityName);
-            currentPlayer.upgradeAbility(targetAbility, targetHero);
-            invalidCommand = false;
-        }
-
-        p = Pattern.compile("\\w+\\s+\\w+\\?");
-        m = p.matcher(inputTemp);
-        matchFound = m.matches();
-        if (matchFound) {
-            String temp[] = inputTemp.split("\\s");
-            Hero targetHero = currentPlayer.findHeroByName(temp[0]);
-            Ability targetAbility = currentPlayer.findAbilityByNameAndOwner(temp[1].substring(0, temp[1].length() - 1), targetHero);
-            targetHero.abilityDescription(targetAbility);
-            invalidCommand = false;
-        }
-
-        p = Pattern.compile("again|help|information|done");
-        m = p.matcher(inputTemp);
-        matchFound = m.matches();
-        if (matchFound) {
-            invalidCommand = false;
-            switch (inputTemp) {
-                case "again":
-                    startUpgradeSession();
-                    break;
-                case "help":
-                    upgradeHelp();
-                    break;
-                case "information":
-                    currentPlayer.getHeros().forEach(Hero::showCurrentTraits);
-                    printOutput("Your current experience is:" + currentPlayer.getCurrentExperience());
-                    break;
-                case "done":
-                    battleState = BattleState.storeSession;
-                    break;
+    public void startUpgradeSession(boolean showFirstThings) {
+        try {
+            Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
+            printOutput("Your current experience is:" + currentPlayer.getCurrentExperience());
+            if (showFirstThings) {
+                for (int i = 0; i < currentPlayer.getHeros().size(); i++) {
+                    printOutput(currentPlayer.getHeros().get(i).getName());
+                    currentPlayer.getHeros().get(i).showAbDes();
+                    //            currentPlayer.getHeros().get(i).showCurrentItems();
+                }
             }
-        }
+            String inputTemp = getInput();
+            boolean invalidCommand = true;
 
-        if (invalidCommand) {
-            printOutput("Invalid Command");
+            Pattern p = Pattern.compile("Acquire+\\s+.*\\w+(\\s+.*\\w)?+.*\\w");
+            Matcher m = p.matcher(inputTemp);
+            boolean matchFound = m.matches();
+            if (matchFound) {
+                String abilityName = inputTemp.substring(inputTemp.indexOf("Acquire") + 8, inputTemp.indexOf("for") - 1);
+                String targetHeroName = inputTemp.substring(inputTemp.indexOf("for") + 4, inputTemp.length());
+                Hero targetHero = currentPlayer.findHeroByName(targetHeroName);
+                Ability targetAbility = targetHero.abilities.get(abilityName);
+                if (targetAbility != null) {
+                    currentPlayer.upgradeAbility(targetAbility, targetHero);
+                    invalidCommand = false;
+
+                }
+            }
+
+            p = Pattern.compile("\\w+\\s+\\w+\\?");   //TODO you have to give some two part words for Abilities
+            m = p.matcher(inputTemp);
+            matchFound = m.matches();
+            if (matchFound) {
+                String temp[] = inputTemp.split("\\s");
+                Hero targetHero = currentPlayer.findHeroByName(temp[0]);
+                if (targetHero != null) {
+                    Ability targetAbility = currentPlayer.findAbilityByNameAndOwner(temp[1].substring(0, temp[1].length() - 1), targetHero);
+                    targetHero.abilityDescription(targetAbility);
+                    invalidCommand = false;
+                }
+            }
+
+            p = Pattern.compile("again|help|information|done");
+            m = p.matcher(inputTemp);
+            matchFound = m.matches();
+            if (matchFound) {
+                invalidCommand = false;
+                switch (inputTemp) {
+                    case "again":
+                        startUpgradeSession(true);
+                        break;
+                    case "help":
+                        upgradeHelp();
+                        break;
+                    case "information":
+                        currentPlayer.getHeros().forEach(Hero::showCurrentTraits);
+                        printOutput("Your current experience is:" + currentPlayer.getCurrentExperience());
+                        break;
+                    case "done":
+                        battleState = BattleState.storeSession;
+                        break;
+                }
+            }
+
+            if (invalidCommand) {
+                printOutput("Invalid Command");
+            }
+        } catch (Exception e) {
+            printOutput(e.getMessage());
         }
     }
     @Completed
