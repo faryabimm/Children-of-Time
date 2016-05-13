@@ -56,8 +56,8 @@ public class Player {
         target.inventory.getItems().remove(item);
     }
     @Completed
-    public void useImmortalityPotion(Hero target) throws NoImmortalityPotionLeftException {
-        target.revivedWithImmortalityPotion();
+    public void useImmortalityPotion() throws NoImmortalityPotionLeftException {
+        immprtalityPotions--;
     }
     @Completed
     public void showCurrentHeroStats() {
