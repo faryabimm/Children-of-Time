@@ -58,7 +58,7 @@ public class Hero extends Warrior {
             if (entry.getValue().currentLevel == 0) {
                 state = "not acquired";
             } else state += entry.getValue().currentLevel;
-            toPrint += entry.getKey() + " : " + state;
+            toPrint += "\t" + entry.getKey() + " : " + state + "\n";
         }
         printOutput(toPrint);
     }

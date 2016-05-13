@@ -169,7 +169,8 @@ public class Player {
         Hero currentHero;
         for (int i = 0; i < heros.size(); i++) {
             currentHero = heros.get(i);
-            if (currentHero.equals(new Hero(name, "Fighter", 0))) return currentHero;
+            if (currentHero.equals(new Hero(name, "Fighter", 0)))
+                return currentHero;
         }
         return null;
     }

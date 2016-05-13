@@ -100,8 +100,6 @@ public final class ChildrenOfTime {
     @Completed
     public void startSinglePlayerMode() {
         try {
-
-
             for (Battle battle : battles) {
                 while (battle.battleState != BattleState.finished) {
                     switch (battle.battleState) {
@@ -141,9 +139,10 @@ public final class ChildrenOfTime {
                 singlePlayerGameCompleted();
             }
 
-
         } catch (GameException gameException) {
             printOutput(gameException.getMessage());
+            gameException.printStackTrace();
+
         }
     }
 

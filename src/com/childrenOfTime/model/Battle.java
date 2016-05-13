@@ -197,20 +197,20 @@ public class Battle {
 
         for (int i = 0; i < currentPlayer.getHeros().size(); i++) {
             printOutput(currentPlayer.getHeros().get(i).getName());
+            currentPlayer.getHeros().get(i).showAbDes();
+//            currentPlayer.getHeros().get(i).showCurrentItems();
         }
-        currentPlayer.getHeros().forEach(Hero::showAbDes);
-        currentPlayer.getHeros().forEach(Hero::showCurrentItems);
-
         String inputTemp = getInput();
         boolean invalidCommand = true;
 
-        Pattern p = Pattern.compile("Acquire+\\s+\\w+\\s+for+\\s+\\w");
+        Pattern p = Pattern.compile("Acquire+\\s+.*\\w+(\\s+.*\\w)?+.*\\w");
         Matcher m = p.matcher(inputTemp);
         boolean matchFound = m.matches();
         if (matchFound) {
-            String temp[] = inputTemp.split("\\s");
-            Hero targetHero = currentPlayer.findHeroByName(temp[3]);
-            Ability targetAbility = currentPlayer.findAbilityByNameAndOwner(temp[1], targetHero);
+            String abilityName = inputTemp.substring(inputTemp.indexOf("Acquire") + 8, inputTemp.indexOf("for") - 1);
+            String targetHeroName = inputTemp.substring(inputTemp.indexOf("for") + 4, inputTemp.length());
+            Hero targetHero = currentPlayer.findHeroByName(targetHeroName);
+            Ability targetAbility = targetHero.abilities.get(abilityName);
             currentPlayer.upgradeAbility(targetAbility, targetHero);
             invalidCommand = false;
         }
