@@ -56,11 +56,6 @@ public class Player {
             printOutput(hero.toString());
         }
     }
-    @InProgress
-    public void Alaki(){
-        WarriorMessages.getDiedMessageForHero(new Hero("saeed","salam"));
-    }
-
     @Completed
     public boolean isDefeated() {
         boolean isDefeated = false;
