@@ -90,7 +90,6 @@ public class Player {
                     + usingHero.getId() + "' doesnt" + "have this Item!");
         }
     }
-
     @Completed
     public Ability findAbilityByname(String name) {             //COOL!!!!!!!!!!!!!!
         for (int i = 0; i < heros.size(); i++) {
@@ -104,10 +103,10 @@ public class Player {
         return null;
     }
 
+    @Completed
     public void giveAttack(Hero attackingHero, Foe targetFoe) {
-        attackingHero.attackManual();
+        attackingHero.attackManual(targetFoe);
     }
-
     @Completed
     public Hero findHeroByNameAndId(String name, int id) {
         Hero currentHero;
@@ -117,7 +116,6 @@ public class Player {
         }
         return null;
     }
-
     @Completed
     public Hero findHeroByName(String name) {
         Hero currentHero;
