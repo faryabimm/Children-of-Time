@@ -3,8 +3,6 @@ package com.childrenOfTime.model;
 import com.childrenOfTime.Completed;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.childrenOfTime.view.IOHandler.getInput;
 import static com.childrenOfTime.view.IOHandler.printOutput;
@@ -108,7 +106,7 @@ public final class ChildrenOfTime {
                         battle.startStoreSession();
                         break;
                     case fight:
-                        battle.startFight();
+                        startFight(battle);
                         break;
                 }
             }
@@ -128,6 +126,16 @@ public final class ChildrenOfTime {
             singlePlayerGameCompleted();
         }
     }
+
+    private void startFight(Battle battle) {
+        while (battle.battleState != BattleState.finished) {
+            if (!players.get(0).isDefeated()) {
+                battle.initiateNextTurn();
+                printOutput("A new Turn Has Begun!");
+            }
+        }
+    }
+
     @Completed
     private void singlePlayerGameCompleted() {
         String victoryMessage;
