@@ -2,7 +2,6 @@ package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
 import com.childrenOfTime.InProgress;
-import com.childrenOfTime.NotImplementedYet;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
 
@@ -10,7 +9,6 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
  * Created by mohammadmahdi on 5/8/16.
  */
 public class Item implements Durable {
-    private int currentPrice;
     private int leftUsages;
     private InformationOfItems info;
 
@@ -24,7 +22,6 @@ public class Item implements Durable {
         } else {
             info = InformationOfItems.valueOf(name.split(" ")[0]);
         }
-        this.currentPrice = info.getInitialPrice();
         this.leftUsages = info.getAllowedUsages();
     }
 
@@ -79,24 +76,13 @@ public class Item implements Durable {
     public void wearOff() {
     }
 
-    @NotImplementedYet
-    public Item showDescription() {
-
-        return null;
+    @Completed
+    public void showDescription() {
+        printOutput(info.getDescription());
     }
 
     @Completed
     public InformationOfItems getInfo() {
         return info;
     }
-
-    @Completed
-    public int getCorrentPrice() {
-        return info.getInitialPrice() + info.getPriceIncreament() * timesBought;
-    }
-
-    public void aTurnHasPassed() {
-
-    }
-
 }
