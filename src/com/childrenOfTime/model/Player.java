@@ -93,5 +93,8 @@ public class Player {
 
     public void giveAttack(Hero attackingHero, Foe targetFoe) {
     }
+
+    public Hero findHeroByNameAndId(String name, int id) {
+    }
 }
 

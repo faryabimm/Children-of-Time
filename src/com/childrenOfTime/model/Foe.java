@@ -37,7 +37,7 @@ public class Foe extends Warrior {
 
 
     @Completed
-    public Foe(String name,String strength) {
+    public Foe(String name, StrengthOfFoes strength) {
         super(name);
         TypesOfFoes ty = TypesOfFoes.valueOf(name);
         try {
@@ -112,4 +112,15 @@ public class Foe extends Warrior {
         String toReturn = "a/an" + this.strength + this.name;
         return null;
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        Foe other = (Foe) obj;
+        if (!this.name.equals(other.name)) return false;
+        return true;
+    }
+
 }
+
