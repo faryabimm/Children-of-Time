@@ -195,6 +195,10 @@ public class Battle {
         Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
         printOutput("Your current experience is:" + currentPlayer.getCurrentExperience());
 
+        for (int i = 0; i < currentPlayer.getHeros().size(); i++) {
+            printOutput(currentPlayer.getHeros().get(i).getName());
+        }
+        currentPlayer.getHeros().forEach(Hero::showAbDes);
         currentPlayer.getHeros().forEach(Hero::showCurrentItems);
 
         String inputTemp = getInput();
@@ -404,8 +408,7 @@ public class Battle {
                 "3\t(hero name) + “?”\n" +
                 "4\tAgain\n" +
                 "5\tHelp\n" +
-                "6\tInformation\n" +
-                "7\tDone  -proceed to next stage-");
+                "6\tDone  -proceed to next stage-");
     }
     @Completed
     public void storyHelp() {
@@ -413,7 +416,6 @@ public class Battle {
                 "\n" +
                 "1\tAgain\n" +
                 "2\tHelp\n" +
-                "3\tInformation\n" +
                 "4\tDone  -proceed to next stage-");
     }
     @Completed
