@@ -144,15 +144,16 @@ public class Foe extends Warrior {
             for (StrengthOfFoes strength : StrengthOfFoes.values()) {
                 int num = 0;
                 for (Foe foes : Battle.getFoes()) {
-                    if (type.equals(foes.type)) {
+                    if (type.equals(foes.type) && strength.equals(foes.strength)) {
                         num++;
                     }
                 }
-                if (strength != null) {
+                if (num > 0) {
                     toPrint += num + " " + strength.name + " " + type.name() + " ";
-                } else {
-                    toPrint += num + " " + type.name() + " ";
                 }
+                // } else {
+                //    toPrint += num + " " + type.name() + " ";
+
             }
         }
         //  printOutput(toPrint);
