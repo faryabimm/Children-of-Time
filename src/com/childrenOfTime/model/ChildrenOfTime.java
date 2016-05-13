@@ -85,7 +85,7 @@ public final class ChildrenOfTime {
 
 
         battleFoes.clear();
-        battleFoes.add(new Foe("Final Boss", StrengthOfFoes.Mighty, 0));
+        battleFoes.add(new Foe("Final Boss", null, 0));
 
         storyTemp = "You feel hopeless and exhausted as you stalk to the final door. What’s behind that door\n" +
                 "makes your hearts pound and your spines shake with fear, but you came here to do one\n" +
