@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.childrenOfTime.view.IOHandler.printOutput;
+
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
@@ -18,7 +20,7 @@ public class Hero extends Warrior {
     protected int currentMagic;
     protected int currentEnergyPoints;
     protected Inventory inventory;
-    private HeroType heroType;
+    private TypesOfHero typesOfHero;
 
     //for Swirling ability
     boolean swirlingisActivated = false;
@@ -28,7 +30,6 @@ public class Hero extends Warrior {
 
     InformationOfHeroes info;
     Map<String, Ability> abilities = new HashMap<>();
-    Map<String, Item> items = new HashMap<>();
 
     @Completed
     public void attackAuto(Foe enemy, int attackPower) {
@@ -54,20 +55,22 @@ public class Hero extends Warrior {
     @Completed
     public Hero(String name, String className, int id) {
         super(name, id);
-        heroType=HeroType.valueOf(className);
-        this.info = new InformationOfHeroes(heroType.healthRefillRate, heroType.inventorySize,
-                heroType.maxMagic, heroType.magicRefillRate, heroType.initialEP, heroType.ability1, heroType.ability2);
+        typesOfHero = TypesOfHero.valueOf(className);
+        this.info = new InformationOfHeroes(typesOfHero.healthRefillRate, typesOfHero.inventorySize,
+                typesOfHero.maxMagic, typesOfHero.magicRefillRate, typesOfHero.initialEP, typesOfHero.ability1, typesOfHero.ability2, typesOfHero.classDescription, "");
 
-        switch (heroType){
+        switch (typesOfHero) {
             case Supporter:
                 SupporterHero heroName=SupporterHero.valueOf(name);
                 info.ability3=heroName.ability3;
                 info.ability4=heroName.ability4;
+                info.heroDescription = heroName.heroDescription;
                 break;
             case Fighter:
                 FighterHero heroName2=FighterHero.valueOf(name);
                 info.ability3=heroName2.ability3;
                 info.ability4=heroName2.ability4;
+                info.heroDescription = heroName2.heroDescription;
                 break;
         }
         setAbilities(info);
@@ -75,9 +78,9 @@ public class Hero extends Warrior {
         setCurrentEnergyPoints(info.initialEP);
         setInventory(new Inventory(info.inventorySize));
 
-        super.currentHealth = heroType.maxHealth;
-        super.attackPower = heroType.attackPower;
-        super.maxHealth = heroType.maxHealth;
+        super.currentHealth = typesOfHero.maxHealth;
+        super.attackPower = typesOfHero.attackPower;
+        super.maxHealth = typesOfHero.maxHealth;
     }
     @Completed
     public ArrayList<Item> getInventoryItems() {
@@ -112,16 +115,16 @@ public class Hero extends Warrior {
         ability.cast(this, warrior);
     }
     public int getInventorySize() {
-        return heroType.inventorySize;
+        return typesOfHero.inventorySize;
     }
     public void setInventorySize(int inventorySize) {
-        this.heroType.inventorySize = inventorySize;
+        this.typesOfHero.inventorySize = inventorySize;
     }
     public int getMaxMagic() {
-        return heroType.maxMagic;
+        return typesOfHero.maxMagic;
     }
     public void setMaxMagic(int maxMagic) {
-        this.heroType.maxMagic = maxMagic;
+        this.typesOfHero.maxMagic = maxMagic;
     }
     public int getCurrentMagic() {
         return currentMagic;
@@ -130,10 +133,10 @@ public class Hero extends Warrior {
         this.currentMagic = currentMagic;
     }
     public int getMagicRefillRate() {
-        return heroType.magicRefillRate;
+        return typesOfHero.magicRefillRate;
     }
     public void setMagicRefillRate(int magicRefillRate) {
-        this.heroType.magicRefillRate = magicRefillRate;
+        this.typesOfHero.magicRefillRate = magicRefillRate;
     }
     public int getCurrentEnergyPoints() {
         return currentEnergyPoints;
@@ -177,20 +180,39 @@ public class Hero extends Warrior {
 
 
     public void showCurrentItems() {
+
     }
 
 
     public void abilityDescription(Ability targetAbility) {
-
+        targetAbility.showDescription();
     }
 
+
+    @Completed
     public void showHeroDescription() {
-
+        printOutput(info.heroDescription);
     }
 
+    @Completed
+    public void showClassDescription() {
+        printOutput(info.classDescription);
+    }
 
+    @Override
     public void showCurrentTraits() {
-
+        String toPrint = "";
+        toPrint = "Health: " + currentHealth + "/" + maxHealth + "\n" +
+                "Magic: " + currentMagic + "/" + info.maxMagic + "\n" +
+                "Energy points: " + currentEnergyPoints + "\n" +
+                "Attack power " + attackPower + "\n";
+        for (Map.Entry<String, Ability> entry : abilities.entrySet()) {
+            toPrint += "Can Cast " + entry.getKey() + " for " + entry.getValue().info.masrafEP + " energy points, " + entry.getValue().info.masrafEP + " magic points and a " + entry.getValue().info.coolDownTime + " turn cooldown in some upgrades\n";
+        }
+        for (Item item : inventory.getItems()) {
+            toPrint += "Can Use " + item.getInfo().getName() + " for " + 0 + " energy points, " + 0 + " magic points and a " + 0 + " turn cooldown\n";
+        }
+        printOutput(toPrint);
     }
 
     public void revivedWithImmortalityPotion() {

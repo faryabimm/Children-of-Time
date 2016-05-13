@@ -9,9 +9,11 @@ public class InformationOfHeroes {
     int maxMagic;
     int magicRefillRate;
     int initialEP;
+    String classDescription;
+    String heroDescription;
     String ability2,ability1,ability3,ability4;
 
-    InformationOfHeroes(int healthRefillRate, int inventorySize, int maxMagic, int magicRefillRate, int initialEP, String ability1, String ability2) {
+    InformationOfHeroes(int healthRefillRate, int inventorySize, int maxMagic, int magicRefillRate, int initialEP, String ability1, String ability2, String classDescription, String heroDescription) {
         this.healthRefillRate = healthRefillRate;
         this.inventorySize = inventorySize;
         this.maxMagic = maxMagic;
@@ -19,5 +21,7 @@ public class InformationOfHeroes {
         this.initialEP = initialEP;
         this.ability1 = ability1;
         this.ability2 = ability2;
+        this.classDescription = classDescription;
+        this.heroDescription = heroDescription;
     }
 }

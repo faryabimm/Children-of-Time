@@ -10,7 +10,7 @@ public class WarriorMessages {
         @Completed
         public static String getDiedMessageForHero(Hero hero){
             //TODO I do not know whats this method s assignment
-            String s=hero.name + " is dead and so is the spirit of this adventure, Game Over! ”";
+            String s = hero.name + hero.getId() + " is dead and so is the spirit of this adventure, Game Over! ”";
             return s;
         }
 
@@ -18,7 +18,7 @@ public class WarriorMessages {
 
         @Completed
         public static String getDyingMessageForHero(Player player,Hero hero){
-            String s = hero.name +" is dying, immortality potion was used for reincarnation process, you now have "
+            String s = hero.name + hero.getId() + " is dying, immortality potion was used for reincarnation process, you now have "
                     + player.getImmprtalityPotions() + "immortality potions left";
             return s;
         }
@@ -29,7 +29,7 @@ public class WarriorMessages {
 
         @Completed
         public static String getSuccessfulAttackMessage(Hero hero,Foe foe){
-            return hero.getName() + " has successfully attacked " + foe.getName() + foe.getName() + foe.getId() + " with " + hero.attackPower + " power";
+            return hero.getName() + hero.getId() + " has successfully attacked " + foe.getName() + foe.getId() + " with " + hero.attackPower + " power";
         }
 
     @Completed

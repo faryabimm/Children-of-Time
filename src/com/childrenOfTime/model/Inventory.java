@@ -26,5 +26,4 @@ public class Inventory {
         return maxCapacity-sum;
     }
 
-
 }
