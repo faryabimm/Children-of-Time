@@ -8,8 +8,9 @@ import java.util.ArrayList;
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
-public class Foe extends Warrior {
+public class
 
+Foe extends Warrior {
     protected int healingAmount;
     TypesOfFoes type;
     StrengthOfFoes strength;
@@ -26,11 +27,6 @@ public class Foe extends Warrior {
     public Foe(String name, StrengthOfFoes strength, int id) {
         super(name, id);
         type = TypesOfFoes.valueOf(name.split(" ")[0]);
-        try {
-            this.strength = strength;
-        } catch (Exception e) {
-            this.strength = null;
-        }
 
         type.setStrength(this.strength);
 

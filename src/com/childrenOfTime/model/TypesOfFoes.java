@@ -34,6 +34,7 @@ public enum TypesOfFoes {
                         attackPower = 150;
                         maximumHealth = 400;
                         break;
+
                 }
 
             case Tank:

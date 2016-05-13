@@ -38,7 +38,6 @@ public enum InformationOfAbilities {
     String description;
 
     InformationOfAbilities(String name, int coolDownTime, int xp1, int xp2, int xp3, int Ep, int Mp) {
-        setDescription();
         this.name = name;
         this.coolDownTime = coolDownTime;
         //this.maxLevel = maxLevel;
@@ -95,7 +94,7 @@ public enum InformationOfAbilities {
     }
 
     @Completed
-    private void setDescription() {
+    void setDescription() {
         switch (this) {
             case Fight:
                 this.description = "Fight training" + "\n" + "Permanently increases attack power" + "\n" + "Upgrade1: +30 attack power for 2 xp points" + "\n" + "Upgrade2: +30 attack power for 3 xp points" + "\n" + "Upgrade3: +30 attack power for 4 xp points";
