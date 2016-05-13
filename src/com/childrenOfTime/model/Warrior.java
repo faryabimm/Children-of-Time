@@ -28,7 +28,7 @@ public abstract class Warrior {
             currentHealth=0;
             if (this instanceof Hero) {
                 this.isDying = true;
-                if (ChildrenOfTime.getInstance().getPlayers().get(0).isImmprtalityPotionsLeft()) {
+                if (ChildrenOfTime.getInstance().getPlayers().get(0).isAnyImmortalityPotionLeft()) {
                     ChildrenOfTime.getInstance().getPlayers().get(0).useImmortalityPotion((Hero) this);
                     printOutput(WarriorMessages.getDyingMessageForHero(ChildrenOfTime.getInstance().getPlayers().get(0), (Hero) this));
                 } else {
