@@ -10,6 +10,7 @@ import com.childrenOfTime.exceptions.NotEnoughMagicPointsException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
 
@@ -30,6 +31,8 @@ public class Hero extends Warrior {
 
     InformationOfHeroes info;
     Map<String, Ability> abilities = new HashMap<>();
+    public int probability = 0;
+    public boolean criticalIsActivated = false;
 
     @Completed
     public void attackAuto(Foe enemy, int attackPower) {
@@ -38,19 +41,36 @@ public class Hero extends Warrior {
             for (Foe f : Battle.getFoes()) {   //access to AllFoes
                 if (f.equals(enemy)) continue;
                 f.changeAttackPower((int) (this.damagePercent * attackPower));
+                printOutput(WarriorMessages.getSuccessfulAttackMessage(this, enemy, (int) (this.damagePercent * attackPower)));
             }
+
         }
+        printOutput(WarriorMessages.getSuccessfulAttackMessage(this, enemy, attackPower));
+
     }
     @Completed
     public void attackManual(Foe enemy) throws NotEnoughEnergyPointsException {
         changeEP(-2);
-        enemy.changeHealth(-attackPower);
+        int realAttack = attackPower;
+        if (this.criticalIsActivated) {
+            Random rand = new Random();
+            int n = rand.nextInt(100) + 1;
+            if (n <= probability) {
+                realAttack = attackPower * 2;
+            }
+        }
+
+        enemy.changeHealth(-realAttack);
         if (this.swirlingisActivated) {
             for (Foe f : Battle.getFoes()) {     //access to AllFoes
                 if (f.equals(enemy)) continue;
-                f.changeAttackPower((int) (this.damagePercent * attackPower));
+                f.changeAttackPower((int) (this.damagePercent * realAttack));
+                printOutput(WarriorMessages.getSuccessfulAttackMessage(this, enemy, (int) (this.damagePercent * realAttack)));
+
             }
         }
+        printOutput(WarriorMessages.getSuccessfulAttackMessage(this, enemy, realAttack));
+
     }
     @Completed
     public Hero(String name, String className, int id) {
@@ -164,7 +184,11 @@ public class Hero extends Warrior {
                     " move\ncurrent MP : " + currentMagic + "\nrequired MP : " + i + "\nYou need " +
                     (i - currentEnergyPoints) + " additional MPs.");
         }
+        if (this.currentMagic + i > info.maxMagic) {
+            currentMagic = maxHealth;
+        } else {
         this.currentMagic += i;
+        }
     }
     public void changeMaxMagic(int i) throws NotEnoughMagicPointsException {
         this.info.maxMagic += i;

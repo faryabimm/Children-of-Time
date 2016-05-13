@@ -28,8 +28,8 @@ public class WarriorMessages {
         }
 
         @Completed
-        public static String getSuccessfulAttackMessage(Hero hero,Foe foe){
-            return hero.getName() + hero.getId() + " has successfully attacked " + foe.getName() + foe.getId() + " with " + hero.attackPower + " power";
+        public static String getSuccessfulAttackMessage(Hero hero, Foe foe, int attackpower) {
+            return hero.getName() + hero.getId() + " has successfully attacked " + foe.getName() + foe.getId() + " with " + attackpower + " power";
         }
 
     @Completed
