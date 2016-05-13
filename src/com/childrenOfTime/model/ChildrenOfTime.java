@@ -32,15 +32,28 @@ public final class ChildrenOfTime {
     @Completed
     private ChildrenOfTime() {
 
+
+        ArrayList<Foe> battleFoes = new ArrayList<>();
+
+
+        battleFoes.add(new Foe("thug", StrengthOfFoes.Weak, 0));
+        battleFoes.add(new Foe("thug", StrengthOfFoes.Weak, 1));
+        battleFoes.add(new Foe("thug", StrengthOfFoes.Weak, 2));
+        battleFoes.add(new Foe("angle", StrengthOfFoes.Weak, 0));
+
         String storyTemp = "You’ve entered the castle, it takes a while for your eyes to get used to the darkness but\n" +
                 "the horrifying halo of your enemies is vaguely visible. Angel’s unsettling presence and\n" +
                 "the growling of thugs tell you that your first battle has BEGUN!";
-        battles.add(new Battle(storyTemp, new Reward(20, 50)));
+        battles.add(new Battle(storyTemp, new Reward(20, 50), battleFoes));
+
+
+
+
 
         storyTemp = "As you wander into the hall you realize the surrounding doors can lead your destiny to\n" +
                 "something far worse than you expected. You know what’s anticipating you behind the only\n" +
                 "open door but there’s no other choice.";
-        battles.add(new Battle(storyTemp, new Reward(25, 60)));
+        battles.add(new Battle(storyTemp, new Reward(25, 60), battleFoes));
 
         storyTemp = "The door behind you is shut with a thunderous sound and you progress into the next hall\n" +
                 "holding the first key that you’ve found, hoping to seek the second one.";

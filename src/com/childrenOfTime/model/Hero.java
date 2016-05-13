@@ -94,8 +94,7 @@ public class Hero extends Warrior {
 
     @Completed
     public void useItem(String itemName, Warrior warrior) throws ItemNotAquiredException {
-        if (items.get(name) == null) throw new ItemNotAquiredException("You don’t have this item");
-        items.get(name).use(this, warrior);
+
     }
     @Completed
     public String toString() {
