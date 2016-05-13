@@ -28,7 +28,7 @@ public class Foe extends Warrior {
         super(name, id);
         type = TypesOfFoes.valueOf(name.split(" ")[0]);
 
-        type.setStrength(this.strength);
+        type.setStrength(strength);
 
         this.healingAmount = type.healingAmount;
         super.maxHealth = type.maximumHealth;
@@ -72,7 +72,7 @@ public class Foe extends Warrior {
                 singleTarget.changeHealth(+this.healingAmount);
                 break;
             case "Tank":
-                targets = Battle.getFoes();
+//                targets = Battle.getFoes();
                 for (Warrior w : targets) {
                     ((Hero) w).changeHealth(-attackPower);
                 }
