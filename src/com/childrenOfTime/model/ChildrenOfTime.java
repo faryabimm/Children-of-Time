@@ -1,6 +1,7 @@
 package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
+import com.childrenOfTime.cgd.Store;
 
 import java.util.ArrayList;
 
@@ -84,6 +85,9 @@ public final class ChildrenOfTime {
         battleHeros.add(new Hero("Eley", "Fighter", 0));
         battleHeros.add(new Hero("Chrome", "Fighter", 0));
         players.add(new Player(battleHeros));
+
+        Store store = new Store();
+        Store.addStore(store);
     }
     @Completed
     public void startSinglePlayerMode() {
@@ -155,15 +159,15 @@ public final class ChildrenOfTime {
         String userInput = getInput();
 
         switch (userInput) {
-            case "Again":
+            case "again":
                 againCommand(battle);
                 getUserInput(battle);
                 break;
-            case "Help":
+            case "help":
                 helpCommand(battle);
                 getUserInput(battle);
                 break;
-            case "Done":
+            case "done":
                 doneCommand(battle);
                 break;
             default:

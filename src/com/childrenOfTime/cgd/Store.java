@@ -10,6 +10,10 @@ import java.util.ArrayList;
 public class Store {
     private static ArrayList<Store> stores = new ArrayList<>();
 
+    public static void addStore(Store store) {
+        stores.add(store);
+    }
+
     public static ArrayList<Store> getStores() {
         return stores;
     }

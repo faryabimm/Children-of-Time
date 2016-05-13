@@ -124,7 +124,7 @@ public class Foe extends Warrior {
     @Override
     public String showCurrentTraits() {
         String toPrint = "";
-        toPrint += "You’ve encountered";
+        toPrint += "You’ve encountered:\n";
 
         for (TypesOfFoes type : TypesOfFoes.values()) {
             for (StrengthOfFoes strength : StrengthOfFoes.values()) {
