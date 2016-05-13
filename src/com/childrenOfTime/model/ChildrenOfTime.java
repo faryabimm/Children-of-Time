@@ -6,6 +6,8 @@ import com.childrenOfTime.controller.GameEngine;
 import com.childrenOfTime.exceptions.GameException;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.childrenOfTime.view.IOHandler.getInput;
 import static com.childrenOfTime.view.IOHandler.printOutput;
@@ -188,11 +190,43 @@ public final class ChildrenOfTime {
                 doneCommand(battle);
                 break;
             default:
-                printOutput("Invalid Command!");
+                Pattern p = Pattern.compile("\\w+\\?");
+                Matcher m = p.matcher(userInput);
+                boolean matchFound = m.matches();
+
+                if (matchFound) {
+                    String temp = userInput.substring(0, userInput.length() - 1);
+                    informationInputIterpreter(temp);
+                } else {
+                    printOutput("Invalid Command!");
+                }
                 getUserInput(battle);
                 break;
         }
 
+    }
+
+    private void informationInputIterpreter(String userInput) {
+        try {
+            printOutput(TypesOfFoes.valueOf(userInput).description);
+
+        } catch (Exception e1) {
+            try {
+                printOutput(TypesOfHero.valueOf(userInput).classDescription);
+            } catch (Exception e2) {
+                try {
+                    printOutput(SupporterHero.valueOf(userInput).heroDescription);
+
+                } catch (Exception e3) {
+                    try {
+                        printOutput(FighterHero.valueOf(userInput).heroDescription);
+
+                    } catch (Exception e4) {
+                        printOutput("Invalid Command!");
+                    }
+                }
+            }
+        }
     }
 
     @Completed
