@@ -23,16 +23,33 @@ public class Player {
         ability.upgrade(targetHero, this);
     }
 
+    @Completed
     public void buy(Item item, Hero target) throws TradeException {
-        //TODO You should check if we have enough inventory space or not , I defined a method that named "getAvailableSpace" in inventory
+        if (item.getSize() > target.inventory.getAvailableCapacity()) {
+            throw new NotEnoughInventorySpaceException();
+        } else {
+            if (item.initialPrice > currentWealth) {
+                throw new NotEnoughMoneyException();
+            } else {
+                currentWealth -= item.initialPrice;
+                target.inventory.getItems().add(item);
+            }
+        }
+
     }
 
+    @Completed
     public void sell(Item item, Hero target) throws TradeException {
+
+        ArrayList<Item> heroItems = target.inventory.getItems();
+        currentWealth += heroItems.get(heroItems.indexOf(item)).initialPrice / 2;
+        target.inventory.getItems().remove(item);
     }
 
+    @Completed
     public void useImmortalityPotion(Hero target) throws NoImmortalityPotionLeftException {
+        target.revivedWithImmortalityPotion();
     }
-
     @Completed
     public void showCurrentHeroStats() {
         for (Hero hero : heros) {
@@ -44,16 +61,22 @@ public class Player {
         WarriorMessages.getDiedMessageForHero(new Hero("saeed","salam"));
     }
 
-    @InProgress
+    @Completed
     public boolean isDefeated() {
-
-        return false;
+        boolean isDefeated = false;
+        for (int i = 0; i < heros.size(); i++) {
+            if (heros.get(i).isDead) isDefeated = true;
+            break;
+        }
+        return isDefeated;
     }
 
+    @Completed
     public int getImmprtalityPotions() {
         return immprtalityPotions;
     }
 
+    @Completed
     public void changeCurrentExperience(int num) throws NotEnoughXPException {
         if (this.currentExperience + num < 0) {
             throw new NotEnoughXPException();
@@ -62,26 +85,22 @@ public class Player {
         }
     }
 
+    @Completed
     public int getCurrentExperience() {
         return currentExperience;
     }
 
+    @Completed
     public ArrayList<Hero> getHeros() {
         return heros;
     }
 
+    @Completed
     public int getCurrentWealth() {
         return currentWealth;
     }
 
-    public Item getItembyName(String name) {
-        for (int i = 0; i < heros.size(); i++) {
-            Hero currentHero = heros.get(i);
-
-        }
-
-    }
-
+    @Completed
     public void castAbility(Hero castingHero, Ability castedAbility, Warrior targetFoe) {
 
         castingHero.useAbility(castedAbility, targetFoe);
@@ -116,7 +135,6 @@ public class Player {
         }
         return null;
     }
-
     @Completed
     public Ability findAbilityByName(String name) {
         Hero currentHero = null;
@@ -150,6 +168,28 @@ public class Player {
         for (int i = 0; i < heros.size(); i++) {
             currentHero = heros.get(i);
             if (currentHero.equals(new Hero(name, "Fighter"))) return currentHero;
+        }
+        return null;
+    }
+    @Completed
+    public Item getItembyNameAndOwner(String name, Hero usingHero) {
+        Item item = new Item(name);
+        if (usingHero.inventory.getItems().contains(item)) {
+            Inventory temp = usingHero.inventory;
+            return temp.getItems().get(temp.getItems().indexOf(item));
+        }
+        return null;
+    }
+
+    @Completed
+    public Item getItembyName(String name) {
+        Item toReturn = null;
+        for (int i = 0; i < heros.size(); i++) {
+            Hero usingHero = heros.get(i);
+            toReturn = getItembyNameAndOwner(name, usingHero);
+            if (toReturn != null) {
+                return toReturn;
+            }
         }
         return null;
     }
