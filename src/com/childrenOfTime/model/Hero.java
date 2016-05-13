@@ -180,7 +180,11 @@ public class Hero extends Warrior {
 
 
     public void showCurrentItems() {
-
+        String toPrint = this.getName() + " has ";
+        for (Item i : inventory.getItems()) {
+            toPrint += i.getInfo().getName() + " worth " + i.getCurrentPrice() + " dollars, ";
+        }
+        printOutput(toPrint);
     }
 
 
@@ -199,6 +203,7 @@ public class Hero extends Warrior {
         printOutput(info.classDescription);
     }
 
+
     @Override
     public void showCurrentTraits() {
         String toPrint = "";
@@ -207,6 +212,7 @@ public class Hero extends Warrior {
                 "Energy points: " + currentEnergyPoints + "\n" +
                 "Attack power " + attackPower + "\n";
         for (Map.Entry<String, Ability> entry : abilities.entrySet()) {
+            if (entry.getValue().currentLevel == 0) continue;
             toPrint += "Can Cast " + entry.getKey() + " for " + entry.getValue().info.masrafEP + " energy points, " + entry.getValue().info.masrafEP + " magic points and a " + entry.getValue().info.coolDownTime + " turn cooldown in some upgrades\n";
         }
         for (Item item : inventory.getItems()) {
