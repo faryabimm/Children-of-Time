@@ -41,7 +41,7 @@ public class Foe extends Warrior {
         super(name, id);
         TypesOfFoes ty = TypesOfFoes.valueOf(name);
         try {
-            this.strength = StrengthOfFoes.valueOf(strength);
+            this.strength = strength;
         } catch (Exception e) {
             this.strength = null;
         }
@@ -122,5 +122,9 @@ public class Foe extends Warrior {
         return true;
     }
 
+    @Override
+    public void showCurrentTraits() {
+
+    }
 }
 

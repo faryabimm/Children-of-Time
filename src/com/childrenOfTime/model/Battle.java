@@ -246,7 +246,7 @@ public class Battle {
             Ability targetAbility = currentPlayer.findAbilityByName(temp);
             Hero targetHero = currentPlayer.findHeroByName(temp);
             targetItem.showDescription();       //TODO should throw an exception if item is not found
-            targetHero.showDescription();       //TODO should throw an exception if HERO is not found
+            targetHero.showHeroDescription();       //TODO should throw an exception if HERO is not found
             targetAbility.showDescription();    //TODO should throw an exception if ability is not found
             invalidCommand = false;
         }

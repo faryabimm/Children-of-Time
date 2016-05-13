@@ -14,7 +14,6 @@ public class Ability implements Durable {
     protected int currentLevel;
     protected int currentCost;
     protected boolean isInCoolDown = false;
-    private String name;
 
     @Completed
     public boolean isFullyUpgraded() {
@@ -24,7 +23,8 @@ public class Ability implements Durable {
     @InProgress
     public void cast(Hero hero, Warrior warrior) throws AttackException {
         if (this.currentLevel == 0) {
-            throw new AbilityNotAquiredException();
+            throw new AbilityNotAquiredException("Your " + hero.name + hero.id + " hero, doesn't have this ability (" +
+                    info.name + ")");
         }
 
         switch (InformationOfAbilities.valueOf(this.info.name.split(" ")[0])) {
@@ -73,22 +73,27 @@ public class Ability implements Durable {
         info.setUpgradeRequirements(hero);
         switch (this.currentLevel) {
             case 0:
-                if (!info.upgradeRequirement1) throw new RequirementsNotMetException();
+                if (!info.upgradeRequirement1)
+                    throw new RequirementsNotMetException("the requirements are not yet met" +
+                            "for this upgrade.");
                 player.changeCurrentExperience(info.xp1);
                 currentLevel += 1;
                 break;
             case 1:
-                if (!info.upgradeRequirement2) throw new RequirementsNotMetException();
+                if (!info.upgradeRequirement2)
+                    throw new RequirementsNotMetException("the requirements are not yet met" +
+                            "for this upgrade.");
                 player.changeCurrentExperience(info.xp2);
                 currentLevel += 1;
                 break;
             case 2:
-                if (!info.upgradeRequirement3) throw new RequirementsNotMetException();
+                if (!info.upgradeRequirement3)
+                    throw new RequirementsNotMetException("This ability (" + this.info.name + ") has reached its maximum level");
                 player.changeCurrentExperience(info.xp3);
                 currentLevel += 1;
                 break;
             case 3:
-                throw new AbilityMaxLevelReachedException();
+                throw new AbilityMaxLevelReachedException("");
         }
 
         String aqORup = "";
@@ -98,7 +103,7 @@ public class Ability implements Durable {
         if (this.currentLevel == 1) {
             aqORup = "acquired";
         }
-        printOutput(this.name + aqORup + " successfully, your current experience is: " +
+        printOutput(this.info.name + aqORup + " successfully, your current experience is: " +
                 player.getCurrentExperience());
 
     }
@@ -147,7 +152,9 @@ public class Ability implements Durable {
             hero.changeMagic(-50);
         } catch (NotEnoughMagicPointsException e) {
             hero.changeEP(2);
-            throw new NotEnoughMagicPointsException();
+            throw new NotEnoughMagicPointsException("Your " + hero.name + hero.id + " hero doesn't have Enough MP to" +
+                    " perform this move\ncurrent MP : " + hero.currentMagic + "\nrequired MP : " + 50 + "\nYou need " +
+                    (50 - hero.currentMagic) + " additional Mps.");
         }
 
         hero.attackAuto(foe, (int) (hero.attackPower * (1 + 0.2 * currentLevel)));
@@ -175,18 +182,22 @@ public class Ability implements Durable {
             hero.changeMagic(-60);
         } catch (NotEnoughMagicPointsException e) {
             hero.changeEP(2);
-            throw new NotEnoughMagicPointsException();
+            throw new NotEnoughMagicPointsException("Your " + hero.name + hero.id + " hero doesn't have Enough MP to" +
+                    " perform this move\ncurrent MP : " + hero.currentMagic + "\nrequired MP : " + 60 + "\nYou need " +
+                    (60 - hero.currentMagic) + " additional Mps.");
         }
         int h = 0;
         switch (this.currentLevel) {
             case 1:
-                if (isInCoolDown) throw new AbilityInCooldownException();
+                if (isInCoolDown)
+                    throw new AbilityInCooldownException("This ability (" + this.info.name + ")is  in Cooldown");
                 hero2.changeHealth(100);
                 h = 100;
                 isInCoolDown = true;
                 break;
             case 2:
-                if (isInCoolDown) throw new AbilityInCooldownException();
+                if (isInCoolDown)
+                    throw new AbilityInCooldownException("This ability (" + this.info.name + ")is  in Cooldown");
                 hero2.changeHealth(150);
                 h = 150;
                 isInCoolDown = true;
@@ -208,7 +219,7 @@ public class Ability implements Durable {
                     if (this.isInCoolDown) {
                         hero2.changeEP(-1);
                         hero.changeMagic(30);
-                        throw new AbilityInCooldownException();
+                        throw new AbilityInCooldownException("This ability (" + this.info.name + ")is  in Cooldown");
                     }
                     //break is not needed
                 case 2:
@@ -217,7 +228,9 @@ public class Ability implements Durable {
                     } catch (NotEnoughEnergyPointsException e) {
                         hero.changeMagic(30);
                         hero2.changeEP(-1);
-                        throw new NotEnoughEnergyPointsException();
+                        throw new NotEnoughEnergyPointsException("Your " + hero.name + hero.id + " hero doesn't have Enough EP to" +
+                                " perform this move\ncurrent EP : " + hero.currentEnergyPoints + "\nrequired EP : " + 30 + "\nYou need " +
+                                (30 - hero.currentEnergyPoints) + " additional Eps.");
                     }
                     isInCoolDown = true;
                     break;
@@ -227,7 +240,9 @@ public class Ability implements Durable {
                     } catch (NotEnoughEnergyPointsException e) {
                         hero.changeMagic(30);
                         hero2.changeEP(-1);
-                        throw new NotEnoughEnergyPointsException();
+                        throw new NotEnoughEnergyPointsException("Your " + hero.name + hero.id + " hero doesn't have Enough MP to" +
+                                " perform this move\ncurrent MP : " + hero.currentMagic + "\nrequired MP : " + 30 + "\nYou need " +
+                                (30 - hero.currentMagic) + " additional Mps.");
                     }
                     break;
 
@@ -244,18 +259,22 @@ public class Ability implements Durable {
             hero.changeMagic(-50);
         } catch (NotEnoughMagicPointsException e) {
             hero.changeEP(2);
-            throw new NotEnoughMagicPointsException();
+            throw new NotEnoughMagicPointsException("Your " + hero.name + hero.id + " hero doesn't have Enough MP to" +
+                    " perform this move\ncurrent MP : " + hero.currentMagic + "\nrequired MP : " + 50 + "\nYou need " +
+                    (50 - hero.currentMagic) + " additional Mps.");
         }
         int a = 0;
         switch (this.currentLevel) {
             case 1:
-                if (this.isInCoolDown) throw new AbilityInCooldownException();
+                if (this.isInCoolDown)
+                    throw new AbilityInCooldownException("This ability (" + this.info.name + ")is  in Cooldown");
                 hero2.changeAttackPower(20);
                 isInCoolDown = true;
                 a = 20;
                 break;
             case 2:
-                if (this.isInCoolDown) throw new AbilityInCooldownException();
+                if (this.isInCoolDown)
+                    throw new AbilityInCooldownException("This ability (" + this.info.name + ")is  in Cooldown");
                 hero2.changeAttackPower(30);
                 isInCoolDown = true;
                 a = 30;
@@ -274,18 +293,22 @@ public class Ability implements Durable {
             hero.changeMagic(-50);
         } catch (NotEnoughMagicPointsException e) {
             hero.changeEP(1);
-            throw new NotEnoughMagicPointsException();
+            throw new NotEnoughMagicPointsException("Your " + hero.name + hero.id + " hero doesn't have Enough MP to" +
+                    " perform this move\ncurrent MP : " + hero.currentMagic + "\nrequired MP : " + 50 + "\nYou need " +
+                    (50 - hero.currentMagic) + " additional Mps.");
         }
         int m = 0;
         switch (this.currentLevel) {
             case 1:
-                if (this.isInCoolDown) throw new AbilityInCooldownException();
+                if (this.isInCoolDown)
+                    throw new AbilityInCooldownException("This ability (" + this.info.name + ")is  in Cooldown");
                 hero2.changeMagic(50);
                 isInCoolDown = true;
                 m = 50;
                 break;
             case 2:
-                if (this.isInCoolDown) throw new AbilityInCooldownException();
+                if (this.isInCoolDown)
+                    throw new AbilityInCooldownException("This ability (" + this.info.name + ")is  in Cooldown");
                 hero2.changeMagic(80);
                 isInCoolDown = true;
                 m = 80;
@@ -310,8 +333,11 @@ public class Ability implements Durable {
     public boolean equals(Object obj) {
         if (obj == null || obj.getClass() != this.getClass()) return false;
         Ability other = (Ability) obj;
-        if (!this.name.equals(other.name)) return false;
+        if (!this.info.name.equals(other.info.name)) return false;
         return true;
+    }
+
+    public void aTurnHasPassed() {
     }
 }
 

@@ -182,5 +182,11 @@ public class Player {
         }
         return null;
     }
+
+    public void aTurnHasPassed() {
+        for (int i = 0; i < heros.size(); i++) {
+            heros.get(i).aTurnHasPassed();
+        }
+    }
 }
 
