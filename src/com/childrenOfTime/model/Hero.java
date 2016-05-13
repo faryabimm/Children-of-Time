@@ -105,8 +105,8 @@ public class Hero extends Warrior {
         abilities.put(info.ability4,new Ability(info.ability4));
     }
     @InProgress
-    public void useAbility(String abilityName, Warrior warrior) throws AttackException {
-        abilities.get(abilityName).cast(this, warrior);
+    public void useAbility(Ability ability, Warrior warrior) throws AttackException {
+        ability.cast(this, warrior);
     }
     public int getInventorySize() {
         return heroType.inventorySize;
