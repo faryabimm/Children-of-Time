@@ -18,8 +18,6 @@ public final class ChildrenOfTime {
     private ArrayList<Player> players = new ArrayList<>();
     private ArrayList<Battle> battles = new ArrayList<>();
 
-    //TODO you should change battles and players to Hashmaps , man oonaro injoori farz kardam
-
     @Completed
     public static ChildrenOfTime getInstance() {
         if (instance == null) {
@@ -27,8 +25,6 @@ public final class ChildrenOfTime {
         }
         return instance;
     }
-
-
     @Completed
     private ChildrenOfTime() {
         ArrayList<Foe> battleFoes = new ArrayList<>();
@@ -91,7 +87,6 @@ public final class ChildrenOfTime {
         battleHeros.add(new Hero("Chrome", "Fighter", 0));
         players.add(new Player(battleHeros));
     }
-
     @Completed
     public void startSinglePlayerMode() {
 
@@ -133,7 +128,6 @@ public final class ChildrenOfTime {
             singlePlayerGameCompleted();
         }
     }
-
     @Completed
     private void singlePlayerGameCompleted() {
         String victoryMessage;
@@ -144,13 +138,10 @@ public final class ChildrenOfTime {
         printOutput("Congratulations! You Won!");
         printOutput(victoryMessage);
     }
-
-
     @Completed
     private void singlePlayerGameOver() {
         printOutput("OOPS! You Lose! Try Again!");
     }
-
     @Completed
     private void getUserInput(Battle battle) {
         String userInput = getInput();
@@ -174,7 +165,6 @@ public final class ChildrenOfTime {
         }
 
     }
-
     @Completed
     private void doneCommand(Battle battle) {
 
@@ -197,7 +187,6 @@ public final class ChildrenOfTime {
         }
 
     }
-
     @Completed
     public void helpCommand(Battle battle) {
         switch (battle.battleState) {
@@ -219,7 +208,6 @@ public final class ChildrenOfTime {
         }
 
     }
-
     @Completed
     private void againCommand(Battle battle) {
 
@@ -246,17 +234,7 @@ public final class ChildrenOfTime {
 
 
     }
-
     public ArrayList<Player> getPlayers() {
         return players;
     }
-
-//    public Map<String, Player> getPlayers() {
-//        return players;
-//    }
-//
-//    public Map<String, Battle> getBattles() {
-//        return battles;
-//    }
-
 }
