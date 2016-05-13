@@ -37,8 +37,8 @@ public class Foe extends Warrior {
 
 
     @Completed
-    public Foe(String name, StrengthOfFoes strength) {
-        super(name);
+    public Foe(String name, StrengthOfFoes strength, int id) {
+        super(name, id);
         TypesOfFoes ty = TypesOfFoes.valueOf(name);
         try {
             this.strength = StrengthOfFoes.valueOf(strength);
