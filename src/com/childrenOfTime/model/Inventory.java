@@ -19,7 +19,9 @@ public class Inventory {
     public int getAvailableCapacity(){
         int sum=0;
         for(Item i:items){
-            sum+=i.getSize();
+            if (i.getInfo().isHasVolume()) {
+                sum++;
+            }
         }
         return maxCapacity-sum;
     }
