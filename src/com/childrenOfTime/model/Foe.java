@@ -4,6 +4,7 @@ import com.childrenOfTime.Completed;
 import com.childrenOfTime.NotImplementedYet;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
 
@@ -27,8 +28,8 @@ public class Foe extends Warrior {
     public Foe(String name, StrengthOfFoes strength, int id) {
         super(name, id);
         type = TypesOfFoes.valueOf(name.split(" ")[0]);
-
-        type.setStrength(strength);
+        this.strength = strength;
+        type.setStrength(this.strength);
 
         this.healingAmount = type.healingAmount;
         super.maxHealth = type.maximumHealth;
@@ -60,7 +61,7 @@ public class Foe extends Warrior {
 
     @Completed
     public void Act1(ChildrenOfTime game) {
-        ArrayList<Warrior> targets = new ArrayList();
+        ArrayList<Object> targets = new ArrayList();
         Warrior singleTarget;
         switch (name) {
             case "Thug":
@@ -72,11 +73,9 @@ public class Foe extends Warrior {
                 singleTarget.changeHealth(+this.healingAmount);
                 break;
             case "Tank":
-//                targets = Battle.getFoes();
-                for (Warrior w : targets) {
+                for (Warrior w : ChildrenOfTime.getInstance().getPlayers().get(0).getHeros()) {
                     ((Hero) w).changeHealth(-attackPower);
                 }
-                //TODO
                 break;
             case "Final Boss":
                 singleTarget = this.findTarget(game);
@@ -102,8 +101,10 @@ public class Foe extends Warrior {
 
     @NotImplementedYet
     private Warrior findTarget(ChildrenOfTime game) {
-        //TODO Dont know How to implement
-        return null;
+        Random rand = new Random();
+        ArrayList<Hero> allHeroes = ChildrenOfTime.getInstance().getPlayers().get(0).getHeros();
+        int n = rand.nextInt(allHeroes.size()) + 1;
+        return allHeroes.get(n);
     }
 
 
@@ -143,7 +144,7 @@ public class Foe extends Warrior {
                 }
             }
         }
-        printOutput(toPrint);
+        printOutput("salam");
     }
 }
 
