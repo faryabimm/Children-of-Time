@@ -38,8 +38,9 @@ public class Battle {
     }
     @Completed
     public void defeat() {
-        printOutput("Battle #" + (id + 1) + "Has Concluded!");
+        printOutput("Battle #" + (id) + "Has Concluded!");
         printOutput("Defeat! You’ve failed to defeat all of your enemies");
+        System.exit(0);
     }
     @Completed
     public void victory() {
