@@ -89,7 +89,6 @@ public class Ability implements Durable {
                 break;
             case 3:
                 throw new AbilityMaxLevelReachedException();
-                break;
         }
 
         String aqORup = "";
@@ -129,23 +128,18 @@ public class Ability implements Durable {
     private void FightTraining(Hero hero) throws NotEnoughXPException {
         hero.attackPower += 30;
     }
-
     @Completed
     private void WorkOut(Hero hero) {
         hero.maxHealth += 50;
     }
-
     @Completed
     private void MagicLessons(Hero hero) {
         hero.changeMaxMagic(50);
     }
-
-
     @Completed
     private void QuickAsABunny(Hero hero) {
         hero.changeEP(1);
     }
-
     @Completed
     private void OverpoweredAttack(Hero hero, Foe foe) throws AttackException {
         hero.changeEP(-2);
@@ -160,24 +154,20 @@ public class Ability implements Durable {
         printOutput("Eley just did an overpowered attack on " +
                 foe + " with " + 1 + 0.2 * currentLevel + " damage");
     }
-
     @Completed
     private void SwirlingAttack(Hero hero) {
         hero.swirlingisActivated = true;
         hero.damagePercent = 0.1 * currentLevel;
     }
-
     @InProgress
     private String Sacrifice(Hero hero) {
         //TODO we need a list of all foes
         return null;
     }
-
     @InProgress
     private void CriticalStrike(Hero hero) {
 
     }
-
     @Completed
     private void Elixir(Hero hero, Hero hero2) throws AttackException {
         hero.changeEP(-2);
@@ -208,7 +198,6 @@ public class Ability implements Durable {
         }
         printOutput("Meryl just healed " + hero2 + " with " + h + " health points");
     }
-
     @Completed
     private void CareTaker(Hero hero, Hero hero2) throws AttackException {
         if (!hero2.equals(hero)) {
@@ -248,7 +237,6 @@ public class Ability implements Durable {
             printOutput("Meryl just gave " + hero2 + " 1 energy point");
         }
     }
-
     @Completed
     private void Boost(Hero hero, Hero hero2) throws AttackException {
         hero.changeEP(-2);
@@ -279,7 +267,6 @@ public class Ability implements Durable {
         }
         printOutput("Bolti just boosted " + hero2 + " with " + a + " power");
     }
-
     @Completed
     private void ManaBeam(Hero hero, Hero hero2) throws AttackException {
         hero.changeEP(-1);
@@ -310,21 +297,15 @@ public class Ability implements Durable {
         }
         printOutput("Bolti just helped " + hero2 + " with " + m + " magic points");
     }
-
-
     public String getSuccessMessage() {
         //TODO implement
         return null;
     }
-
     public int getCurrentLevel() {
         return currentLevel;
     }
-
     public void showDescription() {
     }
-
-
     @Override
     public boolean equals(Object obj) {
         if (obj == null || obj.getClass() != this.getClass()) return false;

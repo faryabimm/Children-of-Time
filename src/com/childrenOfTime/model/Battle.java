@@ -85,17 +85,17 @@ public class Battle {
         Foe currentFoe;
         for (int i = 0; i < foes.size(); i++) {
             currentFoe = foes.get(i);
-            if (currentFoe.equals(new Foe(name, StrengthOfFoes.Able)) && currentFoe.getId() == id) return currentFoe;
+            if (currentFoe.equals(new Foe(name, StrengthOfFoes.Able, 0)) && currentFoe.getId() == id) return currentFoe;
         }
         return null;
 
     }
     @Completed
-    private Foe findFoeByName(String s) {
+    private Foe findFoeByName(String name) {
         Foe currentFoe;
         for (int i = 0; i < foes.size(); i++) {
             currentFoe = foes.get(i);
-            if (currentFoe.equals(new Foe(s, StrengthOfFoes.Able))) return currentFoe;
+            if (currentFoe.equals(new Foe(name, StrengthOfFoes.Able, 0))) return currentFoe;
         }
         return null;
     }
@@ -392,7 +392,6 @@ public class Battle {
                 "3\tInformation\n" +
                 "4\tDone  -proceed to next stage-");
     }
-
     @Completed
     public static ArrayList<Foe> getFoes() {
         return foes;
