@@ -2,6 +2,8 @@ package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
 import com.childrenOfTime.cgd.Store;
+import com.childrenOfTime.exceptions.GameException;
+import com.childrenOfTime.exceptions.TradeException;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -168,18 +170,20 @@ public class Battle {
             }
         }
 
-            p = Pattern.compile("[Ss]ell+\\s+\\w+\\s+of+\\s+\\w");
+            p = Pattern.compile("[Ss]ell+\\s+.*\\w+\\s.*(\\s+.*\\w)?+(of)+\\s+.*\\w");
             m = p.matcher(inputTemp);
             matchFound = m.matches();
             if (matchFound) {
-                String itemName = inputTemp.substring(inputTemp.indexOf("Sell") + 4, inputTemp.indexOf("for") - 1);
-                String targetHeroName = inputTemp.substring(inputTemp.indexOf("for") + 4, inputTemp.length());
+                String itemName = inputTemp.substring(inputTemp.indexOf("Sell") + 5, inputTemp.indexOf("of") - 1);
+                String targetHeroName = inputTemp.substring(inputTemp.indexOf("of") + 3, inputTemp.length());
                 Hero targetHero = currentPlayer.findHeroByName(targetHeroName);
                 if (targetHero != null) {
                     Item targetItem = currentPlayer.getItembyNameAndOwner(itemName, targetHero);
                     if (targetItem != null) {
-                        currentPlayer.sell(targetItem, targetHero); //TODO fix buy !!!
+                        currentPlayer.sell(targetItem, targetHero);
                         invalidCommand = false;
+                    } else {
+                        throw new TradeException("this Hero has no such Item in its inventory! (" + itemName + ")");
                     }
                 }
             }

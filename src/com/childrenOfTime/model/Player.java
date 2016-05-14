@@ -61,9 +61,10 @@ public class Player {
 
         ArrayList<Item> heroItems = target.inventory.getItems();
         currentWealth += heroItems.get(heroItems.indexOf(item)).getCurrentPrice() / 2;
-        printOutput("Item " + item.getInfo().getName() + "was successfully sold for $" +
-                heroItems.get(heroItems.indexOf(item)).getCurrentPrice() / 2 + " and was removed form " +
-                target.getName() + " " + target.getId() + "Hero .");
+        printOutput("Item " + item.getInfo().getName() + " was successfully sold for $" +
+                heroItems.get(heroItems.indexOf(item)).getCurrentPrice() / 2 + " and was removed form (" +
+                target.getName() + " " + target.getId() + ") Hero.");
+        printOutput("your Current Wealth is: $" + getCurrentWealth());
         target.inventory.getItems().remove(item);
     }
     @Completed
