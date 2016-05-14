@@ -4,6 +4,7 @@ import com.childrenOfTime.Completed;
 import com.childrenOfTime.NotImplementedYet;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
@@ -137,6 +138,7 @@ public class Foe extends Warrior {
 
     @Override
     public String showCurrentTraits() {
+
         return null;
     }
 

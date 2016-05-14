@@ -2,7 +2,6 @@ package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
 import com.childrenOfTime.cgd.Store;
-import com.childrenOfTime.exceptions.GameException;
 import com.childrenOfTime.exceptions.TradeException;
 
 import java.util.ArrayList;
@@ -303,8 +302,20 @@ public class Battle {
 
 
         Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
-        currentPlayer.getHeros().forEach(Hero::showCurrentTraits);
-        foes.forEach(Foe::showCurrentTraits);
+
+        printOutput("Hero:");
+        for (Hero hero : currentPlayer.getHeros()) {
+            printOutput(hero.getName() + " " + hero.getId());
+            hero.showCurrentTraits();
+        }
+
+        printOutput("Foes:");
+        for (Foe foe : foes) {
+            printOutput(foe.getName() + " " + foe.getId());
+            printOutput(foe.showCurrentTraits());
+        }
+
+
 
         String inputTemp = getInput();
         boolean invalidCommand = true;
