@@ -141,14 +141,18 @@ public class Battle {
             invalidCommand = false;
         }
 
-        p = Pattern.compile("Buy+\\s+\\w+\\s+for+\\s+\\w");
+        p = Pattern.compile("Buy+\\\\s+.*\\\\w+(\\\\s+.*\\\\w)?+.*\\\\w\"");
         m = p.matcher(inputTemp);
         matchFound = m.matches();
         if (matchFound) {
-            String temp[] = inputTemp.split("\\s");
-            Hero targetHero = currentPlayer.findHeroByName(temp[3]);
-            Item targetItem = currentStore.getItembyName(temp[1]);
-            currentPlayer.buy(targetItem, targetHero);
+            String itemName = inputTemp.substring(inputTemp.indexOf("Buy") + 3, inputTemp.indexOf("for") - 1);
+            String targetHeroName = inputTemp.substring(inputTemp.indexOf("for") + 4, inputTemp.length());
+            Hero targetHero = currentPlayer.findHeroByName(targetHeroName);
+            Item targetItem = currentStore.getItembyName(itemName);
+
+            if (targetItem != null) {
+                currentPlayer.buy(targetItem, targetHero);
+            }
             invalidCommand = false;
         }
 
@@ -193,8 +197,8 @@ public class Battle {
     public void startUpgradeSession(boolean showFirstThings) {
         try {
             Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
-            printOutput("Your current experience is:" + currentPlayer.getCurrentExperience());
             if (showFirstThings) {
+                printOutput("Your current experience is:" + currentPlayer.getCurrentExperience());
                 for (int i = 0; i < currentPlayer.getHeros().size(); i++) {
                     printOutput(currentPlayer.getHeros().get(i).getName());
                     currentPlayer.getHeros().get(i).showAbDes();
@@ -214,6 +218,7 @@ public class Battle {
                 Ability targetAbility = targetHero.abilities.get(abilityName);
                 if (targetAbility != null) {
                     currentPlayer.upgradeAbility(targetAbility, targetHero);
+                    printOutput("Your current experience is:" + currentPlayer.getCurrentExperience());
                     invalidCommand = false;
 
                 }
@@ -227,8 +232,10 @@ public class Battle {
                 Hero targetHero = currentPlayer.findHeroByName(temp[0]);
                 if (targetHero != null) {
                     Ability targetAbility = currentPlayer.findAbilityByNameAndOwner(temp[1].substring(0, temp[1].length() - 1), targetHero);
-                    targetHero.abilityDescription(targetAbility);
-                    invalidCommand = false;
+                    if (targetAbility != null) {
+                        targetHero.abilityDescription(targetAbility);
+                        invalidCommand = false;
+                    }
                 }
             }
 
