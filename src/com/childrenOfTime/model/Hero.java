@@ -190,16 +190,16 @@ public class Hero extends Warrior {
     public void changeEP(int num) throws NotEnoughEnergyPointsException {
         if (this.currentEnergyPoints + num < 0) {
             throw new NotEnoughEnergyPointsException("Your " + name + id + " hero doesn't have Enough EP to perform this" +
-                    " move\ncurrent EP : " + currentEnergyPoints + "\nrequired EP : " + num + "\nYou need " +
-                    (num - currentEnergyPoints) + " additional EPs.");
+                    " move\ncurrent EP : " + currentEnergyPoints + "\nrequired EP : " + -num + "\nYou need " +
+                    (-num - currentEnergyPoints) + " additional EPs.");
         }
         this.currentEnergyPoints += num;
     }
     public void changeMagic(int i) throws NotEnoughMagicPointsException {
         if (this.currentMagic + i < 0) {
             throw new NotEnoughMagicPointsException("Your " + name + id + " hero doesn't have Enough MP to perform this" +
-                    " move\ncurrent MP : " + currentMagic + "\nrequired MP : " + i + "\nYou need " +
-                    (i - currentEnergyPoints) + " additional MPs.");
+                    " move\ncurrent MP : " + currentMagic + "\nrequired MP : " + -i + "\nYou need " +
+                    (-i - currentEnergyPoints) + " additional MPs.");
         }
         if (this.currentMagic + i > info.maxMagic) {
             currentMagic = maxHealth;
@@ -259,7 +259,7 @@ public class Hero extends Warrior {
         for (Item item : inventory.getItems()) {
             toPrint += "Can Use " + item.getInfo().getName() + " for " + 0 + " energy points, " + 0 + " magic points and a " + 0 + " turn cooldown\n";
         }
-        //  printOutput(toPrint);
+        printOutput(toPrint);
         return toPrint;
     }
 

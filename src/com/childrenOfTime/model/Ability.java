@@ -392,7 +392,7 @@ public class Ability implements Durable {
     @Override
     public void aTurnHasPassed() {
         if (leftTurnsToCoolDown == 1) {
-            this.isInCoolDown = true;
+            this.isInCoolDown = false;
             leftTurnsToCoolDown = this.info.coolDownTime;
         } else {
             leftTurnsToCoolDown--;

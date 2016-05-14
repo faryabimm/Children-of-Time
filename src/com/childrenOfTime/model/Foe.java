@@ -29,7 +29,7 @@ public class Foe extends Warrior {
         super(name, id);
         type = TypesOfFoes.valueOf(name.split(" ")[0]);
         this.strength = strength;
-        type.setStrength(type, this.strength);
+        type.setStrength(this.strength);
 
         this.healingAmount = type.healingAmount;
         super.maxHealth = type.maximumHealth;
@@ -46,7 +46,7 @@ public class Foe extends Warrior {
 
 
     @Completed
-    private void updateFinalBoss() {
+    void updateFinalBoss() {
         if (this.name.equals("Final Boss")) {
             if (currentHealth <= 400) {
                 strength = StrengthOfFoes.Mutated;
@@ -54,7 +54,7 @@ public class Foe extends Warrior {
                 printOutput(WarriorMessages.getMutationMessageForFinalBoss(this));
 
             } else {
-                strength = null;
+                strength = StrengthOfFoes.Dramatic;
                 attackPower = attackPowerInHighHealth;
             }
         }

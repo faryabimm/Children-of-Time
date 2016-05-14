@@ -85,8 +85,8 @@ public class Player {
     public void changeCurrentExperience(int num) throws NotEnoughXPException {
         if (this.currentExperience + num < 0) {
             throw new NotEnoughXPException("You don't have Enough XP points to apply this upgrade\n" +
-                    "your current XP : " + currentExperience + " \nrequired XP : " + num + "\nYou need " +
-                    (num - currentExperience) + " additional XP points.");
+                    "your current XP : " + currentExperience + " \nrequired XP : " + -num + "\nYou need " +
+                    (-num - currentExperience) + " additional XP points.");
         } else {
             this.currentExperience += num;
         }
