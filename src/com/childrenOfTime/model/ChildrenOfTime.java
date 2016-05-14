@@ -38,7 +38,8 @@ public final class ChildrenOfTime {
         battleFoes.add(new Foe("Thug", StrengthOfFoes.Weak, 1));
         battleFoes.add(new Foe("Thug", StrengthOfFoes.Weak, 2));
         battleFoes.add(new Foe("Angel", StrengthOfFoes.Weak, 0));
-        String storyTemp = "You’ve entered the castle, it takes a while for your eyes to get used to the darkness but\n" +
+        String storyTemp = "Battle 1 : \n" +
+                "You’ve entered the castle, it takes a while for your eyes to get used to the darkness but\n" +
                 "the horrifying halo of your enemies is vaguely visible. Angel’s unsettling presence and\n" +
                 "the growling of thugs tell you that your first battle has BEGUN!";
         battles.add(new Battle(storyTemp, new Reward(20, 50), battleFoes));
@@ -49,7 +50,8 @@ public final class ChildrenOfTime {
         battleFoes.add(new Foe("Thug", StrengthOfFoes.Able, 1));
         battleFoes.add(new Foe("Angel", StrengthOfFoes.Weak, 0));
         battleFoes.add(new Foe("Tank", StrengthOfFoes.Weak, 0));
-        storyTemp = "As you wander into the hall you realize the surrounding doors can lead your destiny to\n" +
+        storyTemp = "Battle 2 : \n" +
+                "As you wander into the hall you realize the surrounding doors can lead your destiny to\n" +
                 "something far worse than you expected. You know what’s anticipating you behind the only\n" +
                 "open door but there’s no other choice.";
         battles.add(new Battle(storyTemp, new Reward(25, 60), battleFoes));
@@ -60,7 +62,8 @@ public final class ChildrenOfTime {
         battleFoes.add(new Foe("Thug", StrengthOfFoes.Mighty, 0));
         battleFoes.add(new Foe("Angel", StrengthOfFoes.Able, 0));
         battleFoes.add(new Foe("Tank", StrengthOfFoes.Weak, 0));
-        storyTemp = "The door behind you is shut with a thunderous sound and you progress into the next hall\n" +
+        storyTemp = "Battle 3 \n" +
+                "The door behind you is shut with a thunderous sound and you progress into the next hall\n" +
                 "holding the first key that you’ve found, hoping to seek the second one.";
         battles.add(new Battle(storyTemp, new Reward(30, 70), battleFoes));
 
@@ -71,14 +74,16 @@ public final class ChildrenOfTime {
         battleFoes.add(new Foe("Angel", StrengthOfFoes.Able, 0));
         battleFoes.add(new Foe("Tank", StrengthOfFoes.Able, 0));
         battleFoes.add(new Foe("Tank", StrengthOfFoes.Able, 1));
-        storyTemp = "Running with the second key in your hand, you unlock the door back to the first hall and\n" +
+        storyTemp = "Battle 4 : \n" +
+                "Running with the second key in your hand, you unlock the door back to the first hall and\n" +
                 "use the first key to burst into your most terrifying nightmares.";
         battles.add(new Battle(storyTemp, new Reward(35, 80), battleFoes));
 
 
         battleFoes = new ArrayList<>();
         battleFoes.add(new Foe("Final Boss", StrengthOfFoes.Dramatic, 0));
-        storyTemp = "You feel hopeless and exhausted as you stalk to the final door. What’s behind that door\n" +
+        storyTemp = "Battle 5 : \n " +
+                "You feel hopeless and exhausted as you stalk to the final door. What’s behind that door\n" +
                 "makes your hearts pound and your spines shake with fear, but you came here to do one\n" +
                 "thing and backing down is not an option.";
         battles.add(new Battle(storyTemp, new Reward(0, 0), battleFoes));
@@ -97,9 +102,15 @@ public final class ChildrenOfTime {
     }
 
     Boolean firstTime = true;
+
     @Completed
     public void startSinglePlayerMode() {
         try {
+
+            printOutput("Hello and Good Evening ! ");
+            printOutput("Welcome to ChildrenOfTime ! ");
+            printOutput("These are your heroes : ");
+            players.get(0).showCurrentHeroStats();
             for (Battle battle : battles) {
                 while (battle.battleState != BattleState.finished) {
                     switch (battle.battleState) {
@@ -154,25 +165,32 @@ public final class ChildrenOfTime {
         for (Player p : players) {
             if (!p.isDefeated()) playersAreDefeated = false;
         }
-
         return battle.checkFoesAreDied() || playersAreDefeated;
     }
 
 
     private void startFight(Battle battle) {
         printOutput("Battle #" + battle.id + ":");
+        printOutput("Fight : ");
         while (battle.battleState != BattleState.finished) {
+            Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
+
             if (!players.get(0).isDefeated()) {
+
                 printOutput("\n Next Turn: \n");
                 battle.initiateNextTurn();
                 if (battleIsFinishing(battle)) {
                     battle.battleState = BattleState.finished;
-                }
 
-                ChildrenOfTime.getInstance().firstTime = false;   //TODO Make sure about working correctly ;
+                    if (players.get(0).isDefeated()) battle.defeat();
+                    else printOutput("“Victory! You’ve defeated all of your enemies”");
+                }
             }
+
+            ChildrenOfTime.getInstance().firstTime = false;   //TODO Make sure about working correctly ;
         }
     }
+
 
     @Completed
     private void singlePlayerGameCompleted() {

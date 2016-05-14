@@ -22,7 +22,7 @@ public class Battle {
     protected int id;
     public BattleState battleState;
     private static ArrayList<Foe> foes200 = new ArrayList<>();
-    private ArrayList<Foe> foes;
+    ArrayList<Foe> foes;
     private Reward reward;
 
     public Battle(String story, Reward reward, ArrayList<Foe> foes) {
@@ -103,8 +103,11 @@ public class Battle {
     }
     @Completed
     private Foe findFoeByNameAndId(String name, Integer id) {
-
         Foe currentFoe;
+        for (Foe foe : foes) {
+            if (foe.getName().equals(name) & foe.getId() == id) return foe;
+        }
+
         for (int i = 0; i < foes.size(); i++) {
             currentFoe = foes.get(i);
             if (currentFoe.equals(new Foe(name, StrengthOfFoes.Able, 0)) && currentFoe.getId() == id) return currentFoe;
@@ -296,63 +299,35 @@ public class Battle {
             printOutput(e.getMessage());
         }
     }
+
+
     @Completed
     public void initiateNextTurn() {              // should handle again and help commands in it
         try {
             Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
 
-            boolean dontPrint = false;
+
+            printOutput("Hero:");
+            for (Hero hero : currentPlayer.getHeros()) {
+                printOutput(hero.getName() + " " + hero.getId());
+                hero.showCurrentTraits();
+            }
+
+            printOutput("Foes:");
+            for (Foe foe : foes) {
+                printOutput(foe.getName() + " " + foe.getId());
+                printOutput(foe.showCurrentTraits());
+
+            }
+
 
             String inputTemp = getInput();
             boolean invalidCommand = true;
 
 
-            Pattern p = Pattern.compile("again|help|information|done");
+            Pattern p = Pattern.compile(".*\\w+(\\s+.*\\w)?+\\?");
             Matcher m = p.matcher(inputTemp);
-            boolean matchFound;
-
-            matchFound = m.matches();
-
-            if (matchFound) {
-                invalidCommand = false;
-                switch (inputTemp) {
-                    case "again":
-                        startStoreSession(true);
-                        break;
-                    case "help":
-                        dontPrint = true;
-                        storeHelp();
-                        break;
-                    case "information":
-                        dontPrint = true;
-                        currentPlayer.getHeros().forEach(Hero::showCurrentItems);
-                        printOutput("Your current wealth is:" + currentPlayer.getCurrentWealth());
-                        break;
-                    case "done":
-                        dontPrint = true;
-                        ChildrenOfTime.getInstance().doneCommand(this);
-                        break;
-                }
-            }
-
-            if (!dontPrint) {
-                printOutput("Hero:");
-                for (Hero hero : currentPlayer.getHeros()) {
-                    printOutput(hero.getName() + " " + hero.getId());
-                    hero.showCurrentTraits();
-                }
-
-                printOutput("Foes:");
-                for (Foe foe : foes) {
-                    printOutput(foe.getName() + " " + foe.getId());
-                    printOutput(foe.showCurrentTraits());
-                }
-            }
-
-
-            p = Pattern.compile("\\w+(\\s+.*\\w)?\\?");
-            m = p.matcher(inputTemp);
-            matchFound = m.matches();
+            boolean matchFound = m.matches();
             if (matchFound) {
                 String temp = inputTemp.substring(0, inputTemp.length() - 1);
 
@@ -415,7 +390,8 @@ public class Battle {
             if (matchFound) {
 
                 Hero attackingHero = currentPlayer.findHeroByName(inputTemp.substring(0, inputTemp.indexOf("Attack") - 1));
-                Foe targetFoe = findFoeByNameAndId(inputTemp.substring(inputTemp.indexOf("Attack") + 6, inputTemp.length()), 0);
+                int id = Integer.parseInt(inputTemp.substring(inputTemp.length() - 1, inputTemp.length()));
+                Foe targetFoe = findFoeByNameAndId(inputTemp.substring(inputTemp.indexOf("Attack") + 7, inputTemp.length() - 2), id);
 
 
                 if (attackingHero != null && targetFoe != null) {
@@ -425,26 +401,30 @@ public class Battle {
                 invalidCommand = false;
             }
 
+
             p = Pattern.compile("again|help|information|done");
             m = p.matcher(inputTemp);
             matchFound = m.matches();
             if (matchFound) {
-                invalidCommand = false;
                 switch (inputTemp) {
                     case "again":
                     case "information":
                         currentPlayer.getHeros().forEach(Hero::showCurrentTraits);
                         foes.forEach(Foe::showCurrentTraits);
+                        invalidCommand = false;
                         break;
                     case "help":
                         fightHelp();
+                        invalidCommand = false;
                         break;
                     case "done":
                         ChildrenOfTime.getInstance().doneCommand(this);
                         defeat();
+                        invalidCommand = false;
                         break;
                 }
             }
+
 
             if (invalidCommand) {
                 printOutput("Invalid Command ! Be careful , enemies are attacking you !");

@@ -38,17 +38,17 @@ public class WarriorMessages {
         String toReturn = "";
         switch (foe.getName()) {
             case "Thug":
-                toReturn = "Thug just attacked " + targets[0] + " with " + foe.attackPower + " power";
+                toReturn = foe + " just attacked " + targets[0] + targets[0].getId() + " with " + foe.attackPower + " power";
                 break;
             case "Angel":
                 Foe t = (Foe) targets[0];
-                toReturn = "Angel just healed " + t + " with " + t + " health points";
+                toReturn = foe + " just healed " + t + " with " + foe.healingAmount + " health points";
                 break;
             case "Tank":
-                toReturn = "Tank just damaged all of your heroes with " + foe.attackPower + " power";
+                toReturn = " Tank just damaged all of your heroes with " + foe.attackPower + " power";
                 break;
             case "Final":
-                toReturn = "Collector just attacked " + targets[0] + " with " + foe.attackPower + " power";
+                toReturn = " Collector just attacked " + targets[0] + " with " + foe.attackPower + " power";
                 break;
 
         }

@@ -4,7 +4,6 @@ import com.childrenOfTime.Completed;
 import com.childrenOfTime.NotImplementedYet;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Random;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
@@ -74,7 +73,7 @@ public class Foe extends Warrior {
 
                 break;
             case "Angel":
-                singleTarget = this.findTarget(game);
+                singleTarget = this.findFoeTarget(game);
                 singleTarget.changeHealth(+this.healingAmount);
                 printOutput(WarriorMessages.getAction_1_MessageForFoe(this, singleTarget));
 
@@ -116,15 +115,22 @@ public class Foe extends Warrior {
     private Warrior findTarget(ChildrenOfTime game) {
         Random rand = new Random();
         ArrayList<Hero> allHeroes = ChildrenOfTime.getInstance().getPlayers().get(0).getHeros();
-        int n = rand.nextInt(allHeroes.size()) + 1;
+        int n = rand.nextInt(allHeroes.size());
         return allHeroes.get(n);
+    }
+
+    private Foe findFoeTarget(ChildrenOfTime game) {
+        Random rand = new Random();
+        ArrayList<Foe> allFoe = Battle.getFoes();
+        int n = rand.nextInt(allFoe.size());
+        return allFoe.get(n);
     }
 
 
     @Override
     public String toString() {
 
-        return getName() + getId();
+        return getName() + " " + getId();
     }
 
 
