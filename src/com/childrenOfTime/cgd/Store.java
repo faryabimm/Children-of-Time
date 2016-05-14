@@ -35,8 +35,9 @@ public class Store {
     }
 
     public InformationOfItems getStoreRawItembyName(String temp) {
+
         for (InformationOfItems informationOfItems : InformationOfItems.values()) {
-            if (informationOfItems.name().equals(temp)) {
+            if (informationOfItems.getName().equals(temp)) {
                 return informationOfItems;
             }
 
