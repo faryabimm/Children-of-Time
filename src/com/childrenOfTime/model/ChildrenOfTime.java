@@ -104,6 +104,7 @@ public final class ChildrenOfTime {
                 while (battle.battleState != BattleState.finished) {
                     switch (battle.battleState) {
                         case story:
+                            battle.returnFoesToOtherClassesInYourStaticField();
                             battle.playStory();
                             getUserInput(battle);
                             break;
@@ -121,7 +122,7 @@ public final class ChildrenOfTime {
                             battle.startStoreSession(firstTime);
                             break;
                         case fight:
-                            startFight(battle, firstTime);
+                            startFight(battle);
                             break;
                     }
                 }
@@ -148,12 +149,26 @@ public final class ChildrenOfTime {
 
     }
 
-    private void startFight(Battle battle, boolean showThings) {
+    private boolean battleIsFinishing(Battle battle) {
+        boolean playersAreDefeated = true;
+        for (Player p : players) {
+            if (!p.isDefeated()) playersAreDefeated = false;
+        }
+
+        return battle.checkFoesAreDied() || playersAreDefeated;
+    }
+
+
+    private void startFight(Battle battle) {
         printOutput("Battle #" + battle.id + ":");
         while (battle.battleState != BattleState.finished) {
-            if (!players.get(0).isDefeated() & showThings) {
-                printOutput("A new Turn Has Begun!");
+            if (!players.get(0).isDefeated()) {
+                printOutput("\n Next Turn: \n");
                 battle.initiateNextTurn();
+                if (battleIsFinishing(battle)) {
+                    battle.battleState = BattleState.finished;
+                }
+
                 ChildrenOfTime.getInstance().firstTime = false;   //TODO Make sure about working correctly ;
             }
         }
