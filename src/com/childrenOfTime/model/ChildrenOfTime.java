@@ -119,10 +119,9 @@ public final class ChildrenOfTime {
                             break;
                         case storeSession:
                             battle.startStoreSession(firstTime);
-                            firstTime = false;
                             break;
                         case fight:
-                            startFight(battle);
+                            startFight(battle, firstTime);
                             break;
                     }
                 }
@@ -149,12 +148,13 @@ public final class ChildrenOfTime {
 
     }
 
-    private void startFight(Battle battle) {
+    private void startFight(Battle battle, boolean showThings) {
         printOutput("Battle #" + battle.id + ":");
         while (battle.battleState != BattleState.finished) {
-            if (!players.get(0).isDefeated()) {
+            if (!players.get(0).isDefeated() & showThings) {
                 printOutput("A new Turn Has Begun!");
                 battle.initiateNextTurn();
+                ChildrenOfTime.getInstance().firstTime = false;   //TODO Make sure about working correctly ;
             }
         }
     }
