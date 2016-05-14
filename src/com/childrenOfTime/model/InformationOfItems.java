@@ -46,6 +46,7 @@ public enum InformationOfItems {
         this.description = description;
     }
 
+
     public String getName() {
         return name;
     }

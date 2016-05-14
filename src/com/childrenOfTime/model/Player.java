@@ -30,7 +30,7 @@ public class Player {
                 throw new NotEnoughMoneyException("You don't have Enough Money to apply this upgrade\n" +
                         "your current Wealth : " + currentWealth + "$\nrequired Money : " +
                         item.getInitialPrice() + "$\nYou need " +
-                        (item.getInitialPrice() - currentExperience) + "$ additional Money.");
+                        (item.getInitialPrice() - currentWealth) + "$ additional Money.");
             } else {
                 Item newItem = new Item(item.getName());        // TODO HAS BUG!
                 int cost = newItem.getCurrentPrice();
