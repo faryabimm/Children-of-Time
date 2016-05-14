@@ -320,7 +320,7 @@ public class Battle {
         String inputTemp = getInput();
         boolean invalidCommand = true;
 
-        Pattern p = Pattern.compile("\\w+\\?");
+        Pattern p = Pattern.compile("\\w+(\\s+.*\\w)?\\?");
         Matcher m = p.matcher(inputTemp);
         boolean matchFound = m.matches();
         if (matchFound) {
@@ -335,7 +335,7 @@ public class Battle {
             invalidCommand = false;
         }
 
-        p = Pattern.compile("\\w+\\s+[Cc]ast+\\s+\\w+\\s+on+\\s+\\w+\\s?+.*?");
+        p = Pattern.compile("\\w+\\s+Cast+\\s+\\w+\\s+(.*\\w+\\s)+on+\\s+\\w+\\s?+.*?");
         m = p.matcher(inputTemp);
         matchFound = m.matches();
         if (matchFound) {
@@ -354,7 +354,7 @@ public class Battle {
             invalidCommand = false;
         }
 
-        p = Pattern.compile("\\w+\\s+[Uu]se+\\s+\\w+\\s+on+\\s+\\w+\\s?+.*?");
+        p = Pattern.compile("\\w+\\s+Use+\\s+\\w+\\s+(.*\\w+\\s)?on+\\s+\\w+\\s?+.*?");
         m = p.matcher(inputTemp);
         matchFound = m.matches();
         if (matchFound) {
