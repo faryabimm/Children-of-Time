@@ -124,6 +124,8 @@ public class Battle {
     @Completed
     public void startStoreSession(boolean firstTime) {       // should handle again and help commands in it
 
+        try {
+
         Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
         Store currentStore = Store.getStores().get(0);
         if (firstTime) {
@@ -158,7 +160,7 @@ public class Battle {
             String targetHeroName = inputTemp.substring(inputTemp.indexOf("for") + 4, inputTemp.length());
             Hero targetHero = currentPlayer.findHeroByName(targetHeroName);
             if (targetHero != null) {
-                Item targetItem = currentStore.getItembyName(itemName);
+                InformationOfItems targetItem = currentStore.getStoreRawItembyName(itemName);
                 if (targetItem != null) {
                     currentPlayer.buy(targetItem, targetHero); //TODO fix buy !!!
                     invalidCommand = false;
