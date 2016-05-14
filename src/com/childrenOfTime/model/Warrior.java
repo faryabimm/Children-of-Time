@@ -43,10 +43,11 @@ public abstract class Warrior {
                 this.isDead = true;
                 printOutput(WarriorMessages.getDiedMessageForFoe((Foe) this));
             }
+        } else {
+            if (currentHealth + quantitiy > maxHealth) {
+                currentHealth = maxHealth;
+            } else currentHealth += quantitiy;
         }
-        if (currentHealth + quantitiy > maxHealth) {
-            currentHealth = maxHealth;
-        } else currentHealth += quantitiy;
     }
 
     public String getName() {

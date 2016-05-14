@@ -36,6 +36,7 @@ public class Hero extends Warrior {
 
     @Completed
     public void attackAuto(Foe enemy, int attackPower) {
+        printOutput(WarriorMessages.getSuccessfulAttackMessage(this, enemy, attackPower));
         enemy.changeHealth(-attackPower);
         if (this.swirlingisActivated) {
             for (Foe f : Battle.getFoes()) {   //access to AllFoes
@@ -45,7 +46,6 @@ public class Hero extends Warrior {
             }
 
         }
-        printOutput(WarriorMessages.getSuccessfulAttackMessage(this, enemy, attackPower));
 
 
     }
@@ -57,7 +57,7 @@ public class Hero extends Warrior {
         for (Map.Entry<String, Ability> entry : abilities.entrySet()) {
             if (entry.getValue().currentLevel == 0) {
                 state = "not acquired";
-            } else state += entry.getValue().currentLevel;
+            } else state = entry.getValue().currentLevel + "";
             toPrint += "\t" + entry.getKey() + " : " + state + "\n";
         }
         printOutput(toPrint);
@@ -76,6 +76,7 @@ public class Hero extends Warrior {
             }
         }
 
+        printOutput(WarriorMessages.getSuccessfulAttackMessage(this, enemy, realAttack));
         enemy.changeHealth(-realAttack);
         if (this.swirlingisActivated) {
             for (Foe f : Battle.getFoes()) {     //access to AllFoes
@@ -85,7 +86,6 @@ public class Hero extends Warrior {
 
             }
         }
-        printOutput(WarriorMessages.getSuccessfulAttackMessage(this, enemy, realAttack));
 
     }
     @Completed

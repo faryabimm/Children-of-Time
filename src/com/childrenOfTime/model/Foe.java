@@ -29,18 +29,18 @@ public class Foe extends Warrior {
         super(name, id);
         type = TypesOfFoes.valueOf(name.split(" ")[0]);
         this.strength = strength;
-        type.setStrength(this.strength);
+        type.setStrength(type, this.strength);
 
         this.healingAmount = type.healingAmount;
-        this.maxHealth = type.maximumHealth;
-        this.attackPower = type.attackPower;
+        super.maxHealth = type.maximumHealth;
+        super.attackPower = type.attackPower;
         this.heroBurningEnergy = type.heroBurningEnergy;
         this.heroAttackingNumberPerTurn = type.heroAttackingNumberPerTurn;
         this.attackPowerInHighHealth = type.attackPowerInHighHealth;
         this.attackPowerInLowHealth = type.attackPowerInLowHealth;
         this.description = type.description;
 
-        this.currentHealth = maxHealth;
+        super.currentHealth = maxHealth;
 
     }
 
@@ -123,7 +123,7 @@ public class Foe extends Warrior {
     @Override
     public String toString() {
 
-        return showCurrentTraits();
+        return getName() + getId();
     }
 
 

@@ -29,6 +29,7 @@ public class Battle {
         this.id = ++count;
         this.reward = reward;
         this.foes = foes;
+        foes200 = foes;
         battleState = BattleState.story;
 
     }

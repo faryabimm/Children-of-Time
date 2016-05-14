@@ -50,9 +50,9 @@ public enum TypesOfFoes {
     int[] heroBurningEnergy;
 
 
-    public void setStrength(StrengthOfFoes strength){
+    public void setStrength(TypesOfFoes type, StrengthOfFoes strength) {
         this.strength=strength;
-        switch (this) {
+        switch (type) {
             case Thug:
                 switch (strength) {
                     case Weak:
@@ -69,6 +69,7 @@ public enum TypesOfFoes {
                         break;
 
                 }
+                break;
 
             case Tank:
                 switch (strength) {
@@ -81,6 +82,7 @@ public enum TypesOfFoes {
                         maximumHealth = 300;
                         break;
                 }
+                break;
             case Angel:
                 switch (strength) {
                     case Weak:
@@ -92,6 +94,7 @@ public enum TypesOfFoes {
                         maximumHealth = 250;
                         break;
                 }
+                break;
             case Final:
                 attackPowerInLowHealth = 150;
                 attackPowerInHighHealth = 250;
@@ -100,6 +103,7 @@ public enum TypesOfFoes {
                 heroAttackingNumberPerTurn = 2;
                 int[] h = {2, 4};
                 heroBurningEnergy = h;
+                break;
         }
 
     }
