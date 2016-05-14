@@ -186,6 +186,27 @@ public class Battle {
                     }
                 }
             }
+            p = Pattern.compile("again|help|information|done");
+            m = p.matcher(inputTemp);
+            matchFound = m.matches();
+            if (matchFound) {
+                invalidCommand = false;
+                switch (inputTemp) {
+                    case "again":
+                        startStoreSession(true);
+                        break;
+                    case "help":
+                        storeHelp();
+                        break;
+                    case "information":
+                        currentPlayer.getHeros().forEach(Hero::showCurrentItems);
+                        printOutput("Your current wealth is:" + currentPlayer.getCurrentWealth());
+                        break;
+                    case "done":
+                        ChildrenOfTime.getInstance().doneCommand(this);
+                        break;
+                }
+            }
 
 
             if (invalidCommand) {
