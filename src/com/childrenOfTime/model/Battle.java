@@ -122,12 +122,20 @@ public class Battle {
         return null;
     }
     @Completed
-    public void startStoreSession() {       // should handle again and help commands in it
+    public void startStoreSession(boolean firstTime) {       // should handle again and help commands in it
+
         Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
         Store currentStore = Store.getStores().get(0);
-        currentStore.showItems();
-        currentPlayer.getHeros().forEach(Hero::showCurrentItems);
-        printOutput("Your current wealth is: $" + currentPlayer.getCurrentWealth());
+        if (firstTime) {
+            currentStore.showItems();       //not implemented yet
+            currentPlayer.getHeros().forEach(Hero::showCurrentItems);
+            printOutput("Your current wealth is: $" + currentPlayer.getCurrentWealth());
+        }
+
+
+        ChildrenOfTime.getInstance().firstTime = false;
+
+
 
         String inputTemp = getInput();
         boolean invalidCommand = true;
@@ -142,19 +150,20 @@ public class Battle {
             invalidCommand = false;
         }
 
-        p = Pattern.compile("Buy+\\\\s+.*\\\\w+(\\\\s+.*\\\\w)?+.*\\\\w\"");
+        p = Pattern.compile("Buy+\\s.*\\w+.*(\\s+.*\\w)?+for+.*\\w");
         m = p.matcher(inputTemp);
         matchFound = m.matches();
         if (matchFound) {
-            String itemName = inputTemp.substring(inputTemp.indexOf("Buy") + 3, inputTemp.indexOf("for") - 1);
+            String itemName = inputTemp.substring(inputTemp.indexOf("Buy") + 4, inputTemp.indexOf("for") - 1);
             String targetHeroName = inputTemp.substring(inputTemp.indexOf("for") + 4, inputTemp.length());
             Hero targetHero = currentPlayer.findHeroByName(targetHeroName);
-            Item targetItem = currentStore.getItembyName(itemName);
-
-            if (targetItem != null) {
-                currentPlayer.buy(targetItem, targetHero);
+            if (targetHero != null) {
+                Item targetItem = currentStore.getItembyName(itemName);
+                if (targetItem != null) {
+                    currentPlayer.buy(targetItem, targetHero); //TODO fix buy !!!
+                    invalidCommand = false;
+                }
             }
-            invalidCommand = false;
         }
 
         p = Pattern.compile("Sell+\\s+\\w+\\s+of+\\s+\\w");
@@ -175,7 +184,7 @@ public class Battle {
             invalidCommand = false;
             switch (inputTemp) {
                 case "again":
-                    startStoreSession();
+                    startStoreSession(true);
                     break;
                 case "help":
                     storeHelp();
@@ -185,7 +194,7 @@ public class Battle {
                     printOutput("Your current wealth is:" + currentPlayer.getCurrentWealth());
                     break;
                 case "done":
-                    battleState = BattleState.fight;
+                    ChildrenOfTime.getInstance().doneCommand(this);
                     break;
             }
         }
@@ -206,6 +215,9 @@ public class Battle {
                     //            currentPlayer.getHeros().get(i).showCurrentItems();
                 }
             }
+
+            ChildrenOfTime.getInstance().firstTime = false;
+
             String inputTemp = getInput();
             boolean invalidCommand = true;
 
@@ -257,7 +269,7 @@ public class Battle {
                         printOutput("Your current experience is:" + currentPlayer.getCurrentExperience());
                         break;
                     case "done":
-                        battleState = BattleState.storeSession;
+                        ChildrenOfTime.getInstance().doneCommand(this);
                         break;
                 }
             }
@@ -365,7 +377,7 @@ public class Battle {
                     fightHelp();
                     break;
                 case "done":
-                    battleState = BattleState.finished;
+                    ChildrenOfTime.getInstance().doneCommand(this);
                     defeat();
                     break;
             }

@@ -96,9 +96,9 @@ public final class ChildrenOfTime {
         Store.addStore(store);
     }
 
+    Boolean firstTime = true;
     @Completed
     public void startSinglePlayerMode() {
-        Boolean firstTime = true;
         try {
             for (Battle battle : battles) {
                 while (battle.battleState != BattleState.finished) {
@@ -114,11 +114,12 @@ public final class ChildrenOfTime {
                             break;
                         case upgradeSession:
                             battle.startUpgradeSession(firstTime);
-                            firstTime = false;
+
 
                             break;
                         case storeSession:
-                            battle.startStoreSession();
+                            battle.startStoreSession(firstTime);
+                            firstTime = false;
                             break;
                         case fight:
                             startFight(battle);
@@ -232,7 +233,8 @@ public final class ChildrenOfTime {
     }
 
     @Completed
-    private void doneCommand(Battle battle) {
+    public void doneCommand(Battle battle) {
+        this.firstTime = true;
 
         switch (battle.battleState) {
             case story:
@@ -290,7 +292,7 @@ public final class ChildrenOfTime {
                 battle.startUpgradeSession(true);
                 break;
             case storeSession:
-                battle.startStoreSession();
+                battle.startStoreSession(true);
                 break;
             case fight:
                 battle.showCurrentFoeStats();
