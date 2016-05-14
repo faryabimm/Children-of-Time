@@ -17,11 +17,12 @@ public class Item implements Durable {
 
 
     public Item(String name) {
-        if (name.equals("Magic stick")) {
-            info = InformationOfItems.MagicStick;
-        } else {
-            info = InformationOfItems.valueOf(name.split(" ")[0]);
+        for (InformationOfItems informationOfItems : InformationOfItems.values()) {
+            if (informationOfItems.getName().equals(name)) {
+            }
+            info = informationOfItems;
         }
+
         this.leftUsages = info.getAllowedUsages();
     }
 

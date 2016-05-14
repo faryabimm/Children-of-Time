@@ -172,11 +172,16 @@ public class Battle {
             m = p.matcher(inputTemp);
             matchFound = m.matches();
             if (matchFound) {
-                String temp[] = inputTemp.split("\\s");
-                Hero targetHero = currentPlayer.findHeroByName(temp[3]);
-                Item targetItem = currentPlayer.getItembyNameAndOwner(temp[1], targetHero);
-                currentPlayer.sell(targetItem, targetHero);
-                invalidCommand = false;
+                String itemName = inputTemp.substring(inputTemp.indexOf("Sell") + 4, inputTemp.indexOf("for") - 1);
+                String targetHeroName = inputTemp.substring(inputTemp.indexOf("for") + 4, inputTemp.length());
+                Hero targetHero = currentPlayer.findHeroByName(targetHeroName);
+                if (targetHero != null) {
+                    Item targetItem = currentPlayer.getItembyNameAndOwner(itemName, targetHero);
+                    if (targetItem != null) {
+                        currentPlayer.sell(targetItem, targetHero); //TODO fix buy !!!
+                        invalidCommand = false;
+                    }
+                }
             }
 
         p = Pattern.compile("again|help|information|done");
