@@ -21,6 +21,7 @@ public class Player {
     public void upgradeAbility(Ability ability, Hero targetHero) throws UpgradeException {
         ability.upgrade(targetHero, this);
     }
+
     @Completed
     public void buy(InformationOfItems item, Hero target) throws TradeException {
         if (item.isHasVolume() && target.inventory.getAvailableCapacity() == 0) {
@@ -56,6 +57,7 @@ public class Player {
         this.immprtalityPotions = 3;
         this.heros = heros;
     }
+
     @Completed
     public void sell(Item item, Hero target) throws TradeException {
 
@@ -67,10 +69,12 @@ public class Player {
         printOutput("your Current Wealth is: $" + getCurrentWealth());
         target.inventory.getItems().remove(item);
     }
+
     @Completed
     public void useImmortalityPotion() throws NoImmortalityPotionLeftException {
         immprtalityPotions--;
     }
+
     @Completed
     public void showCurrentHeroStats() {
         String toReturn = "";
@@ -80,6 +84,7 @@ public class Player {
 
         printOutput(toReturn.substring(0, toReturn.length() - 2));
     }
+
     @Completed
     public boolean isDefeated() {
         boolean isDefeated = false;
@@ -89,10 +94,12 @@ public class Player {
         }
         return isDefeated;
     }
+
     @Completed
     public int getImmprtalityPotions() {
         return immprtalityPotions;
     }
+
     @Completed
     public void changeCurrentExperience(int num) throws NotEnoughXPException {
         if (this.currentExperience + num < 0) {
@@ -103,24 +110,29 @@ public class Player {
             this.currentExperience += num;
         }
     }
+
     @Completed
     public int getCurrentExperience() {
         return currentExperience;
     }
+
     @Completed
     public ArrayList<Hero> getHeros() {
         return heros;
     }
+
     @Completed
     public int getCurrentWealth() {
         return currentWealth;
     }
+
     @Completed
     public void castAbility(Hero castingHero, Ability castedAbility, Warrior targetFoe) {
 
         castingHero.useAbility(castedAbility, targetFoe);
 
     }
+
     @Completed
     public void useItem(Hero usingHero, Item usedItem, Warrior targetWarrior) {
         if (usingHero.inventory.getItems().contains(usedItem)) {
@@ -130,6 +142,7 @@ public class Player {
                     + usingHero.getId() + "' doesnt" + "have this Item!");
         }
     }
+
     @Completed
     public Ability findAbilityByNameAndOwner(String name, Hero owner) {             //COOL!!!!!!!!!!!!!!
         Hero currentHero = findHeroByName(owner.name);
@@ -142,6 +155,7 @@ public class Player {
         }
         return null;
     }
+
     @Completed
     public Ability findAbilityByName(String name) {
         Hero currentHero = null;
@@ -156,10 +170,13 @@ public class Player {
 
         return null;
     }
+
     @Completed
     public void giveAttack(Hero attackingHero, Foe targetFoe) {
         attackingHero.attackManual(targetFoe);
+
     }
+
     @Completed
     public Hero findHeroByNameAndId(String name, int id) {
         Hero currentHero;
@@ -169,6 +186,7 @@ public class Player {
         }
         return null;
     }
+
     @Completed
     public Hero findHeroByName(String name) {
         Hero currentHero;
@@ -189,6 +207,7 @@ public class Player {
         }
         return null;
     }
+
     @Completed
     public Item getItembyNameAndOwner(String name, Hero usingHero) {
         for (Item item : usingHero.inventory.getItems()) {
@@ -198,6 +217,7 @@ public class Player {
         }
         return null;
     }
+
     @Completed
     public Item getItembyName(String name) {
         Item toReturn = null;
