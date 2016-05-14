@@ -60,7 +60,10 @@ public class Player {
     public void sell(Item item, Hero target) throws TradeException {
 
         ArrayList<Item> heroItems = target.inventory.getItems();
-        currentWealth += heroItems.get(heroItems.indexOf(item)).getInfo().getInitialPrice() / 2;
+        currentWealth += heroItems.get(heroItems.indexOf(item)).getCurrentPrice() / 2;
+        printOutput("Item " + item.getInfo().getName() + "was successfully sold for $" +
+                heroItems.get(heroItems.indexOf(item)).getCurrentPrice() / 2 + " and was removed form " +
+                target.getName() + " " + target.getId() + "Hero .");
         target.inventory.getItems().remove(item);
     }
     @Completed
@@ -187,10 +190,10 @@ public class Player {
     }
     @Completed
     public Item getItembyNameAndOwner(String name, Hero usingHero) {
-        Item item = new Item(name);
-        if (usingHero.inventory.getItems().contains(item)) {
-            Inventory temp = usingHero.inventory;
-            return temp.getItems().get(temp.getItems().indexOf(item));
+        for (Item item : usingHero.inventory.getItems()) {
+            if (item.getInfo().getName().equals(name)) {
+                return item;
+            }
         }
         return null;
     }

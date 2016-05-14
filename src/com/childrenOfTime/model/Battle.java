@@ -152,7 +152,7 @@ public class Battle {
                 invalidCommand = false;
             }
 
-        p = Pattern.compile("Buy+\\s.*\\w+.*(\\s+.*\\w)?+for+.*\\w");
+            p = Pattern.compile("[Bb]uy+\\s.*\\w+.*(\\s+.*\\w)?+for+.*\\w");
         m = p.matcher(inputTemp);
         matchFound = m.matches();
         if (matchFound) {
@@ -168,7 +168,7 @@ public class Battle {
             }
         }
 
-            p = Pattern.compile("Sell+\\s.*\\w+.*(\\s+.*\\w)?+of+.*\\w");
+            p = Pattern.compile("[Ss]ell+\\s+\\w+\\s+of+\\s+\\w");
             m = p.matcher(inputTemp);
             matchFound = m.matches();
             if (matchFound) {
@@ -233,7 +233,7 @@ public class Battle {
             String inputTemp = getInput();
             boolean invalidCommand = true;
 
-            Pattern p = Pattern.compile("Acquire+\\s+.*\\w+(\\s+.*\\w)?+.*\\w");
+            Pattern p = Pattern.compile("[Aa]cquire+\\s+.*\\w+(\\s+.*\\w)?+.*\\w");
             Matcher m = p.matcher(inputTemp);
             boolean matchFound = m.matches();
             if (matchFound) {
@@ -320,7 +320,7 @@ public class Battle {
             invalidCommand = false;
         }
 
-        p = Pattern.compile("\\w+\\s+cast+\\s+\\w+\\s+on+\\s+\\w+\\s?+.*?");
+        p = Pattern.compile("\\w+\\s+[Cc]ast+\\s+\\w+\\s+on+\\s+\\w+\\s?+.*?");
         m = p.matcher(inputTemp);
         matchFound = m.matches();
         if (matchFound) {
@@ -339,7 +339,7 @@ public class Battle {
             invalidCommand = false;
         }
 
-        p = Pattern.compile("\\w+\\s+use+\\s+\\w+\\s+on+\\s+\\w+\\s?+.*?");
+        p = Pattern.compile("\\w+\\s+[Uu]se+\\s+\\w+\\s+on+\\s+\\w+\\s?+.*?");
         m = p.matcher(inputTemp);
         matchFound = m.matches();
         if (matchFound) {
@@ -358,7 +358,7 @@ public class Battle {
             invalidCommand = false;
         }
 
-        p = Pattern.compile("\\w+\\s+attack+\\s+\\w+\\s?+.*?");
+        p = Pattern.compile("\\w+\\s+[Aa]ttack+\\s+\\w+\\s?+.*?");
         m = p.matcher(inputTemp);
         matchFound = m.matches();
         if (matchFound) {
@@ -411,10 +411,10 @@ public class Battle {
                 "5\t(hero name) + “ cast “ + (ability name) + “ on “ + (hero name / enemy name and id)\n" +
                 "6\t(hero name) + “ use “ + (item name) + “ on “ + (hero name / enemy name and id)\n" +
                 "7\t(hero name) + “ attack “ + (enemy name and id)\n" +
-                "8\tAgain\n" +
-                "9\tHelp\n" +
-                "10\tInformation\n" +
-                "11\tDone  -be careful! will result in your defeat!-");
+                "8\tagain\n" +
+                "9\thelp\n" +
+                "10\tinformation\n" +
+                "11\tdone  -be careful! will result in your defeat!-");
     }
     @Completed
     public void storeHelp() {
@@ -423,10 +423,10 @@ public class Battle {
                 "1\t(item name) + “?”  (item description)\n" +
                 "2\t“Buy “ + (item name) + “ for “ + (hero name)\n" +
                 "3\t“Sell “ + (item name) + “ of” + (hero name)\n" +
-                "4\tAgain\n" +
-                "5\tHelp\n" +
-                "6\tInformation\n" +
-                "7\tDone  -proceed to next stage-");
+                "4\tagain\n" +
+                "5\thelp\n" +
+                "6\tinformation\n" +
+                "7\tdone  -proceed to next stage-");
 
     }
     @Completed
@@ -435,10 +435,10 @@ public class Battle {
                 "\n" +
                 "1\t(hero name) + “ “ +(ability name) + “?”\n" +
                 "2\t“Acquire “ + (ability name) + “ for “ + (hero name)\n" +
-                "3\tAgain\n" +
-                "4\tHelp\n" +
-                "5\tInformation\n" +
-                "6\tDone  -proceed to next stage-\t");
+                "3\tagain\n" +
+                "4\thelp\n" +
+                "5\tinformation\n" +
+                "6\tdone  -proceed to next stage-\t");
     }
     @Completed
     public void informationHelp() {
@@ -447,17 +447,17 @@ public class Battle {
                 "1\t(enemy name) + “?”\n" +
                 "2\t(Class name) + “?”\n" +
                 "3\t(hero name) + “?”\n" +
-                "4\tAgain\n" +
-                "5\tHelp\n" +
-                "6\tDone  -proceed to next stage-");
+                "4\tagain\n" +
+                "5\thelp\n" +
+                "6\tdone  -proceed to next stage-");
     }
     @Completed
     public void storyHelp() {
         printOutput("Valid Commands in This Stage are:\n" +
                 "\n" +
-                "1\tAgain\n" +
-                "2\tHelp\n" +
-                "4\tDone  -proceed to next stage-");
+                "1\tagain\n" +
+                "2\thelp\n" +
+                "4\tdone  -proceed to next stage-");
     }
     @Completed
     public static ArrayList<Foe> getFoes() {
