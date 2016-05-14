@@ -125,7 +125,6 @@ public class Ability implements Durable {
     }
 
 
-
     /*
     switch (currentLevel) {
             case 0:
