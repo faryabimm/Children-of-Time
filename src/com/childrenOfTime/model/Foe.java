@@ -138,8 +138,12 @@ public class Foe extends Warrior {
 
     @Override
     public String showCurrentTraits() {
+        String toReturn = "";
+        toReturn += "Health: " + currentHealth + "/" + maxHealth;
+        toReturn += "\nAttack power: " + this.attackPower;
+        toReturn += "\nHealing amount: " + this.healingAmount + "HP per Turn";
 
-        return null;
+        return toReturn;
     }
 
 }
