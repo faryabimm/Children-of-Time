@@ -19,8 +19,8 @@ public class Item implements Durable {
     public Item(String name) {
         for (InformationOfItems informationOfItems : InformationOfItems.values()) {
             if (informationOfItems.getName().equals(name)) {
-            }
             info = informationOfItems;
+            }
         }
 
         this.leftUsages = info.getAllowedUsages();
