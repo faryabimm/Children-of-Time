@@ -1,8 +1,10 @@
 package com.childrenOfTime.cgd;
 
-import com.childrenOfTime.model.Item;
+import com.childrenOfTime.model.InformationOfItems;
 
 import java.util.ArrayList;
+
+import static com.childrenOfTime.view.IOHandler.printOutput;
 
 /**
  * Created by mohammadmahdi on 5/8/16.
@@ -25,10 +27,20 @@ public class Store {
     }
 
     public void showItems() {
+        for (InformationOfItems iOI : InformationOfItems.values()) {
+            printOutput(iOI.getDescription());
+        }
+
+
     }
 
-    public Item getItembyName(String temp) {
+    public InformationOfItems getStoreRawItembyName(String temp) {
+        for (InformationOfItems informationOfItems : InformationOfItems.values()) {
+            if (informationOfItems.name().equals(temp)) {
+                return informationOfItems;
+            }
 
+        }
         return null;
     }
 }

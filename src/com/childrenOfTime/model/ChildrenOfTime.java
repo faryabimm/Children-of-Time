@@ -144,8 +144,8 @@ public final class ChildrenOfTime {
         } catch (GameException gameException) {
             printOutput(gameException.getMessage());
             gameException.printStackTrace();
-
         }
+
     }
 
     private void startFight(Battle battle) {
@@ -154,7 +154,6 @@ public final class ChildrenOfTime {
             if (!players.get(0).isDefeated()) {
                 printOutput("A new Turn Has Begun!");
                 battle.initiateNextTurn();
-
             }
         }
     }
@@ -284,6 +283,7 @@ public final class ChildrenOfTime {
                 battle.playStory();
                 break;
             case information:
+                players.get(0).showCurrentHeroStats();
                 battle.showCurrentFoeStats();
                 break;
             case upgradeSession:

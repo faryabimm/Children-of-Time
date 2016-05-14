@@ -22,20 +22,21 @@ public class Player {
         ability.upgrade(targetHero, this);
     }
     @Completed
-    public void buy(Item item, Hero target) throws TradeException {
-        if (item.getInfo().isHasVolume() && target.inventory.getAvailableCapacity() == 0) {
+    public void buy(InformationOfItems item, Hero target) throws TradeException {
+        if (item.isHasVolume() && target.inventory.getAvailableCapacity() == 0) {
             throw new NotEnoughInventorySpaceException("Your inventory has no empty space!");
         } else {
-            if (item.getInfo().getInitialPrice() > currentWealth) {
+            if (item.getInitialPrice() > currentWealth) {
                 throw new NotEnoughMoneyException("You don't have Enough Money to apply this upgrade\n" +
                         "your current Wealth : " + currentWealth + "$\nrequired Money : " +
-                        item.getInfo().getInitialPrice() + "$\nYou need " +
-                        (item.getInfo().getInitialPrice() - currentExperience) + "$ additional Money.");
+                        item.getInitialPrice() + "$\nYou need " +
+                        (item.getInitialPrice() - currentExperience) + "$ additional Money.");
             } else {
-                int cost = item.getCurrentPrice();
-                item.timesBought++;
+                Item newItem = new Item(item.getName());        // TODO HAS BUG!
+                int cost = newItem.getCurrentPrice();
+                newItem.timesBought++;
                 currentWealth -= cost;
-                target.inventory.getItems().add(item);
+                target.inventory.getItems().add(newItem);
             }
         }
     }

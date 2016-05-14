@@ -225,7 +225,11 @@ public class Hero extends Warrior {
         for (Item i : inventory.getItems()) {
             toPrint += i.getInfo().getName() + " worth " + i.getCurrentPrice() + " dollars, ";
         }
-        printOutput(toPrint);
+        if (toPrint.equals(this.getName() + " has ")) {
+            printOutput(toPrint + "no items yet!");
+        } else {
+            printOutput(toPrint);
+        }
     }
 
     @Deprecated

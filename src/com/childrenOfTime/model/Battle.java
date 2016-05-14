@@ -123,75 +123,82 @@ public class Battle {
     }
     @Completed
     public void startStoreSession() {       // should handle again and help commands in it
-        Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
-        Store currentStore = Store.getStores().get(0);
-        currentStore.showItems();
-        currentPlayer.getHeros().forEach(Hero::showCurrentItems);
-        printOutput("Your current wealth is: $" + currentPlayer.getCurrentWealth());
+        try {
 
-        String inputTemp = getInput();
-        boolean invalidCommand = true;
+            Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
+            Store currentStore = Store.getStores().get(0);
+            currentStore.showItems();
+            currentPlayer.getHeros().forEach(Hero::showCurrentItems);
+            printOutput("Your current wealth is: $" + currentPlayer.getCurrentWealth());
 
-        Pattern p = Pattern.compile("\\w+\\?");
-        Matcher m = p.matcher(inputTemp);
-        boolean matchFound = m.matches();
-        if (matchFound) {
-            String temp = inputTemp.substring(0, inputTemp.length() - 1);
-            Item targetItem = currentStore.getItembyName(temp);
-            targetItem.showDescription();
-            invalidCommand = false;
-        }
+            String inputTemp = getInput();
+            boolean invalidCommand = true;
 
-        p = Pattern.compile("Buy+\\\\s+.*\\\\w+(\\\\s+.*\\\\w)?+.*\\\\w\"");
-        m = p.matcher(inputTemp);
-        matchFound = m.matches();
-        if (matchFound) {
-            String itemName = inputTemp.substring(inputTemp.indexOf("Buy") + 3, inputTemp.indexOf("for") - 1);
-            String targetHeroName = inputTemp.substring(inputTemp.indexOf("for") + 4, inputTemp.length());
-            Hero targetHero = currentPlayer.findHeroByName(targetHeroName);
-            Item targetItem = currentStore.getItembyName(itemName);
-
-            if (targetItem != null) {
-                currentPlayer.buy(targetItem, targetHero);
+            Pattern p = Pattern.compile("\\w+\\?");
+            Matcher m = p.matcher(inputTemp);
+            boolean matchFound = m.matches();
+            if (matchFound) {
+                String temp = inputTemp.substring(0, inputTemp.length() - 1);
+                InformationOfItems targetItem = currentStore.getStoreRawItembyName(temp);
+                targetItem.getDescription();
+                invalidCommand = false;
             }
-            invalidCommand = false;
-        }
 
-        p = Pattern.compile("Sell+\\s+\\w+\\s+of+\\s+\\w");
-        m = p.matcher(inputTemp);
-        matchFound = m.matches();
-        if (matchFound) {
-            String temp[] = inputTemp.split("\\s");
-            Hero targetHero = currentPlayer.findHeroByName(temp[3]);
-            Item targetItem = currentPlayer.getItembyNameAndOwner(temp[1], targetHero);
-            currentPlayer.sell(targetItem, targetHero);
-            invalidCommand = false;
-        }
+            p = Pattern.compile("Buy+\\s+\\w+(\\s+.*\\w)?+.*\\w");
+            m = p.matcher(inputTemp);
+            matchFound = m.matches();
+            if (matchFound) {
+                String itemName = inputTemp.substring(inputTemp.indexOf("Buy") + 4, inputTemp.indexOf("for") - 1);
+                String targetHeroName = inputTemp.substring(inputTemp.indexOf("for") + 4, inputTemp.length());
+                Hero targetHero = currentPlayer.findHeroByName(targetHeroName);
+                InformationOfItems targetItem = currentStore.getStoreRawItembyName(itemName);
 
-        p = Pattern.compile("again|help|information|done");
-        m = p.matcher(inputTemp);
-        matchFound = m.matches();
-        if (matchFound) {
-            invalidCommand = false;
-            switch (inputTemp) {
-                case "again":
-                    startStoreSession();
-                    break;
-                case "help":
-                    storeHelp();
-                    break;
-                case "information":
-                    currentPlayer.getHeros().forEach(Hero::showCurrentItems);
-                    printOutput("Your current wealth is:" + currentPlayer.getCurrentWealth());
-                    break;
-                case "done":
-                    battleState = BattleState.fight;
-                    break;
+                if (targetItem != null) {
+                    currentPlayer.buy(targetItem, targetHero);
+                }
+                invalidCommand = false;
             }
-        }
 
-        if (invalidCommand) {
-            printOutput("Invalid Command");
+            p = Pattern.compile("Sell+\\s+\\w+\\s+of+\\s+\\w");
+            m = p.matcher(inputTemp);
+            matchFound = m.matches();
+            if (matchFound) {
+                String temp[] = inputTemp.split("\\s");
+                Hero targetHero = currentPlayer.findHeroByName(temp[3]);
+                Item targetItem = currentPlayer.getItembyNameAndOwner(temp[1], targetHero);
+                currentPlayer.sell(targetItem, targetHero);
+                invalidCommand = false;
+            }
+
+            p = Pattern.compile("again|help|information|done");
+            m = p.matcher(inputTemp);
+            matchFound = m.matches();
+            if (matchFound) {
+                invalidCommand = false;
+                switch (inputTemp) {
+                    case "again":
+                        startStoreSession();
+                        break;
+                    case "help":
+                        storeHelp();
+                        break;
+                    case "information":
+                        currentPlayer.getHeros().forEach(Hero::showCurrentItems);
+                        printOutput("Your current wealth is:" + currentPlayer.getCurrentWealth());
+                        break;
+                    case "done":
+                        battleState = BattleState.fight;
+                        break;
+                }
+            }
+
+            if (invalidCommand) {
+                printOutput("Invalid Command");
+            }
+
+
+        } catch (Exception e) {
+            printOutput(e.getMessage());
         }
     }
     @Completed
