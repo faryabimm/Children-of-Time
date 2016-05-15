@@ -24,6 +24,7 @@ public class Battle {
     private static ArrayList<Foe> foes200 = new ArrayList<>();
     ArrayList<Foe> foes;
     private Reward reward;
+    private boolean itIsFirstTurn = true;
 
     public Battle(String story, Reward reward, ArrayList<Foe> foes) {
         this.story = story;
@@ -306,19 +307,11 @@ public class Battle {
         try {
             Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
 
-
-            printOutput("Hero:");
-            for (Hero hero : currentPlayer.getHeros()) {
-                printOutput(hero.getName() + " " + hero.getId());
-                hero.showCurrentTraits();
+            if (itIsFirstTurn) {
+                showCurrentBattleInfo(currentPlayer);
+                itIsFirstTurn = false;
             }
 
-            printOutput("Foes:");
-            for (Foe foe : foes) {
-                printOutput(foe.getName() + " " + foe.getId());
-                printOutput(foe.showCurrentTraits());
-
-            }
 
 
             String inputTemp = getInput();
@@ -384,14 +377,22 @@ public class Battle {
 
             }
 
-            p = Pattern.compile("\\w+\\s+[Aa]ttack+\\s+\\w+\\s?+.*?");
+            p = Pattern.compile(".*\\w+\\s(.*\\w\\s)?Attack.*\\w(\\s.*\\w)?\\s\\d+");
+
             m = p.matcher(inputTemp);
             matchFound = m.matches();
             if (matchFound) {
 
                 Hero attackingHero = currentPlayer.findHeroByName(inputTemp.substring(0, inputTemp.indexOf("Attack") - 1));
-                int id = Integer.parseInt(inputTemp.substring(inputTemp.length() - 1, inputTemp.length()));
-                Foe targetFoe = findFoeByNameAndId(inputTemp.substring(inputTemp.indexOf("Attack") + 7, inputTemp.length() - 2), id);
+//                printOutput("'" + inputTemp.substring(0, inputTemp.indexOf("Attack") - 1) + "'");
+                int id = Integer.parseInt(inputTemp.substring(inputTemp.lastIndexOf(" ") + 1, inputTemp.length()));
+//                printOutput("'" + inputTemp.substring(0, inputTemp.indexOf("Attack") - 1) + "'");
+//                printOutput("'" + inputTemp.substring(inputTemp.indexOf("Attack") + 7,
+//                        inputTemp.lastIndexOf(" ") - 1) + "'");
+                Foe targetFoe = findFoeByNameAndId(inputTemp.substring(inputTemp.indexOf("Attack") + 7,
+                        inputTemp.lastIndexOf(" ")), id);
+
+
 
 
                 if (attackingHero != null && targetFoe != null) {
@@ -399,6 +400,33 @@ public class Battle {
                 }
                 actFoes();
                 invalidCommand = false;
+            } else {
+
+                p = Pattern.compile(".*\\w+\\s(.*\\w\\s)?Attack.*\\w(\\s.*\\w)?");
+                m = p.matcher(inputTemp);
+                matchFound = m.matches();
+                if (matchFound) {
+
+                    Hero attackingHero = currentPlayer.findHeroByName(inputTemp.substring(0, inputTemp.indexOf("Attack") - 1));
+                    int id = 0;
+                    Foe targetFoe = findFoeByNameAndId(inputTemp.substring(inputTemp.indexOf("Attack") + 7
+                            , inputTemp.length()), id);
+
+
+                    if (attackingHero != null && targetFoe != null) {
+                        currentPlayer.giveAttack(attackingHero, targetFoe);
+                    }
+                    actFoes();
+                    invalidCommand = false;
+                }
+
+
+
+
+
+
+
+
             }
 
 
@@ -409,8 +437,7 @@ public class Battle {
                 switch (inputTemp) {
                     case "again":
                     case "information":
-                        currentPlayer.getHeros().forEach(Hero::showCurrentTraits);
-                        foes.forEach(Foe::showCurrentTraits);
+                        showCurrentBattleInfo(currentPlayer);
                         invalidCommand = false;
                         break;
                     case "help":
@@ -435,6 +462,24 @@ public class Battle {
         } catch (Exception e) {
             e.getMessage();
         }
+    }
+
+    private void showCurrentBattleInfo(Player currentPlayer) {
+
+        printOutput("\n\nYour Heros:\n");
+        for (Hero hero : currentPlayer.getHeros()) {
+            printOutput(hero.getName() + " " + hero.getId());
+            hero.showCurrentTraits();
+            printOutput("\n---------------------\n");
+        }
+
+        printOutput("\n\nYour Foes:\n");
+        for (Foe foe : foes) {
+            printOutput(foe.getName() + " " + foe.getId());
+            printOutput(foe.showCurrentTraits());
+            printOutput("\n---------------------\n");
+        }
+
     }
 
     @Completed
