@@ -348,10 +348,10 @@ public class Battle {
                 invalidCommand = false;
             }
 
-            p = Pattern.compile("\"\\\\w+\\\\s+Cast+\\\\s+\\\\w+\\\\s+(.*\\\\w+\\\\s)+on+\\\\s+\\\\w+\\\\s?+.*?\"");
-            m = p.matcher(inputTemp);
-            matchFound = m.matches();
-            if (matchFound) {
+            // p = Pattern.compile(".*\\w+\\s(.*\\w\\s)?Cast.*\\w(\\s.*\\w)?\\s\\d+on+");
+            // m = p.matcher(inputTemp);
+            // matchFound = m.matches();
+            if (inputTemp.contains("Cast")) {
                 Hero castingHero = currentPlayer.findHeroByName(inputTemp.substring(0, inputTemp.indexOf("Cast") - 1));
                 Ability castedAbility = currentPlayer.findAbilityByNameAndOwner(inputTemp.substring(inputTemp.indexOf("Cast") + 5, inputTemp.indexOf(" on ")), castingHero);
                 //TODO badbakht shodim
@@ -367,10 +367,10 @@ public class Battle {
                 invalidCommand = false;
             }
 
-            p = Pattern.compile("\\w+\\s+Use+\\s+\\w+\\s+(.*\\w+\\s)?on+\\s+\\w+\\s?+.*?");
-            m = p.matcher(inputTemp);
-            matchFound = m.matches();
-            if (matchFound) {
+            //p = Pattern.compile("\\w+\\s+Use+\\s+\\w+\\s+(.*\\w+\\s)?on+\\s+\\w+\\s?+.*?");
+            //m = p.matcher(inputTemp);
+            //matchFound = m.matches();
+            if (inputTemp.contains("Use")) {
                 Hero usingHero = currentPlayer.findHeroByName(inputTemp.substring(0, inputTemp.indexOf("Use") - 1));
                 Item usedItem = currentPlayer.getItembyNameAndOwner(inputTemp.substring(inputTemp.indexOf("Use") + 4, inputTemp.indexOf("on") - 1), usingHero);
                 Warrior targetWarrior = findWarriorByNameAndId(inputTemp.substring(inputTemp.indexOf("on") + 3, inputTemp.length() - 1), 0, currentPlayer);
