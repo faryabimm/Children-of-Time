@@ -355,8 +355,14 @@ public class Battle {
                     Hero castingHero = currentPlayer.findHeroByName(inputTemp.substring(0, inputTemp.indexOf("Cast") - 1));
                     Ability castedAbility = currentPlayer.findAbilityByNameAndOwner(inputTemp.substring(inputTemp.indexOf("Cast") + 5, inputTemp.indexOf(" on ")), castingHero);
                     //TODO badbakht shodim
-                    Warrior targetWarrior = findWarriorByNameAndId(inputTemp.substring(inputTemp.indexOf(" on ") + 4, inputTemp.length()), 0, currentPlayer);
+                    Warrior targetWarrior = null;
+                    try {
 
+                        targetWarrior = findWarriorByNameAndId(inputTemp.substring(inputTemp.indexOf(" on ") + 4, inputTemp.length() - 2), Integer.parseInt(inputTemp.substring(inputTemp.length() - 1, inputTemp.length())), currentPlayer);
+                    } catch (Exception e) {
+                        printOutput("You Have to write Like this :" +
+                                "\n Eley Cast OverPowered attack on Eley 0");
+                    }
 
                     if (castingHero != null && castedAbility != null & targetWarrior != null) {
                         currentPlayer.castAbility(castingHero, castedAbility, targetWarrior);
