@@ -433,7 +433,7 @@ public class Battle {
 
 
         } catch (Exception e) {
-            e.getMessage();
+            printOutput(e.getMessage());
         }
     }
 
