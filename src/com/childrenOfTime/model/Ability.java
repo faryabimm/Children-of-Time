@@ -135,23 +135,32 @@ public class Ability implements Durable {
      */
     @Completed
     private void FightTraining(Hero hero) throws NotEnoughXPException {
-        hero.attackPower += 30;
+        for (int i = 0; i <= currentLevel; i++) {
+            hero.attackPower += 30;
+        }
     }
 
     @Completed
     private void WorkOut(Hero hero) {
+
+        for (int i = 0; i <= currentLevel; i++) {
         hero.maxHealth += 50;
+        }
     }
 
     @Completed
     private void MagicLessons(Hero hero) {
-        hero.changeMaxMagic(50);
+        for (int i = 0; i <= currentLevel; i++) {
+            hero.changeMaxMagic(50);
+        }
     }
 
 
     @Completed
     private void QuickAsABunny(Hero hero) {
-        hero.changeEP(1);
+        for (int i = 0; i <= currentLevel; i++) {
+            hero.changeEP(1);
+        }
     }
 
     @Completed

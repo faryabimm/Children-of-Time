@@ -109,10 +109,14 @@ public class Battle {
             if (foe.getName().equals(name) & foe.getId() == id) return foe;
         }
 
+
+        // TODO Why Did you write this ? this is just fucking the project ?
+        /*
         for (int i = 0; i < foes.size(); i++) {
             currentFoe = foes.get(i);
             if (currentFoe.equals(new Foe(name, StrengthOfFoes.Able, 0)) && currentFoe.getId() == id) return currentFoe;
         }
+        */
         return null;
 
     }
@@ -346,9 +350,9 @@ public class Battle {
             matchFound = m.matches();
             if (matchFound) {
                 Hero castingHero = currentPlayer.findHeroByName(inputTemp.substring(0, inputTemp.indexOf("Cast") - 1));
-                Ability castedAbility = currentPlayer.findAbilityByNameAndOwner(inputTemp.substring(inputTemp.indexOf("Cast") + 5, inputTemp.indexOf("on") - 1), castingHero);
+                Ability castedAbility = currentPlayer.findAbilityByNameAndOwner(inputTemp.substring(inputTemp.indexOf("Cast") + 5, inputTemp.indexOf(" on ")), castingHero);
                 //TODO badbakht shodim
-                Warrior targetWarrior = findWarriorByNameAndId(inputTemp.substring(inputTemp.indexOf("on") + 3, inputTemp.length() - 1), 0, currentPlayer);
+                Warrior targetWarrior = findWarriorByNameAndId(inputTemp.substring(inputTemp.indexOf(" on ") + 4, inputTemp.length()), 0, currentPlayer);
 
 
                 if (castingHero != null && castedAbility != null & targetWarrior != null) {

@@ -73,7 +73,10 @@ public class Foe extends Warrior {
 
                 break;
             case "Angel":
-                singleTarget = this.findFoeTarget(game);
+                do {
+                    singleTarget = this.findFoeTarget(game);
+                } while (singleTarget.equals(this));
+
                 singleTarget.changeHealth(+this.healingAmount);
                 printOutput(WarriorMessages.getAction_1_MessageForFoe(this, singleTarget));
 
