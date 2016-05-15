@@ -87,12 +87,10 @@ public class Player {
 
     @Completed
     public boolean isDefeated() {
-        boolean isDefeated = false;
         for (int i = 0; i < heros.size(); i++) {
-            if (heros.get(i).isDead) isDefeated = true;
-            break;
+            if (heros.get(i).isDead) return true;
         }
-        return isDefeated;
+        return false;
     }
 
     @Completed

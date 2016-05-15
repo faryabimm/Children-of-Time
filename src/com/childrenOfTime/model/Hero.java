@@ -194,6 +194,7 @@ public class Hero extends Warrior {
                     (-num - currentEnergyPoints) + " additional EPs.");
         }
         this.currentEnergyPoints += num;
+        printOutput(this + "current EP : " + currentEnergyPoints);
     }
     public void changeMagic(int i) throws NotEnoughMagicPointsException {
         if (this.currentMagic + i < 0) {
@@ -274,9 +275,12 @@ public class Hero extends Warrior {
         for (int i = 0; i < inventory.getItems().size(); i++) {
             inventory.getItems().get(i).aTurnHasPassed();
         }
-        for (int i = 0; i < abilities.size(); i++) {
-            abilities.get(i).aTurnHasPassed();
+        for (Map.Entry<String, Ability> entry : abilities.entrySet()) {
+            abilities.get(entry.getKey()).aTurnHasPassed();
 
         }
+
+        this.currentEnergyPoints = info.initialEP;
+
     }
 }

@@ -175,14 +175,14 @@ public final class ChildrenOfTime {
         while (battle.battleState != BattleState.finished) {
             Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
 
-            if (!players.get(0).isDefeated()) {
+            if (!currentPlayer.isDefeated()) {
 
                 printOutput("\n Next Turn: \n");
                 battle.initiateNextTurn();
                 if (battleIsFinishing(battle)) {
                     battle.battleState = BattleState.finished;
 
-                    if (players.get(0).isDefeated()) battle.defeat();
+                    if (currentPlayer.isDefeated()) battle.defeat();
                     else printOutput("“Victory! You’ve defeated all of your enemies”");
                 }
             }

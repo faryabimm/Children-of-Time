@@ -68,8 +68,8 @@ public class Foe extends Warrior {
         switch (name) {
             case "Thug":
                 singleTarget = this.findTarget(game);
-                singleTarget.changeHealth(-attackPower);
                 printOutput(WarriorMessages.getAction_1_MessageForFoe(this, singleTarget));
+                singleTarget.changeHealth(-attackPower);
 
                 break;
             case "Angel":
@@ -77,21 +77,21 @@ public class Foe extends Warrior {
                     singleTarget = this.findFoeTarget(game);
                 } while (singleTarget.equals(this));
 
-                singleTarget.changeHealth(+this.healingAmount);
                 printOutput(WarriorMessages.getAction_1_MessageForFoe(this, singleTarget));
+                singleTarget.changeHealth(+this.healingAmount);
 
                 break;
             case "Tank":
+                printOutput(WarriorMessages.getAction_1_MessageForFoe(this, null));
                 for (Warrior w : ChildrenOfTime.getInstance().getPlayers().get(0).getHeros()) {
                     ((Hero) w).changeHealth(-attackPower);
-                    printOutput(WarriorMessages.getAction_1_MessageForFoe(this, w));
                 }
                 break;
             case "Final Boss":
                 singleTarget = this.findTarget(game);
                 updateFinalBoss();
-                singleTarget.changeHealth(-attackPower);
                 printOutput(WarriorMessages.getAction_1_MessageForFoe(this, singleTarget));
+                singleTarget.changeHealth(-attackPower);
 
                 break;
         }

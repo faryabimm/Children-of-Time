@@ -309,7 +309,10 @@ public class Battle {
     @Completed
     public void initiateNextTurn() {              // should handle again and help commands in it
         try {
+
+
             Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
+            currentPlayer.aTurnHasPassed();
 
             if (itIsFirstTurn) {
                 showCurrentBattleInfo(currentPlayer);
@@ -400,10 +403,13 @@ public class Battle {
 
 
                 if (attackingHero != null && targetFoe != null) {
-                    currentPlayer.giveAttack(attackingHero, targetFoe);
+                    if (!targetFoe.isDead) currentPlayer.giveAttack(attackingHero, targetFoe);
                 }
                 actFoes();
                 invalidCommand = false;
+                if (targetFoe.isDead)
+                    throw new RuntimeException(targetFoe + "is Dead and You cannot attack him more !");
+
             } else {
 
                 p = Pattern.compile(".*\\w+\\s(.*\\w\\s)?Attack.*\\w(\\s.*\\w)?");
