@@ -308,8 +308,6 @@ public class Battle {
 
     @Completed
     public void initiateNextTurn() {              // should handle again and help commands in it
-        try {
-
 
             Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
             currentPlayer.aTurnHasPassed();
@@ -320,158 +318,151 @@ public class Battle {
             }
 
 
-
-            String inputTemp = getInput();
-            boolean invalidCommand = true;
-
-
-            Pattern p = Pattern.compile(".*\\w+(\\s+.*\\w)?+\\?");
-            Matcher m = p.matcher(inputTemp);
-            boolean matchFound = m.matches();
-            if (matchFound) {
-                String temp = inputTemp.substring(0, inputTemp.length() - 1);
-
-                Item targetItem = currentPlayer.getItembyName(temp);
-                Ability targetAbility = currentPlayer.findAbilityByName(temp);
-                Hero targetHero = currentPlayer.findHeroByName(temp);
-                if (targetHero != null) {
-                    targetHero.showHeroDescription();
-                }    //TODO should throw an exception if item is not found
-                if (targetAbility != null) {
-                    targetAbility.showDescription();
-                }    //TODO should throw an exception if item is not found
-                if (targetItem != null) {
-                    targetItem.showDescription();
-                }
-                //TODO should throw an exception if HERO is not found
-                //TODO should throw an exception if ability is not found
-                invalidCommand = false;
-            }
-
-            // p = Pattern.compile(".*\\w+\\s(.*\\w\\s)?Cast.*\\w(\\s.*\\w)?\\s\\d+on+");
-            // m = p.matcher(inputTemp);
-            // matchFound = m.matches();
-            if (inputTemp.contains("Cast")) {
-                Hero castingHero = currentPlayer.findHeroByName(inputTemp.substring(0, inputTemp.indexOf("Cast") - 1));
-                Ability castedAbility = currentPlayer.findAbilityByNameAndOwner(inputTemp.substring(inputTemp.indexOf("Cast") + 5, inputTemp.indexOf(" on ")), castingHero);
-                //TODO badbakht shodim
-                Warrior targetWarrior = findWarriorByNameAndId(inputTemp.substring(inputTemp.indexOf(" on ") + 4, inputTemp.length()), 0, currentPlayer);
+        while (true) {
+            try {
+                String inputTemp = getInput();
+                if (inputTemp.equals("done")) break;
+                boolean invalidCommand = true;
 
 
-                if (castingHero != null && castedAbility != null & targetWarrior != null) {
-                    currentPlayer.castAbility(castingHero, castedAbility, targetWarrior);
+                Pattern p = Pattern.compile(".*\\w+(\\s+.*\\w)?+\\?");
+                Matcher m = p.matcher(inputTemp);
+                boolean matchFound = m.matches();
+                if (matchFound) {
+                    String temp = inputTemp.substring(0, inputTemp.length() - 1);
+
+                    Item targetItem = currentPlayer.getItembyName(temp);
+                    Ability targetAbility = currentPlayer.findAbilityByName(temp);
+                    Hero targetHero = currentPlayer.findHeroByName(temp);
+                    if (targetHero != null) {
+                        targetHero.showHeroDescription();
+                    }    //TODO should throw an exception if item is not found
+                    if (targetAbility != null) {
+                        targetAbility.showDescription();
+                    }    //TODO should throw an exception if item is not found
+                    if (targetItem != null) {
+                        targetItem.showDescription();
+                    }
+                    //TODO should throw an exception if HERO is not found
+                    //TODO should throw an exception if ability is not found
+                    invalidCommand = false;
                 }
 
+                // p = Pattern.compile(".*\\w+\\s(.*\\w\\s)?Cast.*\\w(\\s.*\\w)?\\s\\d+on+");
+                // m = p.matcher(inputTemp);
+                // matchFound = m.matches();
+                if (inputTemp.contains("Cast")) {
+                    Hero castingHero = currentPlayer.findHeroByName(inputTemp.substring(0, inputTemp.indexOf("Cast") - 1));
+                    Ability castedAbility = currentPlayer.findAbilityByNameAndOwner(inputTemp.substring(inputTemp.indexOf("Cast") + 5, inputTemp.indexOf(" on ")), castingHero);
+                    //TODO badbakht shodim
+                    Warrior targetWarrior = findWarriorByNameAndId(inputTemp.substring(inputTemp.indexOf(" on ") + 4, inputTemp.length()), 0, currentPlayer);
 
-                actFoes();
-                invalidCommand = false;
-            }
 
-            //p = Pattern.compile("\\w+\\s+Use+\\s+\\w+\\s+(.*\\w+\\s)?on+\\s+\\w+\\s?+.*?");
-            //m = p.matcher(inputTemp);
-            //matchFound = m.matches();
-            if (inputTemp.contains("Use")) {
-                Hero usingHero = currentPlayer.findHeroByName(inputTemp.substring(0, inputTemp.indexOf("Use") - 1));
-                Item usedItem = currentPlayer.getItembyNameAndOwner(inputTemp.substring(inputTemp.indexOf("Use") + 4, inputTemp.indexOf("on") - 1), usingHero);
-                Warrior targetWarrior = findWarriorByNameAndId(inputTemp.substring(inputTemp.indexOf("on") + 3, inputTemp.length() - 1), 0, currentPlayer);
+                    if (castingHero != null && castedAbility != null & targetWarrior != null) {
+                        currentPlayer.castAbility(castingHero, castedAbility, targetWarrior);
+                    }
 
-                if (usingHero != null & usedItem != null & usingHero != null) {
-                    currentPlayer.useItem(usingHero, usedItem, targetWarrior);
+
+                    invalidCommand = false;
                 }
 
-                actFoes();
-                invalidCommand = false;
+                //p = Pattern.compile("\\w+\\s+Use+\\s+\\w+\\s+(.*\\w+\\s)?on+\\s+\\w+\\s?+.*?");
+                //m = p.matcher(inputTemp);
+                //matchFound = m.matches();
+                if (inputTemp.contains("Use")) {
+                    Hero usingHero = currentPlayer.findHeroByName(inputTemp.substring(0, inputTemp.indexOf("Use") - 1));
+                    Item usedItem = currentPlayer.getItembyNameAndOwner(inputTemp.substring(inputTemp.indexOf("Use") + 4, inputTemp.indexOf("on") - 1), usingHero);
+                    Warrior targetWarrior = findWarriorByNameAndId(inputTemp.substring(inputTemp.indexOf("on") + 3, inputTemp.length() - 1), 0, currentPlayer);
 
-            }
+                    if (usingHero != null & usedItem != null & usingHero != null) {
+                        currentPlayer.useItem(usingHero, usedItem, targetWarrior);
+                    }
 
-            p = Pattern.compile(".*\\w+\\s(.*\\w\\s)?Attack.*\\w(\\s.*\\w)?\\s\\d+");
+                    invalidCommand = false;
 
-            m = p.matcher(inputTemp);
-            matchFound = m.matches();
-            if (matchFound) {
-
-                Hero attackingHero = currentPlayer.findHeroByName(inputTemp.substring(0, inputTemp.indexOf("Attack") - 1));
-//                printOutput("'" + inputTemp.substring(0, inputTemp.indexOf("Attack") - 1) + "'");
-                int id = Integer.parseInt(inputTemp.substring(inputTemp.lastIndexOf(" ") + 1, inputTemp.length()));
-//                printOutput("'" + inputTemp.substring(0, inputTemp.indexOf("Attack") - 1) + "'");
-//                printOutput("'" + inputTemp.substring(inputTemp.indexOf("Attack") + 7,
-//                        inputTemp.lastIndexOf(" ") - 1) + "'");
-                Foe targetFoe = findFoeByNameAndId(inputTemp.substring(inputTemp.indexOf("Attack") + 7,
-                        inputTemp.lastIndexOf(" ")), id);
-
-
-
-
-                if (attackingHero != null && targetFoe != null) {
-                    if (!targetFoe.isDead) currentPlayer.giveAttack(attackingHero, targetFoe);
                 }
-                actFoes();
-                invalidCommand = false;
-                if (targetFoe.isDead)
-                    throw new RuntimeException(targetFoe + "is Dead and You cannot attack him more !");
 
-            } else {
+                p = Pattern.compile(".*\\w+\\s(.*\\w\\s)?Attack.*\\w(\\s.*\\w)?\\s\\d+");
 
-                p = Pattern.compile(".*\\w+\\s(.*\\w\\s)?Attack.*\\w(\\s.*\\w)?");
                 m = p.matcher(inputTemp);
                 matchFound = m.matches();
                 if (matchFound) {
 
                     Hero attackingHero = currentPlayer.findHeroByName(inputTemp.substring(0, inputTemp.indexOf("Attack") - 1));
-                    int id = 0;
-                    Foe targetFoe = findFoeByNameAndId(inputTemp.substring(inputTemp.indexOf("Attack") + 7
-                            , inputTemp.length()), id);
+//                printOutput("'" + inputTemp.substring(0, inputTemp.indexOf("Attack") - 1) + "'");
+                    int id = Integer.parseInt(inputTemp.substring(inputTemp.lastIndexOf(" ") + 1, inputTemp.length()));
+//                printOutput("'" + inputTemp.substring(0, inputTemp.indexOf("Attack") - 1) + "'");
+//                printOutput("'" + inputTemp.substring(inputTemp.indexOf("Attack") + 7,
+//                        inputTemp.lastIndexOf(" ") - 1) + "'");
+                    Foe targetFoe = findFoeByNameAndId(inputTemp.substring(inputTemp.indexOf("Attack") + 7,
+                            inputTemp.lastIndexOf(" ")), id);
 
 
                     if (attackingHero != null && targetFoe != null) {
-                        currentPlayer.giveAttack(attackingHero, targetFoe);
+                        if (!targetFoe.isDead) currentPlayer.giveAttack(attackingHero, targetFoe);
                     }
-                    actFoes();
                     invalidCommand = false;
+                    if (targetFoe.isDead)
+                        throw new RuntimeException(targetFoe + "is Dead and You cannot attack him more !");
+
+                } else {
+
+                    p = Pattern.compile(".*\\w+\\s(.*\\w\\s)?Attack.*\\w(\\s.*\\w)?");
+                    m = p.matcher(inputTemp);
+                    matchFound = m.matches();
+                    if (matchFound) {
+
+                        Hero attackingHero = currentPlayer.findHeroByName(inputTemp.substring(0, inputTemp.indexOf("Attack") - 1));
+                        int id = 0;
+                        Foe targetFoe = findFoeByNameAndId(inputTemp.substring(inputTemp.indexOf("Attack") + 7
+                                , inputTemp.length()), id);
+
+
+                        if (attackingHero != null && targetFoe != null) {
+                            currentPlayer.giveAttack(attackingHero, targetFoe);
+                        }
+                        invalidCommand = false;
+                    }
+
+
                 }
 
 
-
-
-
-
-
-
-            }
-
-
-            p = Pattern.compile("again|help|information|done");
-            m = p.matcher(inputTemp);
-            matchFound = m.matches();
-            if (matchFound) {
-                switch (inputTemp) {
-                    case "again":
-                    case "information":
-                        showCurrentBattleInfo(currentPlayer);
-                        invalidCommand = false;
-                        break;
-                    case "help":
-                        fightHelp();
-                        invalidCommand = false;
-                        break;
-                    case "done":
-                        ChildrenOfTime.getInstance().doneCommand(this);
-                        defeat();
-                        invalidCommand = false;
-                        break;
+                p = Pattern.compile("again|help|information|done");
+                m = p.matcher(inputTemp);
+                matchFound = m.matches();
+                if (matchFound) {
+                    switch (inputTemp) {
+                        case "again":
+                        case "information":
+                            showCurrentBattleInfo(currentPlayer);
+                            invalidCommand = false;
+                            break;
+                        case "help":
+                            fightHelp();
+                            invalidCommand = false;
+                            break;
+                        /*
+                        case "done":
+                            ChildrenOfTime.getInstance().doneCommand(this);
+                            defeat();
+                            invalidCommand = false;
+                            break;
+                        */
+                    }
                 }
-            }
 
 
-            if (invalidCommand) {
-                printOutput("Invalid Command ! Be careful , enemies are attacking you !");
-                actFoes();
-            }
+                if (invalidCommand) {
+                    printOutput("Invalid Command ! Be careful , enemies are attacking you !");
+                }
 
 
         } catch (Exception e) {
             printOutput(e.getMessage());
         }
+        }
+        actFoes();
     }
 
     private void showCurrentBattleInfo(Player currentPlayer) {
