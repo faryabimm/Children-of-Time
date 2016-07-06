@@ -135,7 +135,7 @@ public class Ability implements Durable {
      */
     @Completed
     private void FightTraining(Hero hero) throws NotEnoughXPException {
-        for (int i = 0; i <= currentLevel; i++) {
+        for (int i = 1; i <= currentLevel; i++) {
             hero.attackPower += 30;
         }
     }
@@ -143,14 +143,14 @@ public class Ability implements Durable {
     @Completed
     private void WorkOut(Hero hero) {
 
-        for (int i = 0; i <= currentLevel; i++) {
+        for (int i = 1; i <= currentLevel; i++) {
         hero.maxHealth += 50;
         }
     }
 
     @Completed
     private void MagicLessons(Hero hero) {
-        for (int i = 0; i <= currentLevel; i++) {
+        for (int i = 1; i <= currentLevel; i++) {
             hero.changeMaxMagic(50);
         }
     }
@@ -158,7 +158,7 @@ public class Ability implements Durable {
 
     @Completed
     private void QuickAsABunny(Hero hero) {
-        for (int i = 0; i <= currentLevel; i++) {
+        for (int i = 1; i <= currentLevel; i++) {
             hero.changeEP(1);
         }
     }
@@ -188,6 +188,7 @@ public class Ability implements Durable {
 
     @InProgress
     private void Sacrifice(Hero hero) throws AttackException {
+        if (this.isInCoolDown) throw new AbilityInCooldownException("Abiliy is in cooldown");
         hero.changeEP(-3);
         try {
             hero.changeMagic(-60);
@@ -195,7 +196,6 @@ public class Ability implements Durable {
             hero.changeEP(3);
         }
         int H = 0;
-        if (this.isInCoolDown) throw new AbilityInCooldownException("Abiliy is in cooldown");
         switch (currentLevel) {
             case 1:
                 H = 40;
@@ -209,10 +209,13 @@ public class Ability implements Durable {
 
         }
 
+
         for (Foe foe : Battle.getFoes()) {
             foe.changeHealth(-3 * H);
             hero.changeHealth(-H);
         }
+
+        isInCoolDown=true;
         printOutput("Chrome just sacrificed himself to damage all his enemies with " + 3 * H + " power");
     }
 
@@ -225,6 +228,7 @@ public class Ability implements Durable {
 
     @Completed
     private void Elixir(Hero hero, Hero hero2) throws AttackException {
+        if (isInCoolDown)                throw new AbilityInCooldownException("This ability (" + this.info.name + ")is  in Cooldown");
         hero.changeEP(-2);
         try {
             hero.changeMagic(-60);
@@ -237,24 +241,22 @@ public class Ability implements Durable {
         int h = 0;
         switch (this.currentLevel) {
             case 1:
-                if (isInCoolDown)
-                    throw new AbilityInCooldownException("This ability (" + this.info.name + ")is  in Cooldown");
                 hero2.changeHealth(100);
                 h = 100;
                 isInCoolDown = true;
                 break;
             case 2:
-                if (isInCoolDown)
-                    throw new AbilityInCooldownException("This ability (" + this.info.name + ")is  in Cooldown");
                 hero2.changeHealth(150);
                 h = 150;
                 isInCoolDown = true;
                 break;
             case 3:
+                isInCoolDown=false;
                 h = 150;
                 hero2.changeHealth(150);
                 break;
         }
+        isInCoolDown=true;
         printOutput("Meryl just healed " + hero2 + " with " + h + " health points");
     }
 
@@ -304,6 +306,7 @@ public class Ability implements Durable {
 
     @Completed
     private void Boost(Hero hero, Hero hero2) throws AttackException {
+                if (this.isInCoolDown)  throw new AbilityInCooldownException("This ability (" + this.info.name + ")is  in Cooldown");
         hero.changeEP(-2);
         try {
             hero.changeMagic(-50);
@@ -316,29 +319,29 @@ public class Ability implements Durable {
         int a = 0;
         switch (this.currentLevel) {
             case 1:
-                if (this.isInCoolDown)
-                    throw new AbilityInCooldownException("This ability (" + this.info.name + ")is  in Cooldown");
                 hero2.changeAttackPower(20);
                 isInCoolDown = true;
                 a = 20;
                 break;
             case 2:
-                if (this.isInCoolDown)
-                    throw new AbilityInCooldownException("This ability (" + this.info.name + ")is  in Cooldown");
                 hero2.changeAttackPower(30);
                 isInCoolDown = true;
                 a = 30;
                 break;
             case 3:
+                isInCoolDown=false;
                 hero2.changeAttackPower(30);
                 a = 30;
                 break;
         }
+        isInCoolDown=true;
         printOutput("Bolti just boosted " + hero2 + " with " + a + " power");
     }
 
     @Completed
     private void ManaBeam(Hero hero, Hero hero2) throws AttackException {
+                if (this.isInCoolDown)
+                    throw new AbilityInCooldownException("This ability (" + this.info.name + ")is  in Cooldown");
         hero.changeEP(-1);
         try {
             hero.changeMagic(-50);
@@ -351,20 +354,17 @@ public class Ability implements Durable {
         int m = 0;
         switch (this.currentLevel) {
             case 1:
-                if (this.isInCoolDown)
-                    throw new AbilityInCooldownException("This ability (" + this.info.name + ")is  in Cooldown");
                 hero2.changeMagic(50);
                 isInCoolDown = true;
                 m = 50;
                 break;
             case 2:
-                if (this.isInCoolDown)
-                    throw new AbilityInCooldownException("This ability (" + this.info.name + ")is  in Cooldown");
                 hero2.changeMagic(80);
                 isInCoolDown = true;
                 m = 80;
                 break;
             case 3:
+                isInCoolDown=false;
                 hero2.changeMagic(80);
                 m = 80;
                 break;
@@ -400,7 +400,7 @@ public class Ability implements Durable {
     @Override
     public void aTurnHasPassed() {
         if (!isInCoolDown) return;
-        if (leftTurnsToCoolDown == 1) {
+        if (leftTurnsToCoolDown == 0) {
             this.isInCoolDown = false;
             leftTurnsToCoolDown = this.info.coolDownTime;
         } else {
