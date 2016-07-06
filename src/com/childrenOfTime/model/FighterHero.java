@@ -3,7 +3,7 @@ package com.childrenOfTime.model;
 /**
  * Created by SaeedHD on 05/11/2016.
  */
-public enum FighterHero{
+public enum FighterHero {
     Eley("Overpowered attack", "Swirling attack", "Eley:\n" +
             "Class: Fighter\n" +
             "Ability 3: Overpowered attack\n" +

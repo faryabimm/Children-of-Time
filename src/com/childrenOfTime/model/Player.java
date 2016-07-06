@@ -171,7 +171,7 @@ public class Player {
 
     @Completed
     public void giveAttack(Hero attackingHero, Foe targetFoe) {
-        attackingHero.attackManual(targetFoe);
+        attackingHero.attack(targetFoe, null, 2);
 
     }
 

@@ -6,7 +6,7 @@ import com.childrenOfTime.InProgress;
 /**
  * Created by SaeedHD on 05/13/2016.
  */
-public enum InformationOfAbilities {
+public enum EndlessCollectionInformations {
     Fight("Fight training", -1, 2, 3, 4, 0, 0),
     Work("Work out", -1, 2, 3, 4, 0, 0),
     Quick("Quick as a bunny", -1, 2, 3, 4, 0, 0),
@@ -21,13 +21,14 @@ public enum InformationOfAbilities {
     Mana("Mana Beam", 1, 2, 3, 5, 1, 50);
 
 
-    String name;
     int coolDownTime;
 
     int xp1;
     int xp2;
     int xp3;
 
+
+    String name;
     int masrafEP;
     int masrafMP;
 
@@ -37,7 +38,7 @@ public enum InformationOfAbilities {
 
     String description;
 
-    InformationOfAbilities(String name, int coolDownTime, int xp1, int xp2, int xp3, int Ep, int Mp) {
+    EndlessCollectionInformations(String name, int coolDownTime, int xp1, int xp2, int xp3, int Ep, int Mp) {
         this.name = name;
         this.coolDownTime = coolDownTime;
         //this.maxLevel = maxLevel;
@@ -47,6 +48,7 @@ public enum InformationOfAbilities {
 
         this.masrafEP = Ep;
         this.masrafMP = Mp;
+
 
     }
 
