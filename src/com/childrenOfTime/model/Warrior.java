@@ -2,12 +2,10 @@ package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
 
-import static com.childrenOfTime.view.IOHandler.printOutput;
-
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
-public abstract class Warrior {
+public abstract class Warrior implements HasImpactHealth {
     protected int currentHealth;
     protected int maxHealth;
     protected int id;
@@ -22,33 +20,11 @@ public abstract class Warrior {
         this.id = id;
         this.name = name;
     }
-    @Completed
-    public void changeHealth(int quantitiy){
 
-        if (currentHealth + quantitiy < 0) {
-            currentHealth=0;
-            if (this instanceof Hero) {
-                this.isDying = true;
-                if (ChildrenOfTime.getInstance().getPlayers().get(0).isAnyImmortalityPotionLeft()) {
-                    ChildrenOfTime.getInstance().getPlayers().get(0).useImmortalityPotion();
-                    this.currentHealth = this.maxHealth;
-                    printOutput(WarriorMessages.getDyingMessageForHero(ChildrenOfTime.getInstance().getPlayers().get(0), (Hero) this));
-                } else {
-                    isDead = true;
-                    printOutput(WarriorMessages.getDiedMessageForHero((Hero) this));
-                    printOutput("No Imortatlity Potions left.");
+    public abstract void changeHealth(int quantity);
 
-                }
-            }
-            if (this instanceof Foe) {
-                this.isDead = true;
-                printOutput(WarriorMessages.getDiedMessageForFoe((Foe) this));
-            }
-        } else {
-            if (currentHealth + quantitiy > maxHealth) {
-                currentHealth = maxHealth;
-            } else currentHealth += quantitiy;
-        }
+    public void changeHealthWithInsuranceOfLiving(int quantity) {
+        currentHealth = currentHealth + quantity > maxHealth ? maxHealth : currentHealth + quantity;
     }
 
     public String getName() {
@@ -59,6 +35,14 @@ public abstract class Warrior {
         return id;
     }
 
+    public int getAttackPower() {
+        return attackPower;
+    }
+
+    public void setAttackPower(int attackPower) {
+        this.attackPower = attackPower;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -66,9 +50,20 @@ public abstract class Warrior {
         return isDying;
     }
 
+    public boolean wasAlive() {
+        return currentHealth > 0;
+    }
+
+    public boolean willDye(int q) {
+        return currentHealth + q < 0;
+    }
     public void changeAttackPower(int num) {
         this.attackPower += num;
     }
 
     public abstract String showCurrentTraits();
+
+    public abstract void attack(Warrior warrior, Integer attackPower, Integer EPCost);
+
+    public abstract void heal(Warrior warrior, Integer healingAmount);
 }

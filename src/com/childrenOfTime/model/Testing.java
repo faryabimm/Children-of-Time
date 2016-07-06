@@ -1,13 +1,10 @@
 package com.childrenOfTime.model;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 /**
  * Created by mohammadmahdi on 5/14/16.
  */
 public class Testing {
-
+/*
     public static void main(String[] args) {
         Hero hero = new Hero("Bolti", "Supporter", 1);
         Hero hero2 = new Hero("Chrome", "Fighter", 1);
@@ -30,16 +27,16 @@ public class Testing {
         //hero.abilities.get("Sw").showDescription();
         System.out.println(hero.getCurrentEnergyPoints());
         System.out.println(foe.toString());
-        hero2.attackManual(foe);
-        //hero.attackManual(foe);
-        //hero.attackManual(foe);
+        hero2.attack(foe, null);
+        //hero.attack(foe);
+        //hero.attack(foe);
 
         foe.updateFinalBoss();
         System.out.println(foe.attackPower);
-        //   hero2.attackManual(foe);
+        //   hero2.attack(foe);
         foe.updateFinalBoss();
         System.out.println(foe.attackPower);
-        // hero2.attackManual(foe);
+        // hero2.attack(foe);
 
 
 
@@ -69,4 +66,5 @@ public class Testing {
 
 
     }
+    */
 }

@@ -9,8 +9,9 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
+
 public class Ability implements Durable {
-    InformationOfAbilities info;
+    EndlessCollectionInformations info;
     protected int currentLevel = 0;
     protected int leftTurnsToCoolDown;
     protected boolean isInCoolDown = false;
@@ -19,7 +20,7 @@ public class Ability implements Durable {
     @Completed
     public Ability(String name) {
         String firstWord = name.split(" ")[0];
-        this.info = InformationOfAbilities.valueOf(firstWord);
+        this.info = EndlessCollectionInformations.valueOf(firstWord);
         this.leftTurnsToCoolDown = this.info.coolDownTime;
 
     }
@@ -37,7 +38,7 @@ public class Ability implements Durable {
                     info.name + ")");
         }
 
-        switch (InformationOfAbilities.valueOf(this.info.name.split(" ")[0])) {
+        switch (EndlessCollectionInformations.valueOf(this.info.name.split(" ")[0])) {
             case Fight:
                 FightTraining(hero);
                 break;
@@ -86,21 +87,19 @@ public class Ability implements Durable {
         switch (this.currentLevel) {
             case 0:
                 if (!info.upgradeRequirement1)
-                    throw new RequirementsNotMetException("the requirements are not yet met" +
-                            "for this upgrade.");
+                    throw new RequirementsNotMetException();
                 player.changeCurrentExperience(-info.xp1);
                 currentLevel += 1;
                 break;
             case 1:
                 if (!info.upgradeRequirement2)
-                    throw new RequirementsNotMetException("the requirements are not yet met" +
-                            "for this upgrade.");
+                    throw new RequirementsNotMetException();
                 player.changeCurrentExperience(-info.xp2);
                 currentLevel += 1;
                 break;
             case 2:
                 if (!info.upgradeRequirement3)
-                    throw new RequirementsNotMetException("This ability (" + this.info.name + ") has reached its maximum level");
+                    throw new RequirementsNotMetException();
                 player.changeCurrentExperience(-info.xp3);
                 currentLevel += 1;
                 break;
@@ -119,10 +118,6 @@ public class Ability implements Durable {
 
     }
 
-    @Override
-    public void wearOff() {
-
-    }
 
 
     /*
@@ -175,7 +170,7 @@ public class Ability implements Durable {
                     (50 - hero.currentMagic) + " additional Mps.");
         }
 
-        hero.attackAuto(foe, (int) (hero.attackPower * (1 + 0.2 * currentLevel)));
+        hero.attack(foe, (int) (hero.attackPower * (1 + 0.2 * currentLevel)), 0);
         printOutput("Eley just did an overpowered attack on " +
                 foe + " with " + 1 + 0.2 * currentLevel + " damage");
     }
@@ -266,7 +261,7 @@ public class Ability implements Durable {
             switch (this.currentLevel) {
                 case 1:
                     if (this.isInCoolDown) {
-                        hero2.changeEP(-1);
+                        hero2.changeEP(-1);  //TODO we have to check this logically
                         hero.changeMagic(30);
                         throw new AbilityInCooldownException("This ability (" + this.info.name + ")is  in Cooldown");
                     }
@@ -294,7 +289,6 @@ public class Ability implements Durable {
                                 (30 - hero.currentMagic) + " additional Mps.");
                     }
                     break;
-
 
             }
 
@@ -388,13 +382,19 @@ public class Ability implements Durable {
         printOutput(this.info.description);
     }
 
-
+/*
     @Override
     public boolean equals(Object obj) {
         if (obj == null || obj.getClass() != this.getClass()) return false;
         Ability other = (Ability) obj;
         if (!this.info.name.equals(other.info.name)) return false;
         return true;
+    }
+*/
+
+    @Override
+    public void wearOff(Warrior performer, Warrior... target_s) {
+
     }
 
     @Override
@@ -407,5 +407,6 @@ public class Ability implements Durable {
             leftTurnsToCoolDown--;
         }
     }
+
 }
 

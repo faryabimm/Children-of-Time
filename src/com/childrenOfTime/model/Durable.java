@@ -5,9 +5,7 @@ package com.childrenOfTime.model;
  */
 public interface Durable {
 
-
-    public void wearOff();
-
+    public void wearOff(Warrior performer, Warrior... target_s);
     public void aTurnHasPassed();
 
 }

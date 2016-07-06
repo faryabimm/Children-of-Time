@@ -2,6 +2,8 @@ package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
 
+import java.util.List;
+
 /**
  * Created by SaeedHD on 05/11/2016.
  */
@@ -28,8 +30,8 @@ public class WarriorMessages {
         }
 
         @Completed
-        public static String getSuccessfulAttackMessage(Hero hero, Foe foe, int attackpower) {
-            return hero.getName() + hero.getId() + " has successfully attacked " + foe.getName() + foe.getId() + " with " + attackpower + " power";
+        public static String getSuccessfulAttackMessage(Hero hero, Warrior enemy, int attackpower) {
+            return hero.getName() + hero.getId() + " has successfully attacked " + enemy.getName() + enemy.getId() + " with " + attackpower + " power";
         }
 
     @Completed
@@ -79,6 +81,13 @@ public class WarriorMessages {
     }
 
 
+    public static String getSuccessfulSwirlingAttackMessage(Hero hero, List<Warrior> enemyList, int i) {
+        String toReturn = hero.getName() + hero.getId() + " has successfully swirling attacked" + " with " + i + " power to : ";
+        for (Warrior enemy : enemyList) {
+            toReturn += "\t" + enemy.getName() + enemy.getId() + ",";
+        }
+        return toReturn;
+    }
 }
 
 

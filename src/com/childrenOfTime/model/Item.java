@@ -73,9 +73,6 @@ public class Item implements Durable {
         leftUsages--;
     }
 
-    @Override
-    public void wearOff() {
-    }
 
     @Completed
     public void showDescription() {
@@ -85,6 +82,11 @@ public class Item implements Durable {
     @Completed
     public InformationOfItems getInfo() {
         return info;
+    }
+
+    @Override
+    public void wearOff(Warrior performer, Warrior... target_s) {
+
     }
 
     public void aTurnHasPassed() {

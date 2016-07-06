@@ -7,17 +7,14 @@ import com.childrenOfTime.exceptions.ItemNotAquiredException;
 import com.childrenOfTime.exceptions.NotEnoughEnergyPointsException;
 import com.childrenOfTime.exceptions.NotEnoughMagicPointsException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
 
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
-public class Hero extends Warrior {
+public class Hero extends Warrior implements HasImpactHealth {
     protected int currentMagic;
     protected int currentEnergyPoints;
     protected Inventory inventory;
@@ -34,22 +31,57 @@ public class Hero extends Warrior {
     public int probability = 0;
     public boolean criticalIsActivated = false;
 
-    @Completed
-    public void attackAuto(Foe enemy, int attackPower) {
-        printOutput(WarriorMessages.getSuccessfulAttackMessage(this, enemy, attackPower));
-        enemy.changeHealth(-attackPower);
-        if (this.swirlingisActivated) {
-            for (Foe f : Battle.getFoes()) {   //access to AllFoes
-                if (f.equals(enemy)) continue;
-                f.changeAttackPower((int) (this.damagePercent * attackPower));
-                printOutput(WarriorMessages.getSuccessfulAttackMessage(this, enemy, (int) (this.damagePercent * attackPower)));
-            }
 
+    @Override
+    public void attack(Warrior enemy, Integer realAttack, Integer EPCost) throws NotEnoughEnergyPointsException {
+        if (EPCost == null) EPCost = 2;
+        changeEP(-EPCost);
+        if (realAttack == null) realAttack = this.attackPower;
+
+        if (this.criticalIsActivated) {
+            realAttack = getAttackPowerByCriticalActivation();
         }
+        printOutput(WarriorMessages.getSuccessfulAttackMessage(this, enemy, realAttack));
+        enemy.changeHealth(-realAttack);
+        if (this.swirlingisActivated) {
+            doSwirlingAttack(realAttack);
+        }
+    }
 
+    @Override
+    public void heal(Warrior warrior, Integer healingAmount) {
 
     }
 
+    private void doSwirlingAttack(int realAttack) {
+        List<Warrior> allEnemies = new ArrayList<>() /*Battle.getFoes()*/; //TODO rideman ro jam kon !
+        for (Warrior warrior : allEnemies) {     //access to AllFoes
+            if (warrior.equals(warrior)) continue;
+            warrior.changeAttackPower((int) (this.damagePercent * realAttack));
+        }
+        printOutput(WarriorMessages.getSuccessfulSwirlingAttackMessage(this, allEnemies, (int) (this.damagePercent * realAttack)));
+    }
+
+    private int getAttackPowerByCriticalActivation() {
+        Random rand = new Random();
+        int n = rand.nextInt(100) + 1;
+        if (n <= probability) {
+            return attackPower * 2;
+        }
+        return attackPower;
+    }
+
+    /*
+        @Completed
+        public void attack(Foe enemy, int attackPower) {
+            printOutput(WarriorMessages.getSuccessfulAttackMessage(this, enemy, attackPower));
+            enemy.changeHealth(-attackPower);
+            if (this.swirlingisActivated) {
+                doSwirlingAttack(attackPower);
+
+            }
+        }
+    */
     @Completed
     public void showAbDes() {
         String toPrint = "";
@@ -63,33 +95,18 @@ public class Hero extends Warrior {
         printOutput(toPrint);
     }
 
-
-    @Completed
-    public void attackManual(Foe enemy) throws NotEnoughEnergyPointsException {
-        changeEP(-2);
-        int realAttack = attackPower;
-        if (this.criticalIsActivated) {
-            Random rand = new Random();
-            int n = rand.nextInt(100) + 1;
-            if (n <= probability) {
-                realAttack = attackPower * 2;
-            }
-        }
-
-        printOutput(WarriorMessages.getSuccessfulAttackMessage(this, enemy, realAttack));
-        enemy.changeHealth(-realAttack);
-        if (this.swirlingisActivated) {
-            for (Foe f : Battle.getFoes()) {     //access to AllFoes
-                if (f.equals(enemy)) continue;
-                f.changeAttackPower((int) (this.damagePercent * realAttack));
-                printOutput(WarriorMessages.getSuccessfulAttackMessage(this, enemy, (int) (this.damagePercent * realAttack)));
-
-            }
-        }
-
+    public Hero(FighterHero name, TypesOfHero className, int id) {
+        this(name.name(), className.name(), id);
     }
+
+
+    public Hero(SupporterHero name, TypesOfHero className, int id) {
+        this(name.name(), className.name(), id);
+    }
+
+
     @Completed
-    public Hero(String name, String className, int id) {
+    public Hero(String name, String className, int id) {    //TODO It Should Be Private
         super(name, id);
         typesOfHero = TypesOfHero.valueOf(className);
         this.info = new InformationOfHeroes(typesOfHero.healthRefillRate, typesOfHero.inventorySize,
@@ -249,7 +266,28 @@ public class Hero extends Warrior {
         printOutput(info.classDescription);
     }
 
+    @Override
+    public void changeHealth(int quantitiy) {
+        if (wasAlive() & !willDye(quantitiy)) {
+            changeHealthWithInsuranceOfLiving(quantitiy);
+            return;
+        }
 
+        if (wasAlive() & willDye(quantitiy)) {
+            currentHealth = 0;
+            boolean isAnyImmortalityLeft = ChildrenOfTime.getInstance().getPlayers().get(0).isAnyImmortalityPotionLeft();
+            if (isAnyImmortalityLeft) {
+                useImmortalityPotion();
+                printOutput(WarriorMessages.getDyingMessageForHero(ChildrenOfTime.getInstance().getPlayers().get(0), this));
+            } else {
+                isDead = true;
+                printOutput(WarriorMessages.getDiedMessageForHero(this));
+                printOutput("No Immortality Potions left.");
+
+            }
+
+        }
+    }
     @Override
     public String showCurrentTraits() {
         String toPrint = "";
@@ -268,7 +306,9 @@ public class Hero extends Warrior {
         return toPrint;
     }
 
-    public void revivedWithImmortalityPotion() {
+    public void useImmortalityPotion() {
+        ChildrenOfTime.getInstance().getPlayers().get(0).useImmortalityPotion();
+        this.currentHealth = this.maxHealth;
     }
 
     public void aTurnHasPassed() {
@@ -283,4 +323,6 @@ public class Hero extends Warrior {
         this.currentEnergyPoints = info.initialEP;
 
     }
+
+
 }
