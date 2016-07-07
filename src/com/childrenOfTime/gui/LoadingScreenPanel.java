@@ -1,4 +1,4 @@
-package gui;
+package com.childrenOfTime.gui;
 
 import com.childrenOfTime.model.ChildrenOfTime;
 
