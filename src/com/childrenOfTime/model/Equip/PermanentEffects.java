@@ -31,7 +31,7 @@ public class PermanentEffects extends Effects {
     }
 
     @Override
-    public void perform(Hero performer, Warrior... target_s) {
+    public void perform(Warrior performer, Warrior... target_s) {
         if (giveAttackPowerPermanently != null && giveAttackPowerPermanently != 0) {
             for (Warrior target : target_s) {
                 target.changeAttackPower(this.giveAttackPowerPermanently);

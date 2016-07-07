@@ -35,4 +35,6 @@ public class HeroClass {
         BackStory = backStory;
         this.classAbilities = classAbilities;
     }
+
+
 }

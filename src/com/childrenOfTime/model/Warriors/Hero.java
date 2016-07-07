@@ -29,16 +29,9 @@ public class Hero extends Warrior {
     private int currentEnergyPoints;
     private Inventory inventory;
     private HeroClass info;
+    private ExAbiltyInfo exAbiltyInfo;
 
-    //for Swirling ability
-    private boolean swirlingHealisActivated = false;
-    private boolean swirlingAttackisActivated = false;
-    private double damagePercentH = 0;
-    private double damagePercentAttack = 0;
-    //for CriticalStrike
-    private boolean criticalIsActivated = false;
-    private Double criticalFactor = 1d;
-    private int probability = 0;
+
     private ArrayList<Ability> specificHeroAbilities;
 
     public Map<String, Ability> abilities = new HashMap<>();
@@ -52,7 +45,7 @@ public class Hero extends Warrior {
             realAttack = getAttackPowerByCriticalActivation();
         }
         printOutput(WarriorMessages.getSuccessfulAttackMessage(this, enemy, realAttack));
-        enemy.changeHealth(-realAttack);
+        enemy.changeHealth(-realAttack, null);
         if (this.swirlingAttackisActivated) {
             doSwirling(-realAttack, this.damagePercentAttack, nonTargetedEnemies);
         }
@@ -62,7 +55,7 @@ public class Hero extends Warrior {
     public void attackAuto(Warrior enemy, Integer realAttack) throws NotEnoughEnergyPointsException {
         if (realAttack == null) realAttack = this.attackPower;
         printOutput(WarriorMessages.getSuccessfulAttackMessage(this, enemy, realAttack));
-        enemy.changeHealth(-realAttack);
+        enemy.changeHealth(-realAttack, null);
     }
 
     @Override
@@ -71,7 +64,7 @@ public class Hero extends Warrior {
         changeEP(-EPCost);
         if (healingAmount == null) healingAmount = 0;
 
-        target.changeHealth(-healingAmount);
+        target.changeHealth(-healingAmount, null);
         if (this.swirlingHealisActivated) {
             doSwirling(+healingAmount, this.damagePercentH, nonTargetedHeal);
         }
@@ -80,7 +73,7 @@ public class Hero extends Warrior {
     private void doSwirling(int realChangeHealth, Double damagePercent, Warrior... targets) {
         for (Warrior warrior : targets) {
             int newChangeHealthAmount = (int) (damagePercent * realChangeHealth / 100);
-            warrior.changeHealth(newChangeHealthAmount);
+            warrior.changeHealth(newChangeHealthAmount, null);
         }
         printOutput(WarriorMessages.getSuccessfulSwirlingAttackMessage(this, Arrays.asList(targets), (int) (damagePercent * realChangeHealth)));
     }
@@ -99,26 +92,19 @@ public class Hero extends Warrior {
         String toPrint = "";
         String state = "";
         for (Map.Entry<String, Ability> entry : abilities.entrySet()) {
-            if (entry.getValue().current.numberOfUpgrade == 0) {  //TODO In khat fake ast.dorost shavad
+            if (!entry.getValue().isAcquired()) {
                 state = "not acquired";
-            } else state = entry.getValue().currentLevel + "";
+            } else state = entry.getValue().getCurrentLevel() + "";
             toPrint += "\t" + entry.getKey() + " : " + state + "\n";
         }
         printOutput(toPrint);
     }
 
-    public Hero(FighterHero name, TypesOfHero className, int id) {
-        this(name.name(), className.name(), id);
-    }
 
-
-    public Hero(SupporterHero name, TypesOfHero className, int id) {
-        this(name.name(), className.name(), id);
-    }
 
 
     @Completed
-    public Hero(String name, String className, int id) {    //TODO It Should Be Private
+    public Hero(String name, HeroClass, int id) {    //TODO It Should Be Private
         super(name, id);
         typesOfHero = TypesOfHero.valueOf(className);
         this.info = new HeroClass(typesOfHero.healthRefillRate, typesOfHero.inventorySize,
@@ -147,6 +133,8 @@ public class Hero extends Warrior {
         super.attackPower = typesOfHero.attackPower;
         super.maxHealth = typesOfHero.maxHealth;
     }
+
+
     @Completed
     public ArrayList<Item> getInventoryItems() {
         return inventory.getItems();
@@ -164,6 +152,8 @@ public class Hero extends Warrior {
     public void useItem(String itemName, Warrior warrior) throws ItemNotAquiredException {
 
     }
+
+
     @Completed
     public String toString() {
 
@@ -181,16 +171,16 @@ public class Hero extends Warrior {
         ability.cast(this, warrior);
     }
     public int getInventorySize() {
-        return typesOfHero.inventorySize;
+        return info.inventorySize;
     }
     public void setInventorySize(int inventorySize) {
-        this.typesOfHero.inventorySize = inventorySize;
+        this.info.inventorySize = inventorySize;
     }
     public int getMaxMagic() {
-        return typesOfHero.maxMagic;
+        return info.maxMagic;
     }
     public void setMaxMagic(int maxMagic) {
-        this.typesOfHero.maxMagic = maxMagic;
+        this.info.maxMagic = maxMagic;
     }
     public int getCurrentMagic() {
         return currentMagic;
@@ -199,10 +189,10 @@ public class Hero extends Warrior {
         this.currentMagic = currentMagic;
     }
     public int getMagicRefillRate() {
-        return typesOfHero.magicRefillRate;
+        return info.magicRefillRate;
     }
     public void setMagicRefillRate(int magicRefillRate) {
-        this.typesOfHero.magicRefillRate = magicRefillRate;
+        this.info.magicRefillRate = magicRefillRate;
     }
     public int getCurrentEnergyPoints() {
         return currentEnergyPoints;
@@ -217,28 +207,29 @@ public class Hero extends Warrior {
         this.inventory = inventory;
     }
 
-    public boolean isSwirlingHealisActivated() {
-        return swirlingHealisActivated;
+
+    public int getHealthRefillRate() {
+        return info.healthRefillRate;
+    }
+
+    public void setHealthRefillRate(int healthRefillRate) {
+        this.info.healthRefillRate = healthRefillRate;
     }
 
     public void setSwirlingHealisActivated(boolean swirlingHealisActivated) {
-        this.swirlingHealisActivated = swirlingHealisActivated;
-    }
-
-    public double getDamagePercentH() {
-        return damagePercentH;
+        this.exAbiltyInfo.swirlingHealisActivated = swirlingHealisActivated;
     }
 
     public void setDamagePercentH(double damagePercentH) {
-        this.damagePercentH = damagePercentH;
+        this.exAbiltyInfo.damagePercentH = damagePercentH;
     }
 
     public Double getCriticalFactor() {
-        return criticalFactor;
+        return exAbiltyInfo.criticalFactor;
     }
 
     public void setCriticalFactor(Double criticalFactor) {
-        this.criticalFactor = criticalFactor;
+        this.exAbiltyInfo.criticalFactor = criticalFactor;
     }
 
     public void changeEP(int num) throws NotEnoughEnergyPointsException {
@@ -304,7 +295,7 @@ public class Hero extends Warrior {
     }
 
     @Override
-    public void changeHealth(int quantitiy) {
+    public void changeHealth(int quantitiy, Double reduceFactor) {
         if (wasAlive() & !willDye(quantitiy)) {
             changeHealthWithInsuranceOfLiving(quantitiy);
             return;
@@ -362,28 +353,21 @@ public class Hero extends Warrior {
     }
 
 
-    public TypesOfHero getTypesOfHero() {
-        return typesOfHero;
-    }
-
-    public void setTypesOfHero(TypesOfHero typesOfHero) {
-        this.typesOfHero = typesOfHero;
-    }
 
     public boolean isSwirlingAttackisActivated() {
-        return swirlingAttackisActivated;
+        return exAbiltyInfoswirling.AttackisActivated;
     }
 
     public void setSwirlingAttackisActivated(boolean swirlingAttackisActivated) {
-        this.swirlingAttackisActivated = swirlingAttackisActivated;
+        this.exAbiltyInfo.swirlingAttackisActivated = swirlingAttackisActivated;
     }
 
     public double getDamagePercentAttack() {
-        return damagePercentAttack;
+        return exAbiltyInfo.damagePercentAttack;
     }
 
     public void setDamagePercentAttack(double damagePercentAttack) {
-        this.damagePercentAttack = damagePercentAttack;
+        this.exAbiltyInfo.damagePercentAttack = damagePercentAttack;
     }
 
     public HeroClass getInfo() {
@@ -403,18 +387,18 @@ public class Hero extends Warrior {
     }
 
     public int getProbability() {
-        return probability;
+        return exAbiltyInfo.probability;
     }
 
     public void setProbability(int probability) {
-        this.probability = probability;
+        this.exAbiltyInfo.probability = probability;
     }
 
     public boolean isCriticalIsActivated() {
-        return criticalIsActivated;
+        return exAbiltyInfo.criticalIsActivated;
     }
 
     public void setCriticalIsActivated(boolean criticalIsActivated) {
-        this.criticalIsActivated = criticalIsActivated;
+        this.exAbiltyInfo.criticalIsActivated = criticalIsActivated;
     }
 }

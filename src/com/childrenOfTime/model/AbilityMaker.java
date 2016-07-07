@@ -59,7 +59,6 @@ public class AbilityMaker {
     public Ability returnAbility() {
         Ability ab = ability;
         ability = null;
-        ability = null;
         return ab;
     }
 

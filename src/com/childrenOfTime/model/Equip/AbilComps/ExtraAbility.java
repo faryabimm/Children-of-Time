@@ -1,6 +1,6 @@
 package com.childrenOfTime.model.Equip.AbilComps;
 
-import com.childrenOfTime.model.Equip.PermanentExtraFeatures;
+import com.childrenOfTime.model.Equip.PermanentPassiveFeatures;
 import com.childrenOfTime.model.Equip.Target;
 
 /**
@@ -40,7 +40,7 @@ public class ExtraAbility extends Ability {
         for (int i = 0; i < swirlingAttackPercents.length; i++) {
             Upgrade newUpgrade = new Upgrade(UpgradeNumbers[i], UpgradeDescriptons[i], 0, XPCosts[i], EPCost[i], MPCost[i], requirements[i]);
             Upgrades.add(newUpgrade);
-            newUpgrade.effects.add(new PermanentExtraFeatures(swirlingHeal, swirlingHealPercents[i], swirlingAttack1, swirlingAttackPercents[i], crticalAttack, crticalFactor[i], criticalProbabiliy[i]));
+            newUpgrade.effects.add(new PermanentPassiveFeatures(swirlingHeal, swirlingHealPercents[i], swirlingAttack1, swirlingAttackPercents[i], crticalAttack, crticalFactor[i], criticalProbabiliy[i]));
         }
     }
 }

@@ -66,7 +66,7 @@ public class Item implements Durable {
                 hero2.changeMaxMagic(150);
                 break;
             case Health:
-                hero2.changeHealth(100);
+                hero2.changeHealth(100, null);
                 printOutput(hero + " just healed " + hero2 + " with 100 health points");
                 break;
             case Magic:

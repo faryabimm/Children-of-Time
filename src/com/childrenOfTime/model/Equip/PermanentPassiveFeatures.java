@@ -1,12 +1,11 @@
 package com.childrenOfTime.model.Equip;
 
 import com.childrenOfTime.model.Warrior;
-import com.childrenOfTime.model.Warriors.Hero;
 
 /**
  * Created by SaeedHD on 07/07/2016.
  */
-public class PermanentExtraFeatures extends PermanentEffects {
+public class PermanentPassiveFeatures extends PermanentEffects {
     private Boolean swirlingHeal;
     private Integer swirlingHealPercents;
 
@@ -17,7 +16,7 @@ public class PermanentExtraFeatures extends PermanentEffects {
     private Double CriticalStrikeFactor;
     private Integer CriticalStrikeProbability;
 
-    public PermanentExtraFeatures(Boolean swirlingHeal, Integer swirlingHealPercents, Boolean swirlingAttack1, Integer swirlingAttackPercents, Boolean criticalStrike, Double criticalStrikeFactor, Integer ProbabilityPercent) {
+    public PermanentPassiveFeatures(Boolean swirlingHeal, Integer swirlingHealPercents, Boolean swirlingAttack1, Integer swirlingAttackPercents, Boolean criticalStrike, Double criticalStrikeFactor, Integer ProbabilityPercent) {
         this.swirlingHeal = swirlingHeal;
         this.swirlingHealPercents = swirlingHealPercents;
         this.swirlingAttack1 = swirlingAttack1;
@@ -28,7 +27,7 @@ public class PermanentExtraFeatures extends PermanentEffects {
     }
 
     @Override
-    public void perform(Hero performer, Warrior... target_s) {
+    public void perform(Warrior performer, Warrior... target_s) {
         performer.setSwirlingAttackisActivated(swirlingAttack1);
         performer.setSwirlingHealisActivated(swirlingHeal);
         performer.setDamagePercentAttack(swirlingAttackPercents);

@@ -50,7 +50,7 @@ public class DurableEffects extends Effects implements Durable {
     }
 
     @Override
-    public void perform(Hero performer, Warrior... target_s) {
+    public void perform(Warrior performer, Warrior... target_s) {
         setLefts();
         saveData(performer, target_s);
         performInEachTurn(performer, target_s);

@@ -47,6 +47,10 @@ public class Ability implements Castable, Durable {
         return Upgrades;
     }
 
+    public boolean isAcquired() {
+        return currentLevel == null;
+    }
+
     public void setSuccessMessage(String successMessage) {
         SuccessMessage = successMessage;
     }
@@ -102,6 +106,30 @@ public class Ability implements Castable, Durable {
 
     public void showDescription() {
         printOutput(description);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Upgrade getBaseState() {
+        return baseState;
+    }
+
+    public Upgrade getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public String getSuccessMessage() {
+        return SuccessMessage;
+    }
+
+    public Target getTargetType() {
+        return targetType;
     }
 }
 

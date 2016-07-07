@@ -52,7 +52,7 @@ public class Upgrade implements Performable, Comparable<Upgrade> {
     }
 
     @Override
-    public void perform(Hero performer, Warrior... target_s) {
+    public void perform(Warrior performer, Warrior... target_s) {
         PayCosts(performer);
 
         for (Effects eff : effects) {
