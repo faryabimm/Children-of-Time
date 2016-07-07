@@ -366,7 +366,6 @@ public final class ChildrenOfTime {
 
 
 
-
     public static void showLoadingScreen() {
         frame = new JFrame("Children of Time");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -418,7 +417,6 @@ public final class ChildrenOfTime {
         mainMenuScreenPanel.requestFocus();
         mainMenuScreenPanel.repaint();
     }
-
     public static void changeContentPane(MenuScreenPanel newContentPane) {
         MenuScreenPanel currentContentPane = (MenuScreenPanel)frame.getContentPane();
         currentContentPane.fade();
@@ -432,7 +430,6 @@ public final class ChildrenOfTime {
         newContentPane.emerge();
 
     }
-
 }
 
 

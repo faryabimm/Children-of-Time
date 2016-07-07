@@ -2,6 +2,8 @@ package com.childrenOfTime.gui.customGame;
 import com.childrenOfTime.gui.MainMenuScreenPanel;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
+import com.childrenOfTime.gui.fillForms.SignInForm;
+import com.childrenOfTime.gui.fillForms.SignUpForm;
 import com.childrenOfTime.model.ChildrenOfTime;
 import javax.swing.*;
 
@@ -11,8 +13,8 @@ import javax.swing.*;
 public class CustomGameMenuScreenPanel extends MenuScreenPanel {
     @Override
     public void initialize() {
-        JButton signUp = new CustomizedJButton("Sing in");
-        JButton signIn = new CustomizedJButton("Sign up");
+        JButton signUp = new CustomizedJButton("Sing Up");
+        JButton signIn = new CustomizedJButton("Sign In");
         JButton goBack = new CustomizedJButton("Return to Main Menu");
         this.add(signIn);
         this.add(signUp);
@@ -26,8 +28,16 @@ public class CustomGameMenuScreenPanel extends MenuScreenPanel {
 
 
         goBack.addActionListener(e -> ChildrenOfTime.changeContentPane(new MainMenuScreenPanel()));
-        signIn.addActionListener(e -> ChildrenOfTime.changeContentPane(new CustomGameLoginPanel()));
-
+        signIn.addActionListener(e -> {
+            fade();
+            ChildrenOfTime.frame.setEnabled(false);
+            SignInForm.main(null);
+        });
+        signUp.addActionListener(e -> {
+            fade();
+            ChildrenOfTime.frame.setEnabled(false);
+            SignUpForm.main(null);
+        });
         emerge();
     }
 

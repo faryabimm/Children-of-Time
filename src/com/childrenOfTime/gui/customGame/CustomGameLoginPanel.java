@@ -25,6 +25,7 @@ public class CustomGameLoginPanel extends MenuScreenPanel {
                 ChildrenOfTime.PREFERRED_HEIGHT - 2*CustomizedJButton.MAIN_MENU_BUTTON_HEIGHT - 2*ELEMENT_GAP);
 
         cancel.addActionListener(e -> ChildrenOfTime.changeContentPane(new CustomGameMenuScreenPanel()));
+
         emerge();
     }
 }
