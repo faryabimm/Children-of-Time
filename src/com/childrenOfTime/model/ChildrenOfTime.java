@@ -1,17 +1,12 @@
 package com.childrenOfTime.model;
 
-import com.childrenOfTime.Completed;
+
 import com.childrenOfTime.cgd.Store;
 import com.childrenOfTime.exceptions.GameException;
-import gui.LoadingScreenPanel;
-import gui.MainMenuScreenPanel;
-import com.childrenOfTime.model.ELCDepricated.FighterHero;
-import com.childrenOfTime.model.ELCDepricated.SupporterHero;
-import com.childrenOfTime.model.ELCDepricated.TypesOfFoes;
-import com.childrenOfTime.model.ELCDepricated.TypesOfHero;
-import com.childrenOfTime.model.Warriors.Foe;
-import com.childrenOfTime.model.Warriors.Hero;
-import com.childrenOfTime.model.Warriors.StrengthOfFoes;
+import com.childrenOfTime.gui.*;
+import com.childrenOfTime.gui.customGame.CustomGameLoginPanel;
+import com.childrenOfTime.gui.customGame.CustomGameMenuScreenPanel;
+import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,6 +35,11 @@ public final class ChildrenOfTime {
     public static Font ASFALTO_FONT = null;
     public static Font TIZA_FONT = null;
 
+    public static final MenuScreenPanel MAIN_MENU = new MainMenuScreenPanel();
+    public static final MenuScreenPanel SIGN_IN_MENU = new CustomGameLoginPanel();
+    public static final MenuScreenPanel CUSTOM_GAME_MENU = new CustomGameMenuScreenPanel();
+
+
     static {
         try {
             ASFALTO_FONT = Font.createFont(Font.TRUETYPE_FONT, new File("src/ui/font/asfalto.otf"));
@@ -59,7 +59,7 @@ public final class ChildrenOfTime {
     private ArrayList<Player> players = new ArrayList<>();
     private ArrayList<Battle> battles = new ArrayList<>();
     Boolean firstTime = true;
-
+    
     public static ChildrenOfTime getInstance() {
         if (instance == null) {
             try {
@@ -365,6 +365,7 @@ public final class ChildrenOfTime {
 
 
 
+
     public static void showLoadingScreen() {
         frame = new JFrame("Children of Time");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -375,7 +376,6 @@ public final class ChildrenOfTime {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-
 //        try {
 //            loadingScreenPanel.start();
 //        } catch (InterruptedException e) {
@@ -406,7 +406,6 @@ public final class ChildrenOfTime {
 //        frame.requestFocus();
 //        controller.start();
     }
-
     public static void showMainMenuScreen() {
 
         MainMenuScreenPanel mainMenuScreenPanel = new MainMenuScreenPanel();
@@ -418,9 +417,19 @@ public final class ChildrenOfTime {
         mainMenuScreenPanel.requestFocus();
         mainMenuScreenPanel.repaint();
     }
+    public static void changeContentPane(MenuScreenPanel newContentPane) {
+        MenuScreenPanel currentContentPane = (MenuScreenPanel)frame.getContentPane();
+        currentContentPane.fade();
+        frame.getContentPane().removeAll();
+        frame.setContentPane(newContentPane);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        newContentPane.requestFocus();
+        newContentPane.repaint();
+        newContentPane.emerge();
 
-
-
+    }
 }
 
 

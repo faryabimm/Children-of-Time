@@ -6,4 +6,17 @@ package com.childrenOfTime.cgd;
  */
 
 public class CustomGameDAO {
+    public static User currentUser;
+
+    CustomGameDAO instance;
+
+    CustomGameDAO getInstance() {
+        if (instance == null) instance = new CustomGameDAO();
+
+        return instance;
+    }
+
+    private CustomGameDAO() {
+
+    }
 }

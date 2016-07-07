@@ -1,4 +1,4 @@
-package gui;
+package com.childrenOfTime.gui.customizedElements;
 
 import com.childrenOfTime.model.ChildrenOfTime;
 
