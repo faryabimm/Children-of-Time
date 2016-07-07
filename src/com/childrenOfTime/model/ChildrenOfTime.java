@@ -4,9 +4,12 @@ package com.childrenOfTime.model;
 import com.childrenOfTime.cgd.Store;
 import com.childrenOfTime.exceptions.GameException;
 import gui.LoadingScreenPanel;
+import gui.MainMenuScreenPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,8 +30,23 @@ public final class ChildrenOfTime {
     public static final Dimension PREFERRED_DIMENSION = new Dimension(PREFERRED_WIDTH, PREFERRED_HEIGHT);
     public static final Color GREY = new Color(50 , 50, 50);
 
+    public static Font ASFALTO_FONT = null;
+    public static Font TIZA_FONT = null;
 
-    public JFrame frame = null;
+    static {
+        try {
+            ASFALTO_FONT = Font.createFont(Font.TRUETYPE_FONT, new File("src/ui/font/asfalto.otf"));
+            ASFALTO_FONT = Font.createFont(Font.TRUETYPE_FONT, new File("src/ui/font/tiza.ttf"));
+        } catch (FontFormatException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    public static JFrame frame = null;
 
     private static ChildrenOfTime instance;
     private ArrayList<Player> players = new ArrayList<>();
@@ -37,11 +55,17 @@ public final class ChildrenOfTime {
     
     public static ChildrenOfTime getInstance() {
         if (instance == null) {
-            instance = new ChildrenOfTime();
+            try {
+                instance = new ChildrenOfTime();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (FontFormatException e) {
+                e.printStackTrace();
+            }
         }
         return instance;
     }
-    private ChildrenOfTime() {
+    private ChildrenOfTime() throws IOException, FontFormatException {
 
 
         ArrayList<Foe> battleFoes = new ArrayList<>();
@@ -112,7 +136,7 @@ public final class ChildrenOfTime {
         Store store = new Store();
         Store.addStore(store);
     }
-    public void startSinglePlayerMode() {
+    public void startSinglePlayerMode() throws IOException, FontFormatException {
         try {
 
             printOutput("Hello and Good Evening ! ");
@@ -174,7 +198,7 @@ public final class ChildrenOfTime {
         }
         return battle.checkFoesAreDied() || playersAreDefeated;
     }
-    private void startFight(Battle battle) {
+    private void startFight(Battle battle) throws IOException, FontFormatException {
         printOutput("Battle #" + battle.id + ":");
         printOutput("Fight : ");
         while (battle.battleState != BattleState.finished) {
@@ -334,7 +358,7 @@ public final class ChildrenOfTime {
 
 
 
-    public void createAndShowGUI() {
+    public static void showLoadingScreen() {
         frame = new JFrame("Children of Time");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setIconImage(new ImageIcon("src/ui/icon/app_icon.png").getImage());
@@ -344,15 +368,13 @@ public final class ChildrenOfTime {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
 //        try {
 //            loadingScreenPanel.start();
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-
-
 //        GamePanel panel = new GamePanel();
-//
 //        JPanel mainPanel = new JPanel(new BorderLayout());
 //        JLabel titleLabel = new JLabel("   Amazing " +
 //                "  Brick");
@@ -360,7 +382,6 @@ public final class ChildrenOfTime {
 //        mainPanel.setPreferredSize(new Dimension(AmazingBrickPanel.WIDTH, AmazingBrickPanel.HEIGHT));
 //        titleLabel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 //        mainPanel.add(titleLabel,BorderLayout.CENTER);
-//
 //        JButton playButton = new JButton("Play");
 //        playButton.setBorder(BorderFactory.createEmptyBorder(10,20,50,20));
 //        mainPanel.add(playButton, BorderLayout.PAGE_END);
@@ -371,17 +392,28 @@ public final class ChildrenOfTime {
 //            frame.revalidate();
 //            panel.requestFocus();
 //        });
-//
 //        GameEngine engine = new GameEngine(panel);
 //        GameController controller = new GameController();
-//
 //        panel.init(controller, engine);
 //        controller.init(panel, engine);
 //        frame.requestFocus();
 //        controller.start();
-
-
     }
+
+    public static void showMainMenuScreen() {
+
+        MainMenuScreenPanel mainMenuScreenPanel = new MainMenuScreenPanel();
+        frame.getContentPane().removeAll();
+        frame.setContentPane(mainMenuScreenPanel);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        mainMenuScreenPanel.requestFocus();
+        mainMenuScreenPanel.repaint();
+    }
+
+
+
 }
 
 

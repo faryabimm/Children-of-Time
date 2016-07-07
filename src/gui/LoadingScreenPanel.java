@@ -38,6 +38,8 @@ public class LoadingScreenPanel extends JPanel {
             if (logoOpacity < 0) {
                 logoOpacity = 0;
                 timer2.stop();
+                ChildrenOfTime.showMainMenuScreen();
+                return;
             }
             repaint();
         }
