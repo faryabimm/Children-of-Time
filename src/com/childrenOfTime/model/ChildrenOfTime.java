@@ -25,7 +25,7 @@ public final class ChildrenOfTime {
     public static final int PREFERRED_WIDTH = 1000;
     public static final int PREFERRED_HEIGHT = 600;
     public static final Dimension PREFERRED_DIMENSION = new Dimension(PREFERRED_WIDTH, PREFERRED_HEIGHT);
-    public static final Color GREY = new Color(75 , 75, 75);
+    public static final Color GREY = new Color(50 , 50, 50);
 
 
     public JFrame frame = null;
@@ -344,11 +344,11 @@ public final class ChildrenOfTime {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        try {
-            loadingScreenPanel.start();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            loadingScreenPanel.start();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
 
 //        GamePanel panel = new GamePanel();
