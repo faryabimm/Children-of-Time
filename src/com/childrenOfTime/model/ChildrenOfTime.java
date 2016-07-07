@@ -1,9 +1,12 @@
 package com.childrenOfTime.model;
 
-import com.childrenOfTime.Completed;
+
 import com.childrenOfTime.cgd.Store;
 import com.childrenOfTime.exceptions.GameException;
+import gui.LoadingScreenPanel;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,19 +19,28 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
  */
 public final class ChildrenOfTime {
 
+
+
+    public static final int FPS = 60;
+    public static final int PREFERRED_WIDTH = 1000;
+    public static final int PREFERRED_HEIGHT = 600;
+    public static final Dimension PREFERRED_DIMENSION = new Dimension(PREFERRED_WIDTH, PREFERRED_HEIGHT);
+    public static final Color GREY = new Color(75 , 75, 75);
+
+
+    public JFrame frame = null;
+
     private static ChildrenOfTime instance;
     private ArrayList<Player> players = new ArrayList<>();
     private ArrayList<Battle> battles = new ArrayList<>();
-
-    @Completed
+    Boolean firstTime = true;
+    
     public static ChildrenOfTime getInstance() {
         if (instance == null) {
             instance = new ChildrenOfTime();
         }
         return instance;
     }
-
-    @Completed
     private ChildrenOfTime() {
 
 
@@ -100,10 +112,6 @@ public final class ChildrenOfTime {
         Store store = new Store();
         Store.addStore(store);
     }
-
-    Boolean firstTime = true;
-
-    @Completed
     public void startSinglePlayerMode() {
         try {
 
@@ -159,7 +167,6 @@ public final class ChildrenOfTime {
         }
 
     }
-
     private boolean battleIsFinishing(Battle battle) {
         boolean playersAreDefeated = true;
         for (Player p : players) {
@@ -167,8 +174,6 @@ public final class ChildrenOfTime {
         }
         return battle.checkFoesAreDied() || playersAreDefeated;
     }
-
-
     private void startFight(Battle battle) {
         printOutput("Battle #" + battle.id + ":");
         printOutput("Fight : ");
@@ -190,9 +195,6 @@ public final class ChildrenOfTime {
             ChildrenOfTime.getInstance().firstTime = false;   //TODO Make sure about working correctly ;
         }
     }
-
-
-    @Completed
     private void singlePlayerGameCompleted() {
         String victoryMessage;
         victoryMessage = "The collector falls down on his knees, he’s strained and desperate but still tries to\n" +
@@ -202,13 +204,9 @@ public final class ChildrenOfTime {
         printOutput("Congratulations! You Won!");
         printOutput(victoryMessage);
     }
-
-    @Completed
     private void singlePlayerGameOver() {
         printOutput("OOPS! You Lose! Try Again!");
     }
-
-    @Completed
     private void getUserInput(Battle battle) {
         String userInput = getInput();
 
@@ -240,7 +238,6 @@ public final class ChildrenOfTime {
         }
 
     }
-
     private void informationInputIterpreter(String userInput) {
         try {
             printOutput(TypesOfFoes.valueOf(userInput).description);
@@ -263,8 +260,6 @@ public final class ChildrenOfTime {
             }
         }
     }
-
-    @Completed
     public void doneCommand(Battle battle) {
         this.firstTime = true;
 
@@ -287,8 +282,6 @@ public final class ChildrenOfTime {
         }
 
     }
-
-    @Completed
     public void helpCommand(Battle battle) {
         switch (battle.battleState) {
             case story:
@@ -309,8 +302,6 @@ public final class ChildrenOfTime {
         }
 
     }
-
-    @Completed
     private void againCommand(Battle battle) {
 
         switch (battle.battleState) {
@@ -337,9 +328,59 @@ public final class ChildrenOfTime {
 
 
     }
-
     public ArrayList<Player> getPlayers() {
         return players;
+    }
+
+
+
+    public void createAndShowGUI() {
+        frame = new JFrame("Children of Time");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setIconImage(new ImageIcon("src/ui/icon/app_icon.png").getImage());
+        frame.setResizable(false);
+        LoadingScreenPanel loadingScreenPanel = new LoadingScreenPanel();
+        frame.setContentPane(loadingScreenPanel);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        try {
+            loadingScreenPanel.start();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+//        GamePanel panel = new GamePanel();
+//
+//        JPanel mainPanel = new JPanel(new BorderLayout());
+//        JLabel titleLabel = new JLabel("   Amazing " +
+//                "  Brick");
+//        titleLabel.setFont(new Font("Serif", Font.PLAIN, 45));
+//        mainPanel.setPreferredSize(new Dimension(AmazingBrickPanel.WIDTH, AmazingBrickPanel.HEIGHT));
+//        titleLabel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+//        mainPanel.add(titleLabel,BorderLayout.CENTER);
+//
+//        JButton playButton = new JButton("Play");
+//        playButton.setBorder(BorderFactory.createEmptyBorder(10,20,50,20));
+//        mainPanel.add(playButton, BorderLayout.PAGE_END);
+//        frame.getContentPane().add(mainPanel);
+//        playButton.addActionListener(e -> {
+//            frame.getContentPane().removeAll();
+//            frame.getContentPane().add(panel);
+//            frame.revalidate();
+//            panel.requestFocus();
+//        });
+//
+//        GameEngine engine = new GameEngine(panel);
+//        GameController controller = new GameController();
+//
+//        panel.init(controller, engine);
+//        controller.init(panel, engine);
+//        frame.requestFocus();
+//        controller.start();
+
+
     }
 }
 
