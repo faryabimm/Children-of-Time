@@ -1,6 +1,7 @@
 package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
+import com.childrenOfTime.model.Interfaces.HasImpactHealth;
 
 /**
  * Created by mohammadmahdi on 5/8/16.
@@ -63,7 +64,12 @@ public abstract class Warrior implements HasImpactHealth {
 
     public abstract String showCurrentTraits();
 
-    public abstract void attack(Warrior warrior, Integer attackPower, Integer EPCost);
 
-    public abstract void heal(Warrior warrior, Integer healingAmount);
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
 }

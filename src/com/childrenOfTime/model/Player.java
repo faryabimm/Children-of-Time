@@ -2,6 +2,11 @@ package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
 import com.childrenOfTime.exceptions.*;
+import com.childrenOfTime.model.ELCDepricated.InformationOfItems;
+import com.childrenOfTime.model.Equip.AbilComps.Ability;
+import com.childrenOfTime.model.Equip.ItemComps.Item;
+import com.childrenOfTime.model.Warriors.Foe;
+import com.childrenOfTime.model.Warriors.Hero;
 
 import java.util.ArrayList;
 
@@ -18,8 +23,8 @@ public class Player {
     private ArrayList<Hero> heros = new ArrayList<>();
 
     @Completed
-    public void upgradeAbility(Ability ability, Hero targetHero) throws UpgradeException {
-        ability.upgrade(targetHero, this);
+    public void upgradeAbility(Ability ability, Hero targetHero, Integer integer) throws UpgradeException {
+        ability.upgrade(targetHero, integer);
     }
 
     @Completed

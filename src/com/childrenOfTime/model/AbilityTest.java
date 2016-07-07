@@ -1,6 +1,11 @@
 package com.childrenOfTime.model;
 
 import com.childrenOfTime.exceptions.AbilityNotAquiredException;
+import com.childrenOfTime.model.Equip.AbilComps.Ability;
+import com.childrenOfTime.model.Equip.Target;
+import com.childrenOfTime.model.Warriors.Foe;
+import com.childrenOfTime.model.Warriors.Hero;
+import com.childrenOfTime.model.Warriors.StrengthOfFoes;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -8,7 +13,7 @@ import org.junit.Test;
  * Created by SaeedHD on 07/06/2016.
  */
 public class AbilityTest extends TestCase {
-    InformationofAbility ability;
+    Ability ability;
     Foe thug0 = null;
     Foe angel0 = null;
     Foe tack0 = null;
@@ -34,21 +39,20 @@ public class AbilityTest extends TestCase {
     @Test
     public void testCreateAbility() {
         EndlessCollectionInformations overpowered = EndlessCollectionInformations.Overpowered;
-        AbilityMaker.newAbility(overpowered.name, Target.SeveralEnemies);
-        AbilityMaker.addUpgrade(1, overpowered.coolDownTime, overpowered.xp1, overpowered.masrafEP, overpowered.masrafMP, overpowered.description, true);
-        AbilityMaker.addUpgrade(2, overpowered.coolDownTime, overpowered.xp2, overpowered.masrafEP, overpowered.masrafMP, overpowered.description, true);
-        AbilityMaker.addUpgrade(3, overpowered.coolDownTime, overpowered.xp3, overpowered.masrafEP, overpowered.masrafMP, overpowered.description, overpowered.upgradeRequirement3);
-        AbilityMaker.addDurableEffect(1, 1.2d, 1, 1d, 1, 0, 0, 0, 0, 0, 0);
-        AbilityMaker.addDurableEffect(2, 1.4d, 1, 1d, 1, 0, 0, 0, 0, 0, 0);
+        AbilityMaker.newCustomAbility(overpowered.name, Target.SeveralEnemies);
+        AbilityMaker.addCustomUpgrade(1, overpowered.coolDownTime, overpowered.xp1, overpowered.masrafEP, overpowered.masrafMP, overpowered.description, "sad");
+        AbilityMaker.addCustomUpgrade(2, overpowered.coolDownTime, overpowered.xp2, overpowered.masrafEP, overpowered.masrafMP, overpowered.description, "asd");
+        AbilityMaker.addCustomUpgrade(3, overpowered.coolDownTime, overpowered.xp3, overpowered.masrafEP, overpowered.masrafMP, overpowered.description, "sad");
+        AbilityMaker.addCustomDurableEffect(1, 1.2d, 1, 1d, 1, 0, 0, 0, 0, 0, 0);
+        AbilityMaker.addCustomDurableEffect(2, 1.4d, 3, 1d, 1, 0, 0, 0, 0, 0, 0);
         this.ability = AbilityMaker.returnAbility();
         assertNotNull(ability);
-
     }
 
     public void testAqcuireAbility() {
         testCreateAbility();
 
-        ability.acquire();
+        ability.upgrade(eley0, 1);
     }
 
     public void testCastAbility() {
@@ -67,7 +71,7 @@ public class AbilityTest extends TestCase {
 
     public void testUpgade2() {
         testAqcuireAbility();
-        ability.upgrade(2);
+        ability.upgrade(eley0, 2);
 
     }
 
@@ -82,9 +86,22 @@ public class AbilityTest extends TestCase {
 
     public void testUpgade3() {
         testAqcuireAbility();
-        ability.upgrade(3);
+        ability.upgrade(eley0, 3);
 
     }
+
+    public void testCastUntilPoverty() throws Exception {
+        setUp();
+        testUpgade2();
+        ability.cast(eley0, thug0, angel0);
+        ability.aTurnHasPassed();
+        ability.aTurnHasPassed();
+        ability.aTurnHasPassed();
+        ability.aTurnHasPassed();
+        ability.aTurnHasPassed();
+        ability.aTurnHasPassed();
+    }
+
 
 
     public void tearDown() throws Exception {

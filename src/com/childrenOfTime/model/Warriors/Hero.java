@@ -1,4 +1,4 @@
-package com.childrenOfTime.model;
+package com.childrenOfTime.model.Warriors;
 
 import com.childrenOfTime.Completed;
 import com.childrenOfTime.InProgress;
@@ -6,6 +6,16 @@ import com.childrenOfTime.exceptions.AttackException;
 import com.childrenOfTime.exceptions.ItemNotAquiredException;
 import com.childrenOfTime.exceptions.NotEnoughEnergyPointsException;
 import com.childrenOfTime.exceptions.NotEnoughMagicPointsException;
+import com.childrenOfTime.model.ChildrenOfTime;
+import com.childrenOfTime.model.ELCDepricated.FighterHero;
+import com.childrenOfTime.model.ELCDepricated.SupporterHero;
+import com.childrenOfTime.model.ELCDepricated.TypesOfHero;
+import com.childrenOfTime.model.Equip.AbilComps.Ability;
+import com.childrenOfTime.model.Equip.Inventory;
+import com.childrenOfTime.model.Equip.ItemComps.Item;
+import com.childrenOfTime.model.TemopraryAbilityFinder;
+import com.childrenOfTime.model.Warrior;
+import com.childrenOfTime.model.WarriorMessages;
 
 import java.util.*;
 
@@ -14,26 +24,26 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
-public class Hero extends Warrior implements HasImpactHealth {
-    protected int currentMagic;
-    protected int currentEnergyPoints;
-    protected Inventory inventory;
-    private TypesOfHero typesOfHero;
+public class Hero extends Warrior {
+    private int currentMagic;
+    private int currentEnergyPoints;
+    private Inventory inventory;
+    private HeroClass info;
 
     //for Swirling ability
-    boolean swirlingisActivated = false;
-    public double damagePercent;
+    private boolean swirlingHealisActivated = false;
+    private boolean swirlingAttackisActivated = false;
+    private double damagePercentH = 0;
+    private double damagePercentAttack = 0;
+    //for CriticalStrike
+    private boolean criticalIsActivated = false;
+    private Double criticalFactor = 1d;
+    private int probability = 0;
+    private ArrayList<Ability> specificHeroAbilities;
 
-
-
-    InformationOfHeroes info;
-    Map<String, Ability> abilities = new HashMap<>();
-    public int probability = 0;
-    public boolean criticalIsActivated = false;
-
-
+    public Map<String, Ability> abilities = new HashMap<>();
     @Override
-    public void attack(Warrior enemy, Integer realAttack, Integer EPCost) throws NotEnoughEnergyPointsException {
+    public void attack(Warrior enemy, Integer realAttack, Integer EPCost, Warrior... nonTargetedEnemies) throws NotEnoughEnergyPointsException {
         if (EPCost == null) EPCost = 2;
         changeEP(-EPCost);
         if (realAttack == null) realAttack = this.attackPower;
@@ -43,51 +53,53 @@ public class Hero extends Warrior implements HasImpactHealth {
         }
         printOutput(WarriorMessages.getSuccessfulAttackMessage(this, enemy, realAttack));
         enemy.changeHealth(-realAttack);
-        if (this.swirlingisActivated) {
-            doSwirlingAttack(realAttack);
+        if (this.swirlingAttackisActivated) {
+            doSwirling(-realAttack, this.damagePercentAttack, nonTargetedEnemies);
         }
+    }
+
+
+    public void attackAuto(Warrior enemy, Integer realAttack) throws NotEnoughEnergyPointsException {
+        if (realAttack == null) realAttack = this.attackPower;
+        printOutput(WarriorMessages.getSuccessfulAttackMessage(this, enemy, realAttack));
+        enemy.changeHealth(-realAttack);
     }
 
     @Override
-    public void heal(Warrior warrior, Integer healingAmount) {
+    public void heal(Warrior target, Integer healingAmount, Integer EPCost, Warrior... nonTargetedHeal) {
+        if (EPCost == null) EPCost = 0;
+        changeEP(-EPCost);
+        if (healingAmount == null) healingAmount = 0;
 
+        target.changeHealth(-healingAmount);
+        if (this.swirlingHealisActivated) {
+            doSwirling(+healingAmount, this.damagePercentH, nonTargetedHeal);
+        }
     }
 
-    private void doSwirlingAttack(int realAttack) {
-        List<Warrior> allEnemies = new ArrayList<>() /*Battle.getFoes()*/; //TODO rideman ro jam kon !
-        for (Warrior warrior : allEnemies) {     //access to AllFoes
-            if (warrior.equals(warrior)) continue;
-            warrior.changeAttackPower((int) (this.damagePercent * realAttack));
+    private void doSwirling(int realChangeHealth, Double damagePercent, Warrior... targets) {
+        for (Warrior warrior : targets) {
+            int newChangeHealthAmount = (int) (damagePercent * realChangeHealth / 100);
+            warrior.changeHealth(newChangeHealthAmount);
         }
-        printOutput(WarriorMessages.getSuccessfulSwirlingAttackMessage(this, allEnemies, (int) (this.damagePercent * realAttack)));
+        printOutput(WarriorMessages.getSuccessfulSwirlingAttackMessage(this, Arrays.asList(targets), (int) (damagePercent * realChangeHealth)));
     }
 
     private int getAttackPowerByCriticalActivation() {
         Random rand = new Random();
         int n = rand.nextInt(100) + 1;
-        if (n <= probability) {
-            return attackPower * 2;
+        if (n <= this.probability) {
+            return (int) (this.attackPower * this.criticalFactor);
         }
         return attackPower;
     }
 
-    /*
-        @Completed
-        public void attack(Foe enemy, int attackPower) {
-            printOutput(WarriorMessages.getSuccessfulAttackMessage(this, enemy, attackPower));
-            enemy.changeHealth(-attackPower);
-            if (this.swirlingisActivated) {
-                doSwirlingAttack(attackPower);
-
-            }
-        }
-    */
     @Completed
     public void showAbDes() {
         String toPrint = "";
         String state = "";
         for (Map.Entry<String, Ability> entry : abilities.entrySet()) {
-            if (entry.getValue().currentLevel == 0) {
+            if (entry.getValue().current.numberOfUpgrade == 0) {  //TODO In khat fake ast.dorost shavad
                 state = "not acquired";
             } else state = entry.getValue().currentLevel + "";
             toPrint += "\t" + entry.getKey() + " : " + state + "\n";
@@ -109,7 +121,7 @@ public class Hero extends Warrior implements HasImpactHealth {
     public Hero(String name, String className, int id) {    //TODO It Should Be Private
         super(name, id);
         typesOfHero = TypesOfHero.valueOf(className);
-        this.info = new InformationOfHeroes(typesOfHero.healthRefillRate, typesOfHero.inventorySize,
+        this.info = new HeroClass(typesOfHero.healthRefillRate, typesOfHero.inventorySize,
                 typesOfHero.maxMagic, typesOfHero.magicRefillRate, typesOfHero.initialEP, typesOfHero.ability1, typesOfHero.ability2, typesOfHero.classDescription, "");
 
         switch (typesOfHero) {
@@ -158,11 +170,11 @@ public class Hero extends Warrior implements HasImpactHealth {
         return this.getName() + " (" + this.typesOfHero + ") - ";
     }
     @Completed
-    private void setAbilities(InformationOfHeroes info){
-        abilities.put(info.ability1,new Ability(info.ability1));
-        abilities.put(info.ability2,new Ability(info.ability2));
-        abilities.put(info.ability3,new Ability(info.ability3));
-        abilities.put(info.ability4,new Ability(info.ability4));
+    private void setAbilities(HeroClass info) {
+        abilities.put(info.ability1, TemopraryAbilityFinder.findAbilityByName(info.ability1));
+        abilities.put(info.ability1, TemopraryAbilityFinder.findAbilityByName(info.ability1));
+        abilities.put(info.ability1, TemopraryAbilityFinder.findAbilityByName(info.ability1));
+        abilities.put(info.ability1, TemopraryAbilityFinder.findAbilityByName(info.ability1));
     }
     @InProgress
     public void useAbility(Ability ability, Warrior warrior) throws AttackException {
@@ -204,6 +216,31 @@ public class Hero extends Warrior implements HasImpactHealth {
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
     }
+
+    public boolean isSwirlingHealisActivated() {
+        return swirlingHealisActivated;
+    }
+
+    public void setSwirlingHealisActivated(boolean swirlingHealisActivated) {
+        this.swirlingHealisActivated = swirlingHealisActivated;
+    }
+
+    public double getDamagePercentH() {
+        return damagePercentH;
+    }
+
+    public void setDamagePercentH(double damagePercentH) {
+        this.damagePercentH = damagePercentH;
+    }
+
+    public Double getCriticalFactor() {
+        return criticalFactor;
+    }
+
+    public void setCriticalFactor(Double criticalFactor) {
+        this.criticalFactor = criticalFactor;
+    }
+
     public void changeEP(int num) throws NotEnoughEnergyPointsException {
         if (this.currentEnergyPoints + num < 0) {
             throw new NotEnoughEnergyPointsException("Your " + name + id + " hero doesn't have Enough EP to perform this" +
@@ -296,8 +333,8 @@ public class Hero extends Warrior implements HasImpactHealth {
                 "Energy points: " + currentEnergyPoints + "\n" +
                 "Attack power " + attackPower + "\n";
         for (Map.Entry<String, Ability> entry : abilities.entrySet()) {
-            if (entry.getValue().currentLevel == 0) continue;
-            toPrint += "Can Cast " + entry.getKey() + " for " + entry.getValue().info.masrafEP + " energy points, " + entry.getValue().info.masrafEP + " magic points and a " + entry.getValue().info.coolDownTime + " turn cooldown in some upgrades\n";
+            //TODO     if (entry.getValue().currentLevel == 0) continue;
+            toPrint += "Can Cast " + entry.getKey() + " for " + entry.getValue().currentLevel.masrafEP + " energy points, " + entry.getValue().currentLevel.masrafEP + " magic points and a " + entry.getValue().currentLevel.COOLDOWN_TIME + " turn cooldown in some upgrades\n";
         }
         for (Item item : inventory.getItems()) {
             toPrint += "Can Use " + item.getInfo().getName() + " for " + 0 + " energy points, " + 0 + " magic points and a " + 0 + " turn cooldown\n";
@@ -325,4 +362,59 @@ public class Hero extends Warrior implements HasImpactHealth {
     }
 
 
+    public TypesOfHero getTypesOfHero() {
+        return typesOfHero;
+    }
+
+    public void setTypesOfHero(TypesOfHero typesOfHero) {
+        this.typesOfHero = typesOfHero;
+    }
+
+    public boolean isSwirlingAttackisActivated() {
+        return swirlingAttackisActivated;
+    }
+
+    public void setSwirlingAttackisActivated(boolean swirlingAttackisActivated) {
+        this.swirlingAttackisActivated = swirlingAttackisActivated;
+    }
+
+    public double getDamagePercentAttack() {
+        return damagePercentAttack;
+    }
+
+    public void setDamagePercentAttack(double damagePercentAttack) {
+        this.damagePercentAttack = damagePercentAttack;
+    }
+
+    public HeroClass getInfo() {
+        return info;
+    }
+
+    public void setInfo(HeroClass info) {
+        this.info = info;
+    }
+
+    public Map<String, Ability> getAbilities() {
+        return abilities;
+    }
+
+    public void setAbilities(Map<String, Ability> abilities) {
+        this.abilities = abilities;
+    }
+
+    public int getProbability() {
+        return probability;
+    }
+
+    public void setProbability(int probability) {
+        this.probability = probability;
+    }
+
+    public boolean isCriticalIsActivated() {
+        return criticalIsActivated;
+    }
+
+    public void setCriticalIsActivated(boolean criticalIsActivated) {
+        this.criticalIsActivated = criticalIsActivated;
+    }
 }

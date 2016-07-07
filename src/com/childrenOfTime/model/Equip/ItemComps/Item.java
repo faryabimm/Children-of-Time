@@ -1,7 +1,12 @@
-package com.childrenOfTime.model;
+package com.childrenOfTime.model.Equip.ItemComps;
 
 import com.childrenOfTime.Completed;
 import com.childrenOfTime.InProgress;
+import com.childrenOfTime.model.ELCDepricated.InformationOfItems;
+import com.childrenOfTime.model.Interfaces.Durable;
+import com.childrenOfTime.model.Warrior;
+import com.childrenOfTime.model.Warriors.Foe;
+import com.childrenOfTime.model.Warriors.Hero;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
 
@@ -84,7 +89,6 @@ public class Item implements Durable {
         return info;
     }
 
-    @Override
     public void wearOff(Warrior performer, Warrior... target_s) {
 
     }

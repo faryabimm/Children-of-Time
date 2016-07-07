@@ -3,6 +3,13 @@ package com.childrenOfTime.model;
 import com.childrenOfTime.Completed;
 import com.childrenOfTime.cgd.Store;
 import com.childrenOfTime.exceptions.TradeException;
+import com.childrenOfTime.model.ELCDepricated.InformationOfItems;
+import com.childrenOfTime.model.ELCDepricated.TypesOfFoes;
+import com.childrenOfTime.model.Equip.AbilComps.Ability;
+import com.childrenOfTime.model.Equip.ItemComps.Item;
+import com.childrenOfTime.model.Warriors.Foe;
+import com.childrenOfTime.model.Warriors.Hero;
+import com.childrenOfTime.model.Warriors.StrengthOfFoes;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -253,7 +260,7 @@ public class Battle {
                 Hero targetHero = currentPlayer.findHeroByName(targetHeroName);
                 Ability targetAbility = targetHero.abilities.get(abilityName);
                 if (targetAbility != null) {
-                    currentPlayer.upgradeAbility(targetAbility, targetHero);
+                    currentPlayer.upgradeAbility(targetAbility, targetHero, 1);  //TODO IntegerGiri!
                     printOutput("Your current experience is:" + currentPlayer.getCurrentExperience());
                     invalidCommand = false;
 

@@ -1,4 +1,6 @@
-package com.childrenOfTime.model;
+package com.childrenOfTime.model.Equip;
+
+import com.childrenOfTime.model.Equip.ItemComps.Item;
 
 import java.util.ArrayList;
 

@@ -3,6 +3,13 @@ package com.childrenOfTime.model;
 import com.childrenOfTime.Completed;
 import com.childrenOfTime.cgd.Store;
 import com.childrenOfTime.exceptions.GameException;
+import com.childrenOfTime.model.ELCDepricated.FighterHero;
+import com.childrenOfTime.model.ELCDepricated.SupporterHero;
+import com.childrenOfTime.model.ELCDepricated.TypesOfFoes;
+import com.childrenOfTime.model.ELCDepricated.TypesOfHero;
+import com.childrenOfTime.model.Warriors.Foe;
+import com.childrenOfTime.model.Warriors.Hero;
+import com.childrenOfTime.model.Warriors.StrengthOfFoes;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;

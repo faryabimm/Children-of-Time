@@ -1,4 +1,4 @@
-package com.childrenOfTime.model;
+package com.childrenOfTime.model.Warriors;
 
 /**
  * Created by SaeedHD on 05/12/2016.

@@ -1,7 +1,14 @@
-package com.childrenOfTime.model;
+package com.childrenOfTime.model.Warriors;
 
 import com.childrenOfTime.Completed;
 import com.childrenOfTime.NotImplementedYet;
+import com.childrenOfTime.model.Battle;
+import com.childrenOfTime.model.ChildrenOfTime;
+import com.childrenOfTime.model.ELCDepricated.TypesOfFoes;
+import com.childrenOfTime.model.Interfaces.CanHeal;
+import com.childrenOfTime.model.Interfaces.HasImpactHealth;
+import com.childrenOfTime.model.Warrior;
+import com.childrenOfTime.model.WarriorMessages;
 
 import java.util.ArrayList;
 import java.util.Random;

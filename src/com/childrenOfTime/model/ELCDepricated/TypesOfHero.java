@@ -1,4 +1,4 @@
-package com.childrenOfTime.model;
+package com.childrenOfTime.model.ELCDepricated;
 
 /**
  * Created by mohammadmahdi on 5/8/16.

@@ -1,11 +1,15 @@
-package com.childrenOfTime.model;
+package com.childrenOfTime.model.Equip;
+
+import com.childrenOfTime.model.Interfaces.Durable;
+import com.childrenOfTime.model.Warrior;
+import com.childrenOfTime.model.Warriors.Hero;
 
 import java.util.ArrayList;
 
 /**
  * Created by SaeedHD on 07/06/2016.
  */
-class DurableEffects extends Effects implements Durable {
+public class DurableEffects extends Effects implements Durable {
 
     private Double factorAttackPower_WithAttack_Amount = 1d;
     private int factorAttackPower_WithAttack_Duration = 1;
@@ -28,6 +32,7 @@ class DurableEffects extends Effects implements Durable {
     public DurableEffects() {
 
     }
+
 
     public DurableEffects(Double factorAttackPower_WithAttack_Amount, int factorAttackPower_WithAttack_Duration, Double factorAttackPower_WithoutAttack_Amount, int factorAttackPower_WithoutAttack_Duration, int giveMagicPoints_Amount, int giveMagicPoints_Duration, int giveHealth_amount, int giveHealth_Duration, int giveEP_amount, int giveEP_Duration) {
 
@@ -63,23 +68,23 @@ class DurableEffects extends Effects implements Durable {
 
 
     private void performInEachTurn(Warrior performer, Warrior... target_s) {
-        if (getGiveEP_amount() != 0 || getGiveEP_Duration_Left() > 0) {
+        if (getGiveEP_amount() != 0 && getGiveEP_Duration_Left() > 0) {
             giveEP(target_s);
         }
-        if (getGiveHealth_amount() != 0 || getGiveHealth_Duration_Left() > 0) {
-            heal(target_s);
+        if (getGiveHealth_amount() != 0 && getGiveHealth_Duration_Left() > 0) {
+            heal(performer, target_s);
         }
-        if (getGiveMagicPoints_Amount() != 0 || getGiveMagicPoints_Duration_Left() > 0) {
+        if (getGiveMagicPoints_Amount() != 0 && getGiveMagicPoints_Duration_Left() > 0) {
             giveMagic(target_s);
         }
-        if (getFactorAttackPower_WithAttack_Amount() != 1 || getFactorAttackPower_WithAttack_Duration_Left() > 0) {
+        if (getFactorAttackPower_WithAttack_Amount() != YEK_DOUBLE && getFactorAttackPower_WithAttack_Duration_Left() > 0) {
             attack_factorAP(performer, target_s);
         }
 
-        if (getFactorAttackPower_WithoutAttack_Amount() != 1 || getFactorAttackPower_WithoutAttack_Duration_Left() == getFactorAttackPower_WithoutAttack_Duration()) {
+        if (getFactorAttackPower_WithoutAttack_Amount() != YEK_DOUBLE && getFactorAttackPower_WithoutAttack_Duration_Left() == getFactorAttackPower_WithoutAttack_Duration()) {
             multipleAP(target_s);
         }
-        if (getFactorAttackPower_WithoutAttack_Amount() != 1 || getFactorAttackPower_WithoutAttack_Duration_Left() == 0) {
+        if (getFactorAttackPower_WithoutAttack_Amount() != YEK_DOUBLE && getFactorAttackPower_WithoutAttack_Duration_Left() == 0) {
             wearOff(performer, target_s);
         }
 
@@ -95,7 +100,7 @@ class DurableEffects extends Effects implements Durable {
     private void attack_factorAP(Warrior attacker, Warrior... targets) {
         for (Warrior target : targets) {
             int newAttackPower = (int) (getFactorAttackPower_WithAttack_Amount() * attacker.getAttackPower());
-            attacker.attack(target, newAttackPower, 0);
+            ((Hero) attacker).attackAuto(target, newAttackPower);
         }
     }
 
@@ -113,9 +118,10 @@ class DurableEffects extends Effects implements Durable {
         }
     }
 
-    private void heal(Warrior... targets) {
+    private void heal(Warrior healer, Warrior... targets) {
         for (Warrior target : targets) {
-            target.changeHealth(getGiveHealth_amount());
+            if (target instanceof Hero)
+                ((Hero) healer).heal(target, getGiveHealth_amount(), 0);
         }
     }
 
@@ -126,7 +132,6 @@ class DurableEffects extends Effects implements Durable {
         }
     }
 
-    @Override
     public void wearOff(Warrior performer, Warrior... target_s) {
         divideAP(target_s);
     }  //TODO JamKardane Rideman !
