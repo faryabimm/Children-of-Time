@@ -1,5 +1,6 @@
 package com.childrenOfTime.gui;
 
+import com.childrenOfTime.controller.GameEngine;
 import com.childrenOfTime.model.ChildrenOfTime;
 
 import javax.swing.*;
@@ -52,8 +53,7 @@ public class LoadingScreenPanel extends JPanel {
     }
     private void initialize() {
 
-        Toolkit kit = Toolkit.getDefaultToolkit();
-        logo = kit.getImage("src/ui/icon/app_icon.png");
+        logo = GameEngine.DEFAULT_TOOLKIT.getImage("src/ui/icon/app_icon.png");
         logo = logo.getScaledInstance(ChildrenOfTime.PREFERRED_WIDTH/3, ChildrenOfTime.PREFERRED_WIDTH/3, 0);
         timer1.start();
 

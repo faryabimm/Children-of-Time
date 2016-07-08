@@ -20,9 +20,9 @@ public class CustomGameLoginPanel extends MenuScreenPanel {
         this.add(cancel);
 
         cancel.setLocation(ELEMENT_GAP,
-                ChildrenOfTime.PREFERRED_HEIGHT - CustomizedJButton.MAIN_MENU_BUTTON_HEIGHT - ELEMENT_GAP);
+                ChildrenOfTime.PREFERRED_HEIGHT - CustomizedJButton.BUTTON_HEIGHT - ELEMENT_GAP);
         logIn.setLocation(ELEMENT_GAP,
-                ChildrenOfTime.PREFERRED_HEIGHT - 2*CustomizedJButton.MAIN_MENU_BUTTON_HEIGHT - 2*ELEMENT_GAP);
+                ChildrenOfTime.PREFERRED_HEIGHT - 2*CustomizedJButton.BUTTON_HEIGHT - 2*ELEMENT_GAP);
 
         cancel.addActionListener(e -> ChildrenOfTime.changeContentPane(new CustomGameMenuScreenPanel()));
 
