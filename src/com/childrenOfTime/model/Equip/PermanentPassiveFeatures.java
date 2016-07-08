@@ -27,7 +27,7 @@ public class PermanentPassiveFeatures extends PermanentEffects {
     }
 
     @Override
-    public void perform(Warrior performer, Warrior... target_s) {
+    public void perform(Warrior performer, Warrior[] targets, Warrior... implicitTarget_s) {
         performer.setSwirlingAttackisActivated(swirlingAttack1);
         performer.setSwirlingHealisActivated(swirlingHeal);
         performer.setDamagePercentAttack(swirlingAttackPercents);

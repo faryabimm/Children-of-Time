@@ -1,6 +1,7 @@
 package com.childrenOfTime.model.Equip;
 
 import com.childrenOfTime.model.Warrior;
+import com.sun.istack.internal.Nullable;
 
 import java.util.Arrays;
 
@@ -16,8 +17,14 @@ public class AlterPackage {
     public final Integer[] DELTA;
     public final Double[] FACTORS;
 
-    public AlterPackage(Integer[] DELTA, Double[] FACTORS) {
-        if (FACTORS == null) Arrays.fill(FACTORS, DEFAULT_FACTOR);
+    public AlterPackage(@Nullable Integer[] DELTA, @Nullable Double[] FACTORS) {
+
+        if (FACTORS == null && DELTA == null) {
+            this.DELTA = null;
+            this.FACTORS = null;
+            return;
+        }
+        if (DELTA == null) Arrays.fill(FACTORS, DEFAULT_FACTOR);
         if (DELTA == null) Arrays.fill(DELTA, DEFAULT_DELTA);
         this.DELTA = DELTA;
         this.FACTORS = FACTORS;
@@ -29,7 +36,19 @@ public class AlterPackage {
         }
     }
 
-    public void wearOff(Warrior performer, Warrior... target_s) {
+    public void wearOff(Warrior... target_s) {
+        AlterPackage newPackage = CreateReversedAlteringPackage();
+        newPackage.perform(target_s);
+    }
+
+    public AlterPackage CreateReversedAlteringPackage() {
+        Integer[] newDelta = new Integer[DEFAULT_COUNT_OF_ALTERING_ATTRIBUTES];
+        Double[] newFactors = new Double[DEFAULT_COUNT_OF_ALTERING_ATTRIBUTES];
+        for (int i = 0; i < this.DELTA.length; i++) {
+            newDelta[i] = -this.DELTA[i];
+            newFactors[i] = 1.0 / this.FACTORS[i];   //TODO ask for it
+        }
+        return new AlterPackage(newDelta, newFactors);
     }
 
 }

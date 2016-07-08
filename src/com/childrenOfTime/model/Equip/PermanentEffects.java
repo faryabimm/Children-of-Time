@@ -31,26 +31,26 @@ public class PermanentEffects extends Effects {
     }
 
     @Override
-    public void perform(Warrior performer, Warrior... target_s) {
+    public void perform(Warrior performer, Warrior[] targets, Warrior... implicitTarget_s) {
         if (giveAttackPowerPermanently != null && giveAttackPowerPermanently != 0) {
-            for (Warrior target : target_s) {
+            for (Warrior target : implicitTarget_s) {
                 target.changeAttackPower(this.giveAttackPowerPermanently);
             }
         }
         if (factorAttackPowerPermanently != null && factorAttackPowerPermanently != YEK_DOUBLE) {
-            for (Warrior target : target_s) {
+            for (Warrior target : implicitTarget_s) {
                 int newAttackpower = (int) (target.getAttackPower() * this.factorAttackPowerPermanently);
                 target.setAttackPower(newAttackpower);
             }
         }
 
         if (giveMaxMagicPermanently != null && giveMaxMagicPermanently != 0)
-            for (Warrior target : target_s) {
+            for (Warrior target : implicitTarget_s) {
                 if (target instanceof Hero)
                     ((Hero) target).changeMaxMagic(this.giveMaxMagicPermanently);
             }
         if (giveMaxHealthPermanently != null && giveMaxHealthPermanently != 0)
-            for (Warrior target : target_s) {
+            for (Warrior target : implicitTarget_s) {
                 target.setMaxHealth(target.getMaxHealth() + this.giveMaxMagicPermanently);
             }
 

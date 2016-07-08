@@ -2,18 +2,20 @@ package com.childrenOfTime.model.Equip.AbilComps;
 
 import com.childrenOfTime.exceptions.AttackException;
 import com.childrenOfTime.model.Equip.Effects;
-import com.childrenOfTime.model.Interfaces.Durable;
+import com.childrenOfTime.model.Equip.Target;
 import com.childrenOfTime.model.Interfaces.Performable;
 import com.childrenOfTime.model.Warrior;
 import com.childrenOfTime.model.Warriors.Hero;
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by SaeedHD on 07/06/2016.
  */
 public class Upgrade implements Performable, Comparable<Upgrade> {
-    //TODO make Constructors nullable
     //Upgrade father;
     //ArrayList<Upgrade> children;
 
@@ -25,16 +27,30 @@ public class Upgrade implements Performable, Comparable<Upgrade> {
     int masrafEP;
     int masrafMP;
     String[] upgradeRequirements;
-    Boolean upgradeBoolean;
+    private Boolean upgradeBoolean;
     ArrayList<Effects> effects;
     String description;
+    Boolean castJustAfterAcquire = false;
+    final Boolean recastable;
+    Boolean castedOnce;
 
-    public Upgrade(int numberOfUpgrade) {
+    public Upgrade(@NotNull int numberOfUpgrade) {
         this.numberOfUpgrade = numberOfUpgrade;
         this.COOLDOWN_TIME = 0;
+        this.recastable = true;
     }
 
-    public Upgrade(Integer numberOfUpgrade, String description, Integer COOLDOWN_TIME, Integer XPCost, Integer masrafEP, Integer masrafMP, String... upgradeRequirements) {
+    @Deprecated
+    public Upgrade(@NotNull Integer numberOfUpgrade, @Nullable String description, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable String... upgradeRequirements) {
+        if (description == null) description = "No Description Added";
+        if (COOLDOWN_TIME == null) COOLDOWN_TIME = 0;
+        if (XPCost == null) XPCost = 0;
+        if (masrafEP == null) masrafEP = 0;
+        if (masrafMP == null) masrafMP = 0;
+        if (upgradeRequirements == null) {
+            upgradeRequirements = new String[1];
+            upgradeRequirements[0] = "true";
+        }
         this.numberOfUpgrade = numberOfUpgrade;
         this.leftTurnsToCoolDown = COOLDOWN_TIME;
         this.COOLDOWN_TIME = COOLDOWN_TIME;
@@ -43,6 +59,35 @@ public class Upgrade implements Performable, Comparable<Upgrade> {
         this.masrafMP = masrafMP;
         this.description = description;
         this.upgradeRequirements = upgradeRequirements;
+        this.recastable = true;
+
+    }
+
+    public Upgrade(@NotNull Integer numberOfUpgrade, @Nullable String description, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable Boolean castJustAfterAcquire, @Nullable Boolean recastable, @Nullable String... upgradeRequirements) {
+        if (description == null) description = "No Description Added";
+        if (COOLDOWN_TIME == null) COOLDOWN_TIME = 0;
+        if (XPCost == null) XPCost = 0;
+        if (masrafEP == null) masrafEP = 0;
+        if (masrafMP == null) masrafMP = 0;
+        if (upgradeRequirements == null) {
+            upgradeRequirements = new String[1];
+            upgradeRequirements[0] = "true";
+        }
+        if (castJustAfterAcquire == null) {
+            castJustAfterAcquire = false;
+        }
+        if (recastable == null) {
+            recastable = false;
+        }
+        this.numberOfUpgrade = numberOfUpgrade;
+        this.leftTurnsToCoolDown = COOLDOWN_TIME;
+        this.COOLDOWN_TIME = COOLDOWN_TIME;
+        this.XPCost = XPCost;
+        this.masrafEP = masrafEP;
+        this.masrafMP = masrafMP;
+        this.description = description;
+        this.upgradeRequirements = upgradeRequirements;
+        this.recastable = recastable;
 
     }
 
@@ -51,14 +96,35 @@ public class Upgrade implements Performable, Comparable<Upgrade> {
         this.description = description;
     }
 
-    @Override
-    public void perform(Warrior performer, Warrior... target_s) {
-        PayCosts(performer);
 
-        for (Effects eff : effects) {
-            eff.perform(performer, target_s);
+    //TODO dorost she ;
+    public boolean needsTarget() {
+        return true;
+    }
+
+    public Target getneededTargetType() {
+        return Target.HimSelf;
+    }
+
+    @Override
+    public void perform(@NotNull Warrior performer, @Nullable Warrior[] target_s, @Nullable Warrior... implicitTargets) {
+        if (performer instanceof Hero) PayCosts((Hero) performer);
+        Iterator<Effects> itr = this.effects.iterator();
+        Warrior[] finalTargets = target_s;
+        while (itr.hasNext()) {
+            //TODO anotherCheck required
+            Effects nextEffect = itr.next();
+            if (nextEffect.getEffectType().isTargetUnChoosable() && implicitTargets != null) {
+                finalTargets = implicitTargets;
+            }
+            if (finalTargets != null) {
+                nextEffect.perform(performer, null, finalTargets);
+            } else throw new RuntimeException("no Targets Selected");
+            if (nextEffect.getEffectType().isPassive()) {
+                itr.remove();
+            }
         }
-        isInCoolDown = true;
+        if (this.COOLDOWN_TIME != 0) isInCoolDown = true;
     }
 
     private void PayCosts(Hero performer) {
@@ -78,6 +144,7 @@ public class Upgrade implements Performable, Comparable<Upgrade> {
 
 
     public void aTurnHasPassed() {
+        /*
         for (Effects eff : effects) {
             if (eff instanceof Durable) {
                 ((Durable) eff).aTurnHasPassed();
@@ -90,6 +157,8 @@ public class Upgrade implements Performable, Comparable<Upgrade> {
         } else {
             leftTurnsToCoolDown--;
         }
+        */
+
     }
 
     @Override
@@ -176,5 +245,9 @@ public class Upgrade implements Performable, Comparable<Upgrade> {
 
     public void setEffects(ArrayList<Effects> effects) {
         this.effects = effects;
+    }
+
+    public Boolean getUpgradeBoolean() {
+        return upgradeBoolean;
     }
 }

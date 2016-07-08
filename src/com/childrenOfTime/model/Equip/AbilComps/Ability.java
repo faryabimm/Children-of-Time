@@ -9,6 +9,8 @@ import com.childrenOfTime.model.Interfaces.Castable;
 import com.childrenOfTime.model.Interfaces.Durable;
 import com.childrenOfTime.model.Warrior;
 import com.childrenOfTime.model.Warriors.Hero;
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
 
@@ -24,14 +26,14 @@ public class Ability implements Castable, Durable {
     String SuccessMessage;
     Target targetType;
 
-    public Ability(String name, Target targetType, String successMessage, String description) {
+    public Ability(@NotNull String name, @NotNull Target targetType, @Nullable String successMessage, @Nullable String description) {
         SuccessMessage = successMessage;
         this.targetType = targetType;
         this.name = name;
         this.description = description;
     }
 
-    public Ability(String name, String description, String successMessage, BST<Upgrade> upgrades, Target targetType) {
+    public Ability(@NotNull String name, @Nullable String description, @Nullable String successMessage, @NotNull BST<Upgrade> upgrades, @NotNull Target targetType) {
         this.name = name;
         this.description = description;
         this.SuccessMessage = successMessage;
@@ -51,13 +53,16 @@ public class Ability implements Castable, Durable {
         return currentLevel == null;
     }
 
-    public void setSuccessMessage(String successMessage) {
-        SuccessMessage = successMessage;
-    }
 
     @Override
-    public void cast(Warrior caster, Warrior... targets) {
+    public void cast(Warrior caster, Warrior[] targets, Warrior... implicitTargets) {
         if (currentLevel == null) throw new AbilityNotAquiredException("You didn't acqiure this");
+        if (currentLevel.recastable) {
+            if (currentLevel.castedOnce) {
+                return;
+            }
+            currentLevel.castedOnce = true;
+        }
         if (caster != null && caster instanceof Hero) {
             Hero casterHero = (Hero) caster;
             Warrior[] filteredTargets = targets;
@@ -67,30 +72,32 @@ public class Ability implements Castable, Durable {
                     filteredTargets = new Warrior[1];
                     filteredTargets[0] = performer;
             }
-            currentLevel.perform(casterHero, filteredTargets);
+            currentLevel.perform(casterHero, null, filteredTargets);
         }
 
 
     }
 
-    private Integer acquire(Warrior warrior) {
-        this.baseState = Upgrades.getMinElement();
-        if (!baseState.upgradeBoolean) throw new RequirementsNotMetException();
+    private Integer acquire(Warrior warrior, Warrior[] targets, Warrior... implicitTargets) {
+        this.baseState = Upgrades.getGodFatherElement();
+        if (!baseState.getUpgradeBoolean()) throw new RequirementsNotMetException();
         this.currentLevel = Upgrades.getMinElement();
+        if (currentLevel.castJustAfterAcquire) cast(warrior, targets, implicitTargets);
         return currentLevel.getXPCost();
     }
 
-    public Integer upgrade(Warrior performer, Integer i) throws UpgradeException {
+    public Integer upgrade(Warrior performer, Integer i, Warrior[] targets, Warrior... implicitTargets) throws UpgradeException {
         if (currentLevel == null) {
-            return acquire(performer);
-
+            return acquire(performer, targets, implicitTargets);
         }
+
         Upgrade fake = new Upgrade(i);
         Upgrade result = (Upgrade) Upgrades.getVar(fake);
         if (result != null) {
-            if (!result.upgradeBoolean) throw new RequirementsNotMetException();
+            if (!result.getUpgradeBoolean()) throw new RequirementsNotMetException();
             currentLevel = result;
         }
+        if (currentLevel.castJustAfterAcquire) cast(performer, targets, implicitTargets);
         return result.getXPCost();
     }
 

@@ -6,7 +6,7 @@ import com.childrenOfTime.model.Warrior;
  * Created by SaeedHD on 07/06/2016.
  */
 public interface Castable {
-    void cast(Warrior performer, Warrior... warriors);
+    void cast(Warrior performer, Warrior[] targets, Warrior... warriors);
 }
 
 

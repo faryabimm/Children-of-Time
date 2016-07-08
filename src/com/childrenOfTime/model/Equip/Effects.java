@@ -20,17 +20,12 @@ public class Effects implements Performable {
     final Integer ProbabilyPercent;
     final Integer impermanentDurability;
     final Integer autoRepitionDuration;
-    Boolean usedOnce;
 
     @Override     //TODO add performed Alters to Warriors
-    public void perform(@NotNull Warrior performer, @NotNull Warrior... target_s) {
-        if (!this.effectType.isRepeatableForUser()) {
-            if (this.usedOnce) return;
-            usedOnce = true;
-        }
-        doAutoRepeat(target_s);
+    public void perform(@NotNull Warrior performer, Warrior[] targets, @NotNull Warrior... implicitTarget_s) {
+        doAutoRepeat(implicitTarget_s);
         attentionToPermanents();
-        performInEachTurn(performer, target_s);
+        performInEachTurn(performer, implicitTarget_s);
     }
 
     public Effects(@NotNull EffectType effectType, @NotNull AlterPackage alterPackage, @Nullable AlterPackage performerCost, @NotNull Target targetType, @Nullable Integer probabilyPercent, @Nullable Integer impermanentDurability, @Nullable Integer autoRepitionDuration) {
@@ -71,6 +66,9 @@ public class Effects implements Performable {
         }
     }
 
+    public void wearOff(Warrior... targets) {
+        alterPackage.wearOff(targets);
+    }
 
     public boolean doesPassiveAllowsToContinue(Warrior performer) {
         if (effectType.isPassive()) {
@@ -93,12 +91,17 @@ public class Effects implements Performable {
         return true;
     }
 
+    public void payCost(Warrior performer) {
+        if (performerCost != null) performerCost.perform(performer);
+
+    }
 
     public void performInEachTurn(Warrior performer, Warrior... target_s) {
         if (!hasPermissionToContinue(performer, target_s)) return;
         alterPackage.perform(target_s);
-        if (performerCost != null) performerCost.perform(performer);
+        payCost(performer);
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -117,9 +120,7 @@ public class Effects implements Performable {
             return false;
         if (impermanentDurability != null ? !impermanentDurability.equals(effects.impermanentDurability) : effects.impermanentDurability != null)
             return false;
-        if (autoRepitionDuration != null ? !autoRepitionDuration.equals(effects.autoRepitionDuration) : effects.autoRepitionDuration != null)
-            return false;
-        return !(usedOnce != null ? !usedOnce.equals(effects.usedOnce) : effects.usedOnce != null);
+        return !(autoRepitionDuration != null ? !autoRepitionDuration.equals(effects.autoRepitionDuration) : effects.autoRepitionDuration != null);
 
     }
 
@@ -132,7 +133,39 @@ public class Effects implements Performable {
         result = 31 * result + (ProbabilyPercent != null ? ProbabilyPercent.hashCode() : 0);
         result = 31 * result + (impermanentDurability != null ? impermanentDurability.hashCode() : 0);
         result = 31 * result + (autoRepitionDuration != null ? autoRepitionDuration.hashCode() : 0);
-        result = 31 * result + (usedOnce != null ? usedOnce.hashCode() : 0);
         return result;
     }
+
+    public static Double getYekDouble() {
+        return YEK_DOUBLE;
+    }
+
+    public EffectType getEffectType() {
+        return effectType;
+    }
+
+    public AlterPackage getAlterPackage() {
+        return alterPackage;
+    }
+
+    public AlterPackage getPerformerCost() {
+        return performerCost;
+    }
+
+    public Target getTargetType() {
+        return targetType;
+    }
+
+    public Integer getProbabilyPercent() {
+        return ProbabilyPercent;
+    }
+
+    public Integer getImpermanentDurability() {
+        return impermanentDurability;
+    }
+
+    public Integer getAutoRepitionDuration() {
+        return autoRepitionDuration;
+    }
 }
+
