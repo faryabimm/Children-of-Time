@@ -1,103 +1,19 @@
-package com.childrenOfTime.model;
+package com.childrenOfTime.model.Equip.AbilComps;
 
-import com.childrenOfTime.Completed;
-import com.childrenOfTime.exceptions.AbilityNotAquiredException;
 import com.childrenOfTime.exceptions.AttackException;
-import com.childrenOfTime.exceptions.RequirementsNotMetException;
-import com.childrenOfTime.exceptions.UpgradeException;
+import com.childrenOfTime.model.Equip.Effects;
+import com.childrenOfTime.model.Interfaces.Durable;
+import com.childrenOfTime.model.Interfaces.Performable;
+import com.childrenOfTime.model.Warrior;
+import com.childrenOfTime.model.Warriors.Hero;
 
 import java.util.ArrayList;
 
-import static com.childrenOfTime.view.IOHandler.printOutput;
-
-/*
- * Created by SaeedHD on 07/05/2016.
+/**
+ * Created by SaeedHD on 07/06/2016.
  */
-public class InformationofAbility {
-
-    String name;
-    String description;
-    Upgrade baseState;
-    BST<Upgrade> Upgrades;
-    Upgrade currentLevel;
-    String SuccessMessage;
-    Target targetType;
-
-    public void acquire() {
-        this.baseState = this.currentLevel = Upgrades.getMinElement();
-    }
-
-
-    public InformationofAbility(String name, BST<Upgrade> upgrades, Target targetType) {
-        this.name = name;
-        this.baseState = baseState;
-        Upgrades = upgrades;
-        this.targetType = targetType;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public BST<Upgrade> getUpgrades() {
-        return Upgrades;
-    }
-
-    public void setSuccessMessage(String successMessage) {
-        SuccessMessage = successMessage;
-    }
-
-    @Completed
-    public void showDescription() {
-        printOutput(this.description);
-    }
-
-    public void cast(Warrior caster, Warrior... targets) {
-        if (currentLevel == null) throw new AbilityNotAquiredException("You didn't acqiure this");
-        if (caster != null && caster instanceof Hero) {
-            Hero casterHero = (Hero) caster;
-            Warrior[] filteredTargets = targets;
-            Hero performer = (Hero) caster;
-            switch (targetType) {
-                case HimSelf:
-                    filteredTargets = new Warrior[1];
-                    filteredTargets[0] = performer;
-            }
-            currentLevel.perform(casterHero, filteredTargets);
-        }
-
-
-    }
-
-
-    public void upgrade(int i) throws UpgradeException {
-        if (currentLevel == null) {
-            throw new RequirementsNotMetException("You Don't have this ability !");
-        }
-        Upgrade fake = new Upgrade(i);
-        Upgrade result = (Upgrade) Upgrades.getVar(fake);
-        if (result != null) {
-            if (!result.upgradeRequirement) throw new RequirementsNotMetException();
-            currentLevel = result;
-        }
-
-    }
-
-    public Upgrade getUpgradeByNumber(Integer i) {
-        return (Upgrade) Upgrades.getVar(new Upgrade(i));
-
-    }
-}
-
-enum Target {HimSelf, SingleEnemy, SeveralEnemies, SeveralTeamMates, SingleTeamMate;}
-
-
-interface Performable {
-    void perform(Hero performer, Warrior... target_s);
-}
-
-class Upgrade implements Performable, Comparable<Upgrade> {
-
+public class Upgrade implements Performable, Comparable<Upgrade> {
+    //TODO make Constructors nullable
     //Upgrade father;
     //ArrayList<Upgrade> children;
 
@@ -108,7 +24,8 @@ class Upgrade implements Performable, Comparable<Upgrade> {
     int XPCost;
     int masrafEP;
     int masrafMP;
-    boolean upgradeRequirement = true;
+    String[] upgradeRequirements;
+    Boolean upgradeBoolean;
     ArrayList<Effects> effects;
     String description;
 
@@ -117,14 +34,16 @@ class Upgrade implements Performable, Comparable<Upgrade> {
         this.COOLDOWN_TIME = 0;
     }
 
-    public Upgrade(int numberOfUpgrade, Integer COOLDOWN_TIME, int XPCost, int masrafEP, int masrafMP, Boolean upgradeRequirement) {
+    public Upgrade(Integer numberOfUpgrade, String description, Integer COOLDOWN_TIME, Integer XPCost, Integer masrafEP, Integer masrafMP, String... upgradeRequirements) {
         this.numberOfUpgrade = numberOfUpgrade;
         this.leftTurnsToCoolDown = COOLDOWN_TIME;
         this.COOLDOWN_TIME = COOLDOWN_TIME;
         this.XPCost = XPCost;
         this.masrafEP = masrafEP;
         this.masrafMP = masrafMP;
-        this.upgradeRequirement = upgradeRequirement;
+        this.description = description;
+        this.upgradeRequirements = upgradeRequirements;
+
     }
 
 
@@ -133,7 +52,7 @@ class Upgrade implements Performable, Comparable<Upgrade> {
     }
 
     @Override
-    public void perform(Hero performer, Warrior... target_s) {
+    public void perform(Warrior performer, Warrior... target_s) {
         PayCosts(performer);
 
         for (Effects eff : effects) {
@@ -147,8 +66,8 @@ class Upgrade implements Performable, Comparable<Upgrade> {
         int initMP = 0;
 
         try {
-            initEP = performer.currentEnergyPoints;
-            initMP = performer.currentMagic;
+            initEP = performer.getCurrentEnergyPoints();
+            initMP = performer.getCurrentMagic();
             performer.changeEP(-masrafEP);
             performer.changeMagic(-masrafMP);
         } catch (AttackException e) {
@@ -220,9 +139,6 @@ class Upgrade implements Performable, Comparable<Upgrade> {
         return masrafMP;
     }
 
-    public boolean isUpgradeRequirement() {
-        return upgradeRequirement;
-    }
 
     public void addEffect(Effects effect) {
         effects.add(effect);
@@ -257,23 +173,8 @@ class Upgrade implements Performable, Comparable<Upgrade> {
         this.masrafMP = masrafMP;
     }
 
-    public void setUpgradeRequirement(boolean upgradeRequirement) {
-        this.upgradeRequirement = upgradeRequirement;
-    }
 
     public void setEffects(ArrayList<Effects> effects) {
         this.effects = effects;
     }
 }
-
-
-abstract class Effects implements Performable {
-    public static final Double YEK_DOUBLE = 1d;
-
-    @Override
-    public abstract void perform(Hero performer, Warrior... target_s);
-
-
-}
-
-

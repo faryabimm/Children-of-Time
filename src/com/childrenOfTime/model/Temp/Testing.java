@@ -1,4 +1,4 @@
-package com.childrenOfTime.model;
+package com.childrenOfTime.model.Temp;
 
 /**
  * Created by mohammadmahdi on 5/14/16.

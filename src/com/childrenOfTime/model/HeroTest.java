@@ -1,6 +1,9 @@
 package com.childrenOfTime.model;
 
 import com.childrenOfTime.exceptions.NotEnoughEnergyPointsException;
+import com.childrenOfTime.model.Warriors.Foe;
+import com.childrenOfTime.model.Warriors.Hero;
+import com.childrenOfTime.model.Warriors.StrengthOfFoes;
 import junit.framework.TestCase;
 
 /**

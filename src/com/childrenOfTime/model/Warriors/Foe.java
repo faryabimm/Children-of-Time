@@ -1,7 +1,14 @@
-package com.childrenOfTime.model;
+package com.childrenOfTime.model.Warriors;
 
 import com.childrenOfTime.Completed;
 import com.childrenOfTime.NotImplementedYet;
+import com.childrenOfTime.model.Battle;
+import com.childrenOfTime.model.ChildrenOfTime;
+import com.childrenOfTime.model.ELCDepricated.TypesOfFoes;
+import com.childrenOfTime.model.Interfaces.CanHeal;
+import com.childrenOfTime.model.Interfaces.HasImpactHealth;
+import com.childrenOfTime.model.Warrior;
+import com.childrenOfTime.model.WarriorMessages;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -146,7 +153,7 @@ public class Foe extends Warrior implements HasImpactHealth, CanHeal {
     }
 
     @Override
-    public void changeHealth(int quantitiy) {
+    public void changeHealth(int quantitiy, Double reduceFactor) {
         if (wasAlive() & !willDye(quantitiy)) {
             changeHealthWithInsuranceOfLiving(quantitiy);
             return;
@@ -171,12 +178,12 @@ public class Foe extends Warrior implements HasImpactHealth, CanHeal {
 
     @Override
     public void attack(Warrior warrior, Integer attackPower, Integer EPCost) {
-        warrior.changeHealth(-attackPower);
+        warrior.changeHealth(-attackPower, null);
     }
 
     @Override
     public void heal(Warrior warrior, Integer healingAmount) {
-        warrior.changeHealth(+this.healingAmount);
+        warrior.changeHealth(+this.healingAmount, null);
     }
 }
 

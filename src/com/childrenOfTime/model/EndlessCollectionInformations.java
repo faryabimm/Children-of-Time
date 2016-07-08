@@ -2,6 +2,11 @@ package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
 import com.childrenOfTime.InProgress;
+import com.childrenOfTime.model.Equip.AbilComps.DurableEffects;
+import com.childrenOfTime.model.Equip.AbilComps.PermanentEffects;
+import com.childrenOfTime.model.Equip.AbilComps.Upgrade;
+import com.childrenOfTime.model.Equip.Target;
+import com.childrenOfTime.model.Warriors.Hero;
 
 /**
  * Created by SaeedHD on 05/13/2016.
@@ -38,6 +43,12 @@ public enum EndlessCollectionInformations {
 
     String description;
 
+    Upgrade upgrade1;
+    Upgrade upgrade2;
+    Upgrade upgrade3;
+    Target targetType;
+
+
     EndlessCollectionInformations(String name, int coolDownTime, int xp1, int xp2, int xp3, int Ep, int Mp) {
         this.name = name;
         this.coolDownTime = coolDownTime;
@@ -55,6 +66,7 @@ public enum EndlessCollectionInformations {
 
     @InProgress
     public void setUpgradeRequirements(Hero hero) {
+/*
         switch (this) {
             case Boost:
             case Fight:
@@ -63,7 +75,7 @@ public enum EndlessCollectionInformations {
             case Magic:
                 break;
             case Overpowered:
-                upgradeRequirement1 = hero.abilities.get(Fight.name).currentLevel >= 1;
+                upgradeRequirement1 = Boolean.valueOf("hero.abilities.get(Fight.name).currentLevel >= 1");
                 upgradeRequirement2 = hero.abilities.get(Fight.name).currentLevel >= 2;
                 upgradeRequirement3 = hero.abilities.get(Fight.name).currentLevel >= 3;
                 break;
@@ -94,7 +106,8 @@ public enum EndlessCollectionInformations {
                 break;
         }
     }
-
+*/
+    }
     @Completed
     void setDescription() {
         switch (this) {
@@ -189,4 +202,51 @@ public enum EndlessCollectionInformations {
                 break;
         }
     }
+
+    public void setOtherFields() {
+        switch (this) {
+            case Fight:
+                this.upgrade1 = new Upgrade(1, 0, 2, masrafEP, masrafMP, null);
+                this.upgrade2 = new Upgrade(2, 0, 3, masrafEP, masrafMP, null);
+                this.upgrade3 = new Upgrade(3, 0, 4, masrafEP, masrafMP, null);
+                upgrade1.addEffect(new PermanentEffects(30, null, 0));
+                upgrade2.addEffect(new PermanentEffects(30, null, 0));
+                upgrade3.addEffect(new PermanentEffects(30, null, 0));
+                break;
+            case Work:
+                this.upgrade1 = new Upgrade(1, 0, 2, masrafEP, masrafMP, null);
+                this.upgrade2 = new Upgrade(2, 0, 3, masrafEP, masrafMP, null);
+                this.upgrade3 = new Upgrade(3, 0, 4, masrafEP, masrafMP, null);
+                upgrade1.addEffect(new PermanentEffects(0, null, 0, 50));
+                upgrade2.addEffect(new PermanentEffects(0, null, 0, 50));
+                upgrade3.addEffect(new PermanentEffects(0, null, 0, 50));
+                break;
+            case Quick:
+                this.upgrade1 = new Upgrade(1, 0, 2, masrafEP, masrafMP, null);
+                this.upgrade2 = new Upgrade(2, 0, 3, masrafEP, masrafMP, null);
+                this.upgrade3 = new Upgrade(3, 0, 4, masrafEP, masrafMP, null);
+                upgrade1.addEffect(new DurableEffects(null, 0, null, 0, 0, 0, 0, 0, 1, 1));
+                upgrade2.addEffect(new DurableEffects(null, 0, null, 0, 0, 0, 0, 0, 1, 1));
+                upgrade3.addEffect(new DurableEffects(null, 0, null, 0, 0, 0, 0, 0, 1, 1));
+                break;
+
+            case Magic:
+                this.upgrade1 = new Upgrade(1, 0, 2, masrafEP, masrafMP, null);
+                this.upgrade2 = new Upgrade(2, 0, 3, masrafEP, masrafMP, null);
+                this.upgrade3 = new Upgrade(3, 0, 4, masrafEP, masrafMP, null);
+                upgrade1.addEffect(new PermanentEffects(0, null, 50, 0));
+                upgrade2.addEffect(new PermanentEffects(0, null, 50, 0));
+                upgrade3.addEffect(new PermanentEffects(0, null, 50, 0));
+                break;
+            case Overpowered:
+                this.upgrade1 = new Upgrade(1, 0, 2, masrafEP, masrafMP, null);
+                this.upgrade2 = new Upgrade(2, 0, 4, masrafEP, masrafMP, null);
+                this.upgrade3 = new Upgrade(3, 0, 6, masrafEP, masrafMP, null);
+                upgrade1.addEffect(new DurableEffects(1d, 0, 1.2, 1, 0, 0, 0, 0, 0, 0));
+                upgrade2.addEffect(new DurableEffects(1d, 0, 1.4, 1, 0, 0, 0, 0, 0, 0));
+                upgrade3.addEffect(new DurableEffects(1d, 0, 1.6, 1, 0, 0, 0, 0, 0, 0));
+
+        }
+    }
+
 }

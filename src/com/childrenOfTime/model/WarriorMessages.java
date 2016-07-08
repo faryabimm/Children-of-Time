@@ -1,6 +1,8 @@
 package com.childrenOfTime.model;
 
 import com.childrenOfTime.Completed;
+import com.childrenOfTime.model.Warriors.Foe;
+import com.childrenOfTime.model.Warriors.Hero;
 
 import java.util.List;
 

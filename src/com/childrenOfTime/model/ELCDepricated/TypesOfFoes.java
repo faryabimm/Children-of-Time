@@ -1,6 +1,7 @@
-package com.childrenOfTime.model;
+package com.childrenOfTime.model.ELCDepricated;
 
 import com.childrenOfTime.Completed;
+import com.childrenOfTime.model.Warriors.StrengthOfFoes;
 
 /**
  * Created by SaeedHD on 05/12/2016.

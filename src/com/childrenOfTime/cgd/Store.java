@@ -1,6 +1,6 @@
 package com.childrenOfTime.cgd;
 
-import com.childrenOfTime.model.InformationOfItems;
+import com.childrenOfTime.model.ELCDepricated.InformationOfItems;
 
 import java.util.ArrayList;
 
