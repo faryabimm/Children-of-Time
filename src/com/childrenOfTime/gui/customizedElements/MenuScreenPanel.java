@@ -1,5 +1,6 @@
 package com.childrenOfTime.gui.customizedElements;
 
+import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.gui.LoadingScreenPanel;
 import com.childrenOfTime.model.ChildrenOfTime;
 
@@ -13,6 +14,7 @@ import java.awt.event.ActionListener;
  */
 public abstract class MenuScreenPanel extends JPanel {
     public static final int ELEMENT_GAP = 20;
+    public static final int PREFFERED_AVATAR_SIZE = 100;
 
     protected float pageOpacity = 0f;
     protected Timer timer_emerge = new Timer(LoadingScreenPanel.TIMER_STARTING_DELAY/3, new ActionListener() {
@@ -37,6 +39,8 @@ public abstract class MenuScreenPanel extends JPanel {
             repaint();
         }
     });
+    private JLabel userNameLabel = new CustomizedJLabel("");
+    private JLabel userAvatar = new CustomizedJImage();
 
     public void emerge() {
         timer_emerge.start();
@@ -50,6 +54,23 @@ public abstract class MenuScreenPanel extends JPanel {
         this.setLayout(null);
         this.setPreferredSize(ChildrenOfTime.PREFERRED_DIMENSION);
         this.initialize();
+
+        if(CustomGameDAO.currentUser != null) {
+
+            userAvatar = new CustomizedJImage("src/user_data/" + CustomGameDAO.currentUser.getUserName()
+                    + "/avatar.png", PREFFERED_AVATAR_SIZE, PREFFERED_AVATAR_SIZE);
+            userNameLabel.setText(CustomGameDAO.currentUser.getUserName());
+            userNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            userAvatar.setLocation(ChildrenOfTime.PREFERRED_WIDTH - userAvatar.getWidth()/2 - ELEMENT_GAP - userNameLabel.getWidth()/2 ,
+                    ELEMENT_GAP);
+            userNameLabel.setLocation(ChildrenOfTime.PREFERRED_WIDTH - CustomizedJLabel.LABEL_WIDTH - ELEMENT_GAP,
+                    userAvatar.getHeight() + ELEMENT_GAP);
+        }
+
+        this.add(userNameLabel);
+        this.add(userAvatar);
+
+
     }
     public abstract void initialize();
     @Override
@@ -60,5 +81,4 @@ public abstract class MenuScreenPanel extends JPanel {
         g2d.fillRect(0,0,ChildrenOfTime.PREFERRED_WIDTH,ChildrenOfTime.PREFERRED_HEIGHT);
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, pageOpacity));
     }
-
 }

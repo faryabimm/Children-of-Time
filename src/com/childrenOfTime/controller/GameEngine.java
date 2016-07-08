@@ -11,6 +11,8 @@ import java.io.IOException;
  */
 public class GameEngine {
 
+    public static final Toolkit DEFAULT_TOOLKIT = Toolkit.getDefaultToolkit();
+
 
     private ChildrenOfTime childrenOfTime = ChildrenOfTime.getInstance();
 

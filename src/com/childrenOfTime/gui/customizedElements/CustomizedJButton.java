@@ -10,9 +10,9 @@ import java.awt.*;
  */
 public class CustomizedJButton extends JButton {
 
-    public static int MAIN_MENU_BUTTON_WIDTH = 200;
-    public static int MAIN_MENU_BUTTON_HEIGHT = 60;
-    public static Dimension MAIN_MENU_BUTTON_DIMENTION = new Dimension(MAIN_MENU_BUTTON_WIDTH,MAIN_MENU_BUTTON_HEIGHT);
+    public static int BUTTON_WIDTH = 200;
+    public static int BUTTON_HEIGHT = 60;
+    public static Dimension BUTTON_DIMENTION = new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT);
 
     public CustomizedJButton(String title) {
 
@@ -20,7 +20,7 @@ public class CustomizedJButton extends JButton {
         this.setFont(ChildrenOfTime.TIZA_FONT);
         this.setBackground(Color.YELLOW);
         this.setVerticalAlignment(SwingConstants.CENTER);
-        this.setSize(MAIN_MENU_BUTTON_DIMENTION);
+        this.setSize(BUTTON_DIMENTION);
         this.setBorder(BorderFactory.createEmptyBorder(20 , 20, 20, 20));
     }
 }

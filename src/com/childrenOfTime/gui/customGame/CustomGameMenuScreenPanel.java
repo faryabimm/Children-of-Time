@@ -20,11 +20,11 @@ public class CustomGameMenuScreenPanel extends MenuScreenPanel {
         this.add(signUp);
         this.add(goBack);
         signUp.setLocation(ELEMENT_GAP,
-                ChildrenOfTime.PREFERRED_HEIGHT - 3*CustomizedJButton.MAIN_MENU_BUTTON_HEIGHT - 3*ELEMENT_GAP);
+                ChildrenOfTime.PREFERRED_HEIGHT - 3*CustomizedJButton.BUTTON_HEIGHT - 3*ELEMENT_GAP);
         signIn.setLocation(ELEMENT_GAP,
-                ChildrenOfTime.PREFERRED_HEIGHT - 2*CustomizedJButton.MAIN_MENU_BUTTON_HEIGHT - 2*ELEMENT_GAP);
+                ChildrenOfTime.PREFERRED_HEIGHT - 2*CustomizedJButton.BUTTON_HEIGHT - 2*ELEMENT_GAP);
         goBack.setLocation(ELEMENT_GAP,
-                ChildrenOfTime.PREFERRED_HEIGHT - CustomizedJButton.MAIN_MENU_BUTTON_HEIGHT - ELEMENT_GAP);
+                ChildrenOfTime.PREFERRED_HEIGHT - CustomizedJButton.BUTTON_HEIGHT - ELEMENT_GAP);
 
 
         goBack.addActionListener(e -> ChildrenOfTime.changeContentPane(new MainMenuScreenPanel()));
