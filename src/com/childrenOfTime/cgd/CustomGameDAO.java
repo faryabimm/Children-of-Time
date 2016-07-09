@@ -47,6 +47,10 @@ public class CustomGameDAO {
         return currentUser;
     }
 
+    public static void setCurrentUser(User currentUser) {
+        CustomGameDAO.currentUser = currentUser;
+    }
+
     CustomGameDAO getInstance() {
         if (instance == null) instance = new CustomGameDAO();
 
@@ -54,6 +58,14 @@ public class CustomGameDAO {
     }
 
     private CustomGameDAO() {
+
+    }
+
+    public static void loadCurrentUserData() {
+
+    }
+
+    public static void initializeCurrentUser() {
 
     }
 }
