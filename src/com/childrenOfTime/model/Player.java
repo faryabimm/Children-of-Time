@@ -1,175 +1,254 @@
 package com.childrenOfTime.model;
 
+import com.childrenOfTime.exceptions.NoImmortalityPotionLeftException;
+import com.childrenOfTime.exceptions.NotEnoughMoneyException;
+import com.childrenOfTime.exceptions.NotEnoughXPException;
+import com.childrenOfTime.exceptions.TradeException;
+import com.childrenOfTime.model.Equip.AbilComps.Ability;
+import com.childrenOfTime.model.Equip.ItemComps.Item;
+import com.childrenOfTime.model.Warriors.Warrior;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import static com.childrenOfTime.view.IOHandler.printOutput;
+
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
 public class Player {
+
+    PlayerType playerType;
+    String name;
+    //TODO When You wanna add a Hero for a player You have to check if the player has another hero with the same name or not,assigning id for a hero by method setID is your duty
+    private int currentWealth;
+    private int currentExperience;
+    private int immprtalityPotions = 3;
+    private ArrayList<Item> itemsBougt;
+    private Collection<Warrior> myTeam;
+    private Collection<Warrior> enemyTeam;
+
+
+    public void useImmortalityPotion() throws NoImmortalityPotionLeftException {
+        if (immprtalityPotions - 1 < 0) {
+            throw new NoImmortalityPotionLeftException(name + " : No Immortality Potion Left");
+        }
+    }
+
+    public void checkForImmortatlitryRequest() {
+
+
+        Thread immortalityRequest = new Thread(() -> {
+            while (true) {
+
+                for (Warrior myHero : myTeam) {
+                    try {
+                        Thread.sleep(0, 100000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if (myHero.doesAskForImmortalityPotion()) {
+                        myHero.PlayerAllowsUsingImmortality = true;
+                        useImmortalityPotion();
+                    }
+                }
+            }
+        });
+
+        immortalityRequest.setPriority(Thread.NORM_PRIORITY + 2);
+        immortalityRequest.setDaemon(true);
+        immortalityRequest.setName("Immortality Request");
+        immortalityRequest.start();
+
+    }
+
+    private int getNumbersBought(Item item) {
+
+        int count = 0;
+        for (Item item2 : itemsBougt) {
+            if (item.equals(item2)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public void upgradeAbility(Ability ability, Warrior targetHero, int id) {
+
+
+        changeCurrentExperience(-ability.getUpgradeByNumber(id).getXPCost());
+        targetHero.upgradeAbility(ability, id, toArray(this.enemyTeam), toArray(this.myTeam));
+    }
+
+    public void buy(Item item, Warrior hero) throws TradeException {
+
+        int itemsPrice = item.getCurrentPriceToBuy(getNumbersBought(item));
+        changeCurrentWealth(-itemsPrice);
+        try {
+            hero.IWannaBuyItemForYou(item, toArray(this.enemyTeam), toArray(this.myTeam));
+        } catch (RuntimeException e) {
+            changeCurrentWealth(itemsPrice);
+            throw new RuntimeException(e.getMessage());
+        }
+        //TODO Jaye In moshakhas shavad
+        printOutput(item.getName() + " bought Successfully\n" +
+                "your Current Wealth is: $" + getCurrentWealth());
+    }
+
+    public void castAbility(Warrior castingHero, Ability castedAbility, Warrior... selectedTargets) {
+
+        castingHero.castAbility(castedAbility, selectedTargets, toArray(this.enemyTeam), toArray(this.myTeam));
+
+    }
+
+    public void useItem(Warrior usingHero, Item usedItem, Warrior... selectedTargets) {
+
+
+        usingHero.useItem(usedItem, selectedTargets, toArray(this.enemyTeam), toArray(this.myTeam));
+    }
+
+    public void sell(Item item, Warrior target) throws TradeException {
+
+
+        target.IWannaSellThisItem(item);
+        int itemCurrenPriceToSell = item.getCurrentPriceToSell();
+        changeCurrentWealth(itemCurrenPriceToSell);
+        printOutput("Item " + item.getName() + " was successfully sold for $" +
+                itemCurrenPriceToSell + " and was removed form (" +
+                target.getIdentity() + ") Hero.");
+        printOutput("your Current Wealth is: $" + getCurrentWealth());
+    }
+
+    public boolean isDefeated() {
+        switch (this.playerType) {
+            case Human:
+                int countDead = 0;
+                for (Warrior warrior : this.myTeam) {
+                    if (warrior.isDead()) countDead++;
+                    if (countDead == Rules.NUMBER_OF_HEROS_DYE_FROM_HUMAN_PLAYER_TO_DEFEAT || countDead == this.myTeam.size())
+                        return true;
+                }
+                return false;
+            case Computer:
+                for (Warrior warrior : this.myTeam) {
+                    if (!warrior.isDead()) return false;
+                }
+                break;
+        }
+        return true;
+    }
+
+    //TODO Each Hero Can Attack Multiple Targets
+    public void giveAttack(Warrior attackingHero, Warrior[] selectedTargets) {
+        attackingHero.attack(selectedTargets, null, null, toArray(this.enemyTeam), toArray(this.myTeam));
+    }
+
+    public Warrior[] toArray(Collection<Warrior> collection) {
+        return (Warrior[]) collection.toArray();
+    }
+
+
+    public void showCurrentHeroStats() {
+        String toReturn = "";
+        for (Warrior hero : myTeam) {
+            toReturn += hero.toString();
+        }
+        printOutput(toReturn.substring(0, toReturn.length() - 2));
+    }
+
+    public void changeCurrentExperience(int num) throws NotEnoughXPException {
+        if (this.currentExperience + num < 0) {
+            throw new NotEnoughXPException("You don't have Enough XP points to apply this upgrade\n" +
+                    "your current XP : " + currentExperience + " \nrequired XP : " + -num + "\nYou need " +
+                    (-num - currentExperience) + " additional XP points.");
+        } else {
+            this.currentExperience += num;
+        }
+    }
+
+    public void changeCurrentWealth(int i) {
+        if (i + currentWealth < 0)
+            throw new NotEnoughMoneyException("You don't have Enough Money to apply this upgrade\n" +
+                    "your current Wealth : " + currentWealth + "$\nrequired Money : " +
+                    i + "$\nYou need " +
+                    (i - currentWealth) + "$ additional Money.");
+        else {
+            this.currentExperience += i;
+        }
+    }
+
+
+    public int getCurrentExperience() {
+        return currentExperience;
+    }
+
+    public int getCurrentWealth() {
+        return currentWealth;
+    }
+
+    public int getImmprtalityPotions() {
+        return immprtalityPotions;
+    }
+
+
+
+
+
 }
 
 
-//    //TODO When You wanna add a Hero for a player You have to check if the player has another hero with the same name or not,assigning id for a hero by method setID is your duty
-//    private int currentWealth;
-//    private int currentExperience;
-//    private int immprtalityPotions = 3;
-//    private ArrayList<Hero> heros = new ArrayList<>();
-//
-//    @Completed
-//    public void upgradeAbility(Ability ability, Hero targetHero, Integer integer) throws UpgradeException {
-//        ability.upgrade(targetHero, integer);
-//    }
-//
-//    @Completed
-//    public void buy(InformationOfItems item, Hero target) throws TradeException {
-//        if (item.isHasVolume() && target.inventory.getAvailableCapacity() == 0) {
-//            throw new NotEnoughInventorySpaceException("Your Hero's inventory (" + target.getName() +
-//                    " " + target.getId() + ") has no empty space!");
-//        } else {
-//            if (item.getInitialPrice() > currentWealth) {
-//                throw new NotEnoughMoneyException("You don't have Enough Money to apply this upgrade\n" +
-//                        "your current Wealth : " + currentWealth + "$\nrequired Money : " +
-//                        item.getInitialPrice() + "$\nYou need " +
-//                        (item.getInitialPrice() - currentWealth) + "$ additional Money.");
-//            } else {
-//                Item newItem = new Item(item.getName());        // TODO HAS BUG!
-//                int cost = newItem.getCurrentPrice();
-//                newItem.timesBought++;
-//                currentWealth -= cost;
-//                if (!newItem.getInfo().isHasVolume()) {
-//                    newItem.use(target, target);
-//                } else {
-//                    target.inventory.getItems().add(newItem);
-//                }
-//                printOutput(newItem.getInfo().getName() + " bought Successfully\n" +
-//                        "your Current Wealth is: $" + getCurrentWealth());
-//            }
-//        }
-//    }
-//
-//    @Completed
-//    public Player(ArrayList<Hero> heros) {
-//
-//        this.currentWealth = 40;
-//        this.currentExperience = 15;
-//        this.immprtalityPotions = 3;
-//        this.heros = heros;
-//    }
-//
-//    @Completed
-//    public void sell(Item item, Hero target) throws TradeException {
-//
-//        ArrayList<Item> heroItems = target.inventory.getItems();
-//        currentWealth += heroItems.get(heroItems.indexOf(item)).getCurrentPrice() / 2;
-//        printOutput("Item " + item.getInfo().getName() + " was successfully sold for $" +
-//                heroItems.get(heroItems.indexOf(item)).getCurrentPrice() / 2 + " and was removed form (" +
-//                target.getName() + " " + target.getId() + ") Hero.");
-//        printOutput("your Current Wealth is: $" + getCurrentWealth());
-//        target.inventory.getItems().remove(item);
-//    }
-//
-//    @Completed
-//    public void useImmortalityPotion() throws NoImmortalityPotionLeftException {
-//        immprtalityPotions--;
-//    }
-//
-//    @Completed
-//    public void showCurrentHeroStats() {
-//        String toReturn = "";
-//        for (Hero hero : heros) {
-//            toReturn += hero.toString();
-//        }
-//
-//        printOutput(toReturn.substring(0, toReturn.length() - 2));
-//    }
-//
-//    @Completed
-//    public boolean isDefeated() {
-//        for (int i = 0; i < heros.size(); i++) {
-//            if (heros.get(i).isDead) return true;
-//        }
-//        return false;
-//    }
-//
-//    @Completed
-//    public int getImmprtalityPotions() {
-//        return immprtalityPotions;
-//    }
-//
-//    @Completed
-//    public void changeCurrentExperience(int num) throws NotEnoughXPException {
-//        if (this.currentExperience + num < 0) {
-//            throw new NotEnoughXPException("You don't have Enough XP points to apply this upgrade\n" +
-//                    "your current XP : " + currentExperience + " \nrequired XP : " + -num + "\nYou need " +
-//                    (-num - currentExperience) + " additional XP points.");
-//        } else {
-//            this.currentExperience += num;
-//        }
-//    }
-//
-//    @Completed
-//    public int getCurrentExperience() {
-//        return currentExperience;
-//    }
-//
-//    @Completed
-//    public ArrayList<Hero> getHeros() {
-//        return heros;
-//    }
-//
-//    @Completed
-//    public int getCurrentWealth() {
-//        return currentWealth;
-//    }
-//
-//    @Completed
-//    public void castAbility(Hero castingHero, Ability castedAbility, Warrior targetFoe) {
-//
-//        castingHero.useAbility(castedAbility, targetFoe);
-//
-//    }
-//
-//    @Completed
-//    public void useItem(Hero usingHero, Item usedItem, Warrior targetWarrior) {
-//        if (usingHero.inventory.getItems().contains(usedItem)) {
-//            usedItem.use(usingHero, targetWarrior);
-//        } else {
-//            throw new ItemNotAquiredException("Hero '" + usingHero.getName() + " "
-//                    + usingHero.getId() + "' doesnt" + "have this Item!");
-//        }
-//    }
-//
-//    @Completed
-//    public Ability findAbilityByNameAndOwner(String name, Hero owner) {             //COOL!!!!!!!!!!!!!!
-//        Hero currentHero = findHeroByName(owner.name);
-//
-//
-//        for (String keyAbilityName : currentHero.abilities.keySet()) {
-//            if (keyAbilityName.equals(name)) {
-//                return currentHero.abilities.get(keyAbilityName);
-//            }
-//        }
-//        return null;
-//    }
-//
-//    @Completed
-//    public Ability findAbilityByName(String name) {
-//        Hero currentHero = null;
-//
-//        for (int i = 0; i < heros.size(); i++) {
-//            for (String keyAbilityName : currentHero.abilities.keySet()) {
-//                if (keyAbilityName.equals(name)) {
-//                    return currentHero.abilities.get(keyAbilityName);
-//                }
-//            }
-//        }
-//
-//        return null;
-//    }
-//
-//    @Completed
-//    public void giveAttack(Hero attackingHero, Foe targetFoe) {
-//        attackingHero.attack(targetFoe, null, 2);
-//
-//    }
+
+
+
+
+/*
+    public Player(ArrayList<Hero> heros) {
+        this.currentWealth = Rules.INITIAL_MONEY ;
+        this.currentExperience = Rules.INITIAL_XP;
+        this.immprtalityPotions = 3;
+        this.heros = heros;
+
+
+        for (:heros) {
+
+        }
+        checkForImmortatlitryRequest();
+    }
+    */
+
+
+
+
+    /*
+        @Completed
+        public Ability findAbilityByNameAndOwner(String name, Hero owner) {             //COOL!!!!!!!!!!!!!!
+            Hero currentHero = findHeroByName(owner.name);
+
+
+            for (String keyAbilityName : currentHero.abilities.keySet()) {
+                if (keyAbilityName.equals(name)) {
+                    return currentHero.abilities.get(keyAbilityName);
+                }
+            }
+            return null;
+        }
+
+        @Completed
+        public Ability findAbilityByName(String name) {
+            Hero currentHero = null;
+
+            for (int i = 0; i < heros.size(); i++) {
+                for (String keyAbilityName : currentHero.abilities.keySet()) {
+                    if (keyAbilityName.equals(name)) {
+                        return currentHero.abilities.get(keyAbilityName);
+                    }
+                }
+            }
+
+            return null;
+        }
+    */
+
 //
 //    @Completed
 //    public Hero findHeroByNameAndId(String name, int id) {
@@ -202,6 +281,7 @@ public class Player {
 //        return null;
 //    }
 //
+//
 //    @Completed
 //    public Item getItembyNameAndOwner(String name, Hero usingHero) {
 //        for (Item item : usingHero.inventory.getItems()) {
@@ -232,10 +312,11 @@ public class Player {
 //        }
 //    }
 //
-//    @Completed
 //    public boolean isAnyImmortalityPotionLeft() {
-//        return immprtalityPotions != 0;
+//        return immprtalityPotions > 0;
 //    }
+//
+//
 //}
 //
 //

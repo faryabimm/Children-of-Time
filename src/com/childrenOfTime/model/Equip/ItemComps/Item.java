@@ -81,15 +81,20 @@ public class Item implements Castable, TurnBase {
         }
     }
 
-    public Integer getCurrentPrice(int timesBought) {
+    public Integer getCurrentPriceToBuy(int timesBought) {
         return type.getInitialPrice() + timesBought * type.getPriceInfaltionRate();
     }
+
+    public Integer getCurrentPriceToSell() {
+        return (int) (type.getInitialPrice() * (0.5 * type.getReusablityNumber() - leftUsages) / (type.getReusablityNumber()));
+    }
+
 
     public Integer getInitialPrice() {
         return type.getInitialPrice();
     }
 
-    public boolean sellable() {
+    public boolean canBeSold() {
         if (!type.getCanBeInInventory())
             return false;
         if (leftUsages <= 0) return false;

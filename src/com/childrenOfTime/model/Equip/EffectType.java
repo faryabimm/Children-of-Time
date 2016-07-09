@@ -1,7 +1,5 @@
 package com.childrenOfTime.model.Equip;
 
-import com.sun.istack.internal.NotNull;
-
 /**
  * Created by SaeedHD on 07/07/2016.
  */
@@ -12,13 +10,16 @@ public class EffectType {
     private boolean permanent;
     private boolean probablePerform;
 
-    public EffectType(@NotNull boolean targetUnChoosable, boolean passive, boolean autoRepeatable, boolean permanent, boolean probablePerform) {
-        this.setTargetUnChoosable(targetUnChoosable);
-        this.setPassive(passive);
-        setAutoRepeatable(autoRepeatable);
-        this.setPermanent(permanent);
-        this.setProbablePerform(probablePerform);
+    public EffectType(boolean targetUnChoosable, boolean passive, boolean autoRepeatable, boolean permanent, boolean probablePerform, boolean ifPassiveInstantEffectJustForAttack) {
+        this.targetUnChoosable = targetUnChoosable;
+        this.passive = passive;
+        AutoRepeatable = autoRepeatable;
+        this.permanent = permanent;
+        this.probablePerform = probablePerform;
+        this.ifPassiveInstantEffectJustForAttack = ifPassiveInstantEffectJustForAttack;
     }
+
+    boolean ifPassiveInstantEffectJustForAttack;
 
     public boolean isTargetUnChoosable() {
         return targetUnChoosable;

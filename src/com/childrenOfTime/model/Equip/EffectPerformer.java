@@ -2,8 +2,8 @@ package com.childrenOfTime.model.Equip;
 
 import com.childrenOfTime.model.Warriors.Warrior;
 
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by SaeedHD on 07/09/2016.
@@ -20,7 +20,7 @@ public class EffectPerformer {
     }
 
     //TODO anotherCheck required
-    public static void performEffects(List<Effects> effects, Warrior performer, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeamMates) {
+    public static void performEffects(Collection<Effects> effects, Warrior performer, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeamMates) {
         Iterator<Effects> itr = effects.iterator();
         Warrior[] finalTargets;
 

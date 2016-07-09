@@ -28,7 +28,9 @@ public class BST<E extends Comparable<E>> {
 
 
     public Object getVar(E var) {
-        return getNode(var, godFather).getValue();
+        Node returnedNode = getNode(var, godFather);
+        if (returnedNode == null) return null;
+        return returnedNode.getValue();
     }
 
     public Node<E> getNode(E var, Node<E> node) {

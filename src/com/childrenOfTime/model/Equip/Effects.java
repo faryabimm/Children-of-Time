@@ -19,6 +19,7 @@ public class Effects implements Performable {
     final Integer impermanentDurability;
     final Integer autoRepitionDuration;
 
+
     @Override
     public void perform(@NotNull Warrior... target_s) {
         doAutoRepeat(target_s);
@@ -64,6 +65,7 @@ public class Effects implements Performable {
 
 
     public void wearOff(Warrior... targets) {
+
         alterPackage.wearOff(targets);
     }
 

@@ -59,7 +59,7 @@ public class Ability implements Castable, TurnBase {
 
     @Override
     public void cast(Warrior caster, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeammates) {
-        if (currentLevel == null) throw new AbilityNotAquiredException("You didn't acqiure this");
+        if (currentLevel == null) throw new AbilityNotAquiredException("You didn't acquire this");
         if (currentLevel.recastable) {
             if (currentLevel.castedOnce) {
                 return;
@@ -78,9 +78,9 @@ public class Ability implements Castable, TurnBase {
         return currentLevel.getXPCost();
     }
 
-    public Integer upgrade(Warrior performer, Integer i, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeammates) throws UpgradeException {
+    public Integer upgrade(Warrior performer, Integer i, Warrior[] allEnemies, Warrior[] allTeammates) throws UpgradeException {
         if (currentLevel == null) {
-            return acquire(performer, selectedTargets, allEnemies, allTeammates);
+            return acquire(performer, null, allEnemies, allTeammates);
         }
 
         Upgrade fake = new Upgrade(i);
@@ -89,12 +89,15 @@ public class Ability implements Castable, TurnBase {
             if (!result.getUpgradeBoolean()) throw new RequirementsNotMetException();
             currentLevel = result;
         }
-        if (currentLevel.castJustAfterAcquire) cast(performer, selectedTargets, allEnemies, allTeammates);
+        if (currentLevel.castJustAfterAcquire) cast(performer, null, allEnemies, allTeammates);
         return result.getXPCost();
     }
 
     public Upgrade getUpgradeByNumber(Integer i) {
-        return (Upgrade) Upgrades.getVar(new Upgrade(i));
+        Object returnedUp = Upgrades.getVar(new Upgrade(i));
+        ;
+        if (returnedUp == null) throw new RuntimeException(" Such an Upgrade doesn't exist ! ");
+        return (Upgrade) returnedUp;
 
     }
 

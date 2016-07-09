@@ -1,14 +1,13 @@
 package com.childrenOfTime.model.Warriors;
 
+import com.childrenOfTime.exceptions.ItemCannotBeSold;
 import com.childrenOfTime.exceptions.NotEnoughEnergyPointsException;
 import com.childrenOfTime.exceptions.NotEnoughMagicPointsException;
+import com.childrenOfTime.exceptions.TradeException;
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
-import com.childrenOfTime.model.Equip.AlterPackage;
-import com.childrenOfTime.model.Equip.Effects;
-import com.childrenOfTime.model.Equip.Inventory;
+import com.childrenOfTime.model.Equip.*;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
 import com.childrenOfTime.model.Equip.ItemComps.ItemType;
-import com.childrenOfTime.model.Equip.Target;
 import com.childrenOfTime.model.Rules;
 
 import java.awt.*;
@@ -22,6 +21,12 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
 public class Warrior {
     public static int DEFAULT_Attack_EP_COST = 2;
 
+
+    public boolean PlayerAllowsUsingImmortality = false;
+
+
+
+
     private String name;
     private int id = 0;
     private Image image;
@@ -31,7 +36,6 @@ public class Warrior {
     private int currentMagic;
     private int currentEP;
     private boolean asksForImmortalityPotion = false;
-    private boolean PlayerAllowsUsingImmortality = false;
     private boolean isDead = false;
     private Inventory inventory;
     private HeroClass info;
@@ -136,10 +140,12 @@ public class Warrior {
     }
 
 
-    public void useItem(Item item, Warrior... target_s) {
+    //TODO check More This One
+    public void useItem(Item item, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeamMates) {
+        item.cast(this, selectedTargets, allEnemies, allTeamMates);
     }
 
-    public void attack(Warrior[] targets, Integer realAttack, Integer EPCost) throws NotEnoughEnergyPointsException {
+    public void attack(Warrior[] targets, Integer realAttack, Integer EPCost, Warrior[] allEnemies, Warrior[] allTeamMates) throws NotEnoughEnergyPointsException {
         if (EPCost == null) EPCost = DEFAULT_Attack_EP_COST;
         changeEP(-EPCost);
         if (realAttack == null) realAttack = this.getAttackPower();
@@ -147,7 +153,7 @@ public class Warrior {
         for (Effects eff : passiveEffects) {
             Warrior[] targetsToPerformPassiveEffs = null;
             if (eff.getTargetType() == Target.theAttackedOne) targetsToPerformPassiveEffs = targets;
-            chooseTargtsThenPerform(eff, targetsToPerformPassiveEffs);
+            EffectPerformer.performEffects(this.passiveEffects, this, targets, allEnemies, allTeamMates);
         }
 
         for (Warrior tar : targets) {
@@ -159,13 +165,13 @@ public class Warrior {
 
     }
 
-    public void IWannaBuyItemForYou(Item item) {
+    public void IWannaBuyItemForYou(Item item, Warrior[] allEnemies, Warrior[] allTeamMates) {
         ItemType itemType = item.getType();
         if (itemType.getCanBeInInventory()) {
             inventory.addToInventoryIfYouCan(item);
         }
         if (itemType.getAutoUseAfterBuoght()) {
-            useItem(item, null);
+            useItem(item, null, allEnemies, allTeamMates);
         }
         if (itemType.getWearOffAfterSold()) {
             for (Effects effect : item.getEffects()) {
@@ -178,31 +184,30 @@ public class Warrior {
 
     public void IWannaSellThisItem(Item item) {
         ItemType itemType = item.getType();
-        if (!inventory.contains(item)) throw new RuntimeException("Hero doesn't have this . ");
+        if (!item.canBeSold()) throw new ItemCannotBeSold("This Item Is not permitted to sell ! ");
+        if (!inventory.contains(item)) throw new TradeException("Hero doesn't have this . ");
         if (itemType.getWearOffAfterSold()) {
             for (Effects effect : item.getEffects()) {
                 removeFromImPermanentManualEffectsList(effect);
             }
         }
 
-        if (itemType.getAutoUseAfterBuoght()) {
-            useItem(item, null);
-        }
-
     }
 
-    public void castAbility(Ability ability, Warrior[] selectedTargets) {
-        ability.cast(this, selectedTargets, this.allEnemies, this.allTeamMates);
+    public void castAbility(Ability ability, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeamMates) {
+        if (!abilities.containsKey(ability.getName())) return;
+        ability.cast(this, selectedTargets, allEnemies, allTeamMates);
     }
-
+/*
     public void castAbility(String name, Warrior[] selectedTargets) {
         Ability ability = findAbilityByName(name);
         if (ability != null) ability.cast(this, selectedTargets, allEnemies, allTeamMates);
     }
 
+*/
 
-    public void acquireAbility(Ability ability, Warrior[] selectedTargets) {
-        ability.acquire(this, selectedTargets, allEnemies, allTeamMates);
+    public void upgradeAbility(Ability ability, Integer i, Warrior[] allEnemies, Warrior[] allTeamMates) {
+        ability.upgrade(this, i, allEnemies, allTeamMates);
     }
 
 
@@ -272,8 +277,8 @@ public class Warrior {
                 if (PlayerAllowsUsingImmortality) {
                     useImmortalityPotion();
                     PlayerAllowsUsingImmortality = false;
+                    asksForImmortalityPotion = false;
                 } else {
-                    printOutput("No Immortality Potions left.");
                     isDead = true;
                     printOutput(info.getDyingActionMessage());
 
@@ -316,7 +321,7 @@ public class Warrior {
         }
         return null;
     }
-
+/*
     private void chooseTargtsThenPerform(Effects eff, Warrior[] targets) {
         Warrior[] newTargets;
         switch (eff.getTargetType()) {
@@ -340,6 +345,7 @@ public class Warrior {
 
 
     }
+    */
 
     public String getId() {
         String toReturn = "";
@@ -440,4 +446,19 @@ public class Warrior {
     }
 
 
+    public boolean doesAskForImmortalityPotion() {
+        return asksForImmortalityPotion;
+    }
+
+    public String toString() {
+        return this.getIdentity() + " (" + this.info.getClassName() + ") - ";
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
 }

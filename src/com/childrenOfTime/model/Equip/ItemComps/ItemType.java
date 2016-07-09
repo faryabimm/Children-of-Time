@@ -18,6 +18,8 @@ public class ItemType {
     private final Integer reusablityNumber;
     private final Integer priceInfaltionRate;
 
+
+    //TODO make Paramteres nullable !
     public ItemType(Boolean inflative, Boolean reusable, Boolean autoUseAfterBuoght, Boolean canBeInInventory, Boolean shouldRemoveWhenLeftUsageIsZero, Boolean wearOffAfterSold, Boolean hasCoolDown, Integer coolDownTime, Integer initialPrice, Integer reusablityNumber, Integer priceInfaltionRate) {
         Inflative = inflative;
         Reusable = reusable;

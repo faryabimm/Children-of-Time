@@ -19,6 +19,8 @@ public class AlterPackage {
     public final Double[] FACTORS;
     private final Integer ProbabilyPercent;
 
+    boolean woreOff = false;
+
 
     public boolean isProbabilityOccured() {
         Random rand = new Random();
@@ -52,6 +54,7 @@ public class AlterPackage {
     }
 
     public void perform(Warrior... target_s) {
+
         for (Warrior w : target_s) {
             w.receiveAlterPack(this);
         }
@@ -64,6 +67,7 @@ public class AlterPackage {
     public void wearOff(Warrior... target_s) {
         AlterPackage newPackage = CreateReversedAlteringPackage();
         newPackage.perform(target_s);
+        woreOff = true;
     }
 
     public AlterPackage CreateReversedAlteringPackage() {
