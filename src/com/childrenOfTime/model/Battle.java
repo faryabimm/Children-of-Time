@@ -10,6 +10,7 @@ import com.childrenOfTime.model.Equip.ItemComps.Item;
 import com.childrenOfTime.model.Warriors.Foe;
 import com.childrenOfTime.model.Warriors.Hero;
 import com.childrenOfTime.model.Warriors.StrengthOfFoes;
+import com.childrenOfTime.model.Warriors.Warrior;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;

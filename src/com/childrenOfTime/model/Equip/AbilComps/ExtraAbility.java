@@ -25,7 +25,7 @@ public class ExtraAbility extends Ability {
 
 
     public ExtraAbility(String name, String SuccessMessage, String Description, String[] UpgradeDescriptons, Boolean swirlingHeal, Integer[] UpgradeNumbers, Integer[] swirlingHealPercents, Boolean swirlingAttack1, Integer[] swirlingAttackPercents, Boolean crticalAttack, Double[] crticalFactor, Integer[] criticalProbabiliy, int[] EPCost, int[] MPCost, int[] XPCosts, String[] requirements) {
-        super(name, Target.HimSelf, SuccessMessage, Description);
+        super(name, Target.HimSelf, SuccessMessage, Description, Ability.DEFAUL_AbilityImage);
         this.swirlingHeal = swirlingHeal;
         this.swirlingHealPercents = swirlingHealPercents;
         this.swirlingAttack1 = swirlingAttack1;

@@ -1,20 +1,15 @@
 package com.childrenOfTime.model;
 
-import com.childrenOfTime.Completed;
-import com.childrenOfTime.model.Warriors.Foe;
-import com.childrenOfTime.model.Warriors.Hero;
-
-import java.util.List;
-
 /**
  * Created by SaeedHD on 05/11/2016.
  */
 public class WarriorMessages {
+}
+/*
 
         @Completed
         public static String getDiedMessageForHero(Hero hero){
             //TODO I do not know whats this method s assignment
-            String s = hero.name + hero.getId() + " is dead and so is the spirit of this adventure, Game Over! ”";
             return s;
         }
 
@@ -93,3 +88,4 @@ public class WarriorMessages {
 }
 
 
+*/

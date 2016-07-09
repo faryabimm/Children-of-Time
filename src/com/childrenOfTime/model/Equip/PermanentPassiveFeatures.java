@@ -1,6 +1,6 @@
 package com.childrenOfTime.model.Equip;
 
-import com.childrenOfTime.model.Warrior;
+import com.childrenOfTime.model.Warriors.Warrior;
 
 /**
  * Created by SaeedHD on 07/07/2016.
@@ -27,7 +27,7 @@ public class PermanentPassiveFeatures extends PermanentEffects {
     }
 
     @Override
-    public void perform(Warrior performer, Warrior[] targets, Warrior... implicitTarget_s) {
+    public void perform(Warrior... Target_s) {
         performer.setSwirlingAttackisActivated(swirlingAttack1);
         performer.setSwirlingHealisActivated(swirlingHeal);
         performer.setDamagePercentAttack(swirlingAttackPercents);

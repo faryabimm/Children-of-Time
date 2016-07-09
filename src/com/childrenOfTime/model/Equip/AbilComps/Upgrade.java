@@ -1,21 +1,25 @@
 package com.childrenOfTime.model.Equip.AbilComps;
 
-import com.childrenOfTime.exceptions.AttackException;
+import com.childrenOfTime.exceptions.AbilityInCooldownException;
+import com.childrenOfTime.exceptions.NotEnoughEnergyPointsException;
+import com.childrenOfTime.exceptions.NotEnoughMagicPointsException;
+import com.childrenOfTime.model.Equip.EffectPerformer;
 import com.childrenOfTime.model.Equip.Effects;
+import com.childrenOfTime.model.Equip.ItemComps.Messages;
 import com.childrenOfTime.model.Equip.Target;
-import com.childrenOfTime.model.Interfaces.Performable;
-import com.childrenOfTime.model.Warrior;
-import com.childrenOfTime.model.Warriors.Hero;
+import com.childrenOfTime.model.Interfaces.Castable;
+import com.childrenOfTime.model.Warriors.Warrior;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+
+import static com.childrenOfTime.view.IOHandler.printOutput;
 
 /**
  * Created by SaeedHD on 07/06/2016.
  */
-public class Upgrade implements Performable, Comparable<Upgrade> {
+public class Upgrade implements Castable, Comparable<Upgrade> {
     //Upgrade father;
     //ArrayList<Upgrade> children;
 
@@ -26,10 +30,10 @@ public class Upgrade implements Performable, Comparable<Upgrade> {
     int XPCost;
     int masrafEP;
     int masrafMP;
+    Messages messages;
     String[] upgradeRequirements;
     private Boolean upgradeBoolean;
     ArrayList<Effects> effects;
-    String description;
     Boolean castJustAfterAcquire = false;
     final Boolean recastable;
     Boolean castedOnce;
@@ -41,8 +45,8 @@ public class Upgrade implements Performable, Comparable<Upgrade> {
     }
 
     @Deprecated
-    public Upgrade(@NotNull Integer numberOfUpgrade, @Nullable String description, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable String... upgradeRequirements) {
-        if (description == null) description = "No Description Added";
+    public Upgrade(@NotNull Integer numberOfUpgrade, @NotNull Messages messages, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable String... upgradeRequirements) {
+        if (messages == null) messages = new Messages();
         if (COOLDOWN_TIME == null) COOLDOWN_TIME = 0;
         if (XPCost == null) XPCost = 0;
         if (masrafEP == null) masrafEP = 0;
@@ -57,14 +61,13 @@ public class Upgrade implements Performable, Comparable<Upgrade> {
         this.XPCost = XPCost;
         this.masrafEP = masrafEP;
         this.masrafMP = masrafMP;
-        this.description = description;
         this.upgradeRequirements = upgradeRequirements;
         this.recastable = true;
 
     }
 
-    public Upgrade(@NotNull Integer numberOfUpgrade, @Nullable String description, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable Boolean castJustAfterAcquire, @Nullable Boolean recastable, @Nullable String... upgradeRequirements) {
-        if (description == null) description = "No Description Added";
+    public Upgrade(@NotNull Integer numberOfUpgrade, @Nullable Messages messages, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable Boolean castJustAfterAcquire, @Nullable Boolean recastable, @Nullable String... upgradeRequirements) {
+        if (messages == null) messages = new Messages();
         if (COOLDOWN_TIME == null) COOLDOWN_TIME = 0;
         if (XPCost == null) XPCost = 0;
         if (masrafEP == null) masrafEP = 0;
@@ -85,15 +88,15 @@ public class Upgrade implements Performable, Comparable<Upgrade> {
         this.XPCost = XPCost;
         this.masrafEP = masrafEP;
         this.masrafMP = masrafMP;
-        this.description = description;
         this.upgradeRequirements = upgradeRequirements;
         this.recastable = recastable;
+        this.castJustAfterAcquire = castJustAfterAcquire;
 
     }
 
 
     public void setDescription(String description) {
-        this.description = description;
+        this.messages.description = description;
     }
 
 
@@ -107,47 +110,42 @@ public class Upgrade implements Performable, Comparable<Upgrade> {
     }
 
     @Override
-    public void perform(@NotNull Warrior performer, @Nullable Warrior[] target_s, @Nullable Warrior... implicitTargets) {
-        if (performer instanceof Hero) PayCosts((Hero) performer);
-        Iterator<Effects> itr = this.effects.iterator();
-        Warrior[] finalTargets = target_s;
-        while (itr.hasNext()) {
-            //TODO anotherCheck required
-            Effects nextEffect = itr.next();
-            if (nextEffect.getEffectType().isTargetUnChoosable() && implicitTargets != null) {
-                finalTargets = implicitTargets;
-            }
-            if (finalTargets != null) {
-                nextEffect.perform(performer, null, finalTargets);
-            } else throw new RuntimeException("no Targets Selected");
-            if (nextEffect.getEffectType().isPassive()) {
-                itr.remove();
-            }
+    public void cast(Warrior performer, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeammates) {
+        if (isInCoolDown) throw new AbilityInCooldownException(messages.getCoolDownFailureMessage());
+        try {
+            PayCosts(performer);
+            EffectPerformer.performEffects(this.effects, performer, selectedTargets, allEnemies, allTeammates);
+            if (this.COOLDOWN_TIME != 0) isInCoolDown = true;
+            printOutput(messages.getSuccessMessage());
+        } catch (NotEnoughEnergyPointsException e) {
+            throw new NotEnoughEnergyPointsException(messages.getEpFailureMessage());
+        } catch (NotEnoughMagicPointsException e) {
+            throw new NotEnoughEnergyPointsException(messages.getMpSuccessMessage());
         }
-        if (this.COOLDOWN_TIME != 0) isInCoolDown = true;
     }
 
-    private void PayCosts(Hero performer) {
+
+    private void PayCosts(Warrior performer) {
         int initEP = 0;
         int initMP = 0;
 
-        try {
-            initEP = performer.getCurrentEnergyPoints();
+        //try {
+        initEP = performer.getCurrentEP();
             initMP = performer.getCurrentMagic();
             performer.changeEP(-masrafEP);
-            performer.changeMagic(-masrafMP);
-        } catch (AttackException e) {
-            performer.setCurrentMagic(initEP);
-            performer.setCurrentMagic(initMP);
-        }
+        performer.changeCurrentMagic(-masrafMP);
+        //  } catch (AttackException e) {
+        //performer.changeEP(initEP);
+        //performer.setCurrentMagic(initMP);
+        // }
     }
 
 
     public void aTurnHasPassed() {
         /*
         for (Effects eff : effects) {
-            if (eff instanceof Durable) {
-                ((Durable) eff).aTurnHasPassed();
+            if (eff instanceof TurnBase) {
+                ((TurnBase) eff).aTurnHasPassed();
             }
         }
         if (!isInCoolDown) return;
@@ -214,7 +212,7 @@ public class Upgrade implements Performable, Comparable<Upgrade> {
     }
 
     public String getDescription() {
-        return description;
+        return messages.description;
     }
 
 

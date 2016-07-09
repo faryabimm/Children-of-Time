@@ -58,12 +58,12 @@ public class AbilityTest extends TestCase {
     public void testCastAbility() {
         testCreateAbility();
         try {
-            ability.cast(eley0, thug0, thug0);
+            ability.cast(eley0, , thug0, , thug0, );
         } catch (Exception e) {
             assertEquals(e.getClass(), AbilityNotAquiredException.class);
         }
         testAqcuireAbility();
-        ability.cast(eley0, thug0, angel0);
+        ability.cast(eley0, , thug0, , angel0, );
         assertEquals(angel0.currentHealth, (int) (angel0.maxHealth - 1.2 * eley0.attackPower));
         assertEquals(thug0.currentHealth, (int) (thug0.maxHealth - 1.2 * eley0.attackPower));
 
@@ -78,7 +78,7 @@ public class AbilityTest extends TestCase {
     public void testCastOnUp2() throws Exception {
         setUp();
         testUpgade2();
-        ability.cast(eley0, thug0, angel0);
+        ability.cast(eley0, , thug0, , angel0, );
         assertTrue(angel0.isDead);
         assertEquals(thug0.currentHealth, (int) (thug0.maxHealth - 1.4 * eley0.attackPower));
 
@@ -93,7 +93,7 @@ public class AbilityTest extends TestCase {
     public void testCastUntilPoverty() throws Exception {
         setUp();
         testUpgade2();
-        ability.cast(eley0, thug0, angel0);
+        ability.cast(eley0, , thug0, , angel0, );
         ability.aTurnHasPassed();
         ability.aTurnHasPassed();
         ability.aTurnHasPassed();

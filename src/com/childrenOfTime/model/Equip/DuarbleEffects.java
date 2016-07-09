@@ -1,16 +1,11 @@
 package com.childrenOfTime.model.Equip;
 
-import com.childrenOfTime.model.Interfaces.Durable;
-import com.childrenOfTime.model.Warrior;
-import com.childrenOfTime.model.Warriors.Hero;
-
-import java.util.ArrayList;
-
 /**
  * Created by SaeedHD on 07/06/2016.
  */
-public class DurableEffects extends Effects implements Durable {
-
+public class DuarbleEffects extends Effects {
+}
+/*
     private Double factorAttackPower_WithAttack_Amount = 1d;
     private int factorAttackPower_WithAttack_Duration = 1;
     private int factorAttackPower_WithAttack_Duration_Left = 1;
@@ -29,12 +24,12 @@ public class DurableEffects extends Effects implements Durable {
 
     private ArrayList performingQueue;
 
-    public DurableEffects() {
+    public DuarbleEffects() {
 
     }
 
 
-    public DurableEffects(Double factorAttackPower_WithAttack_Amount, int factorAttackPower_WithAttack_Duration, Double factorAttackPower_WithoutAttack_Amount, int factorAttackPower_WithoutAttack_Duration, int giveMagicPoints_Amount, int giveMagicPoints_Duration, int giveHealth_amount, int giveHealth_Duration, int giveEP_amount, int giveEP_Duration) {
+    public DuarbleEffects(Double factorAttackPower_WithAttack_Amount, int factorAttackPower_WithAttack_Duration, Double factorAttackPower_WithoutAttack_Amount, int factorAttackPower_WithoutAttack_Duration, int giveMagicPoints_Amount, int giveMagicPoints_Duration, int giveHealth_amount, int giveHealth_Duration, int giveEP_amount, int giveEP_Duration) {
 
         this.factorAttackPower_WithAttack_Amount = factorAttackPower_WithAttack_Amount;
         this.factorAttackPower_WithAttack_Duration = factorAttackPower_WithAttack_Duration;
@@ -263,3 +258,4 @@ public class DurableEffects extends Effects implements Durable {
         return performingQueue;
     }
 }
+*/

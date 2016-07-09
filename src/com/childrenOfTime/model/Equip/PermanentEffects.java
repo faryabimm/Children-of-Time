@@ -1,7 +1,7 @@
 package com.childrenOfTime.model.Equip;
 
-import com.childrenOfTime.model.Warrior;
 import com.childrenOfTime.model.Warriors.Hero;
+import com.childrenOfTime.model.Warriors.Warrior;
 
 /**
  * Created by SaeedHD on 07/06/2016.
@@ -31,26 +31,26 @@ public class PermanentEffects extends Effects {
     }
 
     @Override
-    public void perform(Warrior performer, Warrior[] targets, Warrior... implicitTarget_s) {
+    public void perform(Warrior... Target_s) {
         if (giveAttackPowerPermanently != null && giveAttackPowerPermanently != 0) {
-            for (Warrior target : implicitTarget_s) {
+            for (Warrior target : Target_s) {
                 target.changeAttackPower(this.giveAttackPowerPermanently);
             }
         }
         if (factorAttackPowerPermanently != null && factorAttackPowerPermanently != YEK_DOUBLE) {
-            for (Warrior target : implicitTarget_s) {
+            for (Warrior target : Target_s) {
                 int newAttackpower = (int) (target.getAttackPower() * this.factorAttackPowerPermanently);
                 target.setAttackPower(newAttackpower);
             }
         }
 
         if (giveMaxMagicPermanently != null && giveMaxMagicPermanently != 0)
-            for (Warrior target : implicitTarget_s) {
+            for (Warrior target : Target_s) {
                 if (target instanceof Hero)
                     ((Hero) target).changeMaxMagic(this.giveMaxMagicPermanently);
             }
         if (giveMaxHealthPermanently != null && giveMaxHealthPermanently != 0)
-            for (Warrior target : implicitTarget_s) {
+            for (Warrior target : Target_s) {
                 target.setMaxHealth(target.getMaxHealth() + this.giveMaxMagicPermanently);
             }
 

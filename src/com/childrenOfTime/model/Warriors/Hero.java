@@ -1,36 +1,26 @@
 package com.childrenOfTime.model.Warriors;
 
-import com.childrenOfTime.Completed;
-import com.childrenOfTime.InProgress;
-import com.childrenOfTime.exceptions.AttackException;
-import com.childrenOfTime.exceptions.ItemNotAquiredException;
-import com.childrenOfTime.exceptions.NotEnoughEnergyPointsException;
-import com.childrenOfTime.exceptions.NotEnoughMagicPointsException;
-import com.childrenOfTime.model.ChildrenOfTime;
-import com.childrenOfTime.model.ELCDepricated.FighterHero;
-import com.childrenOfTime.model.ELCDepricated.SupporterHero;
-import com.childrenOfTime.model.ELCDepricated.TypesOfHero;
-import com.childrenOfTime.model.Equip.AbilComps.Ability;
-import com.childrenOfTime.model.Equip.Inventory;
-import com.childrenOfTime.model.Equip.ItemComps.Item;
-import com.childrenOfTime.model.TemopraryAbilityFinder;
-import com.childrenOfTime.model.Warrior;
-import com.childrenOfTime.model.WarriorMessages;
-
-import java.util.*;
-
-import static com.childrenOfTime.view.IOHandler.printOutput;
-
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
-public class Hero extends Warrior {
+public class Hero {
+}
+/*
+
+    */
+/*
+    protected int currentHealth;
+    protected int maxHealth;
+    protected int id;
+    protected int attackPower;
+    protected String name;
+    protected boolean isDying = false;
+    protected boolean isDead = false;
+
     private int currentMagic;
-    private int currentEnergyPoints;
     private Inventory inventory;
     private HeroClass info;
     private ExAbiltyInfo exAbiltyInfo;
-
 
     private ArrayList<Ability> specificHeroAbilities;
 
@@ -126,7 +116,7 @@ public class Hero extends Warrior {
         }
         setAbilities(info);
         setCurrentMagic(info.maxMagic);
-        setCurrentEnergyPoints(info.initialEP);
+        setCurrentEnergyPoints(info.EPPerTurn);
         setInventory(new Inventory(info.inventorySize));
 
         super.currentHealth = typesOfHero.maxHealth;
@@ -167,8 +157,8 @@ public class Hero extends Warrior {
         abilities.put(info.ability1, TemopraryAbilityFinder.findAbilityByName(info.ability1));
     }
     @InProgress
-    public void useAbility(Ability ability, Warrior warrior) throws AttackException {
-        ability.cast(this, warrior);
+    public void useAbility(Ability ability,Warrior[] selectedTarget , Warrior[] allEnemies , Warrior[] allTeamMates, Warrior warrior) throws AttackException {
+        ability.cast(this, , , );
     }
     public int getInventorySize() {
         return info.inventorySize;
@@ -176,25 +166,7 @@ public class Hero extends Warrior {
     public void setInventorySize(int inventorySize) {
         this.info.inventorySize = inventorySize;
     }
-    public int getMaxMagic() {
-        return info.maxMagic;
-    }
-    public void setMaxMagic(int maxMagic) {
-        this.info.maxMagic = maxMagic;
-    }
-    public int getCurrentMagic() {
-        return currentMagic;
-    }
-    public void setCurrentMagic(int currentMagic) {
-        this.currentMagic = currentMagic;
-    }
-    public int getMagicRefillRate() {
-        return info.magicRefillRate;
-    }
-    public void setMagicRefillRate(int magicRefillRate) {
-        this.info.magicRefillRate = magicRefillRate;
-    }
-    public int getCurrentEnergyPoints() {
+        public int getCurrentEnergyPoints() {
         return currentEnergyPoints;
     }
     public void setCurrentEnergyPoints(int currentEnergyPoints) {
@@ -335,7 +307,6 @@ public class Hero extends Warrior {
     }
 
     public void useImmortalityPotion() {
-        ChildrenOfTime.getInstance().getPlayers().get(0).useImmortalityPotion();
         this.currentHealth = this.maxHealth;
     }
 
@@ -348,7 +319,7 @@ public class Hero extends Warrior {
 
         }
 
-        this.currentEnergyPoints = info.initialEP;
+        this.currentEnergyPoints = info.EPPerTurn;
 
     }
 
@@ -401,4 +372,4 @@ public class Hero extends Warrior {
     public void setCriticalIsActivated(boolean criticalIsActivated) {
         this.exAbiltyInfo.criticalIsActivated = criticalIsActivated;
     }
-}
+       */
