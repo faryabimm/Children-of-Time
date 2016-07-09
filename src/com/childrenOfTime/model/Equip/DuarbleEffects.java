@@ -3,7 +3,7 @@ package com.childrenOfTime.model.Equip;
 /**
  * Created by SaeedHD on 07/06/2016.
  */
-public class DuarbleEffects extends Effects {
+public class DuarbleEffects {
 }
 /*
     private Double factorAttackPower_WithAttack_Amount = 1d;

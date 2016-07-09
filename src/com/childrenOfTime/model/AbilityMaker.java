@@ -1,12 +1,9 @@
 package com.childrenOfTime.model;
 
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
-import com.childrenOfTime.model.Equip.AbilComps.ExtraAbility;
 import com.childrenOfTime.model.Equip.AbilComps.Upgrade;
-import com.childrenOfTime.model.Equip.DuarbleEffects;
 import com.childrenOfTime.model.Equip.Effects;
 import com.childrenOfTime.model.Equip.ItemComps.Messages;
-import com.childrenOfTime.model.Equip.PermanentEffects;
 import com.childrenOfTime.model.Equip.Target;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
@@ -20,7 +17,7 @@ public class AbilityMaker {
     private Ability ability;
 
     public void newCustomAbility(@NotNull String name, @NotNull Target targetType, @Nullable String Description, @Nullable String SuccessMessage) {
-        ability = new Ability(name, Description, SuccessMessage, new BST<Upgrade>(), targetType, DEFAUL_AbilityImage);
+        ability = new Ability(name, Description, SuccessMessage, new BST<Upgrade>(), targetType, Ability.DEFAUL_AbilityImage);
 
     }
 
@@ -46,7 +43,7 @@ public class AbilityMaker {
     private Upgrade getUpgradeByNumber(int i) {
         return ability.getUpgradeByNumber(i);
     }
-
+/*
     @Deprecated
     public void addCustomDurableEffect(Integer upgradeNumber, Double factorAttackPower_WithAttack_Amount, int factorAttackPower_WithAttack_Duration, Double factorAttackPower_WithoutAttack_Amount,
                                        int factorAttackPower_WithoutAttack_Duration, int giveMagicPoints_Amount, int giveMagicPoints_Duration, int giveHealth_amount, int giveHealth_Duration, int giveEP_amount, int giveEP_Duration) {
@@ -71,7 +68,7 @@ public class AbilityMaker {
     public void newCustomExtraAbilities(String name, String SuccessMessage, String Description, String[] UpgradeDescriptons, Boolean swirlingHeal, Integer[] UpgradeNumbers, Integer[] swirlingHealPercents, Boolean swirlingAttack1, Integer[] swirlingAttackPercents, Boolean crticalAttack, Double[] crticalFactor, Integer[] criticalProbabiliy, int[] EPCost, int[] MPCost, int[] XPCosts, String[] requirements) {
         ability = new ExtraAbility(name, SuccessMessage, Description, UpgradeDescriptons, swirlingHeal, UpgradeNumbers, swirlingHealPercents, swirlingAttack1, swirlingAttackPercents, crticalAttack, crticalFactor, criticalProbabiliy, EPCost, MPCost, XPCosts, requirements);
     }
-
+*/
 
     public void addCustomEffect(Integer upgradeNumber, Effects effect) {
         Upgrade upgrade = getUpgradeByNumber(upgradeNumber);

@@ -3,6 +3,7 @@ package com.childrenOfTime.model.Warriors;
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
+@Deprecated
 public class Hero {
 }
 /*

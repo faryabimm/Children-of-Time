@@ -52,6 +52,12 @@ public class Warrior {
 
     public Map<String, Ability> abilities = new HashMap<>();
 
+    public Warrior(String name, Image image, HeroClass info, ArrayList<Ability> specificHeroAbilities) {
+        this.name = name;
+        this.image = image;
+        this.info = info;
+        this.specificHeroAbilities = specificHeroAbilities;
+    }
 
     public void receiveAlterPack(AlterPackage alterPack) {
         if (alterPack != null) return;

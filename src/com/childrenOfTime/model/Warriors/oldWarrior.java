@@ -4,6 +4,7 @@ package com.childrenOfTime.model.Warriors;
 /**
  * Created by SaeedHD on 07/09/2016.
  */
+@Deprecated
 public class oldWarrior {
 }
 

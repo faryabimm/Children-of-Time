@@ -3,6 +3,7 @@ package com.childrenOfTime.model.Warriors;
 /**
  * Created by SaeedHD on 07/07/2016.
  */
+@Deprecated
 public class ExAbiltyInfo {
     //for Swirling ability
     boolean swirlingHealisActivated = false;
