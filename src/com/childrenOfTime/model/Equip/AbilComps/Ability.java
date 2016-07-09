@@ -6,36 +6,38 @@ import com.childrenOfTime.exceptions.UpgradeException;
 import com.childrenOfTime.model.BST;
 import com.childrenOfTime.model.Equip.Target;
 import com.childrenOfTime.model.Interfaces.Castable;
-import com.childrenOfTime.model.Interfaces.Durable;
-import com.childrenOfTime.model.Warrior;
-import com.childrenOfTime.model.Warriors.Hero;
+import com.childrenOfTime.model.Interfaces.TurnBase;
+import com.childrenOfTime.model.Warriors.Warrior;
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
+import com.sun.prism.Image;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
 
 /*
  * Created by SaeedHD on 07/05/2016.
  */
-public class Ability implements Castable, Durable {
+public class Ability implements Castable, TurnBase {
+    public static Image DEFAUL_AbilityImage;
     String name;
     String description;
     Upgrade baseState;
     BST<Upgrade> Upgrades;
     Upgrade currentLevel;
     String SuccessMessage;
-    Target targetType;
+    //Target targetType;
+    Image image;
 
-    public Ability(String name, Target targetType, String successMessage, String description) {
+    public Ability(@NotNull String name, @NotNull Target targetType, @Nullable String successMessage, @Nullable String description, Image image) {
         SuccessMessage = successMessage;
-        this.targetType = targetType;
         this.name = name;
         this.description = description;
     }
 
-    public Ability(String name, String description, String successMessage, BST<Upgrade> upgrades, Target targetType) {
+    public Ability(@NotNull String name, @Nullable String description, @Nullable String successMessage, @NotNull BST<Upgrade> upgrades, @NotNull Target targetType, Image image) {
         this.name = name;
         this.description = description;
         this.SuccessMessage = successMessage;
-        this.targetType = targetType;
         this.Upgrades = upgrades;
     }
 
@@ -51,46 +53,43 @@ public class Ability implements Castable, Durable {
         return currentLevel == null;
     }
 
-    public void setSuccessMessage(String successMessage) {
-        SuccessMessage = successMessage;
+    public void setBaseState(Upgrade baseState) {
+        this.baseState = baseState;
     }
 
     @Override
-    public void cast(Warrior caster, Warrior... targets) {
+    public void cast(Warrior caster, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeammates) {
         if (currentLevel == null) throw new AbilityNotAquiredException("You didn't acqiure this");
-        if (caster != null && caster instanceof Hero) {
-            Hero casterHero = (Hero) caster;
-            Warrior[] filteredTargets = targets;
-            Hero performer = (Hero) caster;
-            switch (targetType) {
-                case HimSelf:
-                    filteredTargets = new Warrior[1];
-                    filteredTargets[0] = performer;
+        if (currentLevel.recastable) {
+            if (currentLevel.castedOnce) {
+                return;
             }
-            currentLevel.perform(casterHero, filteredTargets);
+            currentLevel.castedOnce = true;
         }
-
-
+        currentLevel.cast(caster, selectedTargets, allEnemies, allTeammates);
     }
 
-    private Integer acquire(Warrior warrior) {
-        this.baseState = Upgrades.getMinElement();
-        if (!baseState.upgradeBoolean) throw new RequirementsNotMetException();
+
+    public Integer acquire(Warrior warrior, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeammates) {
+        this.baseState = Upgrades.getGodFatherElement();
+        if (!baseState.getUpgradeBoolean()) throw new RequirementsNotMetException();
         this.currentLevel = Upgrades.getMinElement();
+        if (currentLevel.castJustAfterAcquire) cast(warrior, selectedTargets, allEnemies, allTeammates);
         return currentLevel.getXPCost();
     }
 
-    public Integer upgrade(Warrior performer, Integer i) throws UpgradeException {
+    public Integer upgrade(Warrior performer, Integer i, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeammates) throws UpgradeException {
         if (currentLevel == null) {
-            return acquire(performer);
-
+            return acquire(performer, selectedTargets, allEnemies, allTeammates);
         }
+
         Upgrade fake = new Upgrade(i);
         Upgrade result = (Upgrade) Upgrades.getVar(fake);
         if (result != null) {
-            if (!result.upgradeBoolean) throw new RequirementsNotMetException();
+            if (!result.getUpgradeBoolean()) throw new RequirementsNotMetException();
             currentLevel = result;
         }
+        if (currentLevel.castJustAfterAcquire) cast(performer, selectedTargets, allEnemies, allTeammates);
         return result.getXPCost();
     }
 
@@ -128,9 +127,6 @@ public class Ability implements Castable, Durable {
         return SuccessMessage;
     }
 
-    public Target getTargetType() {
-        return targetType;
-    }
 }
 
 

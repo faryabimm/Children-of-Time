@@ -1,10 +1,10 @@
 package com.childrenOfTime.model.Interfaces;
 
-import com.childrenOfTime.model.Warrior;
+import com.childrenOfTime.model.Warriors.Warrior;
 
 /**
  * Created by SaeedHD on 07/07/2016.
  */
 public interface Performable {
-    void perform(Warrior performer, Warrior... target_s);
+    void perform(Warrior... Target_s);
 }
