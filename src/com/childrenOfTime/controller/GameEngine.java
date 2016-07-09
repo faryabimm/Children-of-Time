@@ -18,7 +18,7 @@ public class GameEngine {
 
     public void startGame() throws IOException, FontFormatException {
         SwingUtilities.invokeLater(ChildrenOfTime::showLoadingScreen);
-        //childrenOfTime.startSinglePlayerMode();
+        childrenOfTime.startSinglePlayerMode();
     }
 
     public static void main(String[] args) {

@@ -1,6 +1,6 @@
 package com.childrenOfTime.model.Interfaces;
 
-import com.childrenOfTime.model.Warriors.Warrior;
+import com.childrenOfTime.model.Warrior;
 
 /**
  * Created by SaeedHD on 07/05/2016.

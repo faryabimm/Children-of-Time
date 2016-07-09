@@ -1,25 +1,19 @@
 package com.childrenOfTime.model.Equip.AbilComps;
 
-import com.childrenOfTime.exceptions.AbilityInCooldownException;
-import com.childrenOfTime.exceptions.NotEnoughEnergyPointsException;
-import com.childrenOfTime.exceptions.NotEnoughMagicPointsException;
-import com.childrenOfTime.model.Equip.EffectPerformer;
+import com.childrenOfTime.exceptions.AttackException;
 import com.childrenOfTime.model.Equip.Effects;
-import com.childrenOfTime.model.Equip.ItemComps.Messages;
-import com.childrenOfTime.model.Equip.Target;
-import com.childrenOfTime.model.Interfaces.Castable;
-import com.childrenOfTime.model.Warriors.Warrior;
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
+import com.childrenOfTime.model.Interfaces.Durable;
+import com.childrenOfTime.model.Interfaces.Performable;
+import com.childrenOfTime.model.Warrior;
+import com.childrenOfTime.model.Warriors.Hero;
 
 import java.util.ArrayList;
-
-import static com.childrenOfTime.view.IOHandler.printOutput;
 
 /**
  * Created by SaeedHD on 07/06/2016.
  */
-public class Upgrade implements Castable, Comparable<Upgrade> {
+public class Upgrade implements Performable, Comparable<Upgrade> {
+    //TODO make Constructors nullable
     //Upgrade father;
     //ArrayList<Upgrade> children;
 
@@ -30,122 +24,63 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
     int XPCost;
     int masrafEP;
     int masrafMP;
-    Messages messages;
     String[] upgradeRequirements;
-    private Boolean upgradeBoolean;
+    Boolean upgradeBoolean;
     ArrayList<Effects> effects;
-    Boolean castJustAfterAcquire = false;
-    final Boolean recastable;
-    Boolean castedOnce;
+    String description;
 
-    public Upgrade(@NotNull int numberOfUpgrade) {
+    public Upgrade(int numberOfUpgrade) {
         this.numberOfUpgrade = numberOfUpgrade;
         this.COOLDOWN_TIME = 0;
-        this.recastable = true;
     }
 
-    @Deprecated
-    public Upgrade(@NotNull Integer numberOfUpgrade, @NotNull Messages messages, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable String... upgradeRequirements) {
-        if (messages == null) messages = new Messages();
-        if (COOLDOWN_TIME == null) COOLDOWN_TIME = 0;
-        if (XPCost == null) XPCost = 0;
-        if (masrafEP == null) masrafEP = 0;
-        if (masrafMP == null) masrafMP = 0;
-        if (upgradeRequirements == null) {
-            upgradeRequirements = new String[1];
-            upgradeRequirements[0] = "true";
-        }
+    public Upgrade(Integer numberOfUpgrade, String description, Integer COOLDOWN_TIME, Integer XPCost, Integer masrafEP, Integer masrafMP, String... upgradeRequirements) {
         this.numberOfUpgrade = numberOfUpgrade;
         this.leftTurnsToCoolDown = COOLDOWN_TIME;
         this.COOLDOWN_TIME = COOLDOWN_TIME;
         this.XPCost = XPCost;
         this.masrafEP = masrafEP;
         this.masrafMP = masrafMP;
+        this.description = description;
         this.upgradeRequirements = upgradeRequirements;
-        this.recastable = true;
-
-    }
-
-    public Upgrade(@NotNull Integer numberOfUpgrade, @Nullable Messages messages, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable Boolean castJustAfterAcquire, @Nullable Boolean recastable, @Nullable String... upgradeRequirements) {
-        if (messages == null) messages = new Messages();
-        if (COOLDOWN_TIME == null) COOLDOWN_TIME = 0;
-        if (XPCost == null) XPCost = 0;
-        if (masrafEP == null) masrafEP = 0;
-        if (masrafMP == null) masrafMP = 0;
-        if (upgradeRequirements == null) {
-            upgradeRequirements = new String[1];
-            upgradeRequirements[0] = "true";
-        }
-        if (castJustAfterAcquire == null) {
-            castJustAfterAcquire = false;
-        }
-        if (recastable == null) {
-            recastable = false;
-        }
-        this.numberOfUpgrade = numberOfUpgrade;
-        this.leftTurnsToCoolDown = COOLDOWN_TIME;
-        this.COOLDOWN_TIME = COOLDOWN_TIME;
-        this.XPCost = XPCost;
-        this.masrafEP = masrafEP;
-        this.masrafMP = masrafMP;
-        this.upgradeRequirements = upgradeRequirements;
-        this.recastable = recastable;
-        this.castJustAfterAcquire = castJustAfterAcquire;
 
     }
 
 
     public void setDescription(String description) {
-        this.messages.description = description;
-    }
-
-
-    //TODO dorost she ;
-    public boolean needsTarget() {
-        return true;
-    }
-
-    public Target getneededTargetType() {
-        return Target.HimSelf;
+        this.description = description;
     }
 
     @Override
-    public void cast(Warrior performer, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeammates) {
-        if (isInCoolDown) throw new AbilityInCooldownException(messages.getCoolDownFailureMessage());
+    public void perform(Warrior performer, Warrior... target_s) {
+        PayCosts(performer);
+
+        for (Effects eff : effects) {
+            eff.perform(performer, target_s);
+        }
+        isInCoolDown = true;
+    }
+
+    private void PayCosts(Hero performer) {
+        int initEP = 0;
+        int initMP = 0;
+
         try {
-            PayCosts(performer);
-            EffectPerformer.performEffects(this.effects, performer, selectedTargets, allEnemies, allTeammates);
-            if (this.COOLDOWN_TIME != 0) isInCoolDown = true;
-            printOutput(messages.getSuccessMessage());
-        } catch (NotEnoughEnergyPointsException e) {
-            throw new NotEnoughEnergyPointsException(messages.getEpFailureMessage());
-        } catch (NotEnoughMagicPointsException e) {
-            throw new NotEnoughEnergyPointsException(messages.getMpSuccessMessage());
+            initEP = performer.getCurrentEnergyPoints();
+            initMP = performer.getCurrentMagic();
+            performer.changeEP(-masrafEP);
+            performer.changeMagic(-masrafMP);
+        } catch (AttackException e) {
+            performer.setCurrentMagic(initEP);
+            performer.setCurrentMagic(initMP);
         }
     }
 
 
-    private void PayCosts(Warrior performer) {
-        int initEP = 0;
-        int initMP = 0;
-
-        //try {
-        initEP = performer.getCurrentEP();
-            initMP = performer.getCurrentMagic();
-            performer.changeEP(-masrafEP);
-        performer.changeCurrentMagic(-masrafMP);
-        //  } catch (AttackException e) {
-        //performer.changeEP(initEP);
-        //performer.setCurrentMagic(initMP);
-        // }
-    }
-
-
     public void aTurnHasPassed() {
-        /*
         for (Effects eff : effects) {
-            if (eff instanceof TurnBase) {
-                ((TurnBase) eff).aTurnHasPassed();
+            if (eff instanceof Durable) {
+                ((Durable) eff).aTurnHasPassed();
             }
         }
         if (!isInCoolDown) return;
@@ -155,8 +90,6 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
         } else {
             leftTurnsToCoolDown--;
         }
-        */
-
     }
 
     @Override
@@ -212,7 +145,7 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
     }
 
     public String getDescription() {
-        return messages.description;
+        return description;
     }
 
 
@@ -243,9 +176,5 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
 
     public void setEffects(ArrayList<Effects> effects) {
         this.effects = effects;
-    }
-
-    public Boolean getUpgradeBoolean() {
-        return upgradeBoolean;
     }
 }

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.childrenOfTime.gui.fillForms.BlockPickerDialog">
+  <grid id="cbd77" binding="contentPane" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="10" left="10" bottom="10" right="10"/>
+    <constraints>
+      <xy x="48" y="54" width="464" height="975"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="94766" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <hspacer id="98af6">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+          <grid id="9538f" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="true" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="e7465" class="javax.swing.JButton" binding="buttonOK">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="OK"/>
+                </properties>
+              </component>
+              <component id="5723f" class="javax.swing.JButton" binding="buttonCancel">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Cancel"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="e3588" layout-manager="GridLayoutManager" row-count="8" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="3fda7" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="8c3ee" class="javax.swing.JLabel">
+                <constraints border-constraint="West"/>
+                <properties>
+                  <icon value="texture_pack/thumbnails/ground.png"/>
+                  <text value="Ground  "/>
+                </properties>
+              </component>
+              <component id="a84a9" class="javax.swing.JRadioButton" binding="radioButton1" default-binding="true">
+                <constraints border-constraint="East"/>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="fc8d4" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+                <constraints border-constraint="Center"/>
+                <properties>
+                  <enabled value="true"/>
+                  <model>
+                    <item value="Texture 1"/>
+                    <item value="Texture 2"/>
+                    <item value="Texture 3"/>
+                  </model>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="a85c5" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="f2878" class="javax.swing.JLabel">
+                <constraints border-constraint="West"/>
+                <properties>
+                  <icon value="texture_pack/thumbnails/door.png"/>
+                  <text value="Door       "/>
+                </properties>
+              </component>
+              <component id="a07f7" class="javax.swing.JRadioButton" binding="radioButton2" default-binding="true">
+                <constraints border-constraint="East"/>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="2306b" class="javax.swing.JComboBox" binding="comboBox2" default-binding="true">
+                <constraints border-constraint="Center"/>
+                <properties>
+                  <model>
+                    <item value="Down to Up"/>
+                    <item value="Up to Down"/>
+                    <item value="Left to Right"/>
+                    <item value="Right to Left"/>
+                  </model>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="a92e9" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="5a208" class="javax.swing.JLabel">
+                <constraints border-constraint="West"/>
+                <properties>
+                  <icon value="texture_pack/thumbnails/wall.png"/>
+                  <text value="Wall"/>
+                </properties>
+              </component>
+              <component id="be6ee" class="javax.swing.JRadioButton" binding="radioButton3" default-binding="true">
+                <constraints border-constraint="East"/>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="d74df" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="a9973" class="javax.swing.JLabel">
+                <constraints border-constraint="West"/>
+                <properties>
+                  <icon value="texture_pack/thumbnails/store.png"/>
+                  <text value="Store"/>
+                </properties>
+              </component>
+              <component id="a7b32" class="javax.swing.JRadioButton" binding="radioButton4" default-binding="true">
+                <constraints border-constraint="East"/>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="607b" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="45638" class="javax.swing.JLabel">
+                <constraints border-constraint="West"/>
+                <properties>
+                  <icon value="texture_pack/thumbnails/upgrade.png"/>
+                  <text value="Upgrade"/>
+                </properties>
+              </component>
+              <component id="8a635" class="javax.swing.JRadioButton" binding="radioButton5" default-binding="true">
+                <constraints border-constraint="East"/>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="9e73e" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="40db9" class="javax.swing.JLabel">
+                <constraints border-constraint="West"/>
+                <properties>
+                  <icon value="texture_pack/thumbnails/story.png"/>
+                  <text value="Story"/>
+                </properties>
+              </component>
+              <component id="bbdf8" class="javax.swing.JRadioButton" binding="radioButton6" default-binding="true">
+                <constraints border-constraint="East"/>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="65026" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="a28" class="javax.swing.JLabel">
+                <constraints border-constraint="West"/>
+                <properties>
+                  <icon value="texture_pack/thumbnails/battle.png"/>
+                  <text value="Battle"/>
+                </properties>
+              </component>
+              <component id="66e90" class="javax.swing.JRadioButton" binding="radioButton7" default-binding="true">
+                <constraints border-constraint="East"/>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="cbabc" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints>
+              <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="811d3" class="javax.swing.JLabel">
+                <constraints border-constraint="West"/>
+                <properties>
+                  <icon value="texture_pack/thumbnails/boss.png"/>
+                  <text value="Boss"/>
+                </properties>
+              </component>
+              <component id="53fed" class="javax.swing.JRadioButton" binding="radioButton8" default-binding="true">
+                <constraints border-constraint="East"/>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

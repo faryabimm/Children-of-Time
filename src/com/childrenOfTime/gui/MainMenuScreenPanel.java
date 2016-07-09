@@ -8,6 +8,7 @@ import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
 import com.childrenOfTime.model.ChildrenOfTime;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created by mohammadmahdi on 7/7/16.
@@ -20,6 +21,9 @@ public class MainMenuScreenPanel extends MenuScreenPanel {
         JButton customGameButton = new CustomizedJButton("Game Editor");
         JButton settingsButton = new CustomizedJButton("Options");
         JButton quitButton = new CustomizedJButton("Quit the Game");
+
+        quitButton.setBackground(Color.red);
+        quitButton.setForeground(Color.yellow);
 
         this.add(singlePlayerButton);
         this.add(pvpGameModeButton);
@@ -40,7 +44,7 @@ public class MainMenuScreenPanel extends MenuScreenPanel {
 
         quitButton.addActionListener(e -> System.exit(0));
         customGameButton.addActionListener(e -> {
-            if (CustomGameDAO.currentUser == null) {
+            if (CustomGameDAO.getCurrentUser() == null) {
                 ChildrenOfTime.changeContentPane(new CustomGameMenuScreenPanel());
             } else {
                 ChildrenOfTime.changeContentPane(new CustomGameUserHubPanel());

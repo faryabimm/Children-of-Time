@@ -51,15 +51,16 @@ public abstract class MenuScreenPanel extends JPanel {
         }
     }
     public MenuScreenPanel() {
+
         this.setLayout(null);
         this.setPreferredSize(ChildrenOfTime.PREFERRED_DIMENSION);
         this.initialize();
 
-        if(CustomGameDAO.currentUser != null) {
+        if(CustomGameDAO.getCurrentUser() != null) {
 
-            userAvatar = new CustomizedJImage("src/user_data/" + CustomGameDAO.currentUser.getUserName()
+            userAvatar = new CustomizedJImage("src/user_data/" + CustomGameDAO.getCurrentUser().getUserName()
                     + "/avatar.png", PREFFERED_AVATAR_SIZE, PREFFERED_AVATAR_SIZE);
-            userNameLabel.setText(CustomGameDAO.currentUser.getUserName());
+            userNameLabel.setText(CustomGameDAO.getCurrentUser().getUserName());
             userNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
             userAvatar.setLocation(ChildrenOfTime.PREFERRED_WIDTH - userAvatar.getWidth()/2 - ELEMENT_GAP - userNameLabel.getWidth()/2 ,
                     ELEMENT_GAP);

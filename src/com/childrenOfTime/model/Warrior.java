@@ -1,26 +1,21 @@
-package com.childrenOfTime.model.Warriors;
+package com.childrenOfTime.model;
 
+import com.childrenOfTime.Completed;
+import com.childrenOfTime.model.Equip.AlterPackage;
+import com.childrenOfTime.model.Equip.Effects;
+import com.childrenOfTime.model.Interfaces.HasImpactHealth;
+import com.childrenOfTime.model.Warriors.Hero;
+import com.sun.istack.internal.Nullable;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * Created by SaeedHD on 07/09/2016.
+ * Created by mohammadmahdi on 5/8/16.
  */
-@Deprecated
-public class oldWarrior {
-}
-
-/*
-
-
-
-
-
-
-
-
-
-
-
-
+public abstract class Warrior implements HasImpactHealth {
     public static final Double DEFAULT_RECEIVING_DAMAGE_FACTOR = 1d;
 
 
@@ -31,10 +26,6 @@ public class oldWarrior {
     protected String name;
     protected boolean isDying = false;
     protected boolean isDead = false;
-
-
-    private Integer reducerEffect ;
-
 
     private Set<Effects> passiveEffects = new HashSet<>(3);
 
@@ -55,7 +46,9 @@ public class oldWarrior {
 
     public abstract void changeHealth(int quantity, Double reduceFactor);
 
-
+    public void changeHealthWithInsuranceOfLiving(int quantity) {
+        currentHealth = currentHealth + quantity > maxHealth ? maxHealth : currentHealth + quantity;
+    }
 
     public String getName() {
         return name;
@@ -77,6 +70,13 @@ public class oldWarrior {
         this.id = id;
     }
 
+    public boolean wasAlive() {
+        return currentHealth > 0;
+    }
+
+    public boolean willDye(int q) {
+        return currentHealth + q < 0;
+    }
 
     public void changeAttackPower(int num) {
         this.attackPower += num;
@@ -190,4 +190,4 @@ public class oldWarrior {
     }
     */
 
-
+}

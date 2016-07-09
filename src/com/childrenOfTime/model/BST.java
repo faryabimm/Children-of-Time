@@ -80,12 +80,6 @@ public class BST<E extends Comparable<E>> {
         return node.getValue();
     }
 
-
-    public E getGodFatherElement() {
-        Node<E> node = godFather;
-        return node.getValue();
-    }
-
 /*
     public Node<E> addRecursive (E var , Node<E> node){
         if ( node.getValue() . equals(var) )  return node;

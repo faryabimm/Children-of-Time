@@ -1,5 +1,6 @@
 package com.childrenOfTime.gui.fillForms;
 
+import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.cgd.User;
 import com.childrenOfTime.exceptions.ExistingUserException;
 import com.childrenOfTime.gui.customGame.CustomGameMenuScreenPanel;
@@ -29,7 +30,7 @@ public class SignUpForm extends JDialog{
 
 
     public SignUpForm() {
-
+        this.setModal(true);
         this.setBackground(ChildrenOfTime.GREY);
         create.setEnabled(false);
         setListeners();
@@ -87,7 +88,9 @@ public class SignUpForm extends JDialog{
         });
         create.addActionListener(e -> {
             try {
-                new User(textField1.getText(), textField2.getText());
+                CustomGameDAO.setCurrentUser(new User(textField1.getText(), textField2.getText()));
+                CustomGameDAO.initializeCurrentUser();
+                CustomGameDAO.setCurrentUser(null);
                 JOptionPane.showMessageDialog(frame, "new User successfully created!", "User created", JOptionPane.INFORMATION_MESSAGE);
                 close();
             }catch (ExistingUserException e2) {

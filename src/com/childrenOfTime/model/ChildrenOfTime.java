@@ -1,8 +1,9 @@
 package com.childrenOfTime.model;
 
 
-import com.childrenOfTime.gui.LoadingScreenPanel;
-import com.childrenOfTime.gui.MainMenuScreenPanel;
+import com.childrenOfTime.cgd.Store;
+import com.childrenOfTime.exceptions.GameException;
+import com.childrenOfTime.gui.*;
 import com.childrenOfTime.gui.customGame.CustomGameLoginPanel;
 import com.childrenOfTime.gui.customGame.CustomGameMenuScreenPanel;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
@@ -12,6 +13,11 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static com.childrenOfTime.view.IOHandler.getInput;
+import static com.childrenOfTime.view.IOHandler.printOutput;
 
 /**
  * Created by mohammadmahdi on 5/7/16.
@@ -68,7 +74,7 @@ public final class ChildrenOfTime {
     }
     private ChildrenOfTime() throws IOException, FontFormatException {
 
-/*
+
         ArrayList<Foe> battleFoes = new ArrayList<>();
 
         battleFoes.add(new Foe("Thug", StrengthOfFoes.Weak, 0));
@@ -136,9 +142,7 @@ public final class ChildrenOfTime {
 
         Store store = new Store();
         Store.addStore(store);
-
     }
-
     public void startSinglePlayerMode() throws IOException, FontFormatException {
         try {
 
@@ -360,8 +364,8 @@ public final class ChildrenOfTime {
     }
 
 
-*/
-    }
+
+
     public static void showLoadingScreen() {
         frame = new JFrame("Children of Time");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

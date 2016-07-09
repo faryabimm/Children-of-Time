@@ -1,12 +1,12 @@
 package com.childrenOfTime.model;
 
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
+import com.childrenOfTime.model.Equip.AbilComps.ExtraAbility;
 import com.childrenOfTime.model.Equip.AbilComps.Upgrade;
+import com.childrenOfTime.model.Equip.DurableEffects;
 import com.childrenOfTime.model.Equip.Effects;
-import com.childrenOfTime.model.Equip.ItemComps.Messages;
+import com.childrenOfTime.model.Equip.PermanentEffects;
 import com.childrenOfTime.model.Equip.Target;
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 
 import java.util.ArrayList;
 
@@ -16,46 +16,34 @@ import java.util.ArrayList;
 public class AbilityMaker {
     private Ability ability;
 
-    public void newCustomAbility(@NotNull String name, @NotNull Target targetType, @Nullable String Description, @Nullable String SuccessMessage) {
-        ability = new Ability(name, Description, SuccessMessage, new BST<Upgrade>(), targetType, Ability.DEFAUL_AbilityImage);
+    public void newCustomAbility(String name, String Description, String SuccessMessage, Target targetType) {
+        ability = new Ability(name, Description, SuccessMessage, new BST<Upgrade>(), targetType);
 
     }
 
-    @Deprecated
-    public void addCustomUpgrade(int numberOfUpgrade, Integer COOLDOWN_TIME, int XPCost, int masrafEP, int masrafMP, Messages messages, String... upgradeCondition) {
-        Upgrade newUpgrade = new Upgrade(numberOfUpgrade, messages, COOLDOWN_TIME, XPCost, masrafEP, masrafMP, upgradeCondition);
+    public void addCustomUpgrade(int numberOfUpgrade, Integer COOLDOWN_TIME, int XPCost, int masrafEP, int masrafMP, String description, String... upgradeCondition) {
+        Upgrade newUpgrade = new Upgrade(numberOfUpgrade, description, COOLDOWN_TIME, XPCost, masrafEP, masrafMP, upgradeCondition);
         ability.getUpgrades().add(newUpgrade);
+        newUpgrade.setDescription(description);
         newUpgrade.setEffects(new ArrayList<Effects>(1));
         ability = ability;
-
     }
 
-    public void addCustomUpgrade(@NotNull Integer numberOfUpgrade, @Nullable Messages messages, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable Boolean castJustAfterAcquire, @Nullable Boolean reastableForUser, @Nullable String... upgradeCondition) {
-        Upgrade newUpgrade = new Upgrade(numberOfUpgrade, messages, COOLDOWN_TIME, XPCost, masrafEP, masrafMP, reastableForUser, castJustAfterAcquire, upgradeCondition);
-        ability.getUpgrades().add(newUpgrade);
-        newUpgrade.setEffects(new ArrayList<Effects>(1));
-    }
-
-    public void setBaseUpgrade(Integer upgradeNumber) {
-        ability.setBaseState(getUpgradeByNumber(upgradeNumber));
-    }
 
     private Upgrade getUpgradeByNumber(int i) {
         return ability.getUpgradeByNumber(i);
     }
-/*
-    @Deprecated
+
     public void addCustomDurableEffect(Integer upgradeNumber, Double factorAttackPower_WithAttack_Amount, int factorAttackPower_WithAttack_Duration, Double factorAttackPower_WithoutAttack_Amount,
                                        int factorAttackPower_WithoutAttack_Duration, int giveMagicPoints_Amount, int giveMagicPoints_Duration, int giveHealth_amount, int giveHealth_Duration, int giveEP_amount, int giveEP_Duration) {
         Upgrade upgrade = getUpgradeByNumber(upgradeNumber);
         if (upgrade == null) return;
-        Effects effect = new DuarbleEffects(factorAttackPower_WithAttack_Amount, factorAttackPower_WithAttack_Duration, factorAttackPower_WithoutAttack_Amount,
+        Effects effect = new DurableEffects(factorAttackPower_WithAttack_Amount, factorAttackPower_WithAttack_Duration, factorAttackPower_WithoutAttack_Amount,
                 factorAttackPower_WithoutAttack_Duration, giveMagicPoints_Amount, giveMagicPoints_Duration, giveHealth_amount, giveHealth_Duration, giveEP_amount, giveEP_Duration);
         upgrade.addEffect(effect);
         ability = ability;
     }
 
-    @Deprecated
     public void addCustomPermanentEffect(Integer upgradeNumber, Integer giveAttackPowerPermanently, Double factorAttackPowerPermanently, Integer giveMaxMagicPermanently) {
         Upgrade upgrade = getUpgradeByNumber(upgradeNumber);
         if (upgrade == null) return;
@@ -64,18 +52,9 @@ public class AbilityMaker {
         ability = ability;
     }
 
-    @Deprecated
     public void newCustomExtraAbilities(String name, String SuccessMessage, String Description, String[] UpgradeDescriptons, Boolean swirlingHeal, Integer[] UpgradeNumbers, Integer[] swirlingHealPercents, Boolean swirlingAttack1, Integer[] swirlingAttackPercents, Boolean crticalAttack, Double[] crticalFactor, Integer[] criticalProbabiliy, int[] EPCost, int[] MPCost, int[] XPCosts, String[] requirements) {
         ability = new ExtraAbility(name, SuccessMessage, Description, UpgradeDescriptons, swirlingHeal, UpgradeNumbers, swirlingHealPercents, swirlingAttack1, swirlingAttackPercents, crticalAttack, crticalFactor, criticalProbabiliy, EPCost, MPCost, XPCosts, requirements);
     }
-*/
-
-    public void addCustomEffect(Integer upgradeNumber, Effects effect) {
-        Upgrade upgrade = getUpgradeByNumber(upgradeNumber);
-        if (upgrade == null) return;
-        upgrade.addEffect(effect);
-    }
-
 
     public Ability returnAbility() {
         Ability ab = ability;

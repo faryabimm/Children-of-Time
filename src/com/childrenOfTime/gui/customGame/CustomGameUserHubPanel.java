@@ -7,6 +7,7 @@ import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
 import com.childrenOfTime.model.ChildrenOfTime;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created by mohammadmahdi on 7/7/16.
@@ -24,6 +25,10 @@ public class CustomGameUserHubPanel extends MenuScreenPanel {
         JButton signOut = new CustomizedJButton("Sign Out");
         JButton back = new CustomizedJButton("Back to Main Menu");
 
+
+        back.setBackground(Color.red);
+        back.setForeground(Color.yellow);
+
         this.add(back);
         this.add(signOut);
         this.add(states);
@@ -39,7 +44,7 @@ public class CustomGameUserHubPanel extends MenuScreenPanel {
 
         back.addActionListener(e -> ChildrenOfTime.changeContentPane(new MainMenuScreenPanel()));
         signOut.addActionListener(e -> {
-            CustomGameDAO.currentUser = null;
+            CustomGameDAO.setCurrentUser(null);
             ChildrenOfTime.changeContentPane(new CustomGameMenuScreenPanel());
         });
         openEditor.addActionListener(e -> ChildrenOfTime.changeContentPane(new CusomGameEditorMenu()));

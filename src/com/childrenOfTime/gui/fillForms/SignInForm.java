@@ -27,7 +27,7 @@ public class SignInForm extends JDialog{
 
 
     public SignInForm() {
-
+        this.setModal(true);
         this.setBackground(ChildrenOfTime.GREY);
         signIn.setEnabled(false);
         setListeners();
@@ -82,8 +82,9 @@ public class SignInForm extends JDialog{
                 if (!User.users.get(User.users.indexOf(new User(textField1.getText()))).getPassWord().equals(textField2.getText())) {
                     JOptionPane.showMessageDialog(frame, "Entered password doesn't match database!", "Wrong password", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    CustomGameDAO.currentUser = User.users.get(User.users.indexOf(new User(textField1.getText())));
-                    JOptionPane.showMessageDialog(frame, "welcome " + CustomGameDAO.currentUser.getUserName() + "!", "Welcome!", JOptionPane.INFORMATION_MESSAGE);
+                    CustomGameDAO.setCurrentUser(User.users.get(User.users.indexOf(new User(textField1.getText()))));
+                    CustomGameDAO.loadCurrentUserData();
+                    JOptionPane.showMessageDialog(frame, "welcome " + CustomGameDAO.getCurrentUser().getUserName() + "!", "Welcome!", JOptionPane.INFORMATION_MESSAGE);
                     loadUserHub();
                 }
             }
