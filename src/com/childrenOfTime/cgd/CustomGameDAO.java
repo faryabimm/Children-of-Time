@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class CustomGameDAO {
     public static String texturePackPath;
-    public static User currentUser = null;
+    private static User currentUser = null;
     public static Map<String,Image> textures;
 
     static {
@@ -42,6 +42,10 @@ public class CustomGameDAO {
     }
 
     CustomGameDAO instance;
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
 
     CustomGameDAO getInstance() {
         if (instance == null) instance = new CustomGameDAO();
