@@ -1,5 +1,7 @@
 package com.childrenOfTime.gui.fillForms;
 
+import com.childrenOfTime.gui.fillForms.dataHolders.EffectDataHolder;
+
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -54,7 +56,7 @@ public class AddUpgradeToAbilityDialog extends JDialog {
         addEffectsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new AddEffectDialog(false);
+                new AddEffectDialog(false, new EffectDataHolder());
             }
         });
 

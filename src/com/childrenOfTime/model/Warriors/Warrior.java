@@ -49,10 +49,10 @@ public class Warrior {
     //private Boolean CanHaveHeroAbilities;
     //private Bool CanAttackMoreThanOneTarget;
 
-    private Map<Effects, Integer> imPermanentTurnBasedEffectsList = new HashMap<>();
-    private Map<Effects, Integer> autoRepeatEffList = new HashMap<>();
-    private Set<Effects> passiveEffects = new HashSet<>(3);
-    private Set<Effects> imPermanentManualWeearOffEffs = new HashSet<>();
+    private Map<Effect, Integer> imPermanentTurnBasedEffectsList = new HashMap<>();
+    private Map<Effect, Integer> autoRepeatEffList = new HashMap<>();
+    private Set<Effect> passiveEffects = new HashSet<>(3);
+    private Set<Effect> imPermanentManualWeearOffEffs = new HashSet<>();
 
     public Map<String, Ability> abilities = new HashMap<>();
 
@@ -87,15 +87,15 @@ public class Warrior {
 
     }
 
-    public void addPassiveEffect(Effects effect) {
+    public void addPassiveEffect(Effect effect) {
         passiveEffects.add(effect);
     }
 
-    public boolean containsPassiveEffect(Effects effect) {
+    public boolean containsPassiveEffect(Effect effect) {
         return passiveEffects.contains(effect);
     }
 
-    public void addToImPermanentTurnBasedEffectsList(Effects effect, Integer duration) {
+    public void addToImPermanentTurnBasedEffectsList(Effect effect, Integer duration) {
         Integer newDuration = duration;
 
         if (imPermanentTurnBasedEffectsList.containsKey(effect)) {
@@ -104,38 +104,38 @@ public class Warrior {
         imPermanentTurnBasedEffectsList.put(effect, newDuration);
     }
 
-    public void addToImPermanentManualEffectsList(Effects effect) {
+    public void addToImPermanentManualEffectsList(Effect effect) {
         imPermanentManualWeearOffEffs.add(effect);
     }
 
-    public void addToAutoRepeatEffList(Effects effect, Integer duration) {
+    public void addToAutoRepeatEffList(Effect effect, Integer duration) {
         autoRepeatEffList.put(effect, duration);
     }
 
-    public void decreasDuration(Map<Effects, Integer> list, Integer duration) {
+    public void decreasDuration(Map<Effect, Integer> list, Integer duration) {
         int newDuration;
-        for (Effects ef : list.keySet()) {
+        for (Effect ef : list.keySet()) {
             newDuration = list.get(ef) - duration;
             list.put(ef, newDuration);
         }
     }
 
 
-    private void removeFromImPermanentManualEffectsList(Effects effect) {
+    private void removeFromImPermanentManualEffectsList(Effect effect) {
         try {
             imPermanentManualWeearOffEffs.remove(effect);
         } catch (Exception e) {
         }
     }
 
-    public void removeFromPerformedListOfWarrior(Effects effect) {
+    public void removeFromPerformedListOfWarrior(Effect effect) {
         try {
             imPermanentTurnBasedEffectsList.remove(effect);
         } catch (Exception e) {
         }
     }
 
-    public Map<Effects, Integer> getImPermanentTurnBasedEffectsList() {
+    public Map<Effect, Integer> getImPermanentTurnBasedEffectsList() {
         return imPermanentTurnBasedEffectsList;
     }
 
@@ -150,7 +150,7 @@ public class Warrior {
         changeEP(-EPCost);
         if (realAttack == null) realAttack = this.getAttackPower();
 
-        for (Effects eff : passiveEffects) {
+        for (Effect eff : passiveEffects) {
             Warrior[] targetsToPerformPassiveEffs = null;
             if (eff.getTargetType() == Target.theAttackedOne) targetsToPerformPassiveEffs = targets;
             EffectPerformer.performEffects(this.passiveEffects, this, targets, allEnemies, allTeamMates);
@@ -174,7 +174,7 @@ public class Warrior {
             useItem(item, null, allEnemies, allTeamMates);
         }
         if (itemType.getWearOffAfterSold()) {
-            for (Effects effect : item.getEffects()) {
+            for (Effect effect : item.getEffects()) {
                 addToImPermanentManualEffectsList(effect);
             }
         }
@@ -187,7 +187,7 @@ public class Warrior {
         if (!item.canBeSold()) throw new ItemCannotBeSold("This Item Is not permitted to sell ! ");
         if (!inventory.contains(item)) throw new TradeException("Hero doesn't have this . ");
         if (itemType.getWearOffAfterSold()) {
-            for (Effects effect : item.getEffects()) {
+            for (Effect effect : item.getEffects()) {
                 removeFromImPermanentManualEffectsList(effect);
             }
         }

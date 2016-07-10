@@ -10,7 +10,7 @@ import java.util.Iterator;
  */
 public class EffectPerformer {
 
-    private static boolean doesPassiveAllowsToContinue(Effects effect, Warrior performer) {
+    private static boolean doesPassiveAllowsToContinue(Effect effect, Warrior performer) {
         if (effect.getEffectType().isPassive()) {
             if (performer.containsPassiveEffect(effect)) return true;
             performer.addPassiveEffect(effect);
@@ -20,12 +20,12 @@ public class EffectPerformer {
     }
 
     //TODO anotherCheck required
-    public static void performEffects(Collection<Effects> effects, Warrior performer, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeamMates) {
-        Iterator<Effects> itr = effects.iterator();
+    public static void performEffects(Collection<Effect> effects, Warrior performer, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeamMates) {
+        Iterator<Effect> itr = effects.iterator();
         Warrior[] finalTargets;
 
         while (itr.hasNext()) {
-            Effects nextEffect = itr.next();
+            Effect nextEffect = itr.next();
             if (!doesPassiveAllowsToContinue(nextEffect, performer)) return;
             finalTargets = chooseTargts(nextEffect, performer, selectedTargets, allEnemies, allTeamMates);
             nextEffect.perform(finalTargets);
@@ -33,7 +33,7 @@ public class EffectPerformer {
         }
     }
 
-    private static Warrior[] chooseTargts(Effects eff, Warrior performer, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeamMates) {
+    private static Warrior[] chooseTargts(Effect eff, Warrior performer, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeamMates) {
         Warrior[] newTargets = null;
         switch (eff.getTargetType()) {
             case HimSelf:
@@ -59,8 +59,8 @@ public class EffectPerformer {
 
 
 /**
- * public static void performEffects(List<Effects> effects, @NotNull Warrior performer, @Nullable Warrior[] target_s, @Nullable Warrior... implicitTargets){
- * Iterator<Effects> itr = effects.iterator();
+ * public static void performEffects(List<Effects> currentUserCustomEffects, @NotNull Warrior performer, @Nullable Warrior[] target_s, @Nullable Warrior... implicitTargets){
+ * Iterator<Effects> itr = currentUserCustomEffects.iterator();
  * Warrior[] finalTargets = target_s;
  * while (itr.hasNext()) {
  * //TODO anotherCheck required

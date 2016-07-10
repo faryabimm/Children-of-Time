@@ -25,7 +25,7 @@ public class CustomGameDAO {
     public static String currentUserCGDataPath;
 
 
-    public static ArrayList<Effect> effects = new ArrayList<>();
+    public static ArrayList<Effect> currentUserCustomEffects = new ArrayList<>();
 
 
     static {
@@ -84,7 +84,7 @@ public class CustomGameDAO {
         new File(currentUserCGDataPath).mkdir();
         new File(currentUserCGDataPath + "abilities" + ".dat").createNewFile();
         new File(currentUserCGDataPath + "battles" + ".dat").createNewFile();
-        new File(currentUserCGDataPath + "effects" + ".dat").createNewFile();
+        new File(currentUserCGDataPath + "currentUserCustomEffects" + ".dat").createNewFile();
         new File(currentUserCGDataPath + "items" + ".dat").createNewFile();
         new File(currentUserCGDataPath + "scenarios" + ".dat").createNewFile();
         new File(currentUserCGDataPath + "warriorClasses" + ".dat").createNewFile();

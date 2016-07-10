@@ -51,7 +51,7 @@ public final class ChildrenOfTime {
 
     private static ChildrenOfTime instance;
     private ArrayList<Player> players = new ArrayList<>();
-    private ArrayList<Battle> battles = new ArrayList<>();
+//    private ArrayList<Battle> battles = new ArrayList<>();
     Boolean firstTime = true;
     
     public static ChildrenOfTime getInstance() {
