@@ -27,7 +27,6 @@ public class HeroClass {
 
     Boolean CanChangeMP;
     Boolean CanChangeEP;
-    Boolean CanBuyItems;
     Boolean CanUseImmortalityPotions;
     Boolean CanUseRefillFeature;
 
@@ -62,7 +61,6 @@ public class HeroClass {
         this.epBurningMessage = epBurningMessage;
         CanChangeMP = canChangeMP;
         CanChangeEP = canChangeEP;
-        CanBuyItems = canBuyItems;
         CanUseImmortalityPotions = canUseImmortalityPotions;
         CanUseRefillFeature = canUseRefillFeature;
         this.specificActionMessage = specificActionMessage;
@@ -94,7 +92,6 @@ public class HeroClass {
         this.epBurningMessage = heroClass.epBurningMessage;
         CanChangeMP = heroClass.CanChangeMP;
         CanChangeEP = heroClass.CanChangeEP;
-        CanBuyItems = heroClass.CanBuyItems;
         CanUseImmortalityPotions = heroClass.CanUseImmortalityPotions;
         CanUseRefillFeature = heroClass.CanUseRefillFeature;
         this.specificActionMessage = heroClass.specificActionMessage;
@@ -145,10 +142,6 @@ public class HeroClass {
 
     public Boolean getCanChangeEP() {
         return CanChangeEP;
-    }
-
-    public Boolean getCanBuyItems() {
-        return CanBuyItems;
     }
 
     public Boolean getCanUseImmortalityPotions() {

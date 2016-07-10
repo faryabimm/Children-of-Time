@@ -37,6 +37,11 @@ public class AbilityMaker {
         newUpgrade.setEffects(new ArrayList<Effect>(1));
     }
 
+    public void addCustomUpgrade(Upgrade upgrade) {
+        ability.getUpgrades().add(upgrade);
+        upgrade.setEffects(new ArrayList<Effect>(1));
+    }
+
     public void setBaseUpgrade(Integer upgradeNumber) {
         ability.setBaseState(getUpgradeByNumber(upgradeNumber));
     }
