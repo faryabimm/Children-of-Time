@@ -30,6 +30,9 @@ public class Player implements TurnBase {
     private Collection<Warrior> enemyTeam;
     ArrayList<Battle> WonBattles;
 
+    public Player() {
+    }
+
     public void useImmortalityPotion() throws NoImmortalityPotionLeftException {
         if (immprtalityPotions - 1 < 0) {
             throw new NoImmortalityPotionLeftException(name + " : No Immortality Potion Left");
@@ -62,6 +65,7 @@ public class Player implements TurnBase {
         immortalityRequest.start();
 
     }
+
 
     private int getNumbersBought(Item item) {
 
@@ -96,6 +100,7 @@ public class Player implements TurnBase {
                 "your Current Wealth is: $" + getCurrentWealth());
     }
 
+
     public void castAbility(Warrior castingHero, Ability castedAbility, Warrior... selectedTargets) {
 
         castingHero.castAbility(castedAbility, selectedTargets, toArray(this.enemyTeam), toArray(this.myTeam));
@@ -103,8 +108,6 @@ public class Player implements TurnBase {
     }
 
     public void useItem(Warrior usingHero, Item usedItem, Warrior... selectedTargets) {
-
-
         usingHero.useItem(usedItem, selectedTargets, toArray(this.enemyTeam), toArray(this.myTeam));
     }
 
@@ -208,6 +211,11 @@ public class Player implements TurnBase {
     @Override
     public void aTurnHasPassed() {
 
+    }
+
+
+    public void setEnemyTeam(Collection<Warrior> enemyTeam) {
+        this.enemyTeam = enemyTeam;
     }
 }
 

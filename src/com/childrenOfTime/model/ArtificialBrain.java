@@ -7,7 +7,6 @@ import com.childrenOfTime.model.Warriors.Warrior;
 
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Random;
 
 /**
@@ -18,13 +17,15 @@ public class ArtificialBrain {
     Warrior[] team;
     Warrior[] enemyTeam;
     Player enemy;
-    Battle battle;
     Random random = new Random();
-    Map<Ability, Upgrade> abilities;
 
-    public ArtificialBrain() {
+
+    public ArtificialBrain(Player comPlayer, Player enemy) {
+        ComPlayer = comPlayer;
+        this.enemy = enemy;
         this.team = Player.toArray(this.ComPlayer.getMyTeam());
         this.enemyTeam = Player.toArray(this.enemy.getMyTeam());
+        initialize();
     }
 
     public void playATurn() {
@@ -73,10 +74,7 @@ public class ArtificialBrain {
 
     public void initialize() {
         acquireAbilities();
-
     }
-
-
     private Warrior[] sortEnemiesByHealth(Warrior[] targets) {
         Warrior[] sortedByHealth = Arrays.copyOf(targets, targets.length);
         Arrays.sort(sortedByHealth, (o1, o2) -> o1.getCurrentHealth() - o2.getCurrentHealth());

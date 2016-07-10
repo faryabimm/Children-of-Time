@@ -14,35 +14,54 @@ public class Battle {
 
     public String name;
     protected String DefeatStory;
-    public BattleState battleState;
     Player You;
     Player Enemy;
     private Reward reward;
     private boolean itIsFirstTurn = true;
-    ArtificialBrain aritificailBrain = new ArtificialBrain();
+    ArtificialBrain aritificailBrain;
+
+    public Battle(String name, String defeatStory, Reward reward) {
+        this.name = name;
+        DefeatStory = defeatStory;
+        this.reward = reward;
+    }
+
+
+    public void setPlayers(Player You, Player Enemy) {
+        if (Enemy.playerType == PlayerType.Computer) {
+            initiateComputerEnemy();
+        }
+        this.You = You;
+        this.Enemy = Enemy;
+        You.setEnemyTeam(Enemy.getMyTeam());
+        Enemy.setEnemyTeam(You.getMyTeam());
+    }
+
+
+    public void playATurnIfComputer() {
+        if (this.Enemy.playerType == PlayerType.Computer)
+            this.aritificailBrain.playATurn();
+    }
 
 
     /*
-      public void playStory() {
-          printOutput("Story:");
-          printOutput(story);
+          public void playStory() {
+              printOutput("Story:");
+              printOutput(story);
 
-      }
-      */
-    public void defeat() {
-        printOutput("Battle " + this.name + "Has Concluded!");
-        printOutput("Defeat! You’ve failed to defeat all of your enemies" + Enemy.name);
-        System.exit(0);
+          }
+          */
+    public String getDefeatMessage() {
+        return ("Battle " + this.name + "Has Concluded!" + "\n" + "Defeat! You’ve failed to defeat all of your enemies" + Enemy.name);
     }
 
-    public void victory() {
-        printOutput("Battle " + this.name + " Has Completed!     Winner : " + You.name);
-        printOutput("Victory! You’ve defeated all of your enemies");
+    public String getVictory() {
+        return "Battle " + this.name + " Has Completed!     Winner : " + You.name + "\n" + "Victory! You’ve defeated all of your enemies";
     }
 
 
-    public void initiateComputerEnemy() {
-        this.aritificailBrain = new ArtificialBrain();
+    private void initiateComputerEnemy() {
+        this.aritificailBrain = new ArtificialBrain(Enemy, You);
         // aritificailBrain.
     }
 
@@ -68,13 +87,8 @@ public class Battle {
 
         You.aTurnHasPassed();
         Enemy.aTurnHasPassed();
-
-        if (itIsFirstTurn) {
             showCurrentBattleInfo();
-            itIsFirstTurn = false;
-        }
 
-        long t1 = System.nanoTime();
 
     }
 
@@ -307,7 +321,24 @@ public class Battle {
 //    }
 
 
-    public void showAnyDiscripton() {
+    public void finishTheBattle() {
+        You.setEnemyTeam(null);
+        Enemy.setEnemyTeam(null);
+        reward.giveRevard(You);
+        reward.giveRevard(Enemy);
+    }
+
+    public int shouldBattleContinue() {
+        if (You.isDefeated()) {
+            finishTheBattle();
+            return 1;
+        }
+        if (Enemy.isDefeated()) {
+            finishTheBattle();
+            return 0;
+        }
+        return 0;
+
     }
 
     @Completed
@@ -329,11 +360,6 @@ public class Battle {
 
     }
 
-    @Completed
-    private void WaitForPlayer2ToAct() {
-        if (this.Enemy.playerType == PlayerType.Computer)
-            this.aritificailBrain.playATurn();
-    }
 
 
     @Completed
