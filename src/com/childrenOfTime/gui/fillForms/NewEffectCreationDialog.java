@@ -1,18 +1,14 @@
 package com.childrenOfTime.gui.fillForms;
 
-import com.childrenOfTime.controller.GameEngine;
 import com.childrenOfTime.gui.customGame.CusomGameEditorMenu;
 import com.childrenOfTime.gui.fillForms.dataHolders.EffectDataHolder;
 import com.childrenOfTime.model.ChildrenOfTime;
 import com.childrenOfTime.model.Equip.Target;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.event.*;
-import java.awt.geom.Arc2D;
 
-public class AddEffectDialog extends JDialog {
+public class NewEffectCreationDialog extends JDialog {
 
     private final ButtonGroup radioGroup;
     private JPanel contentPane;
@@ -55,7 +51,7 @@ public class AddEffectDialog extends JDialog {
 
 
 
-    public AddEffectDialog(boolean invokedDirectly, EffectDataHolder dataHolder) {
+    public NewEffectCreationDialog(boolean invokedDirectly, EffectDataHolder dataHolder) {
         radioGroup = new ButtonGroup();
         radioGroup.add(himselfRadioButton);
         radioGroup.add(allTeammatesRadioButton);
@@ -197,7 +193,7 @@ public class AddEffectDialog extends JDialog {
 
     public static void main(String[] args) {
         EffectDataHolder dataHolder = new EffectDataHolder();
-        AddEffectDialog dialog = new AddEffectDialog(false, dataHolder);
+        NewEffectCreationDialog dialog = new NewEffectCreationDialog(false, dataHolder);
         System.out.println(dataHolder);
         System.exit(0);
     }

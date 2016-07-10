@@ -11,8 +11,16 @@ import java.io.Serializable;
  * Created by SaeedHD on 07/07/2016.
  */
 public class Effect implements Performable, Serializable {
+
+    static final long serialVersionUID = -4746324265253139119L;
+
     public static final Double YEK_DOUBLE = 1d;
     public static final int DEFAULT_GHARARDADI_FOR_WEAROF_PASSIVE_EFFECT_INSTANTLY_AFTER_ATTACK = -3000;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
 
     final EffectType effectType;
     final AlterPackage alterPackage;
@@ -53,7 +61,33 @@ public class Effect implements Performable, Serializable {
     }
 
 
-    public Effect(@NotNull EffectType effectType, @NotNull AlterPackage alterPackage, @NotNull Target targetType, @Nullable Integer probabilyPercent, @Nullable Integer impermanentDurability, @Nullable Integer autoRepitionDuration) {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Effect effect = (Effect) o;
+
+        if (!getName().equals(effect.getName())) return false;
+        if (getEffectType() != null ? !getEffectType().equals(effect.getEffectType()) : effect.getEffectType() != null)
+            return false;
+        if (getAlterPackage() != null ? !getAlterPackage().equals(effect.getAlterPackage()) : effect.getAlterPackage() != null)
+            return false;
+        if (getTargetType() != effect.getTargetType()) return false;
+        if (getImpermanentDurability() != null ? !getImpermanentDurability().equals(effect.getImpermanentDurability()) : effect.getImpermanentDurability() != null)
+            return false;
+        return getAutoRepitionDuration() != null ? getAutoRepitionDuration().equals(effect.getAutoRepitionDuration()) : effect.getAutoRepitionDuration() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+
+    public Effect(@NotNull String name, @NotNull EffectType effectType, @NotNull AlterPackage alterPackage, @NotNull Target targetType, @Nullable Integer probabilyPercent, @Nullable Integer impermanentDurability, @Nullable Integer autoRepitionDuration) {
+
+        this.name = name;
         if (autoRepitionDuration == null) autoRepitionDuration = 0;
         if (impermanentDurability == null) impermanentDurability = 0;
 

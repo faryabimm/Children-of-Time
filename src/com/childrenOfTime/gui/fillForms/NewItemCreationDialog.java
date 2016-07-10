@@ -3,10 +3,12 @@ package com.childrenOfTime.gui.fillForms;
 import com.childrenOfTime.gui.customGame.CusomGameEditorMenu;
 import com.childrenOfTime.gui.fillForms.dataHolders.EffectDataHolder;
 import com.childrenOfTime.model.ChildrenOfTime;
+import com.childrenOfTime.model.Equip.Effect;
 import com.childrenOfTime.utilities.GUIUtils;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class NewItemCreationDialog extends JDialog {
     private JPanel contentPane;
@@ -70,7 +72,7 @@ public class NewItemCreationDialog extends JDialog {
         addEffectsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new AddEffectDialog(false, new EffectDataHolder());
+                new EffectChooserDialog(new ArrayList<>());
             }
         });
 

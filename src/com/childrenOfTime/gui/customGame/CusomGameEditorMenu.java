@@ -3,7 +3,7 @@ package com.childrenOfTime.gui.customGame;
 import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
-import com.childrenOfTime.gui.fillForms.AddEffectDialog;
+import com.childrenOfTime.gui.fillForms.NewEffectCreationDialog;
 import com.childrenOfTime.gui.fillForms.NewAbilityCreationDialog;
 import com.childrenOfTime.gui.fillForms.NewItemCreationDialog;
 import com.childrenOfTime.gui.fillForms.dataHolders.EffectDataHolder;
@@ -89,8 +89,8 @@ public class CusomGameEditorMenu extends MenuScreenPanel {
                     dataHolder.EPCoefficient,dataHolder.HRRCoefficient,dataHolder.MMRRCoefficient};
 
 
-            new AddEffectDialog(true, dataHolder);
-            Effect createdEffect = new Effect(new EffectType(dataHolder.automaticTargetSelection,dataHolder.applyUponAttack,
+            new NewEffectCreationDialog(true, dataHolder);
+            Effect createdEffect = new Effect(dataHolder.name, new EffectType(dataHolder.automaticTargetSelection,dataHolder.applyUponAttack,
                     dataHolder.autoRepeatable,!dataHolder.temporaryEffect,dataHolder.indefiniteExcecution,
                     dataHolder.wearOffEffectsAfterExcecution), new AlterPackage(delta,factor,
                     dataHolder.indefiniteExcecutionPercent),dataHolder.automaticTargetType,dataHolder.indefiniteExcecutionPercent,

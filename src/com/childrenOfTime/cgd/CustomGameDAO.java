@@ -84,10 +84,12 @@ public class CustomGameDAO {
         new File(currentUserCGDataPath).mkdir();
         new File(currentUserCGDataPath + "abilities" + ".dat").createNewFile();
         new File(currentUserCGDataPath + "battles" + ".dat").createNewFile();
-        new File(currentUserCGDataPath + "currentUserCustomEffects" + ".dat").createNewFile();
+        new File(currentUserCGDataPath + "effects" + ".dat").createNewFile();
         new File(currentUserCGDataPath + "items" + ".dat").createNewFile();
         new File(currentUserCGDataPath + "scenarios" + ".dat").createNewFile();
         new File(currentUserCGDataPath + "warriorClasses" + ".dat").createNewFile();
         new File(currentUserCGDataPath + "warriors" + ".dat").createNewFile();
+        currentUserCustomEffects = new ArrayList<Effect>();
+        GUIUtils.serializeUserObject(currentUserCustomEffects,"effects");
     }
 }
