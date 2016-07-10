@@ -24,7 +24,7 @@ public class Item implements Castable, TurnBase {
     private String name;
     private Integer Id = 0;
     private ItemType type;
-    private ArrayList<Effects> effects;
+    private ArrayList<Effect> effects;
     private Messages messages;
     // private Target targetType ;
     private boolean isInCoolDown = false;
@@ -33,7 +33,7 @@ public class Item implements Castable, TurnBase {
     Image image;
 
 
-    public Item(String name, ItemType type, Messages messages, Target targetType, ArrayList<Effects> effects, AlterPackage sideCost, Image image) {
+    public Item(String name, ItemType type, Messages messages, Target targetType, ArrayList<Effect> effects, AlterPackage sideCost, Image image) {
         this.name = name;
         this.type = type;
         this.messages = messages;
@@ -76,7 +76,7 @@ public class Item implements Castable, TurnBase {
     }
 
     public void removedFromInventory(Warrior... targets) {
-        for (Effects F : effects) {
+        for (Effect F : effects) {
             F.wearOff(targets);
         }
     }
@@ -136,7 +136,7 @@ public class Item implements Castable, TurnBase {
         return type;
     }
 
-    public ArrayList<Effects> getEffects() {
+    public ArrayList<Effect> getEffects() {
         return effects;
     }
 

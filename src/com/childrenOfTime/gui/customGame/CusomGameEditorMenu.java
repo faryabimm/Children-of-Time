@@ -22,14 +22,14 @@ public class CusomGameEditorMenu extends MenuScreenPanel {
 
         JButton customEffect = new CustomizedJButton("new Effect");
         JButton customStore = new CustomizedJButton("new Store");
-        JButton customFoe = new CustomizedJButton("new Foe");
+//        JButton customFoe = new CustomizedJButton("new Foe");
 
 
 
         JButton customScenario = new CustomizedJButton("new Scenario");
         JButton customBattle = new CustomizedJButton("new Battle");
-        JButton customHeroClass = new CustomizedJButton("new HeroClass");
-        JButton customHero = new CustomizedJButton("new Hero");
+        JButton customWarriorClass = new CustomizedJButton("new WarriorClass");
+        JButton customWarrior = new CustomizedJButton("new Warrior");
         JButton customItem   = new CustomizedJButton("new Item");
         JButton customAbility = new CustomizedJButton("new Ability");
 
@@ -41,21 +41,21 @@ public class CusomGameEditorMenu extends MenuScreenPanel {
         this.add(back);
         this.add(customAbility);
         this.add(customItem);
-        this.add(customHero);
-        this.add(customHeroClass);
+        this.add(customWarrior);
+        this.add(customWarriorClass);
         this.add(customBattle);
         this.add(customScenario);
-        this.add(customFoe);
+//        this.add(customFoe);
         this.add(customStore);
         this.add(customEffect);
 
         back.setLocation(ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - CustomizedJButton.BUTTON_HEIGHT - ELEMENT_GAP);
         customItem.setLocation(ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 2*CustomizedJButton.BUTTON_HEIGHT - 2*ELEMENT_GAP);
         customAbility.setLocation(ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 3*CustomizedJButton.BUTTON_HEIGHT - 3*ELEMENT_GAP);
-        customHero.setLocation(ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 4*CustomizedJButton.BUTTON_HEIGHT - 4*ELEMENT_GAP);
-        customHeroClass.setLocation(ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 5*CustomizedJButton.BUTTON_HEIGHT - 5*ELEMENT_GAP);
+        customWarrior.setLocation(ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 4*CustomizedJButton.BUTTON_HEIGHT - 4*ELEMENT_GAP);
+        customWarriorClass.setLocation(ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 5*CustomizedJButton.BUTTON_HEIGHT - 5*ELEMENT_GAP);
 
-        customFoe.setLocation(2*ELEMENT_GAP + CustomizedJButton.BUTTON_WIDTH, ChildrenOfTime.PREFERRED_HEIGHT - CustomizedJButton.BUTTON_HEIGHT - ELEMENT_GAP);
+//        customFoe.setLocation(2*ELEMENT_GAP + CustomizedJButton.BUTTON_WIDTH, ChildrenOfTime.PREFERRED_HEIGHT - CustomizedJButton.BUTTON_HEIGHT - ELEMENT_GAP);
         customStore.setLocation(2*ELEMENT_GAP + CustomizedJButton.BUTTON_WIDTH, ChildrenOfTime.PREFERRED_HEIGHT - 2*CustomizedJButton.BUTTON_HEIGHT - 2*ELEMENT_GAP);
         customEffect.setLocation(2*ELEMENT_GAP + CustomizedJButton.BUTTON_WIDTH, ChildrenOfTime.PREFERRED_HEIGHT - 3*CustomizedJButton.BUTTON_HEIGHT - 3*ELEMENT_GAP);
 

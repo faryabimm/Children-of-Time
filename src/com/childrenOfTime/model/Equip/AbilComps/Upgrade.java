@@ -3,8 +3,8 @@ package com.childrenOfTime.model.Equip.AbilComps;
 import com.childrenOfTime.exceptions.AbilityInCooldownException;
 import com.childrenOfTime.exceptions.NotEnoughEnergyPointsException;
 import com.childrenOfTime.exceptions.NotEnoughMagicPointsException;
+import com.childrenOfTime.model.Equip.Effect;
 import com.childrenOfTime.model.Equip.EffectPerformer;
-import com.childrenOfTime.model.Equip.Effects;
 import com.childrenOfTime.model.Equip.ItemComps.Messages;
 import com.childrenOfTime.model.Equip.Target;
 import com.childrenOfTime.model.Interfaces.Castable;
@@ -33,7 +33,7 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
     Messages messages;
     String[] upgradeRequirements;
     private Boolean upgradeBoolean;
-    ArrayList<Effects> effects;
+    ArrayList<Effect> effects;
     Boolean castJustAfterAcquire = false;
     final Boolean recastable;
     Boolean castedOnce;
@@ -143,7 +143,7 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
 
     public void aTurnHasPassed() {
         /*
-        for (Effects eff : effects) {
+        for (Effect eff : effects) {
             if (eff instanceof TurnBase) {
                 ((TurnBase) eff).aTurnHasPassed();
             }
@@ -207,7 +207,7 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
     }
 
 
-    public void addEffect(Effects effect) {
+    public void addEffect(Effect effect) {
         effects.add(effect);
     }
 
@@ -241,7 +241,7 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
     }
 
 
-    public void setEffects(ArrayList<Effects> effects) {
+    public void setEffects(ArrayList<Effect> effects) {
         this.effects = effects;
     }
 

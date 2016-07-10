@@ -8,7 +8,7 @@ import com.sun.istack.internal.Nullable;
 /**
  * Created by SaeedHD on 07/07/2016.
  */
-public class Effects implements Performable {
+public class Effect implements Performable {
     public static final Double YEK_DOUBLE = 1d;
     public static final int DEFAULT_GHARARDADI_FOR_WEAROF_PASSIVE_EFFECT_INSTANTLY_AFTER_ATTACK = -3000;
 
@@ -51,7 +51,7 @@ public class Effects implements Performable {
     }
 
 
-    public Effects(@NotNull EffectType effectType, @NotNull AlterPackage alterPackage, @NotNull Target targetType, @Nullable Integer probabilyPercent, @Nullable Integer impermanentDurability, @Nullable Integer autoRepitionDuration) {
+    public Effect(@NotNull EffectType effectType, @NotNull AlterPackage alterPackage, @NotNull Target targetType, @Nullable Integer probabilyPercent, @Nullable Integer impermanentDurability, @Nullable Integer autoRepitionDuration) {
         if (autoRepitionDuration == null) autoRepitionDuration = 0;
         if (impermanentDurability == null) impermanentDurability = 0;
 

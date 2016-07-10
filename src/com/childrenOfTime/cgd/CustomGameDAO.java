@@ -1,8 +1,13 @@
 package com.childrenOfTime.cgd;
 
 import com.childrenOfTime.controller.GameEngine;
+import com.childrenOfTime.model.Equip.Effect;
+import com.childrenOfTime.utilities.GUIUtils;
 
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +20,13 @@ public class CustomGameDAO {
     public static String texturePackPath;
     private static User currentUser = null;
     public static Map<String,Image> textures;
+
+    public static String currentUserDataPath;
+    public static String currentUserCGDataPath;
+
+
+    public static ArrayList<Effect> effects = new ArrayList<>();
+
 
     static {
         texturePackPath = "src/texture_pack/default/";
@@ -62,10 +74,20 @@ public class CustomGameDAO {
     }
 
     public static void loadCurrentUserData() {
-
+        GUIUtils.deserializeUserFiles();
     }
 
-    public static void initializeCurrentUser() {
-
+    public static void initializeCurrentUser() throws IOException {
+        currentUserDataPath = "src/user_data/" + currentUser.getUserName() + "/";
+        currentUserCGDataPath = currentUserDataPath + "custom_game/";
+        new File(currentUserDataPath).mkdir();
+        new File(currentUserCGDataPath).mkdir();
+        new File(currentUserCGDataPath + "abilities" + ".dat").createNewFile();
+        new File(currentUserCGDataPath + "battles" + ".dat").createNewFile();
+        new File(currentUserCGDataPath + "effects" + ".dat").createNewFile();
+        new File(currentUserCGDataPath + "items" + ".dat").createNewFile();
+        new File(currentUserCGDataPath + "scenarios" + ".dat").createNewFile();
+        new File(currentUserCGDataPath + "warriorClasses" + ".dat").createNewFile();
+        new File(currentUserCGDataPath + "warriors" + ".dat").createNewFile();
     }
 }
