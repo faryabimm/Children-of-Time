@@ -17,8 +17,8 @@ import java.util.ArrayList;
 public class AbilityMaker {
     private Ability ability;
 
-    public void newCustomAbility(@NotNull String name, @NotNull Target targetType, @Nullable String Description, @Nullable String SuccessMessage, ImageIcon imageIcon) {
-        ability = new Ability(name, Description, SuccessMessage, new BST<Upgrade>(), targetType, imageIcon);
+    public void newCustomAbility(@NotNull String name, @NotNull Target targetType, @Nullable String Description, @Nullable String SuccessMessage, ImageIcon imageIcon, int powerOutOfTen) {
+        ability = new Ability(name, Description, SuccessMessage, new BST<Upgrade>(), targetType, imageIcon, powerOutOfTen);
 
     }
 
