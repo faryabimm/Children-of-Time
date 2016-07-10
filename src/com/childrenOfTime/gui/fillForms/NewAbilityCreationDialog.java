@@ -2,6 +2,7 @@ package com.childrenOfTime.gui.fillForms;
 
 import com.childrenOfTime.gui.customGame.CusomGameEditorMenu;
 import com.childrenOfTime.model.ChildrenOfTime;
+import com.childrenOfTime.utilities.GUIUtils;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -13,13 +14,15 @@ public class NewAbilityCreationDialog extends JDialog {
     private JTextField textField3;
     private JComboBox comboBox2;
     private JButton upgradesButton;
-    private JButton browseForImageFileButton;
+    private JButton browseButton;
     private JCheckBox noImageFileSelectedCheckBox;
     private JTextField textField6;
     private JTextField textField7;
     private JTextField textField8;
     private JTextField textField9;
     private JTextField textField10;
+
+    protected String imageFileAddress = null;
 
     public NewAbilityCreationDialog() {
         setContentPane(contentPane);
@@ -59,9 +62,28 @@ public class NewAbilityCreationDialog extends JDialog {
             }
         });
 
+
+
+        browseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String imageFilePath = GUIUtils.getPNGImageFilePath(null);
+                try {
+                    noImageFileSelectedCheckBox.setText("..." + imageFilePath.substring(imageFilePath.length() - 15,
+                            imageFilePath.length()));
+                } catch (NullPointerException e1) {}
+                imageFileAddress = imageFilePath;
+                noImageFileSelectedCheckBox.setSelected(true);
+            }
+        });
+
+
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+
+
+
     }
 
     private void onOK() {

@@ -1,27 +1,40 @@
 package com.childrenOfTime.gui.fillForms;
 
+import com.childrenOfTime.cgd.CustomGameDAO;
+import com.childrenOfTime.model.Equip.Effect;
+
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
-public class AddUpgradeToAbilityDialog extends JDialog {
+public class EffectChooserDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField textField3;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField4;
-    private JTextField textField5;
-    private JTextField textField6;
-    private JCheckBox immediateApplicationActiveCheckBox;
-    private JCheckBox recastableCheckBox;
-    private JCheckBox setAsBaseUpgradeCheckBox;
-    private JTextField textField7;
-    private JCheckBox hasRequirementsCheckBox;
-    private JButton addEffectsButton;
+    private JComboBox comboBox1;
+    private JButton addEffectButton;
+    private JLabel label1;
 
-    public AddUpgradeToAbilityDialog() {
+    ArrayList<Effect> selectedEffects;
+
+    public EffectChooserDialog(ArrayList<Effect> selectedEffects) {
+        this.selectedEffects = selectedEffects;
+
+        for (Effect selectedEffect : selectedEffects) {
+            label1.setText(label1.getText() + " " + selectedEffect.getName());
+        }
+
+        ArrayList<String> effectNames = CustomGameDAO.currentUserCustomEffects.stream().map(Effect::getName).
+                collect(Collectors.toCollection(ArrayList::new));
+
+        comboBox1.setModel(new DefaultComboBoxModel(effectNames.toArray()));
+
+
+
+
+
+
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -52,18 +65,16 @@ public class AddUpgradeToAbilityDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        addEffectsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new EffectChooserDialog(new ArrayList<>());
-            }
-        });
 
-        hasRequirementsCheckBox.addActionListener(new ActionListener() {
+
+        addEffectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(hasRequirementsCheckBox.isSelected()) textField7.setEnabled(true);
-                else textField7.setEnabled(false);
+                Effect toAdd = CustomGameDAO.currentUserCustomEffects.get(comboBox1.getSelectedIndex());
+                if(!selectedEffects.contains(toAdd)) {
+                    selectedEffects.add(toAdd);
+                    label1.setText(label1.getText() + " " + toAdd.getName());
+                }
             }
         });
         this.pack();
@@ -82,7 +93,7 @@ public class AddUpgradeToAbilityDialog extends JDialog {
     }
 
     public static void main(String[] args) {
-        AddUpgradeToAbilityDialog dialog = new AddUpgradeToAbilityDialog();
+//        EffectChooserDialog dialog = new EffectChooserDialog();
 
         System.exit(0);
     }

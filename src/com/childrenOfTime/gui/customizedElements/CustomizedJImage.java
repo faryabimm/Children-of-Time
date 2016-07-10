@@ -19,6 +19,7 @@ public class CustomizedJImage extends JLabel {
 
     public CustomizedJImage(String imagePath, int width, int height) {
         this(GameEngine.DEFAULT_TOOLKIT.getImage(imagePath),width,height);
+//        System.out.println(GameEngine.DEFAULT_TOOLKIT.getImage(imagePath).getClass());
     }
     public CustomizedJImage(Image image, int width, int height) {
         super(new ImageIcon(image.getScaledInstance(width,height,0)));
