@@ -27,6 +27,7 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
     final Integer COOLDOWN_TIME;
     int leftTurnsToCoolDown;
     boolean isInCoolDown = false;
+    boolean isBaseUpgrade;
     int XPCost;
     int masrafEP;
     int masrafMP;
@@ -65,9 +66,10 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
 //
 //    }
 
-    public Upgrade(@NotNull Integer numberOfUpgrade, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable Boolean castJustAfterAcquire, @Nullable Boolean recastable, ArrayList<Effect> effects, @Nullable String... upgradeRequirements) {
+    public Upgrade(@NotNull Integer numberOfUpgrade, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable Boolean castJustAfterAcquire, @Nullable Boolean recastable, ArrayList<Effect> effects, boolean isBaseUpgrade, @Nullable String... upgradeRequirements) {
         if (COOLDOWN_TIME == null) COOLDOWN_TIME = 0;
         if (XPCost == null) XPCost = 0;
+
         if (masrafEP == null) masrafEP = 0;
         if (masrafMP == null) masrafMP = 0;
         if (upgradeRequirements == null) {
@@ -81,6 +83,7 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
             recastable = false;
         }
         this.numberOfUpgrade = numberOfUpgrade;
+        this.isBaseUpgrade = isBaseUpgrade;
         this.leftTurnsToCoolDown = COOLDOWN_TIME;
         this.COOLDOWN_TIME = COOLDOWN_TIME;
         this.XPCost = XPCost;
