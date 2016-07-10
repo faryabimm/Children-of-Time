@@ -32,7 +32,7 @@ public class HeroClass {
 
     String ClassName;
 
-    Integer damageEffitioncyIntelligenceOutOfTen = 0;
+    Integer damageEfficiencyIntelligenceOutOfTen = 0;
     private int heroAttackingNumberPerTurn;
     int maxHealth;
     int healthRefillRate;
@@ -116,8 +116,8 @@ public class HeroClass {
         return ClassName;
     }
 
-    public Integer getDamageEffitioncyIntelligenceOutOfTen() {
-        return damageEffitioncyIntelligenceOutOfTen;
+    public Integer getDamageEfficiencyIntelligenceOutOfTen() {
+        return damageEfficiencyIntelligenceOutOfTen;
     }
 
     public int getHeroAttackingNumberPerTurn() {

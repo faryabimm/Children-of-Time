@@ -6,6 +6,7 @@ import com.childrenOfTime.exceptions.NotEnoughXPException;
 import com.childrenOfTime.exceptions.TradeException;
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
+import com.childrenOfTime.model.Interfaces.TurnBase;
 import com.childrenOfTime.model.Warriors.Warrior;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
-public class Player {
+public class Player implements TurnBase {
 
     PlayerType playerType;
     String name;
@@ -27,7 +28,7 @@ public class Player {
     private ArrayList<Item> itemsBougt;
     private Collection<Warrior> myTeam;
     private Collection<Warrior> enemyTeam;
-
+    ArrayList<Battle> WonBattles;
 
     public void useImmortalityPotion() throws NoImmortalityPotionLeftException {
         if (immprtalityPotions - 1 < 0) {
@@ -143,7 +144,7 @@ public class Player {
         attackingHero.attack(selectedTargets, null, null, toArray(this.enemyTeam), toArray(this.myTeam));
     }
 
-    public Warrior[] toArray(Collection<Warrior> collection) {
+    public static Warrior[] toArray(Collection<Warrior> collection) {
         return (Warrior[]) collection.toArray();
     }
 
@@ -191,9 +192,23 @@ public class Player {
     }
 
 
+    public Collection<Warrior> getMyTeam() {
+        return myTeam;
+    }
+
+    public void setMyTeam(Collection<Warrior> myTeam) {
+        this.myTeam = myTeam;
+    }
+
+    public void changeImmortalityPotion(int i) {
+        this.immprtalityPotions += i;
+    }
 
 
+    @Override
+    public void aTurnHasPassed() {
 
+    }
 }
 
 
@@ -306,11 +321,7 @@ public class Player {
 //    }
 //
 //    @Completed
-//    public void aTurnHasPassed() {
-//        for (int i = 0; i < heros.size(); i++) {
-//            heros.get(i).aTurnHasPassed();
-//        }
-//    }
+//
 //
 //    public boolean isAnyImmortalityPotionLeft() {
 //        return immprtalityPotions > 0;

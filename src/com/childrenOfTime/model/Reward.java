@@ -1,7 +1,9 @@
 package com.childrenOfTime.model;
 
 
-import com.childrenOfTime.Completed;
+import java.util.Random;
+
+import static com.childrenOfTime.view.IOHandler.printOutput;
 
 /**
  * Created by mohammadmahdi on 5/10/16.
@@ -9,20 +11,29 @@ import com.childrenOfTime.Completed;
 public class Reward {
     private int rewardedXP;
     private int reWardedMoney;
+    private int ImmortalityPotion;
+    Random randomMaker = new Random();
 
-    @Completed
-    public Reward(int rewardedXP, int reWardedMoney) {
-        this.reWardedMoney = reWardedMoney;
-        this.rewardedXP = rewardedXP;
+
+    public Reward() {
+        this.rewardedXP = randomMaker.nextInt(5);
+        this.reWardedMoney = randomMaker.nextInt(20);
+        this.ImmortalityPotion = (randomMaker.nextInt(3));
+
     }
 
-    @Completed
-    public int getRewardedXP() {
-        return rewardedXP;
+    public void giveRevard(Player player) {
+        if (player.playerType == PlayerType.Computer) return;
+        boolean isWinner = !player.isDefeated();
+
+
+        int probability = randomMaker.nextInt(101);
+        probability = isWinner ? probability : (probability / 3);
+        player.changeCurrentExperience((this.rewardedXP * probability) / 100);
+        player.changeCurrentWealth((this.reWardedMoney * probability) / 100);
+        player.changeImmortalityPotion((this.ImmortalityPotion * probability) / 100);
+        printOutput(player.name + "  :  REWARDED " + "\n XP :  " + this.reWardedMoney + "\n Money :  " + this.reWardedMoney + "\n IMP :  " + this.ImmortalityPotion);
     }
 
-    @Completed
-    public int getReWardedMoney() {
-        return reWardedMoney;
-    }
+
 }

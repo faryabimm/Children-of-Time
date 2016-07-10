@@ -8,6 +8,7 @@ import com.childrenOfTime.model.Equip.Target;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 /**
@@ -16,8 +17,8 @@ import java.util.ArrayList;
 public class AbilityMaker {
     private Ability ability;
 
-    public void newCustomAbility(@NotNull String name, @NotNull Target targetType, @Nullable String Description, @Nullable String SuccessMessage) {
-        ability = new Ability(name, Description, SuccessMessage, new BST<Upgrade>(), targetType, Ability.DEFAUL_AbilityImage);
+    public void newCustomAbility(@NotNull String name, @NotNull Target targetType, @Nullable String Description, @Nullable String SuccessMessage, ImageIcon imageIcon) {
+        ability = new Ability(name, Description, SuccessMessage, new BST<Upgrade>(), targetType, imageIcon);
 
     }
 

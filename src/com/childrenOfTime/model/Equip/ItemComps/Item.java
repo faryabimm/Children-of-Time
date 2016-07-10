@@ -8,8 +8,8 @@ import com.childrenOfTime.model.Equip.*;
 import com.childrenOfTime.model.Interfaces.Castable;
 import com.childrenOfTime.model.Interfaces.TurnBase;
 import com.childrenOfTime.model.Warriors.Warrior;
-import com.sun.prism.Image;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
@@ -18,7 +18,7 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
  * Created by mohammadmahdi on 5/8/16.
  */
 public class Item implements Castable, TurnBase {
-    public static Image DEFAUL_ITEM_Image;
+    public static ImageIcon DEFAUL_ITEM_Image;
 
     private int leftUsages;
     private String name;
@@ -26,20 +26,24 @@ public class Item implements Castable, TurnBase {
     private ItemType type;
     private ArrayList<Effect> effects;
     private Messages messages;
-    // private Target targetType ;
+    private Target targetType;
     private boolean isInCoolDown = false;
     private Integer turnsLeftToCoolDown;
     private AlterPackage cost = new AlterPackage(null, null);
-    Image image;
+    ImageIcon image;
 
 
-    public Item(String name, ItemType type, Messages messages, Target targetType, ArrayList<Effect> effects, AlterPackage sideCost, Image image) {
+    public Item(String name, ItemType type, Messages messages, Target targetType, ArrayList<Effect> effects, AlterPackage sideCost, ImageIcon image) {
+        if (image == null) image = DEFAUL_ITEM_Image;
         this.name = name;
         this.type = type;
         this.messages = messages;
         this.effects = effects;
-        this.cost = cost;
+        this.targetType = targetType;
+        this.cost = sideCost;
         this.leftUsages = type.getReusablityNumber();
+        this.image = image;
+
     }
 
     @Completed
@@ -156,7 +160,7 @@ public class Item implements Castable, TurnBase {
         return cost;
     }
 
-    public Image getImage() {
+    public ImageIcon getImage() {
         return image;
     }
 

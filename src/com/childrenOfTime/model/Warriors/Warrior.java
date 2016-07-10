@@ -12,6 +12,7 @@ import com.childrenOfTime.model.Rules;
 
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
 
@@ -49,12 +50,12 @@ public class Warrior {
     //private Boolean CanHaveHeroAbilities;
     //private Bool CanAttackMoreThanOneTarget;
 
-    private Map<Effects, Integer> imPermanentTurnBasedEffectsList = new HashMap<>();
-    private Map<Effects, Integer> autoRepeatEffList = new HashMap<>();
-    private Set<Effects> passiveEffects = new HashSet<>(3);
-    private Set<Effects> imPermanentManualWeearOffEffs = new HashSet<>();
+    private Map<Effect, Integer> imPermanentTurnBasedEffectsList = new HashMap<>();
+    private Map<Effect, Integer> autoRepeatEffList = new HashMap<>();
+    private Set<Effect> passiveEffects = new HashSet<>(3);
+    private Set<Effect> imPermanentManualWeearOffEffs = new HashSet<>();
 
-    public Map<String, Ability> abilities = new HashMap<>();
+    public List<Ability> abilities;
 
     public Warrior(String name, Image image, HeroClass info, ArrayList<Ability> specificHeroAbilities) {
         this.name = name;
@@ -87,15 +88,15 @@ public class Warrior {
 
     }
 
-    public void addPassiveEffect(Effects effect) {
+    public void addPassiveEffect(Effect effect) {
         passiveEffects.add(effect);
     }
 
-    public boolean containsPassiveEffect(Effects effect) {
+    public boolean containsPassiveEffect(Effect effect) {
         return passiveEffects.contains(effect);
     }
 
-    public void addToImPermanentTurnBasedEffectsList(Effects effect, Integer duration) {
+    public void addToImPermanentTurnBasedEffectsList(Effect effect, Integer duration) {
         Integer newDuration = duration;
 
         if (imPermanentTurnBasedEffectsList.containsKey(effect)) {
@@ -104,38 +105,38 @@ public class Warrior {
         imPermanentTurnBasedEffectsList.put(effect, newDuration);
     }
 
-    public void addToImPermanentManualEffectsList(Effects effect) {
+    public void addToImPermanentManualEffectsList(Effect effect) {
         imPermanentManualWeearOffEffs.add(effect);
     }
 
-    public void addToAutoRepeatEffList(Effects effect, Integer duration) {
+    public void addToAutoRepeatEffList(Effect effect, Integer duration) {
         autoRepeatEffList.put(effect, duration);
     }
 
-    public void decreasDuration(Map<Effects, Integer> list, Integer duration) {
+    public void decreasDuration(Map<Effect, Integer> list, Integer duration) {
         int newDuration;
-        for (Effects ef : list.keySet()) {
+        for (Effect ef : list.keySet()) {
             newDuration = list.get(ef) - duration;
             list.put(ef, newDuration);
         }
     }
 
 
-    private void removeFromImPermanentManualEffectsList(Effects effect) {
+    private void removeFromImPermanentManualEffectsList(Effect effect) {
         try {
             imPermanentManualWeearOffEffs.remove(effect);
         } catch (Exception e) {
         }
     }
 
-    public void removeFromPerformedListOfWarrior(Effects effect) {
+    public void removeFromPerformedListOfWarrior(Effect effect) {
         try {
             imPermanentTurnBasedEffectsList.remove(effect);
         } catch (Exception e) {
         }
     }
 
-    public Map<Effects, Integer> getImPermanentTurnBasedEffectsList() {
+    public Map<Effect, Integer> getImPermanentTurnBasedEffectsList() {
         return imPermanentTurnBasedEffectsList;
     }
 
@@ -150,13 +151,14 @@ public class Warrior {
         changeEP(-EPCost);
         if (realAttack == null) realAttack = this.getAttackPower();
 
-        for (Effects eff : passiveEffects) {
+        for (Effect eff : passiveEffects) {
             Warrior[] targetsToPerformPassiveEffs = null;
             if (eff.getTargetType() == Target.theAttackedOne) targetsToPerformPassiveEffs = targets;
             EffectPerformer.performEffects(this.passiveEffects, this, targets, allEnemies, allTeamMates);
         }
 
         for (Warrior tar : targets) {
+            if (tar == null) continue;
             tar.changeHealth(-realAttack, null);
             //TODO DOROST SHAVAD
             printOutput(getIdentity() + " has successfully attacked " + /*Inja h*/ getIdentity() + " with " + getAttackPower() + " power");
@@ -174,7 +176,7 @@ public class Warrior {
             useItem(item, null, allEnemies, allTeamMates);
         }
         if (itemType.getWearOffAfterSold()) {
-            for (Effects effect : item.getEffects()) {
+            for (Effect effect : item.getEffects()) {
                 addToImPermanentManualEffectsList(effect);
             }
         }
@@ -187,7 +189,7 @@ public class Warrior {
         if (!item.canBeSold()) throw new ItemCannotBeSold("This Item Is not permitted to sell ! ");
         if (!inventory.contains(item)) throw new TradeException("Hero doesn't have this . ");
         if (itemType.getWearOffAfterSold()) {
-            for (Effects effect : item.getEffects()) {
+            for (Effect effect : item.getEffects()) {
                 removeFromImPermanentManualEffectsList(effect);
             }
         }
@@ -195,7 +197,7 @@ public class Warrior {
     }
 
     public void castAbility(Ability ability, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeamMates) {
-        if (!abilities.containsKey(ability.getName())) return;
+        if (!abilities.contains(ability.getName())) return;
         ability.cast(this, selectedTargets, allEnemies, allTeamMates);
     }
 /*
@@ -314,15 +316,15 @@ public class Warrior {
 
 
     //Utilities :
-    public Ability findAbilityByName(String name) {
-        try {
-            return abilities.get(name);
-        } catch (Exception e) {
-        }
-        return null;
-    }
+//    public Ability findAbilityByName(String name) {
+//        try {
+//            return abilities.get(name);
+//        } catch (Exception e) {
+//        }
+//        return null;
+//    }
 /*
-    private void chooseTargtsThenPerform(Effects eff, Warrior[] targets) {
+    private void chooseTargtsThenPerform(Effect eff, Warrior[] targets) {
         Warrior[] newTargets;
         switch (eff.getTargetType()) {
             case HimSelf:
@@ -335,7 +337,7 @@ public class Warrior {
             case AllTeammates:
                 newTargets = allTeamMates;
                 break;
-            case SingleTarget:
+            case SingleEnemy:
             case theAttackedOne:
             case SeveralEnemies:
             case SeveralTeamMates:
@@ -382,11 +384,14 @@ public class Warrior {
     }
 
     public Integer calculateDamageEffitioncy() {
-        int i = 10 - this.info.damageEffitioncyIntelligenceOutOfTen;
+        int i = 10 - this.info.damageEfficiencyIntelligenceOutOfTen;
         int j = (int) (this.currentHealth * (20 - i));
         return 100 - (i * 2500) / j;
     }
 
+    public int getDamageEfficiencyIntelligenceOutOfTen() {
+        return this.info.damageEfficiencyIntelligenceOutOfTen;
+    }
 
     public int getMagicRefillRate() {
         return info.magicRefillRate;
@@ -436,11 +441,11 @@ public class Warrior {
     public void showCurrentAbilities() {
         String toPrint = "";
         String state = "";
-        for (Map.Entry<String, Ability> entry : abilities.entrySet()) {
-            if (!entry.getValue().isAcquired()) {
+        for (Ability entry : abilities) {
+            if (!entry.isAcquired()) {
                 state = "not acquired";
-            } else state = "Upgrade " + entry.getValue().getCurrentLevel().getNumberOfUpgrade() + "";
-            toPrint += "\t" + entry.getKey() + " : " + state + "\n";
+            } else state = "Upgrade " + entry.getCurrentLevel().getNumberOfUpgrade() + "";
+            toPrint += "\t" + entry.getName() + " : " + state + "\n";
         }
         printOutput(toPrint);
     }
