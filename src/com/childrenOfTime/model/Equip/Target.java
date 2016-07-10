@@ -6,21 +6,36 @@ import com.childrenOfTime.model.Rules;
  * Created by SaeedHD on 07/07/2016.
  */
 public enum Target {
-    HimSelf(true), SingleEnemy(false, 1), SingleTeamMate(false, 1), SeveralEnemies(false), SeveralTeamMates(false), AllTeammates(true), AllEnemies(true), theAttackedOne(true);
+    HimSelf(true, true), SingleEnemy(false, 1, false), SingleTeamMate(false, 1, true), SeveralEnemies(false, 0, false), SeveralTeamMates(false, true), AllTeammates(true, true), AllEnemies(true, false), theAttackedOne(true, false);
 
-    Target(boolean implicit) {
+    Target(boolean implicit, boolean isTeammate) {
         Implicit = implicit;
-        if (implicit) this.targetsNeededToChoose = 0;
-        else this.targetsNeededToChoose = Rules.Quantitiy_Of_Targets_While_Manual_Multiple_Target_Choosing;
+        if (implicit) this.numberOftargetsNeededToChoose = 0;
+        else this.numberOftargetsNeededToChoose = Rules.Quantitiy_Of_Targets_For_Manual_Multiple_Target_Choosing;
 
     }
 
 
-    Target(Integer targetsNeededToChoose, boolean implicit) {
-        this.targetsNeededToChoose = targetsNeededToChoose;
+    Target(boolean implicit, Integer numberOftargetsNeededToChoose, boolean isTeammate) {
         Implicit = implicit;
+        this.numberOftargetsNeededToChoose = numberOftargetsNeededToChoose;
+        this.isTeammate = isTeammate;
     }
 
-    boolean Implicit;
-    Integer targetsNeededToChoose;
+
+    private boolean Implicit;
+    private Integer numberOftargetsNeededToChoose;
+    private boolean isTeammate;
+
+    public boolean isImplicit() {
+        return Implicit;
+    }
+
+    public Integer getNumberOftargetsNeededToChoose() {
+        return numberOftargetsNeededToChoose;
+    }
+
+    public boolean isTeammate() {
+        return isTeammate;
+    }
 }

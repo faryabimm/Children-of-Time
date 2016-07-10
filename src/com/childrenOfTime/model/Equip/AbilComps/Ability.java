@@ -25,20 +25,13 @@ public class Ability implements Castable, TurnBase {
     Upgrade baseState;
     BST<Upgrade> Upgrades;
     Upgrade currentLevel;
-    String SuccessMessage;
-    Target targetType;
-    ImageIcon image;
+    final String SuccessMessage;
+    final Target targetType;
+    final ImageIcon image;
+    final int powerOutOften;
 
-    public Ability(@NotNull String name, @NotNull Target targetType, @Nullable String successMessage, @Nullable String description, ImageIcon image) {
-        SuccessMessage = successMessage;
-        this.name = name;
-        this.description = description;
-        this.targetType = targetType;
-        this.image = image;
 
-    }
-
-    public Ability(@NotNull String name, @Nullable String description, @Nullable String successMessage, @NotNull BST<Upgrade> upgrades, @NotNull Target targetType, ImageIcon image) {
+    public Ability(@NotNull String name, @Nullable String description, @Nullable String successMessage, @NotNull BST<Upgrade> upgrades, @NotNull Target targetType, @Nullable ImageIcon image, @NotNull Integer powerOutOften) {
         if (image == null) image = DEFAUL_AbilityImage;
         this.name = name;
         this.description = description;
@@ -46,6 +39,7 @@ public class Ability implements Castable, TurnBase {
         this.Upgrades = upgrades;
         this.targetType = targetType;
         this.image = image;
+        this.powerOutOften = powerOutOften;
 
     }
 
@@ -150,6 +144,14 @@ public class Ability implements Castable, TurnBase {
         return SuccessMessage;
     }
 
+
+    public Target getTargetType() {
+        return targetType;
+    }
+
+    public int getPowerOutOften() {
+        return powerOutOften;
+    }
 }
 
 

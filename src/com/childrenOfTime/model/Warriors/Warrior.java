@@ -367,6 +367,15 @@ public class Warrior {
         currentHealth = currentHealth + quantity > info.maxHealth ? info.maxHealth : currentHealth + quantity;
     }
 
+
+    public void burnEP(Warrior[] targets) {
+        if (!info.CanBurnEP) return;
+        changeEP(info.EPBurningCost);
+        for (Warrior target : targets) {
+            target.changeEP(-new Random().nextInt(info.heroBurningEnergy[1] - info.heroBurningEnergy[0]) + info.heroBurningEnergy[0]);
+        }
+    }
+
     public boolean wasAlive() {
         return currentHealth > 0;
     }
@@ -465,5 +474,9 @@ public class Warrior {
 
     public boolean isDead() {
         return isDead;
+    }
+
+    public HeroClass getInfo() {
+        return info;
     }
 }

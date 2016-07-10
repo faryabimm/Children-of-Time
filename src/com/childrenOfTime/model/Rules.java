@@ -13,7 +13,7 @@ public class Rules {
     public static Boolean RefillRatesCanBeNegative;
     public static Boolean INTELLIJENT_DAMGES;
     public static DIFFICUALTY DIFFICUALTY;
-    public static Integer Quantitiy_Of_Targets_While_Manual_Multiple_Target_Choosing = 3;
+    public static Integer Quantitiy_Of_Targets_For_Manual_Multiple_Target_Choosing = 3;
 
 
 }

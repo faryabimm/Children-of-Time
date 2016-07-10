@@ -9,13 +9,18 @@ import java.util.ArrayList;
  */
 public class HeroClass {
 
+    Boolean CanAttack;
 
     Boolean CanHaveFBFeatures;
     //Just For Final Boss
     int attackPowerInHighHealth;
     int attackPowerInLowHealth;
     int healthBound;
+
+
+    Boolean CanBurnEP;
     int[] heroBurningEnergy;
+    int EPBurningCost;
     private String mutationMessage;
     private String epBurningMessage;
 
@@ -45,13 +50,12 @@ public class HeroClass {
     String BackStory;
     ArrayList<Ability> classAbilities;
 
-    public HeroClass(int maxHealth, int healthRefillRate, int maxMagic, int magicRefillRate, int attackPower
+    public HeroClass(int maxHealth, int healthRefillRate, int maxMagic, int magicRefillRate
             , int EPPerTurn, int inventorySize, String classDescription, String backStory, ArrayList<Ability> classAbilities) {
         this.maxHealth = maxHealth;
         this.healthRefillRate = healthRefillRate;
         this.maxMagic = maxMagic;
         this.magicRefillRate = magicRefillRate;
-        this.attackPower = attackPower;
         this.EPPerTurn = EPPerTurn;
         this.inventorySize = inventorySize;
         this.classDescription = classDescription;
@@ -162,5 +166,9 @@ public class HeroClass {
 
     public ArrayList<Ability> getClassAbilities() {
         return classAbilities;
+    }
+
+    public Boolean getCanAttack() {
+        return CanAttack;
     }
 }
