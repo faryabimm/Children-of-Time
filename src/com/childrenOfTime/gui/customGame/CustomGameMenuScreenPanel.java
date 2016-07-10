@@ -54,6 +54,7 @@ public class CustomGameMenuScreenPanel extends MenuScreenPanel {
         });
         developer.addActionListener(e -> {
             CustomGameDAO.setCurrentUser(User.users.get(User.users.indexOf(new User("Mohammadmahdi74"))));
+            CustomGameDAO.loadCurrentUserData();
             ChildrenOfTime.changeContentPane(new CustomGameUserHubPanel());
         });
         emerge();

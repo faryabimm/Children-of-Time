@@ -5,10 +5,12 @@ import com.childrenOfTime.model.Warriors.Warrior;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 
+import java.io.Serializable;
+
 /**
  * Created by SaeedHD on 07/07/2016.
  */
-public class Effect implements Performable {
+public class Effect implements Performable, Serializable {
     public static final Double YEK_DOUBLE = 1d;
     public static final int DEFAULT_GHARARDADI_FOR_WEAROF_PASSIVE_EFFECT_INSTANTLY_AFTER_ATTACK = -3000;
 

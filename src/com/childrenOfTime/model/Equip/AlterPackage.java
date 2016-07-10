@@ -3,13 +3,14 @@ package com.childrenOfTime.model.Equip;
 import com.childrenOfTime.model.Warriors.Warrior;
 import com.sun.istack.internal.Nullable;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Random;
 
 /**
  * Created by SaeedHD on 07/07/2016.
  */
-public class AlterPackage {
+public class AlterPackage implements Serializable {
     public static final int DEFAULT_COUNT_OF_ALTERING_ATTRIBUTES = 8;
     public static final Double DEFAULT_FACTOR = 1d;
     public static final Integer DEFAULT_DELTA = 0;

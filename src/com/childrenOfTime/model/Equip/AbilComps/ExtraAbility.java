@@ -38,7 +38,7 @@ public class ExtraAbility {
 //        for (int i = 0; i < swirlingAttackPercents.length; i++) {
 //            Upgrade newUpgrade = new Upgrade(UpgradeNumbers[i], UpgradeDescriptons[i], 0, XPCosts[i], EPCost[i], MPCost[i], requirements[i]);
 //            Upgrades.add(newUpgrade);
-//            newUpgrade.effects.add(new PermanentPassiveFeatures(swirlingHeal, swirlingHealPercents[i], swirlingAttack1, swirlingAttackPercents[i], crticalAttack, crticalFactor[i], criticalProbabiliy[i]));
+//            newUpgrade.currentUserCustomEffects.add(new PermanentPassiveFeatures(swirlingHeal, swirlingHealPercents[i], swirlingAttack1, swirlingAttackPercents[i], crticalAttack, crticalFactor[i], criticalProbabiliy[i]));
 //        }
 //    }
 //}

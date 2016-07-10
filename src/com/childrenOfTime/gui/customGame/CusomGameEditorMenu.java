@@ -1,14 +1,21 @@
 package com.childrenOfTime.gui.customGame;
 
+import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
 import com.childrenOfTime.gui.fillForms.AddEffectDialog;
 import com.childrenOfTime.gui.fillForms.NewAbilityCreationDialog;
 import com.childrenOfTime.gui.fillForms.NewItemCreationDialog;
+import com.childrenOfTime.gui.fillForms.dataHolders.EffectDataHolder;
 import com.childrenOfTime.model.ChildrenOfTime;
+import com.childrenOfTime.model.Equip.AlterPackage;
+import com.childrenOfTime.model.Equip.Effect;
+import com.childrenOfTime.model.Equip.EffectType;
+import com.childrenOfTime.utilities.GUIUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * Created by mohammadmahdi on 7/8/16.
@@ -75,7 +82,26 @@ public class CusomGameEditorMenu extends MenuScreenPanel {
         });
         customEffect.addActionListener(e -> {
             fade();
-            new AddEffectDialog(true);
+            EffectDataHolder dataHolder = new EffectDataHolder();
+            Integer delta[] = {dataHolder.APIncrement,dataHolder.HRRIncrement,dataHolder.MPIncrement,dataHolder.MMPIncrement,
+                    dataHolder.EPIncrement,dataHolder.HRRIncrement,dataHolder.MMRRIncrement};
+            Double factor[] = {dataHolder.APCoefficient,dataHolder.HCoefficient,dataHolder.MPCoefficient,dataHolder.MMPCoefficient,
+                    dataHolder.EPCoefficient,dataHolder.HRRCoefficient,dataHolder.MMRRCoefficient};
+
+
+            new AddEffectDialog(true, dataHolder);
+            Effect createdEffect = new Effect(new EffectType(dataHolder.automaticTargetSelection,dataHolder.applyUponAttack,
+                    dataHolder.autoRepeatable,!dataHolder.temporaryEffect,dataHolder.indefiniteExcecution,
+                    dataHolder.wearOffEffectsAfterExcecution), new AlterPackage(delta,factor,
+                    dataHolder.indefiniteExcecutionPercent),dataHolder.automaticTargetType,dataHolder.indefiniteExcecutionPercent,
+                    dataHolder.temporaryEffectTurnCount,dataHolder.autoRepeatableTurnCount);
+            GUIUtils.deserializeUserFiles();
+            CustomGameDAO.currentUserCustomEffects.add(createdEffect);
+            try {
+                GUIUtils.serializeUserObject(CustomGameDAO.currentUserCustomEffects,"effects");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         });
         emerge();
 

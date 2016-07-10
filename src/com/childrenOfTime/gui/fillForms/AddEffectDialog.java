@@ -1,10 +1,15 @@
 package com.childrenOfTime.gui.fillForms;
 
 import com.childrenOfTime.gui.customGame.CusomGameEditorMenu;
+import com.childrenOfTime.gui.fillForms.dataHolders.EffectDataHolder;
 import com.childrenOfTime.model.ChildrenOfTime;
+import com.childrenOfTime.model.Equip.Target;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.event.*;
+import java.awt.geom.Arc2D;
 
 public class AddEffectDialog extends JDialog {
     private JPanel contentPane;
@@ -18,19 +23,37 @@ public class AddEffectDialog extends JDialog {
     private JCheckBox autoRepeatableCheckBox;
     private JCheckBox indefiniteExcecutionCheckBox;
     private JCheckBox automaticTargetCheckBox;
-    private JCheckBox himselfCheckBox;
-    private JCheckBox theEnemyCheckBox;
-    private JCheckBox allTeammatesCheckBox;
-    private JCheckBox allEnemiesCheckBox;
     private JTextField textField1;
     private JTextField textField3;
+    private JTextField textField6;
+    private JTextField textField7;
+    private JTextField textField8;
+    private JTextField textField9;
+    private JTextField textField10;
+    private JTextField textField11;
+    private JTextField textField12;
+    private JTextField textField13;
+    private JTextField textField14;
+    private JTextField textField15;
+    private JTextField textField16;
+    private JTextField textField17;
+    private JCheckBox wearOffEffectsAfteCheckBox;
+    private JRadioButton himselfRadioButton;
+    private JRadioButton allTeammatesRadioButton;
+    private JRadioButton theEnemyRadioButton;
+    private JRadioButton allEnemiesRadioButton;
+    private JRadioButton theChosenEnemyRadioButton;
+    private JTextField textField18;
+
+    EffectDataHolder dataHolder;
 
     private boolean invokedDirectly = false;
 
 
 
 
-    public AddEffectDialog(boolean invokedDirectly) {
+    public AddEffectDialog(boolean invokedDirectly, EffectDataHolder dataHolder) {
+        this.dataHolder = dataHolder;
         this.invokedDirectly = invokedDirectly;
         setContentPane(contentPane);
         setModal(true);
@@ -66,13 +89,55 @@ public class AddEffectDialog extends JDialog {
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+
     }
 
     private void onOK() {
 // add your code here
+
+
+        collectData();
         if (invokedDirectly) disposalProcess();
         else dispose();
     }
+
+    private void collectData() {
+
+        dataHolder.name = textField18.getText();
+
+        dataHolder.applyUponAttack = applyUponAttackCheckBox.isSelected();
+        dataHolder.temporaryEffect = temporaryEffectCheckBox.isSelected();
+        dataHolder.temporaryEffectTurnCount = Integer.parseInt(textField4.getText());
+        dataHolder.autoRepeatable = autoRepeatableCheckBox.isSelected();
+        dataHolder.autoRepeatableTurnCount = Integer.parseInt(textField4.getText());
+        dataHolder.indefiniteExcecution = indefiniteExcecutionCheckBox.isSelected();
+        dataHolder.indefiniteExcecutionPercent = Integer.parseInt(textField2.getText());
+        dataHolder.wearOffEffectsAfterExcecution = wearOffEffectsAfteCheckBox.isSelected();
+        dataHolder.automaticTargetSelection = automaticTargetCheckBox.isSelected();
+
+        if (himselfRadioButton.isSelected()) dataHolder.automaticTargetType = Target.HimSelf;
+        if (theEnemyRadioButton.isSelected()) dataHolder.automaticTargetType = Target.SingleTarget;
+        if (allTeammatesRadioButton.isSelected()) dataHolder.automaticTargetType = Target.AllTeammates;
+        if (allEnemiesRadioButton.isSelected()) dataHolder.automaticTargetType = Target.AllEnemies;
+        if (theChosenEnemyRadioButton.isSelected()) dataHolder.automaticTargetType = Target.theAttackedOne;
+
+
+        dataHolder.APCoefficient = Double.parseDouble(textField1.getText());
+        dataHolder.HCoefficient = Double.parseDouble(textField6.getText());
+        dataHolder.MPCoefficient = Double.parseDouble(textField7.getText());
+        dataHolder.MMPCoefficient = Double.parseDouble(textField8.getText());
+        dataHolder.EPCoefficient = Double.parseDouble(textField9.getText());
+        dataHolder.HRRCoefficient = Double.parseDouble(textField10.getText());
+        dataHolder.MMRRCoefficient = Double.parseDouble(textField11.getText());
+        dataHolder.APIncrement = Integer.parseInt(textField3.getText());
+        dataHolder.HIncrement = Integer.parseInt(textField12.getText());
+        dataHolder.MPIncrement = Integer.parseInt(textField13.getText());
+        dataHolder.MMPIncrement = Integer.parseInt(textField14.getText());
+        dataHolder.EPIncrement = Integer.parseInt(textField15.getText());
+        dataHolder.HRRIncrement = Integer.parseInt(textField16.getText());
+        dataHolder.MMRRIncrement = Integer.parseInt(textField17.getText());
+    }
+
 
     private void disposalProcess() {
         ChildrenOfTime.changeContentPane(new CusomGameEditorMenu());
@@ -86,7 +151,9 @@ public class AddEffectDialog extends JDialog {
     }
 
     public static void main(String[] args) {
-        AddEffectDialog dialog = new AddEffectDialog(false);
+        EffectDataHolder dataHolder = new EffectDataHolder();
+        AddEffectDialog dialog = new AddEffectDialog(false, dataHolder);
+        System.out.println(dataHolder);
         System.exit(0);
     }
 }

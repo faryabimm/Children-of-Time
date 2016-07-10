@@ -143,7 +143,7 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
 
     public void aTurnHasPassed() {
         /*
-        for (Effect eff : effects) {
+        for (Effect eff : currentUserCustomEffects) {
             if (eff instanceof TurnBase) {
                 ((TurnBase) eff).aTurnHasPassed();
             }
