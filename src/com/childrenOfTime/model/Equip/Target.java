@@ -16,7 +16,7 @@ public enum Target {
     }
 
 
-    Target(Integer targetsNeededToChoose, boolean implicit) {
+    Target(boolean implicit,Integer targetsNeededToChoose) {
         this.targetsNeededToChoose = targetsNeededToChoose;
         Implicit = implicit;
     }

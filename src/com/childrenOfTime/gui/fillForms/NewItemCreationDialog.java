@@ -3,6 +3,7 @@ package com.childrenOfTime.gui.fillForms;
 import com.childrenOfTime.gui.customGame.CusomGameEditorMenu;
 import com.childrenOfTime.gui.fillForms.dataHolders.EffectDataHolder;
 import com.childrenOfTime.model.ChildrenOfTime;
+import com.childrenOfTime.utilities.GUIUtils;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -32,6 +33,8 @@ public class NewItemCreationDialog extends JDialog {
     private JTextField textField10;
     private JButton browseForImageFileButton;
     private JCheckBox noImageFileSelectedCheckBox;
+
+    protected String imageFileAddress = null;
 
     public NewItemCreationDialog() {
         setContentPane(contentPane);
@@ -71,6 +74,40 @@ public class NewItemCreationDialog extends JDialog {
             }
         });
 
+        browseForImageFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String imageFilePath = GUIUtils.getPNGImageFilePath(null);
+                try {
+                    noImageFileSelectedCheckBox.setText("..." + imageFilePath.substring(imageFilePath.length() - 15,
+                            imageFilePath.length()));
+                } catch (NullPointerException e1) {}
+                imageFileAddress = imageFilePath;
+                noImageFileSelectedCheckBox.setSelected(true);
+            }
+        });
+        inflationRateCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(inflationRateCheckBox.isSelected()) textField4.setEnabled(true);
+                else textField4.setEnabled(false);
+            }
+        });
+        reusableCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(reusableCheckBox.isSelected()) textField2.setEnabled(true);
+                else textField2.setEnabled(false);
+            }
+        });
+
+        hasCooldownCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(hasCooldownCheckBox.isSelected()) textField1.setEnabled(true);
+                else textField1.setEnabled(false);
+            }
+        });
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -82,8 +119,13 @@ public class NewItemCreationDialog extends JDialog {
     }
 
     private void disposalProcess() {
+        collectData();
         ChildrenOfTime.changeContentPane(new CusomGameEditorMenu());
         dispose();
+    }
+
+    private void collectData() {
+
     }
 
     private void onCancel() {

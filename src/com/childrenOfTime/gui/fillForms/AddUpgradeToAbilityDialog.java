@@ -18,7 +18,7 @@ public class AddUpgradeToAbilityDialog extends JDialog {
     private JCheckBox immediateApplicationActiveCheckBox;
     private JCheckBox recastableCheckBox;
     private JCheckBox setAsBaseUpgradeCheckBox;
-    private JTextField a1212TextField;
+    private JTextField textField7;
     private JCheckBox hasRequirementsCheckBox;
     private JButton addEffectsButton;
 
@@ -60,6 +60,13 @@ public class AddUpgradeToAbilityDialog extends JDialog {
             }
         });
 
+        hasRequirementsCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(hasRequirementsCheckBox.isSelected()) textField7.setEnabled(true);
+                else textField7.setEnabled(false);
+            }
+        });
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -79,5 +86,9 @@ public class AddUpgradeToAbilityDialog extends JDialog {
         AddUpgradeToAbilityDialog dialog = new AddUpgradeToAbilityDialog();
 
         System.exit(0);
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }

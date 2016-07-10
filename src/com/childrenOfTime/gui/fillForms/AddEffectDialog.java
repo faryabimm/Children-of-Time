@@ -1,5 +1,6 @@
 package com.childrenOfTime.gui.fillForms;
 
+import com.childrenOfTime.controller.GameEngine;
 import com.childrenOfTime.gui.customGame.CusomGameEditorMenu;
 import com.childrenOfTime.gui.fillForms.dataHolders.EffectDataHolder;
 import com.childrenOfTime.model.ChildrenOfTime;
@@ -12,6 +13,8 @@ import java.awt.event.*;
 import java.awt.geom.Arc2D;
 
 public class AddEffectDialog extends JDialog {
+
+    private final ButtonGroup radioGroup;
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
@@ -53,24 +56,28 @@ public class AddEffectDialog extends JDialog {
 
 
     public AddEffectDialog(boolean invokedDirectly, EffectDataHolder dataHolder) {
+        radioGroup = new ButtonGroup();
+        radioGroup.add(himselfRadioButton);
+        radioGroup.add(allTeammatesRadioButton);
+        radioGroup.add(theEnemyRadioButton);
+        radioGroup.add(allEnemiesRadioButton);
+        radioGroup.add(theChosenEnemyRadioButton);
+
         this.dataHolder = dataHolder;
         this.invokedDirectly = invokedDirectly;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
-
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onOK();
             }
         });
-
         buttonCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
             }
         });
-
 // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -78,18 +85,56 @@ public class AddEffectDialog extends JDialog {
                 onCancel();
             }
         });
-
 // call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        automaticTargetCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (automaticTargetCheckBox.isSelected()) {
+                    himselfRadioButton.setEnabled(true);
+                    theEnemyRadioButton.setEnabled(true);
+                    allTeammatesRadioButton.setEnabled(true);
+                    allEnemiesRadioButton.setEnabled(true);
+                    theChosenEnemyRadioButton.setEnabled(true);
 
+                } else {
+                    himselfRadioButton.setEnabled(false);
+                    theEnemyRadioButton.setEnabled(false);
+                    allTeammatesRadioButton.setEnabled(false);
+                    allEnemiesRadioButton.setEnabled(false);
+                    theChosenEnemyRadioButton.setEnabled(false);
+
+                }
+            }
+        });
+        temporaryEffectCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(temporaryEffectCheckBox.isSelected()) textField4.setEnabled(true);
+                else textField4.setEnabled(false);
+            }
+        });
+        autoRepeatableCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(autoRepeatableCheckBox.isSelected()) textField5.setEnabled(true);
+                else textField5.setEnabled(false);
+            }
+        });
+        indefiniteExcecutionCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(indefiniteExcecutionCheckBox.isSelected()) textField2.setEnabled(true);
+                else textField2.setEnabled(false);
+            }
+        });
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-
     }
 
     private void onOK() {
@@ -116,7 +161,7 @@ public class AddEffectDialog extends JDialog {
         dataHolder.automaticTargetSelection = automaticTargetCheckBox.isSelected();
 
         if (himselfRadioButton.isSelected()) dataHolder.automaticTargetType = Target.HimSelf;
-        if (theEnemyRadioButton.isSelected()) dataHolder.automaticTargetType = Target.SingleTarget;
+        if (theEnemyRadioButton.isSelected()) dataHolder.automaticTargetType = Target.SingleEnemy;
         if (allTeammatesRadioButton.isSelected()) dataHolder.automaticTargetType = Target.AllTeammates;
         if (allEnemiesRadioButton.isSelected()) dataHolder.automaticTargetType = Target.AllEnemies;
         if (theChosenEnemyRadioButton.isSelected()) dataHolder.automaticTargetType = Target.theAttackedOne;
