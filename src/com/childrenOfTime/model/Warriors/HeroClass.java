@@ -43,25 +43,76 @@ public class HeroClass {
     int healthRefillRate;
     int maxMagic;
     int magicRefillRate;
-    int attackPower;
-    int EPPerTurn;
+    int initialEP;
     int inventorySize;
     String classDescription;
     String BackStory;
     ArrayList<Ability> classAbilities;
 
-    public HeroClass(int maxHealth, int healthRefillRate, int maxMagic, int magicRefillRate
-            , int EPPerTurn, int inventorySize, String classDescription, String backStory, ArrayList<Ability> classAbilities) {
+    public HeroClass(Boolean canAttack, Boolean canHaveFBFeatures, int attackPowerInHighHealth, int attackPowerInLowHealth, int healthBound, Boolean canBurnEP, int[] heroBurningEnergy, int EPBurningCost, String mutationMessage, String epBurningMessage, Boolean canChangeMP, Boolean canChangeEP, Boolean canBuyItems, Boolean canUseImmortalityPotions, Boolean canUseRefillFeature, String specificActionMessage, String dyingActionMessage, String className, Integer damageEfficiencyIntelligenceOutOfTen, int heroAttackingNumberPerTurn, int maxHealth, int healthRefillRate, int maxMagic, int magicRefillRate, int initialEP, int inventorySize, String classDescription, String backStory, ArrayList<Ability> classAbilities) {
+        CanAttack = canAttack;
+        CanHaveFBFeatures = canHaveFBFeatures;
+        this.attackPowerInHighHealth = attackPowerInHighHealth;
+        this.attackPowerInLowHealth = attackPowerInLowHealth;
+        this.healthBound = healthBound;
+        CanBurnEP = canBurnEP;
+        this.heroBurningEnergy = heroBurningEnergy;
+        this.EPBurningCost = EPBurningCost;
+        this.mutationMessage = mutationMessage;
+        this.epBurningMessage = epBurningMessage;
+        CanChangeMP = canChangeMP;
+        CanChangeEP = canChangeEP;
+        CanBuyItems = canBuyItems;
+        CanUseImmortalityPotions = canUseImmortalityPotions;
+        CanUseRefillFeature = canUseRefillFeature;
+        this.specificActionMessage = specificActionMessage;
+        DyingActionMessage = dyingActionMessage;
+        ClassName = className;
+        this.damageEfficiencyIntelligenceOutOfTen = damageEfficiencyIntelligenceOutOfTen;
+        this.heroAttackingNumberPerTurn = heroAttackingNumberPerTurn;
         this.maxHealth = maxHealth;
         this.healthRefillRate = healthRefillRate;
         this.maxMagic = maxMagic;
         this.magicRefillRate = magicRefillRate;
-        this.EPPerTurn = EPPerTurn;
         this.inventorySize = inventorySize;
         this.classDescription = classDescription;
         BackStory = backStory;
         this.classAbilities = classAbilities;
+
     }
+
+    public HeroClass(HeroClass heroClass) {
+        CanAttack = heroClass.CanAttack;
+        CanHaveFBFeatures = heroClass.CanHaveFBFeatures;
+        this.attackPowerInHighHealth = heroClass.attackPowerInHighHealth;
+        this.attackPowerInLowHealth = heroClass.attackPowerInLowHealth;
+        this.healthBound = heroClass.healthBound;
+        CanBurnEP = heroClass.CanBurnEP;
+        this.heroBurningEnergy = heroClass.heroBurningEnergy;
+        this.EPBurningCost = heroClass.EPBurningCost;
+        this.mutationMessage = heroClass.mutationMessage;
+        this.epBurningMessage = heroClass.epBurningMessage;
+        CanChangeMP = heroClass.CanChangeMP;
+        CanChangeEP = heroClass.CanChangeEP;
+        CanBuyItems = heroClass.CanBuyItems;
+        CanUseImmortalityPotions = heroClass.CanUseImmortalityPotions;
+        CanUseRefillFeature = heroClass.CanUseRefillFeature;
+        this.specificActionMessage = heroClass.specificActionMessage;
+        DyingActionMessage = heroClass.DyingActionMessage;
+        ClassName = heroClass.ClassName;
+        this.damageEfficiencyIntelligenceOutOfTen = heroClass.damageEfficiencyIntelligenceOutOfTen;
+        this.heroAttackingNumberPerTurn = heroClass.heroAttackingNumberPerTurn;
+        this.maxHealth = heroClass.maxHealth;
+        this.healthRefillRate = heroClass.healthRefillRate;
+        this.maxMagic = heroClass.maxMagic;
+        this.magicRefillRate = heroClass.magicRefillRate;
+        this.initialEP = heroClass.initialEP;
+        this.inventorySize = heroClass.inventorySize;
+        this.classDescription = heroClass.classDescription;
+        BackStory = heroClass.BackStory;
+        this.classAbilities = heroClass.classAbilities;
+    }
+
 
 
     public Boolean getCanHaveFBFeatures() {
@@ -144,12 +195,9 @@ public class HeroClass {
         return magicRefillRate;
     }
 
-    public int getAttackPower() {
-        return attackPower;
-    }
 
-    public int getEPPerTurn() {
-        return EPPerTurn;
+    public int getInitialEP() {
+        return initialEP;
     }
 
     public int getInventorySize() {

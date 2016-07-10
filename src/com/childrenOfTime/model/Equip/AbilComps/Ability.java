@@ -4,6 +4,7 @@ import com.childrenOfTime.exceptions.AbilityNotAquiredException;
 import com.childrenOfTime.exceptions.RequirementsNotMetException;
 import com.childrenOfTime.exceptions.UpgradeException;
 import com.childrenOfTime.model.BST;
+import com.childrenOfTime.model.Equip.ItemComps.Messages;
 import com.childrenOfTime.model.Equip.Target;
 import com.childrenOfTime.model.Interfaces.Castable;
 import com.childrenOfTime.model.Interfaces.TurnBase;
@@ -23,19 +24,19 @@ public class Ability implements Castable, TurnBase {
     String name;
     String description;
     Upgrade baseState;
-    BST<Upgrade> Upgrades;
+    private BST<Upgrade> Upgrades;
     Upgrade currentLevel;
-    final String SuccessMessage;
+    Messages messages;
     final Target targetType;
     final ImageIcon image;
     final int powerOutOften;
 
 
-    public Ability(@NotNull String name, @Nullable String description, @Nullable String successMessage, @NotNull BST<Upgrade> upgrades, @NotNull Target targetType, @Nullable ImageIcon image, @NotNull Integer powerOutOften) {
+    public Ability(@NotNull String name, @Nullable Messages messages, @NotNull BST<Upgrade> upgrades, @NotNull Target targetType, @Nullable ImageIcon image, @NotNull Integer powerOutOften) {
         if (image == null) image = DEFAUL_AbilityImage;
+        if (messages == null) messages = new Messages();
         this.name = name;
-        this.description = description;
-        this.SuccessMessage = successMessage;
+        this.messages = messages;
         this.Upgrades = upgrades;
         this.targetType = targetType;
         this.image = image;
@@ -140,9 +141,6 @@ public class Ability implements Castable, TurnBase {
         return currentLevel;
     }
 
-    public String getSuccessMessage() {
-        return SuccessMessage;
-    }
 
 
     public Target getTargetType() {
@@ -151,6 +149,11 @@ public class Ability implements Castable, TurnBase {
 
     public int getPowerOutOften() {
         return powerOutOften;
+    }
+
+    public void addToUpgrades(Upgrade upgrade) {
+        this.Upgrades.add(upgrade);
+        upgrade.setMessages(this.messages);
     }
 }
 

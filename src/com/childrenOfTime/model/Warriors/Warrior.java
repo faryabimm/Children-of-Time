@@ -10,9 +10,8 @@ import com.childrenOfTime.model.Equip.ItemComps.Item;
 import com.childrenOfTime.model.Equip.ItemComps.ItemType;
 import com.childrenOfTime.model.Rules;
 
-import java.awt.*;
+import javax.swing.*;
 import java.util.*;
-import java.util.List;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
 
@@ -27,12 +26,11 @@ public class Warrior {
 
 
 
-
     private String name;
     private int id = 0;
-    private Image image;
+    private ImageIcon image;
 
-
+    private int currentAttackPower;
     private int currentHealth;
     private int currentMagic;
     private int currentEP;
@@ -42,9 +40,6 @@ public class Warrior {
     private HeroClass info;
     private ArrayList<Ability> specificHeroAbilities;
 
-    private Warrior[] allTeamMates;
-    private Warrior[] allEnemies;
-    private String TeamName;
     //private ExAbiltyInfo exAbiltyInfo;
     //private ExAbiltyInfo exAbiltyInfo;
     //private Boolean CanHaveHeroAbilities;
@@ -55,14 +50,35 @@ public class Warrior {
     private Set<Effect> passiveEffects = new HashSet<>(3);
     private Set<Effect> imPermanentManualWeearOffEffs = new HashSet<>();
 
-    public List<Ability> abilities;
+    public List<Ability> abilities = new ArrayList<>();
 
-    public Warrior(String name, Image image, HeroClass info, ArrayList<Ability> specificHeroAbilities) {
+
+    public Warrior(String name, int id, HeroClass heroClass, ArrayList<Ability> specificHeroAbilities, ImageIcon imageIcon) {
+        this.info = new HeroClass(heroClass);
         this.name = name;
-        this.image = image;
-        this.info = info;
+        this.image = imageIcon;
+        this.id = id;
+        this.image = imageIcon;
         this.specificHeroAbilities = specificHeroAbilities;
+
+        for (Ability cAbility : info.classAbilities) {
+            abilities.add(cAbility);
+        }
+        for (Ability hAbility : specificHeroAbilities) {
+            abilities.add(hAbility);
+        }
+        inventory = new Inventory(info.getInventorySize());
+        this.currentHealth = info.maxHealth;
+
+        if (info.CanHaveFBFeatures) {
+            this.currentAttackPower = this.currentHealth > info.healthBound ? info.attackPowerInHighHealth : info.attackPowerInLowHealth;
+        } else this.currentAttackPower = this.info.attackPowerInHighHealth;
+        this.currentAttackPower = this.currentHealth > info.healthBound ? info.attackPowerInHighHealth : info.attackPowerInLowHealth;
+        this.currentEP = info.initialEP;
+        this.currentMagic = info.maxMagic;
+
     }
+
 
     public void receiveAlterPack(AlterPackage alterPack) {
         if (alterPack != null) return;
@@ -188,7 +204,9 @@ public class Warrior {
         ItemType itemType = item.getType();
         if (!item.canBeSold()) throw new ItemCannotBeSold("This Item Is not permitted to sell ! ");
         if (!inventory.contains(item)) throw new TradeException("Hero doesn't have this . ");
+        inventory.removeFromInventoryIfYouCan(item);
         if (itemType.getWearOffAfterSold()) {
+            item.removedFromInventory(this);
             for (Effect effect : item.getEffects()) {
                 removeFromImPermanentManualEffectsList(effect);
             }
@@ -214,12 +232,12 @@ public class Warrior {
 
 
     public void changeAttackPower(int num) {
-        int newAP = info.attackPower + num;
+        int newAP = this.currentAttackPower + num;
         if (newAP < 0) {
-            if (!Rules.AttackPowerCanBeNegative) this.info.attackPower = newAP;
+            if (!Rules.AttackPowerCanBeNegative) this.currentAttackPower = newAP;
             printOutput(getIdentity() + "'s " + "AttackPower has Gone Under zero !! ");
         }
-        this.info.attackPower = newAP;
+        this.currentAttackPower = newAP;
     }
 
     public void changeMaxMagic(int i) {
@@ -357,9 +375,9 @@ public class Warrior {
 
     public void updateFinalBossHealthChanges() {
         if (this.currentHealth <= this.info.healthBound) {
-            this.info.attackPower = this.info.attackPowerInLowHealth;
+            this.currentAttackPower = this.info.attackPowerInLowHealth;
         } else {
-            this.info.attackPower = this.info.attackPowerInHighHealth;
+            this.currentAttackPower = this.info.attackPowerInHighHealth;
         }
     }
 
@@ -369,8 +387,7 @@ public class Warrior {
 
 
     public void burnEP(Warrior[] targets) {
-        if (!info.CanBurnEP) return;
-        changeEP(info.EPBurningCost);
+        if (!info.CanHaveFBFeatures) return;
         for (Warrior target : targets) {
             target.changeEP(-new Random().nextInt(info.heroBurningEnergy[1] - info.heroBurningEnergy[0]) + info.heroBurningEnergy[0]);
         }
@@ -419,7 +436,7 @@ public class Warrior {
     }
 
     public int getAttackPower() {
-        return info.attackPower;
+        return this.currentAttackPower;
     }
 
     public int getMaxHealth() {

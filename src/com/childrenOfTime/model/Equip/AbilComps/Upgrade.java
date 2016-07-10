@@ -43,31 +43,29 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
         this.COOLDOWN_TIME = 0;
         this.recastable = true;
     }
+//
+//    @Deprecated
+//    public Upgrade(@NotNull Integer numberOfUpgrade, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable String... upgradeRequirements) {
+//        if (COOLDOWN_TIME == null) COOLDOWN_TIME = 0;
+//        if (XPCost == null) XPCost = 0;
+//        if (masrafEP == null) masrafEP = 0;
+//        if (masrafMP == null) masrafMP = 0;
+//        if (upgradeRequirements == null) {
+//            upgradeRequirements = new String[1];
+//            upgradeRequirements[0] = "true";
+//        }
+//        this.numberOfUpgrade = numberOfUpgrade;
+//        this.leftTurnsToCoolDown = COOLDOWN_TIME;
+//        this.COOLDOWN_TIME = COOLDOWN_TIME;
+//        this.XPCost = XPCost;
+//        this.masrafEP = masrafEP;
+//        this.masrafMP = masrafMP;
+//        this.upgradeRequirements = upgradeRequirements;
+//        this.recastable = true;
+//
+//    }
 
-    @Deprecated
-    public Upgrade(@NotNull Integer numberOfUpgrade, @NotNull Messages messages, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable String... upgradeRequirements) {
-        if (messages == null) messages = new Messages();
-        if (COOLDOWN_TIME == null) COOLDOWN_TIME = 0;
-        if (XPCost == null) XPCost = 0;
-        if (masrafEP == null) masrafEP = 0;
-        if (masrafMP == null) masrafMP = 0;
-        if (upgradeRequirements == null) {
-            upgradeRequirements = new String[1];
-            upgradeRequirements[0] = "true";
-        }
-        this.numberOfUpgrade = numberOfUpgrade;
-        this.leftTurnsToCoolDown = COOLDOWN_TIME;
-        this.COOLDOWN_TIME = COOLDOWN_TIME;
-        this.XPCost = XPCost;
-        this.masrafEP = masrafEP;
-        this.masrafMP = masrafMP;
-        this.upgradeRequirements = upgradeRequirements;
-        this.recastable = true;
-
-    }
-
-    public Upgrade(@NotNull Integer numberOfUpgrade, @Nullable Messages messages, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable Boolean castJustAfterAcquire, @Nullable Boolean recastable, @Nullable String... upgradeRequirements) {
-        if (messages == null) messages = new Messages();
+    public Upgrade(@NotNull Integer numberOfUpgrade, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable Boolean castJustAfterAcquire, @Nullable Boolean recastable, @Nullable String... upgradeRequirements) {
         if (COOLDOWN_TIME == null) COOLDOWN_TIME = 0;
         if (XPCost == null) XPCost = 0;
         if (masrafEP == null) masrafEP = 0;
@@ -247,5 +245,9 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
 
     public Boolean getUpgradeBoolean() {
         return upgradeBoolean;
+    }
+
+    public void setMessages(Messages messages) {
+        this.messages = messages;
     }
 }

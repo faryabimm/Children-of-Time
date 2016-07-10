@@ -17,22 +17,22 @@ import java.util.ArrayList;
 public class AbilityMaker {
     private Ability ability;
 
-    public void newCustomAbility(@NotNull String name, @NotNull Target targetType, @Nullable String Description, @Nullable String SuccessMessage, ImageIcon imageIcon, int powerOutOfTen) {
-        ability = new Ability(name, Description, SuccessMessage, new BST<Upgrade>(), targetType, imageIcon, powerOutOfTen);
+    public void newCustomAbility(@NotNull String name, @NotNull Target targetType, Messages messages, ImageIcon imageIcon, int powerOutOfTen) {
+        ability = new Ability(name, messages, new BST<Upgrade>(), targetType, imageIcon, powerOutOfTen);
 
     }
 
-    @Deprecated
-    public void addCustomUpgrade(int numberOfUpgrade, Integer COOLDOWN_TIME, int XPCost, int masrafEP, int masrafMP, Messages messages, String... upgradeCondition) {
-        Upgrade newUpgrade = new Upgrade(numberOfUpgrade, messages, COOLDOWN_TIME, XPCost, masrafEP, masrafMP, upgradeCondition);
-        ability.getUpgrades().add(newUpgrade);
-        newUpgrade.setEffects(new ArrayList<Effect>(1));
-        ability = ability;
+//    @Deprecated
+//    public void addCustomUpgrade(int numberOfUpgrade, Integer COOLDOWN_TIME, int XPCost, int masrafEP, int masrafMP, Messages messages, String... upgradeCondition) {
+//        Upgrade newUpgrade = new Upgrade(numberOfUpgrade, messages, COOLDOWN_TIME, XPCost, masrafEP, masrafMP, upgradeCondition);
+//        ability.getUpgrades().add(newUpgrade);
+//        newUpgrade.setEffects(new ArrayList<Effect>(1));
+//        ability = ability;
+//
+//    }
 
-    }
-
-    public void addCustomUpgrade(@NotNull Integer numberOfUpgrade, @Nullable Messages messages, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable Boolean castJustAfterAcquire, @Nullable Boolean reastableForUser, @Nullable String... upgradeCondition) {
-        Upgrade newUpgrade = new Upgrade(numberOfUpgrade, messages, COOLDOWN_TIME, XPCost, masrafEP, masrafMP, reastableForUser, castJustAfterAcquire, upgradeCondition);
+    public void addCustomUpgrade(@NotNull Integer numberOfUpgrade, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable Boolean castJustAfterAcquire, @Nullable Boolean reastableForUser, @Nullable String... upgradeCondition) {
+        Upgrade newUpgrade = new Upgrade(numberOfUpgrade, COOLDOWN_TIME, XPCost, masrafEP, masrafMP, reastableForUser, castJustAfterAcquire, upgradeCondition);
         ability.getUpgrades().add(newUpgrade);
         newUpgrade.setEffects(new ArrayList<Effect>(1));
     }

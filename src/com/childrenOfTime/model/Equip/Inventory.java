@@ -4,6 +4,7 @@ import com.childrenOfTime.exceptions.NotEnoughInventorySpaceException;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by mohammadmahdi on 5/8/16.
@@ -32,6 +33,17 @@ public class Inventory {
             if (i.getName().equals(item.getName())) item.setId(i.getId() + 1);
         }
         this.items.add(item);
+    }
+
+
+    public void removeFromInventoryIfYouCan(Item item) {
+        Iterator<Item> itr = this.items.iterator();
+        while (itr.hasNext()) {
+            Item nextItem = itr.next();
+            if (nextItem.getName().equals(item.getName()) && nextItem.getId().equals(item.getId())) ;
+            itr.remove();
+
+        }
     }
 
     public ArrayList<Item> getItems() {
