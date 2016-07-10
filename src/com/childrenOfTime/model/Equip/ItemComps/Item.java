@@ -27,6 +27,7 @@ public class Item implements Castable, TurnBase {
     private ArrayList<Effect> effects;
     private Messages messages;
     private Target targetType;
+    public int currentPrice;
     private boolean isInCoolDown = false;
     private Integer turnsLeftToCoolDown;
     private AlterPackage cost = new AlterPackage(null, null);
@@ -43,7 +44,7 @@ public class Item implements Castable, TurnBase {
         this.cost = sideCost;
         this.leftUsages = type.getReusablityNumber();
         this.image = image;
-
+        this.currentPrice = type.getInitialPrice();
     }
 
     @Completed
@@ -86,7 +87,7 @@ public class Item implements Castable, TurnBase {
     }
 
     public Integer getCurrentPriceToBuy(int timesBought) {
-        return type.getInitialPrice() + timesBought * type.getPriceInfaltionRate();
+        return currentPrice + timesBought * type.getPriceInfaltionRate();
     }
 
     public Integer getCurrentPriceToSell() {

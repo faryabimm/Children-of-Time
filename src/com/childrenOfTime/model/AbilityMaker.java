@@ -31,8 +31,8 @@ public class AbilityMaker {
 //
 //    }
 
-    public void addCustomUpgrade(@NotNull Integer numberOfUpgrade, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable Boolean castJustAfterAcquire, @Nullable Boolean reastableForUser, @Nullable String... upgradeCondition) {
-        Upgrade newUpgrade = new Upgrade(numberOfUpgrade, COOLDOWN_TIME, XPCost, masrafEP, masrafMP, reastableForUser, castJustAfterAcquire, upgradeCondition);
+    public void addCustomUpgrade(@NotNull Integer numberOfUpgrade, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable Boolean castJustAfterAcquire, @Nullable Boolean reastableForUser, ArrayList<Effect> effects, @Nullable String... upgradeCondition) {
+        Upgrade newUpgrade = new Upgrade(numberOfUpgrade, COOLDOWN_TIME, XPCost, masrafEP, masrafMP, reastableForUser, castJustAfterAcquire, effects, upgradeCondition);
         ability.getUpgrades().add(newUpgrade);
         newUpgrade.setEffects(new ArrayList<Effect>(1));
     }

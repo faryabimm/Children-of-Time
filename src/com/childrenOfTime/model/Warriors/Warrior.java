@@ -76,7 +76,6 @@ public class Warrior {
         this.currentAttackPower = this.currentHealth > info.healthBound ? info.attackPowerInHighHealth : info.attackPowerInLowHealth;
         this.currentEP = info.initialEP;
         this.currentMagic = info.maxMagic;
-
     }
 
 

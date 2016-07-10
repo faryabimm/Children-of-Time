@@ -67,7 +67,7 @@ public class Player implements TurnBase {
     }
 
 
-    private int getNumbersBought(Item item) {
+    public int getNumbersBought(Item item) {
 
         int count = 0;
         for (Item item2 : itemsBougt) {

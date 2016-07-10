@@ -65,7 +65,7 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
 //
 //    }
 
-    public Upgrade(@NotNull Integer numberOfUpgrade, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable Boolean castJustAfterAcquire, @Nullable Boolean recastable, @Nullable String... upgradeRequirements) {
+    public Upgrade(@NotNull Integer numberOfUpgrade, @Nullable Integer COOLDOWN_TIME, @Nullable Integer XPCost, @Nullable Integer masrafEP, @Nullable Integer masrafMP, @Nullable Boolean castJustAfterAcquire, @Nullable Boolean recastable, ArrayList<Effect> effects, @Nullable String... upgradeRequirements) {
         if (COOLDOWN_TIME == null) COOLDOWN_TIME = 0;
         if (XPCost == null) XPCost = 0;
         if (masrafEP == null) masrafEP = 0;
@@ -89,7 +89,7 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
         this.upgradeRequirements = upgradeRequirements;
         this.recastable = recastable;
         this.castJustAfterAcquire = castJustAfterAcquire;
-
+        this.effects = effects;
     }
 
 
