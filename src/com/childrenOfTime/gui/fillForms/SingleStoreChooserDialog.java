@@ -1,39 +1,30 @@
 package com.childrenOfTime.gui.fillForms;
 
 import com.childrenOfTime.cgd.CustomGameDAO;
-import com.childrenOfTime.model.Equip.Effect;
+import com.childrenOfTime.model.Store;
+import com.childrenOfTime.model.Warriors.Warrior;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class EffectChooserDialog extends JDialog {
+public class SingleStoreChooserDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
     private JComboBox comboBox1;
-    private JButton addEffectButton;
-    private JLabel label1;
 
-    ArrayList<Effect> selectedEffects;
+    private Store selectedStore;
 
-    public EffectChooserDialog(ArrayList<Effect> selectedEffects) {
-        this.selectedEffects = selectedEffects;
+    public SingleStoreChooserDialog(Store selectedStore) {
+        this.selectedStore = selectedStore;
 
-        for (Effect selectedEffect : selectedEffects) {
-            label1.setText(label1.getText() + " " + selectedEffect.getName());
-        }
 
-        ArrayList<String> effectNames = CustomGameDAO.currentUserCustomEffects.stream().map(Effect::getName).
+        ArrayList<String> storeNames = CustomGameDAO.currentUserCustomStores.stream().map(Store::getName).
                 collect(Collectors.toCollection(ArrayList::new));
 
-        comboBox1.setModel(new DefaultComboBoxModel(effectNames.toArray()));
-
-
-
-
-
+        comboBox1.setModel(new DefaultComboBoxModel(storeNames.toArray()));
 
         setContentPane(contentPane);
         setModal(true);
@@ -66,17 +57,6 @@ public class EffectChooserDialog extends JDialog {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-
-        addEffectButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Effect toAdd = CustomGameDAO.currentUserCustomEffects.get(comboBox1.getSelectedIndex());
-                if (!selectedEffects.contains(toAdd)) {
-                    selectedEffects.add(toAdd);
-                    label1.setText(label1.getText() + " " + toAdd.getName());
-                }
-            }
-        });
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -84,6 +64,7 @@ public class EffectChooserDialog extends JDialog {
 
     private void onOK() {
 // add your code here
+        selectedStore = CustomGameDAO.currentUserCustomStores.get(comboBox1.getSelectedIndex());
         dispose();
     }
 
@@ -93,7 +74,7 @@ public class EffectChooserDialog extends JDialog {
     }
 
     public static void main(String[] args) {
-//        EffectChooserDialog dialog = new EffectChooserDialog();
+//        SingleStoreChooserDialog dialog = new SingleStoreChooserDialog();
 
         System.exit(0);
     }

@@ -19,8 +19,14 @@ public class Store implements Serializable {
     int inflationPercentPer15Minutes;
     long t1 = System.nanoTime();
 
+    private String name;
 
-    public Store(Map<Item, Integer> items, boolean canBate, boolean canInflatePrices, int inflationPercentPer15Minutes) {
+    public String getName() {
+        return name;
+    }
+
+    public Store(Map<Item, Integer> items, boolean canBate, boolean canInflatePrices, int inflationPercentPer15Minutes, String name) {
+        this.name = name;
         this.items = items;
         this.canBate = canBate;
         this.canInflatePrices = canInflatePrices;

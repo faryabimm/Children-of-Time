@@ -25,6 +25,22 @@ public class ScenarioCell extends JLabel implements Serializable {
     private Store store;
     private ScenarioCellType cellType = ScenarioCellType.GROUND;
 
+    public Battle getBattle() {
+        return battle;
+    }
+
+    public void setBattle(Battle battle) {
+        this.battle = battle;
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
     public void reset() {
         this.battle = null;
         this.store = null;

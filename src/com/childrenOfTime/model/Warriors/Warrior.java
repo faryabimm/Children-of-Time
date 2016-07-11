@@ -28,6 +28,11 @@ public class Warrior implements Serializable {
 
 
     private String name;
+
+    public String getName() {
+        return name;
+    }
+
     private int id = 0;
     private ImageIcon image;
 

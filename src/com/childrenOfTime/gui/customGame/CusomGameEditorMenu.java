@@ -203,7 +203,7 @@ public class CusomGameEditorMenu extends MenuScreenPanel {
                     storeMappesItems.put(storeItem, dataHolder.storeItems.indexOf(storeItem));
                 }
                 Store createdStore = new Store(storeMappesItems, dataHolder.acceptsBargains,
-                        dataHolder.canInflatePrices, dataHolder.inflationRate);
+                        dataHolder.canInflatePrices, dataHolder.inflationRate, dataHolder.storeName);
                 GUIUtils.deserializeUserFiles();
                 CustomGameDAO.currentUserCustomStores.add(createdStore);
                 try {

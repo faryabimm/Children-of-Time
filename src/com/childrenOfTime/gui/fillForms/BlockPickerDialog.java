@@ -2,6 +2,9 @@ package com.childrenOfTime.gui.fillForms;
 
 import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.gui.customizedElements.ScenarioCell;
+import com.childrenOfTime.gui.customizedElements.ScenarioCellType;
+import com.childrenOfTime.model.Battle;
+import com.childrenOfTime.model.Store;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,39 +80,86 @@ public class BlockPickerDialog extends JDialog {
     }
 
     private void onOK() {
-        if (radioButton3.isSelected()) targetCell.setIcon(CustomGameDAO.textures.get("wall"));
-        if (radioButton4.isSelected()) targetCell.setIcon(CustomGameDAO.textures.get("store"));
-        if (radioButton5.isSelected()) targetCell.setIcon(CustomGameDAO.textures.get("upgrade"));
-        if (radioButton6.isSelected()) targetCell.setIcon(CustomGameDAO.textures.get("story"));
-        if (radioButton7.isSelected()) targetCell.setIcon(CustomGameDAO.textures.get("battle"));
-        if (radioButton8.isSelected()) targetCell.setIcon(CustomGameDAO.textures.get("boss"));
+        if (radioButton3.isSelected()) {
+            targetCell.reset();
+            targetCell.setIcon(CustomGameDAO.textures.get("wall"));
+            targetCell.setCellType(ScenarioCellType.WALL);
+        }
+        if (radioButton4.isSelected()) {
+            targetCell.reset();
+            targetCell.setIcon(CustomGameDAO.textures.get("store"));
+            targetCell.setCellType(ScenarioCellType.STORE);
+            Store selectedStore = null;
+            new SingleStoreChooserDialog(selectedStore);
+            targetCell.setStore(selectedStore);
+        }
+        if (radioButton5.isSelected()) {
+            targetCell.reset();
+            targetCell.setIcon(CustomGameDAO.textures.get("upgrade"));
+            targetCell.setCellType(ScenarioCellType.UPGRADEPLACE);
+        }
+        if (radioButton6.isSelected()) {
+            targetCell.reset();
+            targetCell.setIcon(CustomGameDAO.textures.get("story"));
+            targetCell.setCellType(ScenarioCellType.STORY);
+        }
+        if (radioButton7.isSelected()) {
+            targetCell.reset();
+            targetCell.setIcon(CustomGameDAO.textures.get("battle"));
+            targetCell.setCellType(ScenarioCellType.BATTLE);
+            Battle selectedBattle = null;
+            new SingleBattleChooserDialog(selectedBattle);
+            targetCell.setBattle(selectedBattle);
+        }
+        if (radioButton8.isSelected()) {
+            targetCell.reset();
+            targetCell.setIcon(CustomGameDAO.textures.get("boss"));
+            targetCell.setCellType(ScenarioCellType.BOSS);
+            Battle selectedBattle = null;
+            new SingleBattleChooserDialog(selectedBattle);
+            targetCell.setBattle(selectedBattle);
+        }
 
         if(radioButton1.isSelected()) {
             switch (comboBox1.getSelectedIndex()) {
                 case 0:
+                    targetCell.reset();
                     targetCell.setIcon(CustomGameDAO.textures.get("ground1"));
+                    targetCell.setCellType(ScenarioCellType.GROUND);
                     break;
                 case 1:
+                    targetCell.reset();
                     targetCell.setIcon(CustomGameDAO.textures.get("ground2"));
+                    targetCell.setCellType(ScenarioCellType.GROUND);
                     break;
                 case 2:
+                    targetCell.reset();
                     targetCell.setIcon(CustomGameDAO.textures.get("ground3"));
+                    targetCell.setCellType(ScenarioCellType.GROUND);
                     break;
             }
         }
         if(radioButton2.isSelected()) {
             switch (comboBox2.getSelectedIndex()) {
                 case 0:
+                    targetCell.reset();
                     targetCell.setIcon(CustomGameDAO.textures.get("door_down_up"));
+                    targetCell.setCellType(ScenarioCellType.DOOR);
                     break;
                 case 1:
+                    targetCell.reset();
                     targetCell.setIcon(CustomGameDAO.textures.get("door_up_down"));
+                    targetCell.setCellType(ScenarioCellType.DOOR);
                     break;
                 case 2:
+                    targetCell.reset();
                     targetCell.setIcon(CustomGameDAO.textures.get("door_left_right"));
+                    targetCell.setCellType(ScenarioCellType.DOOR);
                     break;
                 case 3:
+                    targetCell.reset();
                     targetCell.setIcon(CustomGameDAO.textures.get("door_right_left"));
+                    targetCell.setCellType(ScenarioCellType.DOOR);
                     break;
             }
         }
