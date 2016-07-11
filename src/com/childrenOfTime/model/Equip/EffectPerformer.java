@@ -22,17 +22,34 @@ public class EffectPerformer implements Serializable {
 
     //TODO anotherCheck required
     public static void performEffects(Collection<Effect> effects, Warrior performer, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeamMates) {
+        if (effects.size() == 0) return;
         Iterator<Effect> itr = effects.iterator();
         Warrior[] finalTargets;
 
         while (itr.hasNext()) {
             Effect nextEffect = itr.next();
-            if (!doesPassiveAllowsToContinue(nextEffect, performer)) return;
             finalTargets = chooseTargts(nextEffect, performer, selectedTargets, allEnemies, allTeamMates);
             nextEffect.perform(finalTargets);
 
         }
     }
+
+
+    //TODO anotherCheck required
+    public static void wearOffEffects(Collection<Effect> effects, Warrior performer, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeamMates) {
+        Iterator<Effect> itr = effects.iterator();
+        Warrior[] finalTargets;
+
+        while (itr.hasNext()) {
+            Effect nextEffect = itr.next();
+            finalTargets = chooseTargts(nextEffect, performer, selectedTargets, allEnemies, allTeamMates);
+            nextEffect.wearOff(finalTargets);
+
+        }
+    }
+
+
+
 
     private static Warrior[] chooseTargts(Effect eff, Warrior performer, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeamMates) {
         Warrior[] newTargets = null;
@@ -49,6 +66,7 @@ public class EffectPerformer implements Serializable {
                 break;
             case SingleEnemy:
             case SeveralEnemies:
+            case theAttackedOne:
             case SeveralTeamMates:
                 newTargets = selectedTargets;
                 break;

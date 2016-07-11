@@ -44,7 +44,7 @@ public class Effect implements Performable, Serializable {
             for (Warrior target : targets) {
 
                 //TODO rideman Jam shavad
-                target.addToAutoRepeatEffList(this, this.autoRepitionDuration);
+                target.addToAutoRepeatEffList(this.alterPackage, this.autoRepitionDuration);
             }
 
         }
@@ -55,7 +55,7 @@ public class Effect implements Performable, Serializable {
         if (!this.effectType.isPermanent()) {
             for (Warrior affectedTarget : target_s) {
                 //TODO rideman Jam shavad
-                affectedTarget.addToImPermanentTurnBasedEffectsList(this, this.impermanentDurability);
+                affectedTarget.addToImPermanentTurnBasedEffectsList(this.alterPackage, this.impermanentDurability);
             }
         }
     }
@@ -92,7 +92,8 @@ public class Effect implements Performable, Serializable {
         if (impermanentDurability == null) impermanentDurability = 0;
 
         this.effectType = effectType;
-        this.alterPackage = alterPackage;
+        this.alterPackage = new AlterPackage(alterPackage, probabilyPercent);
+        this.alterPackage.name = name;
         //this.performerCost = performerCost;
         this.targetType = targetType;
         this.impermanentDurability = impermanentDurability;
@@ -101,7 +102,6 @@ public class Effect implements Performable, Serializable {
 
 
     public void wearOff(Warrior... targets) {
-
         alterPackage.wearOff(targets);
     }
 

@@ -11,6 +11,7 @@ public class EffectType implements Serializable {
     private boolean AutoRepeatable;
     private boolean permanent;
     private boolean probablePerform;
+    boolean ifPassiveInstantEffectJustForAttack;
 
     public EffectType(boolean targetUnChoosable, boolean passive, boolean autoRepeatable, boolean permanent, boolean probablePerform, boolean ifPassiveInstantEffectJustForAttack) {
         this.targetUnChoosable = targetUnChoosable;
@@ -21,7 +22,6 @@ public class EffectType implements Serializable {
         this.ifPassiveInstantEffectJustForAttack = ifPassiveInstantEffectJustForAttack;
     }
 
-    boolean ifPassiveInstantEffectJustForAttack;
 
     public boolean isTargetUnChoosable() {
         return targetUnChoosable;
@@ -62,5 +62,13 @@ public class EffectType implements Serializable {
 
     public void setProbablePerform(boolean probablePerform) {
         this.probablePerform = probablePerform;
+    }
+
+    public boolean isIfPassiveInstantEffectJustForAttack() {
+        return ifPassiveInstantEffectJustForAttack;
+    }
+
+    public void setIfPassiveInstantEffectJustForAttack(boolean ifPassiveInstantEffectJustForAttack) {
+        this.ifPassiveInstantEffectJustForAttack = ifPassiveInstantEffectJustForAttack;
     }
 }

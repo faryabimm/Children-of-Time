@@ -49,6 +49,9 @@ public class HeroClass implements Serializable {
     ArrayList<Ability> classAbilities;
 
     public HeroClass(Boolean canAttack, Boolean canHaveFBFeatures, int attackPowerInHighHealth, int attackPowerInLowHealth, int healthBound, Boolean canBurnEP, int[] heroBurningEnergy, int EPBurningCost, String mutationMessage, String epBurningMessage, Boolean canChangeMP, Boolean canChangeEP, Boolean canBuyItems, Boolean canUseImmortalityPotions, Boolean canUseRefillFeature, String specificActionMessage, String dyingActionMessage, String className, Integer damageEfficiencyIntelligenceOutOfTen, int maxHealth, int healthRefillRate, int maxMagic, int magicRefillRate, int initialEP, int inventorySize, String classDescription, String backStory, ArrayList<Ability> classAbilities) {
+        if (damageEfficiencyIntelligenceOutOfTen > 10) damageEfficiencyIntelligenceOutOfTen = 10;
+        if (classAbilities == null) classAbilities = new ArrayList<>();
+        this.initialEP = initialEP;
         CanAttack = canAttack;
         CanHaveFBFeatures = canHaveFBFeatures;
         this.attackPowerInHighHealth = attackPowerInHighHealth;
@@ -206,5 +209,10 @@ public class HeroClass implements Serializable {
 
     public Boolean getCanAttack() {
         return CanAttack;
+    }
+
+    public void changeInitialEP(int i) {
+        if (i + initialEP <= 0) this.initialEP = 0;
+        else this.initialEP += i;
     }
 }
