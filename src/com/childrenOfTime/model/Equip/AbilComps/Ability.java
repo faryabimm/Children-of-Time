@@ -13,13 +13,14 @@ import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 
 import javax.swing.*;
+import java.io.Serializable;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
 
 /*
  * Created by SaeedHD on 07/05/2016.
  */
-public class Ability implements Castable, TurnBase {
+public class Ability implements Castable, TurnBase, Serializable {
     public static ImageIcon DEFAUL_AbilityImage;
     String name;
     String description;
@@ -31,6 +32,19 @@ public class Ability implements Castable, TurnBase {
     final ImageIcon image;
     final int powerOutOften;
 
+    public Ability(String name) {
+        this.name = name;
+        targetType = null;
+        image = null;
+        powerOutOften = 1;
+    }
+
+    @Override
+    public String toString() {
+        return "Ability{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 
     public Ability(@NotNull String name, @Nullable Messages messages, @NotNull BST<Upgrade> upgrades, @NotNull Target targetType, @Nullable ImageIcon image, @NotNull Integer powerOutOften) {
         if (image == null) image = DEFAUL_AbilityImage;

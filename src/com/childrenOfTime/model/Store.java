@@ -46,7 +46,7 @@ public class Store {
         bate(player, item);
         if (items.containsKey(item)) return;
         player.buy(item, warrior);
-        items.remove(item);
+        items.remove(item); //TODO dorost shavad
     }
 
     public void Sell(Player player, Warrior warrior, Item item) {
@@ -55,4 +55,11 @@ public class Store {
         items.remove(item);
     }
 
+
+    public Store(Map<Item, Integer> items, boolean canBate, boolean canInflatePrices, int inflationPercentPer15Minutes) {
+        this.items = items;
+        this.canBate = canBate;
+        this.canInflatePrices = canInflatePrices;
+        this.inflationPercentPer15Minutes = inflationPercentPer15Minutes;
+    }
 }
