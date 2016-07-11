@@ -100,11 +100,10 @@ public class NewWarriorCreationDialog extends JDialog {
         dispose();
     }
     private void collectData() {
+        dataHolder.operationCancelled = false;
         dataHolder.warriorClass = CustomGameDAO.currentUserCustomWarriorClasses.get(comboBox1.getSelectedIndex());
         dataHolder.name = textField1.getText();
         dataHolder.imageFilePath = imageFilePath;
-
-
     }
 
     private void onCancel() {

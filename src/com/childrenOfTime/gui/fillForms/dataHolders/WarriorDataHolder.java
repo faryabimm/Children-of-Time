@@ -9,6 +9,9 @@ import java.util.ArrayList;
  * Created by mohammadmahdi on 7/11/16.
  */
 public class WarriorDataHolder {
+
+    public boolean operationCancelled = true;
+
     public String name;
     public HeroClass warriorClass;
     public ArrayList<Ability> specificAbilities = new ArrayList<>();

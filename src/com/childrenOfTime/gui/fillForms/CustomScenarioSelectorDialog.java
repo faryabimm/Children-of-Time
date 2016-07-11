@@ -1,6 +1,7 @@
 package com.childrenOfTime.gui.fillForms;
 
-import com.childrenOfTime.gui.SinglePlayerMenuScreenPanel;
+import com.childrenOfTime.gui.singlePlayer.SinglePlayerGame;
+import com.childrenOfTime.gui.singlePlayer.SinglePlayerMenuScreenPanel;
 import com.childrenOfTime.gui.fillForms.dataHolders.CustomScenarioInfoHolder;
 import com.childrenOfTime.model.ChildrenOfTime;
 
@@ -16,7 +17,7 @@ public class CustomScenarioSelectorDialog extends JDialog {
     private JButton customScenariosButton;
     private JButton chooseWarriorsButton;
 
-    private CustomScenarioInfoHolder infoHolder;
+    public CustomScenarioInfoHolder infoHolder;
 
     public CustomScenarioSelectorDialog(CustomScenarioInfoHolder infoHolder) {
 
@@ -57,7 +58,7 @@ public class CustomScenarioSelectorDialog extends JDialog {
         customScenariosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new SingleScenarioChooserDialog(infoHolder.playingScenario);
+                new SingleScenarioChooserDialog(infoHolder);
                 if (infoHolder.playingScenario != null) {
                     noScenarioSelectedCheckBox.setSelected(true);
                     noScenarioSelectedCheckBox.setText("selected: " + infoHolder.playingScenario.getName());
@@ -88,17 +89,25 @@ public class CustomScenarioSelectorDialog extends JDialog {
 
     private void onOK() {
 // add your code here
-        disposalProcess();
+        OKDisposalProcess();
     }
 
-    private void disposalProcess() {
+    private void cancelDisposalProcess() {
         ChildrenOfTime.changeContentPane(new SinglePlayerMenuScreenPanel());
         dispose();
     }
 
+    private void OKDisposalProcess() {
+
+        SinglePlayerGame target = new SinglePlayerGame(infoHolder);
+        ChildrenOfTime.changeContentPane(target);
+        dispose();
+    }
+
+
     private void onCancel() {
 // add your code here if necessary
-        disposalProcess();
+        cancelDisposalProcess();
     }
 
     public static void main(String[] args) {

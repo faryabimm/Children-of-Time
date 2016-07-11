@@ -2,6 +2,7 @@ package com.childrenOfTime.gui.fillForms;
 
 import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.gui.customizedElements.Scenario;
+import com.childrenOfTime.gui.fillForms.dataHolders.CustomScenarioInfoHolder;
 import com.childrenOfTime.model.Battle;
 
 import javax.swing.*;
@@ -16,11 +17,11 @@ public class SingleScenarioChooserDialog extends JDialog {
     private JComboBox comboBox1;
 
 
-    private Scenario selectedScenario;
+    private CustomScenarioInfoHolder infoHolder;
 
-    public SingleScenarioChooserDialog(Scenario selectedScenario) {
+    public SingleScenarioChooserDialog(CustomScenarioInfoHolder infoHolder) {
 
-        this.selectedScenario = selectedScenario;
+        this.infoHolder = infoHolder;
 
 
         ArrayList<String> scenarioNames = CustomGameDAO.currentUserCustomScenarios.stream().map(Scenario::getName).
@@ -69,7 +70,7 @@ public class SingleScenarioChooserDialog extends JDialog {
     private void onOK() {
 // add your code here
 
-        selectedScenario = CustomGameDAO.currentUserCustomScenarios.get(comboBox1.getSelectedIndex());
+        infoHolder.playingScenario = CustomGameDAO.currentUserCustomScenarios.get(comboBox1.getSelectedIndex());
         dispose();
     }
 

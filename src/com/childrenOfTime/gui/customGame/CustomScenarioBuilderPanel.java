@@ -4,9 +4,11 @@ import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.gui.customizedElements.*;
 import com.childrenOfTime.gui.fillForms.BlockPickerDialog;
 import com.childrenOfTime.model.ChildrenOfTime;
+import com.childrenOfTime.utilities.GUIUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * Created by mohammadmahdi on 7/8/16.
@@ -19,13 +21,13 @@ public class CustomScenarioBuilderPanel extends MenuScreenPanel {
     public static final int BORDER_GAP = 15;
     public Scenario newScenario;
 
-    public CustomScenarioBuilderPanel(Scenario newScenario) {
-        this.newScenario = newScenario;
-    }
-
     @Override
     public void initialize() {
-        ScenarioHolder scenarioHolder = new ScenarioHolder(newScenario);
+
+        newScenario = new Scenario();
+
+        ScenarioHolder scenarioHolder = new ScenarioHolder(this);
+
         scenarioHolder.setBorder(BorderFactory.createEmptyBorder(BORDER_GAP,BORDER_GAP, BORDER_GAP,BORDER_GAP));
 //        scenarioHolder.setLocation(CustomScenarioBuilderPanel.BORDER_GAP,CustomScenarioBuilderPanel.BORDER_GAP);
         Dimension scenarioPanelDimention = scenarioHolder.getDimension();
@@ -105,6 +107,21 @@ class MenuScreenPanel_RightSide extends JPanel {
                 case JOptionPane.NO_OPTION:
                     break;
             }
+        });
+        save.addActionListener(e -> {
+
+            String newScenarioName = JOptionPane.showInputDialog(this, "Please specify a name for this scenario", "new scenario");
+            parent.newScenario.setName(newScenarioName);
+
+            GUIUtils.deserializeUserFiles();
+            CustomGameDAO.currentUserCustomScenarios.add(parent.newScenario);
+            try {
+                GUIUtils.serializeUserObject(CustomGameDAO.currentUserCustomScenarios, "scenarios");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            JOptionPane.showMessageDialog(this, "Custom Scenario \"" + parent.newScenario.getName() + "\" saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            ChildrenOfTime.changeContentPane(new CusomGameEditorMenu());
         });
     }
 

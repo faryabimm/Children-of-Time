@@ -15,7 +15,7 @@ import java.awt.event.MouseListener;
  */
 
 public class ScenarioHolder extends JPanel {
-    public ScenarioHolder(Scenario newScenario) {
+    public ScenarioHolder(CustomScenarioBuilderPanel parent) {
         this.setBackground(ChildrenOfTime.GREY);
         this.setLayout(new GridLayout(CustomScenarioBuilderPanel.NUMBER_OF_MAP_ROWS,
                 CustomScenarioBuilderPanel.NUMBER_OF_MAP_COLUMNS));
@@ -44,6 +44,7 @@ public class ScenarioHolder extends JPanel {
                 label = new ScenarioCell("ground" + GUIUtils.randomInt(1, 3),i,j);
                 label.addMouseListener(listener);
                 this.add(label);
+                parent.newScenario.addAnewCell((ScenarioCell) label);
             }
         }
     }
