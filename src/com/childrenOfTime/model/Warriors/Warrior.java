@@ -32,6 +32,11 @@ public class Warrior implements Serializable, TurnBase {
 
 
     private String name;
+
+    public String getName() {
+        return name;
+    }
+
     private int id = 0;
     private ImageIcon image;
 

@@ -2,37 +2,35 @@ package com.childrenOfTime.gui.fillForms;
 
 import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.model.Equip.Effect;
+import com.childrenOfTime.model.Warriors.Warrior;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class EffectChooserDialog extends JDialog {
+public class WarriorChooserDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
     private JComboBox comboBox1;
-    private JButton addEffectButton;
     private JLabel label1;
+    private JButton addWarriorButton;
 
-    ArrayList<Effect> selectedEffects;
+    private ArrayList<Warrior> selectedWarriors;
 
-    public EffectChooserDialog(ArrayList<Effect> selectedEffects) {
-        this.selectedEffects = selectedEffects;
+    public WarriorChooserDialog(ArrayList<Warrior> selectedWarriors) {
+        this.selectedWarriors = selectedWarriors;
 
-        for (Effect selectedEffect : selectedEffects) {
-            label1.setText(label1.getText() + " " + selectedEffect.getName());
+
+        for (Warrior selectedWarrior : selectedWarriors) {
+            label1.setText(label1.getText() + " " + selectedWarrior.getName());
         }
 
-        ArrayList<String> effectNames = CustomGameDAO.currentUserCustomEffects.stream().map(Effect::getName).
+        ArrayList<String> warriorNames = CustomGameDAO.currentUserCustomWarriors.stream().map(Warrior::getName).
                 collect(Collectors.toCollection(ArrayList::new));
 
-        comboBox1.setModel(new DefaultComboBoxModel(effectNames.toArray()));
-
-
-
-
+        comboBox1.setModel(new DefaultComboBoxModel(warriorNames.toArray()));
 
 
         setContentPane(contentPane);
@@ -67,12 +65,12 @@ public class EffectChooserDialog extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
 
-        addEffectButton.addActionListener(new ActionListener() {
+        addWarriorButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Effect toAdd = CustomGameDAO.currentUserCustomEffects.get(comboBox1.getSelectedIndex());
-                if (!selectedEffects.contains(toAdd)) {
-                    selectedEffects.add(toAdd);
+                Warrior toAdd = CustomGameDAO.currentUserCustomWarriors.get(comboBox1.getSelectedIndex());
+                if (!selectedWarriors.contains(toAdd)) {
+                    selectedWarriors.add(toAdd);
                     label1.setText(label1.getText() + " " + toAdd.getName());
                 }
             }
@@ -93,7 +91,7 @@ public class EffectChooserDialog extends JDialog {
     }
 
     public static void main(String[] args) {
-//        EffectChooserDialog dialog = new EffectChooserDialog();
+//        WarriorChooserDialog dialog = new WarriorChooserDialog();
 
         System.exit(0);
     }

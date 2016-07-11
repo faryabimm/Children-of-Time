@@ -1,5 +1,6 @@
 package com.childrenOfTime.model;
 
+import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
 import com.childrenOfTime.model.Equip.AbilComps.Upgrade;
 import com.childrenOfTime.model.Equip.Effect;
@@ -17,6 +18,9 @@ import java.util.ArrayList;
  */
 public class AbilityMaker implements Serializable {
     private Ability ability;
+
+    public static void main(String[] args) {
+    }
 
     public void newCustomAbility(@NotNull String name, @NotNull Target targetType, Messages messages, ImageIcon imageIcon, int powerOutOfTen) {
         ability = new Ability(name, messages, new BST<Upgrade>(), targetType, imageIcon, powerOutOfTen);

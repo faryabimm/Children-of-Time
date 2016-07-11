@@ -9,6 +9,8 @@ import com.childrenOfTime.model.ChildrenOfTime;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by mohammadmahdi on 7/7/16.
@@ -43,13 +45,23 @@ public class MainMenuScreenPanel extends MenuScreenPanel {
                 ChildrenOfTime.PREFERRED_HEIGHT - 5*CustomizedJButton.BUTTON_HEIGHT - 5*ELEMENT_GAP);
 
         quitButton.addActionListener(e -> System.exit(0));
-        customGameButton.addActionListener(e -> {
-            if (CustomGameDAO.getCurrentUser() == null) {
-                ChildrenOfTime.changeContentPane(new CustomGameMenuScreenPanel());
-            } else {
-                ChildrenOfTime.changeContentPane(new CustomGameUserHubPanel());
+        customGameButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (CustomGameDAO.getCurrentUser() == null) {
+                    ChildrenOfTime.changeContentPane(new CustomGameMenuScreenPanel());
+                } else {
+                    ChildrenOfTime.changeContentPane(new CustomGameUserHubPanel());
+                }
             }
         });
+        singlePlayerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ChildrenOfTime.changeContentPane(new SinglePlayerMenuScreenPanel());
+            }
+        });
+
         emerge();
     }
 }

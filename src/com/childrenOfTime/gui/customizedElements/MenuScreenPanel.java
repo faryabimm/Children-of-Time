@@ -59,7 +59,7 @@ public abstract class MenuScreenPanel extends JPanel {
 
         if(CustomGameDAO.getCurrentUser() != null) {
 
-            userAvatar = new CustomizedJImage("src/user_data/" + CustomGameDAO.getCurrentUser().getUserName()
+            userAvatar = new CustomizedJImage("src/user_data/" /*+ CustomGameDAO.getCurrentUser().getUserName()*/
                     + "/avatar.png", PREFFERED_AVATAR_SIZE, PREFFERED_AVATAR_SIZE);
             userNameLabel.setText(CustomGameDAO.getCurrentUser().getUserName());
             userNameLabel.setHorizontalAlignment(SwingConstants.CENTER);

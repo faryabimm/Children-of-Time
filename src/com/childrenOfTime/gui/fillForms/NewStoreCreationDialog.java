@@ -21,6 +21,7 @@ public class NewStoreCreationDialog extends JDialog {
     private JCheckBox acceptsBargainsCheckBox;
     private JCheckBox canInflatePricesCheckBox;
     private JTextField textField1;
+    private JTextField textField2;
 
     StoreDataHolder dataHolder;
 
@@ -89,6 +90,7 @@ public class NewStoreCreationDialog extends JDialog {
         dataHolder.canInflatePrices = canInflatePricesCheckBox.isSelected();
         dataHolder.acceptsBargains = acceptsBargainsCheckBox.isSelected();
         dataHolder.inflationRate = Integer.parseInt(textField1.getText());
+        dataHolder.storeName = textField2.getText();
     }
 
     private void disposalProcess() {

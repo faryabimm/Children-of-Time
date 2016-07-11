@@ -12,4 +12,5 @@ public class StoreDataHolder {
     public boolean canInflatePrices;
     public boolean acceptsBargains;
     public int inflationRate;
+    public String storeName;
 }

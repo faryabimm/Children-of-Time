@@ -14,6 +14,10 @@ public class Battle implements Serializable {
 
     static int count = 0;
 
+    public String getName() {
+        return name;
+    }
+
     public String name;
     protected String DefeatStory;
     Player You;
