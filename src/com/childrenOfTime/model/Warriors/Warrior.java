@@ -11,6 +11,7 @@ import com.childrenOfTime.model.Equip.ItemComps.ItemType;
 import com.childrenOfTime.model.Rules;
 
 import javax.swing.*;
+import java.io.Serializable;
 import java.util.*;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
@@ -18,7 +19,7 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
-public class Warrior {
+public class Warrior implements Serializable {
     public static int DEFAULT_Attack_EP_COST = 2;
 
 

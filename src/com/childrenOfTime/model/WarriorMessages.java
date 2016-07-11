@@ -1,9 +1,11 @@
 package com.childrenOfTime.model;
 
+import java.io.Serializable;
+
 /**
  * Created by SaeedHD on 05/11/2016.
  */
-public class WarriorMessages {
+public class WarriorMessages implements Serializable {
 }
 /*
 

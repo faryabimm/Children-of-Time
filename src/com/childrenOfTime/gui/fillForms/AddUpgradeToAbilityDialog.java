@@ -1,10 +1,15 @@
 package com.childrenOfTime.gui.fillForms;
 
+import com.childrenOfTime.model.Equip.AbilComps.Upgrade;
+import com.childrenOfTime.model.Equip.Effect;
+import com.childrenOfTime.model.Equip.ItemComps.Messages;
+
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
 public class AddUpgradeToAbilityDialog extends JDialog {
+
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
@@ -21,7 +26,15 @@ public class AddUpgradeToAbilityDialog extends JDialog {
     private JCheckBox hasRequirementsCheckBox;
     private JButton addEffectsButton;
 
-    public AddUpgradeToAbilityDialog() {
+    Upgrade toAdd;
+
+    ArrayList<Effect> addedEffects = new ArrayList<>();
+
+    public AddUpgradeToAbilityDialog(Upgrade toAdd) {
+
+        this.toAdd = toAdd;
+
+
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -55,7 +68,7 @@ public class AddUpgradeToAbilityDialog extends JDialog {
         addEffectsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new EffectChooserDialog(new ArrayList<>());
+                new EffectChooserDialog(addedEffects);
             }
         });
 
@@ -72,6 +85,22 @@ public class AddUpgradeToAbilityDialog extends JDialog {
     }
 
     private void onOK() {
+
+        int upgradeID = Integer.parseInt(textField3.getText());
+        int coolDownTime = Integer.parseInt(textField4.getText());
+        int XPCostToUpgrade = Integer.parseInt(textField5.getText());
+        int EPCOstToCast = Integer.parseInt(textField2.getText());
+        int MPCOstToCast = Integer.parseInt(textField1.getText());
+        String description = textField6.getText();
+        boolean isActive = immediateApplicationActiveCheckBox.isSelected();
+        boolean isRecastable = recastableCheckBox.isSelected();
+        boolean isBaseUpgrade = setAsBaseUpgradeCheckBox.isSelected();
+        boolean hasRequirements = hasRequirementsCheckBox.isSelected();
+        String requirements[] = textField7.getText().split("\\s");
+
+        toAdd = new Upgrade(upgradeID, coolDownTime, XPCostToUpgrade, EPCOstToCast, MPCOstToCast, isActive, isRecastable, addedEffects, requirements);
+
+
 // add your code here
         dispose();
     }
@@ -82,7 +111,7 @@ public class AddUpgradeToAbilityDialog extends JDialog {
     }
 
     public static void main(String[] args) {
-        AddUpgradeToAbilityDialog dialog = new AddUpgradeToAbilityDialog();
+//        AddUpgradeToAbilityDialog dialog = new AddUpgradeToAbilityDialog(toAdd);
 
         System.exit(0);
     }

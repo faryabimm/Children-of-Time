@@ -1,7 +1,10 @@
 package com.childrenOfTime.gui.fillForms;
 
 import com.childrenOfTime.gui.customGame.CusomGameEditorMenu;
+import com.childrenOfTime.gui.fillForms.dataHolders.AbilityDataHolder;
 import com.childrenOfTime.model.ChildrenOfTime;
+import com.childrenOfTime.model.Equip.AbilComps.Upgrade;
+import com.childrenOfTime.model.Equip.Target;
 import com.childrenOfTime.utilities.GUIUtils;
 
 import javax.swing.*;
@@ -21,10 +24,15 @@ public class NewAbilityCreationDialog extends JDialog {
     private JTextField textField8;
     private JTextField textField9;
     private JTextField textField10;
+    private JTextField textField1;
+    private JTextField textField2;
+
+    AbilityDataHolder dataHolder;
 
     protected String imageFileAddress = null;
 
-    public NewAbilityCreationDialog() {
+    public NewAbilityCreationDialog(AbilityDataHolder dataHolder) {
+        this.dataHolder = dataHolder;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonNext);
@@ -58,7 +66,11 @@ public class NewAbilityCreationDialog extends JDialog {
         upgradesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new AddUpgradeToAbilityDialog();
+                Upgrade toAdd = null;
+                new AddUpgradeToAbilityDialog(toAdd);
+                if (!dataHolder.upgrades.contains(toAdd)) {
+                    dataHolder.upgrades.add(toAdd);
+                }
             }
         });
 
@@ -88,7 +100,40 @@ public class NewAbilityCreationDialog extends JDialog {
 
     private void onOK() {
 // add your code here
+        collectData();
         disposalProcess();
+
+    }
+
+    private void collectData() {
+        dataHolder.abilityName = textField3.getText();
+
+        switch (comboBox2.getSelectedIndex()) {
+            case 0:
+                dataHolder.targetType = Target.HimSelf;
+                break;
+            case 1:
+                dataHolder.targetType = Target.SingleEnemy;
+                break;
+            case 2:
+                dataHolder.targetType = Target.AllTeammates;
+                break;
+            case 3:
+                dataHolder.targetType = Target.AllEnemies;
+                break;
+            case 4:
+                dataHolder.targetType = Target.theAttackedOne;
+                break;
+        }
+
+        dataHolder.imagePath = imageFileAddress;
+        dataHolder.power = Integer.parseInt(textField1.getText());
+        dataHolder.description = textField6.getText();
+        dataHolder.successMessage = textField7.getText();
+        dataHolder.EPFailiureMessage = textField8.getText();
+        dataHolder.MPFailiureMessage = textField9.getText();
+        dataHolder.cooldownFailiureMessage = textField10.getText();
+        dataHolder.notAcqiredFailiureMessage = textField2.getText();
 
     }
 
@@ -103,7 +148,7 @@ public class NewAbilityCreationDialog extends JDialog {
     }
 
     public static void main(String[] args) {
-        NewAbilityCreationDialog dialog = new NewAbilityCreationDialog();
+//        NewAbilityCreationDialog dialog = new NewAbilityCreationDialog();
 
         System.exit(0);
     }

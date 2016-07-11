@@ -2,10 +2,12 @@ package com.childrenOfTime.model.Equip;
 
 import com.childrenOfTime.model.Rules;
 
+import java.io.Serializable;
+
 /**
  * Created by SaeedHD on 07/07/2016.
  */
-public enum Target {
+public enum Target implements Serializable {
     HimSelf(true, true), SingleEnemy(false, 1, false), SingleTeamMate(false, 1, true), SeveralEnemies(false, 0, false), SeveralTeamMates(false, true), AllTeammates(true, true), AllEnemies(true, false), theAttackedOne(true, false);
 
     Target(boolean implicit, boolean isTeammate) {
@@ -14,28 +16,22 @@ public enum Target {
         else this.numberOftargetsNeededToChoose = Rules.Quantitiy_Of_Targets_For_Manual_Multiple_Target_Choosing;
 
     }
-
-
     Target(boolean implicit, Integer numberOftargetsNeededToChoose, boolean isTeammate) {
         Implicit = implicit;
         this.numberOftargetsNeededToChoose = numberOftargetsNeededToChoose;
         this.isTeammate = isTeammate;
     }
-
+    public boolean isImplicit() {
+        return Implicit;
+    }
+    public Integer getNumberOftargetsNeededToChoose() {
+        return numberOftargetsNeededToChoose;
+    }
+    public boolean isTeammate() {
+        return isTeammate;
+    }
 
     private boolean Implicit;
     private Integer numberOftargetsNeededToChoose;
     private boolean isTeammate;
-
-    public boolean isImplicit() {
-        return Implicit;
-    }
-
-    public Integer getNumberOftargetsNeededToChoose() {
-        return numberOftargetsNeededToChoose;
-    }
-
-    public boolean isTeammate() {
-        return isTeammate;
-    }
 }

@@ -3,12 +3,14 @@ package com.childrenOfTime.model;
 import com.childrenOfTime.Completed;
 import com.childrenOfTime.model.Warriors.Warrior;
 
+import java.io.Serializable;
+
 import static com.childrenOfTime.view.IOHandler.printOutput;
 
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
-public class Battle {
+public class Battle implements Serializable {
 
     static int count = 0;
 

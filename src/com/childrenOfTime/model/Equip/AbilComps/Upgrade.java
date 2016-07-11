@@ -12,6 +12,7 @@ import com.childrenOfTime.model.Warriors.Warrior;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
@@ -19,7 +20,7 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
 /**
  * Created by SaeedHD on 07/06/2016.
  */
-public class Upgrade implements Castable, Comparable<Upgrade> {
+public class Upgrade implements Castable, Comparable<Upgrade>, Serializable {
     //Upgrade father;
     //ArrayList<Upgrade> children;
 
@@ -94,22 +95,16 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
         this.castJustAfterAcquire = castJustAfterAcquire;
         this.effects = effects;
     }
-
-
     public void setDescription(String description) {
         this.messages.description = description;
     }
-
-
     //TODO dorost she ;
     public boolean needsTarget() {
         return true;
     }
-
     public Target getneededTargetType() {
         return Target.HimSelf;
     }
-
     @Override
     public void cast(Warrior performer, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeammates) {
         if (isInCoolDown) throw new AbilityInCooldownException(messages.getCoolDownFailureMessage());
@@ -124,8 +119,6 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
             throw new NotEnoughEnergyPointsException(messages.getMpSuccessMessage());
         }
     }
-
-
     private void PayCosts(Warrior performer) {
         int initEP = 0;
         int initMP = 0;
@@ -140,8 +133,6 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
         //performer.setCurrentMagic(initMP);
         // }
     }
-
-
     public void aTurnHasPassed() {
         /*
         for (Effect eff : currentUserCustomEffects) {
@@ -159,14 +150,12 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
         */
 
     }
-
     @Override
     public int compareTo(Upgrade o) {
         if (((Upgrade) o).numberOfUpgrade > this.numberOfUpgrade) return -1;
         if (((Upgrade) o).numberOfUpgrade == this.numberOfUpgrade) return 0;
         else return 1;
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -177,79 +166,57 @@ public class Upgrade implements Castable, Comparable<Upgrade> {
         return numberOfUpgrade == upgrade.numberOfUpgrade;
 
     }
-
-
     public int getNumberOfUpgrade() {
         return numberOfUpgrade;
     }
-
     public Integer getCOOLDOWN_TIME() {
         return COOLDOWN_TIME;
     }
-
     public int getLeftTurnsToCoolDown() {
         return leftTurnsToCoolDown;
     }
-
     public boolean isInCoolDown() {
         return isInCoolDown;
     }
-
     public int getXPCost() {
         return XPCost;
     }
-
     public int getMasrafEP() {
         return masrafEP;
     }
-
     public int getMasrafMP() {
         return masrafMP;
     }
-
-
     public void addEffect(Effect effect) {
         effects.add(effect);
     }
-
     public String getDescription() {
         return messages.description;
     }
-
-
     public void setNumberOfUpgrade(int numberOfUpgrade) {
         this.numberOfUpgrade = numberOfUpgrade;
     }
-
     public void setLeftTurnsToCoolDown(int leftTurnsToCoolDown) {
         this.leftTurnsToCoolDown = leftTurnsToCoolDown;
     }
-
     public void setInCoolDown(boolean inCoolDown) {
         isInCoolDown = inCoolDown;
     }
-
     public void setXPCost(int XPCost) {
         this.XPCost = XPCost;
     }
-
     public void setMasrafEP(int masrafEP) {
         this.masrafEP = masrafEP;
     }
-
     public void setMasrafMP(int masrafMP) {
         this.masrafMP = masrafMP;
     }
-
-
     public void setEffects(ArrayList<Effect> effects) {
         this.effects = effects;
     }
-
     public Boolean getUpgradeBoolean() {
         return upgradeBoolean;
     }
-
     public void setMessages(Messages messages) {
         this.messages = messages;
     }

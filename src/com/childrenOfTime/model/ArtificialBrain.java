@@ -5,6 +5,7 @@ import com.childrenOfTime.model.Equip.AbilComps.Upgrade;
 import com.childrenOfTime.model.Equip.Target;
 import com.childrenOfTime.model.Warriors.Warrior;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Random;
@@ -12,7 +13,7 @@ import java.util.Random;
 /**
  * Created by SaeedHD on 07/10/2016.
  */
-public class ArtificialBrain {
+public class ArtificialBrain implements Serializable {
     Player ComPlayer;
     Warrior[] team;
     Warrior[] enemyTeam;

@@ -3,6 +3,7 @@ package com.childrenOfTime.model;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
 import com.childrenOfTime.model.Warriors.Warrior;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Random;
 
@@ -11,7 +12,7 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
 /**
  * Created by SaeedHD on 07/10/2016.
  */
-public class Store {
+public class Store implements Serializable {
     Map<Item, Integer> items;
     boolean canBate;
     boolean canInflatePrices;

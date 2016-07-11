@@ -1,9 +1,11 @@
 package com.childrenOfTime.model;
 
+import java.io.Serializable;
+
 /**
  * Created by SaeedHD on 05/13/2016.
  */
-public enum EndlessCollectionInformations {
+public enum EndlessCollectionInformations implements Serializable {
 }
 //    Fight("Fight training", -1, 2, 3, 4, 0, 0),
 //    Work("Work out", -1, 2, 3, 4, 0, 0),

@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 public abstract class MenuScreenPanel extends JPanel {
     public static final int ELEMENT_GAP = 20;
     public static final int PREFFERED_AVATAR_SIZE = 100;
+    public static final int PREFFERED_ELEMENT_ICON_SIZE = 50;
 
     protected float pageOpacity = 0f;
     protected Timer timer_emerge = new Timer(LoadingScreenPanel.TIMER_STARTING_DELAY/3, new ActionListener() {
