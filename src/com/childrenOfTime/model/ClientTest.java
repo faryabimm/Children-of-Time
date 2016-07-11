@@ -18,7 +18,7 @@ public class ClientTest {
             public void run() {
                 while (true) {
                     try {
-                        Socket socket2 = new Socket(InetAddress.getLocalHost(), 2052);
+                        Socket socket2 = new Socket(InetAddress.getLocalHost(), 2050);
                         ObjectOutputStream objOut = new ObjectOutputStream(socket2.getOutputStream());
                         objOut.writeObject(new String("salam Port 2 !"));
                         objOut.flush();
@@ -31,7 +31,7 @@ public class ClientTest {
             }
         });
         thread.start();
-        startAsClient(2050);
+        startAsClient(2051);
 
     }
 
