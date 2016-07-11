@@ -1,7 +1,9 @@
 package com.childrenOfTime.gui.fillForms;
 
 import com.childrenOfTime.cgd.CustomGameDAO;
+import com.childrenOfTime.gui.customGame.CusomGameEditorMenu;
 import com.childrenOfTime.gui.fillForms.dataHolders.WarriorDataHolder;
+import com.childrenOfTime.model.ChildrenOfTime;
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
 import com.childrenOfTime.model.Warriors.HeroClass;
 import com.childrenOfTime.utilities.GUIUtils;
@@ -90,9 +92,13 @@ public class NewWarriorCreationDialog extends JDialog {
     private void onOK() {
 // add your code here
         collectData();
-        dispose();
+        disposalProcess();
     }
 
+    private void disposalProcess() {
+        ChildrenOfTime.changeContentPane(new CusomGameEditorMenu());
+        dispose();
+    }
     private void collectData() {
         dataHolder.warriorClass = CustomGameDAO.currentUserCustomWarriorClasses.get(comboBox1.getSelectedIndex());
         dataHolder.name = textField1.getText();
@@ -103,7 +109,7 @@ public class NewWarriorCreationDialog extends JDialog {
 
     private void onCancel() {
 // add your code here if necessary
-        dispose();
+        disposalProcess();
     }
 
     public static void main(String[] args) {

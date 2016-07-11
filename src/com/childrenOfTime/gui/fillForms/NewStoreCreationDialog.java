@@ -1,7 +1,9 @@
 package com.childrenOfTime.gui.fillForms;
 
 import com.childrenOfTime.cgd.CustomGameDAO;
+import com.childrenOfTime.gui.customGame.CusomGameEditorMenu;
 import com.childrenOfTime.gui.fillForms.dataHolders.StoreDataHolder;
+import com.childrenOfTime.model.ChildrenOfTime;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
 
 import javax.swing.*;
@@ -80,7 +82,7 @@ public class NewStoreCreationDialog extends JDialog {
     private void onOK() {
 // add your code here
         collectData();
-        dispose();
+        disposalProcess();
     }
 
     private void collectData() {
@@ -89,9 +91,14 @@ public class NewStoreCreationDialog extends JDialog {
         dataHolder.inflationRate = Integer.parseInt(textField1.getText());
     }
 
+    private void disposalProcess() {
+        ChildrenOfTime.changeContentPane(new CusomGameEditorMenu());
+        dispose();
+    }
+
     private void onCancel() {
 // add your code here if necessary
-        dispose();
+        disposalProcess();
     }
 
     public static void main(String[] args) {

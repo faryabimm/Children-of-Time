@@ -1,9 +1,11 @@
 package com.childrenOfTime.model.Equip.ItemComps;
 
+import java.io.Serializable;
+
 /**
  * Created by SaeedHD on 07/08/2016.
  */
-public class ItemType {
+public class ItemType implements Serializable {
     private final Boolean Inflative;
     private final Boolean Reusable;
     private final Boolean autoUseAfterBuoght;

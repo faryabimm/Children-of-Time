@@ -7,7 +7,7 @@ import com.childrenOfTime.model.Battle;
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
 import com.childrenOfTime.model.Equip.Effect;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
-import com.childrenOfTime.model.Scenario;
+import com.childrenOfTime.gui.customizedElements.Scenario;
 import com.childrenOfTime.model.Store;
 import com.childrenOfTime.model.Warriors.HeroClass;
 import com.childrenOfTime.model.Warriors.Warrior;
@@ -131,9 +131,14 @@ public class GUIUtils {
 
     public static ImageIcon getIConByFilePath(String filePath) {
 
+        if (filePath == null) return null;
         Image image = GameEngine.DEFAULT_TOOLKIT.getImage(filePath).getScaledInstance(
                 MenuScreenPanel.PREFFERED_ELEMENT_ICON_SIZE, MenuScreenPanel.PREFFERED_ELEMENT_ICON_SIZE, 0);
 
         return GUIUtils.imageToIcon(image);
+    }
+
+    public static ImageIcon getScaledIcon(ImageIcon source, int width, int height, int hints) {
+        return new ImageIcon(source.getImage().getScaledInstance(width, height, hints));
     }
 }

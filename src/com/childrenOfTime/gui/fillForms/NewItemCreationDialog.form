@@ -97,7 +97,9 @@
                         <preferred-size width="150" height="-1"/>
                       </grid>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <text value="0"/>
+                    </properties>
                   </component>
                   <component id="d1bea" class="javax.swing.JLabel">
                     <constraints>
@@ -125,6 +127,7 @@
                     </constraints>
                     <properties>
                       <enabled value="false"/>
+                      <text value="0"/>
                     </properties>
                   </component>
                   <component id="2d080" class="javax.swing.JLabel">
@@ -153,6 +156,7 @@
                     </constraints>
                     <properties>
                       <enabled value="false"/>
+                      <text value="0"/>
                     </properties>
                   </component>
                   <component id="66180" class="javax.swing.JLabel">
@@ -179,7 +183,7 @@
                         </constraints>
                         <properties>
                           <enabled value="false"/>
-                          <text value=""/>
+                          <text value="0"/>
                         </properties>
                       </component>
                     </children>
@@ -198,7 +202,15 @@
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <model>
+                    <item value="Himself"/>
+                    <item value="The Enemy"/>
+                    <item value="All Teammates"/>
+                    <item value="All Enemies"/>
+                    <item value="The Chosen Enemy"/>
+                  </model>
+                </properties>
               </component>
             </children>
           </grid>
@@ -233,6 +245,7 @@
               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <selected value="false"/>
               <text value="Inflation Rate"/>
             </properties>
           </component>

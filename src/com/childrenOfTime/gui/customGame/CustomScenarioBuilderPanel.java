@@ -17,47 +17,47 @@ public class CustomScenarioBuilderPanel extends MenuScreenPanel {
     public static final int NUMBER_OF_MAP_COLUMNS = 14;
     public static final int MAP_CELL_DIMENTION = 50;
     public static final int BORDER_GAP = 15;
+    public Scenario newScenario;
+
+    public CustomScenarioBuilderPanel(Scenario newScenario) {
+        this.newScenario = newScenario;
+    }
 
     @Override
     public void initialize() {
-
-        ScenarioHolder scenarioHolder = new ScenarioHolder();
+        ScenarioHolder scenarioHolder = new ScenarioHolder(newScenario);
         scenarioHolder.setBorder(BorderFactory.createEmptyBorder(BORDER_GAP,BORDER_GAP, BORDER_GAP,BORDER_GAP));
 //        scenarioHolder.setLocation(CustomScenarioBuilderPanel.BORDER_GAP,CustomScenarioBuilderPanel.BORDER_GAP);
-
-        Dimension scenarioPanelDimention = scenarioHolder.getDimention();
-
+        Dimension scenarioPanelDimention = scenarioHolder.getDimension();
         Dimension rightPanelDimention = new Dimension((int) (ChildrenOfTime.PREFERRED_WIDTH - scenarioPanelDimention.getWidth()),
                 ChildrenOfTime.PREFERRED_HEIGHT);
-
         this.setLayout(new BorderLayout());
-
         this.add(scenarioHolder,BorderLayout.WEST);
-
-        MenuScreenPanel_RightSide rightPanel = new MenuScreenPanel_RightSide(rightPanelDimention);
-
+        MenuScreenPanel_RightSide rightPanel = new MenuScreenPanel_RightSide(rightPanelDimention, this);
         this.add(rightPanel,BorderLayout.EAST);
         emerge();
     }
 
-    public static void cellClicked(ScenarioCell scenarioCell) {
-        new BlockPickerDialog(scenarioCell);
+    public static void cellClicked(ScenarioCell targetCell) {
+        new BlockPickerDialog(targetCell);
     }
 }
 
 class MenuScreenPanel_RightSide extends JPanel {
 
-
-
     private JLabel userNameLabel = new CustomizedJLabel("");
     private JLabel userAvatar = new CustomizedJImage();
 
     Dimension dimension;
+    CustomScenarioBuilderPanel parent;
 
-    public MenuScreenPanel_RightSide(Dimension dimention) {
-        this.dimension = dimention;
+
+    public MenuScreenPanel_RightSide(Dimension dimension, CustomScenarioBuilderPanel parent) {
+
+        this.parent = parent;
+        this.dimension = dimension;
         this.setLayout(null);
-        this.setPreferredSize(dimention);
+        this.setPreferredSize(dimension);
         this.initialize();
 
         if(CustomGameDAO.getCurrentUser() != null) {
@@ -66,9 +66,9 @@ class MenuScreenPanel_RightSide extends JPanel {
                     + "/avatar.png", MenuScreenPanel.PREFFERED_AVATAR_SIZE, MenuScreenPanel.PREFFERED_AVATAR_SIZE);
             userNameLabel.setText(CustomGameDAO.getCurrentUser().getUserName());
             userNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            userAvatar.setLocation((int) (dimention.getWidth() - userAvatar.getWidth()/2 - MenuScreenPanel.ELEMENT_GAP - userNameLabel.getWidth()/2),
+            userAvatar.setLocation((int) (dimension.getWidth() - userAvatar.getWidth() / 2 - MenuScreenPanel.ELEMENT_GAP - userNameLabel.getWidth() / 2),
                     MenuScreenPanel.ELEMENT_GAP);
-            userNameLabel.setLocation((int) (dimention.getWidth() - CustomizedJLabel.LABEL_WIDTH - MenuScreenPanel.ELEMENT_GAP),
+            userNameLabel.setLocation((int) (dimension.getWidth() - CustomizedJLabel.LABEL_WIDTH - MenuScreenPanel.ELEMENT_GAP),
                     userAvatar.getHeight() + MenuScreenPanel.ELEMENT_GAP);
         }
 

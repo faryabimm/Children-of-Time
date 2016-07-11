@@ -77,39 +77,39 @@ public class BlockPickerDialog extends JDialog {
     }
 
     private void onOK() {
-        if(radioButton3.isSelected()) targetCell.setIcon(new ImageIcon(CustomGameDAO.textures.get("wall")));
-        if(radioButton4.isSelected()) targetCell.setIcon(new ImageIcon(CustomGameDAO.textures.get("store")));
-        if(radioButton5.isSelected()) targetCell.setIcon(new ImageIcon(CustomGameDAO.textures.get("upgrade")));
-        if(radioButton6.isSelected()) targetCell.setIcon(new ImageIcon(CustomGameDAO.textures.get("story")));
-        if(radioButton7.isSelected()) targetCell.setIcon(new ImageIcon(CustomGameDAO.textures.get("battle")));
-        if(radioButton8.isSelected()) targetCell.setIcon(new ImageIcon(CustomGameDAO.textures.get("boss")));
+        if (radioButton3.isSelected()) targetCell.setIcon(CustomGameDAO.textures.get("wall"));
+        if (radioButton4.isSelected()) targetCell.setIcon(CustomGameDAO.textures.get("store"));
+        if (radioButton5.isSelected()) targetCell.setIcon(CustomGameDAO.textures.get("upgrade"));
+        if (radioButton6.isSelected()) targetCell.setIcon(CustomGameDAO.textures.get("story"));
+        if (radioButton7.isSelected()) targetCell.setIcon(CustomGameDAO.textures.get("battle"));
+        if (radioButton8.isSelected()) targetCell.setIcon(CustomGameDAO.textures.get("boss"));
 
         if(radioButton1.isSelected()) {
             switch (comboBox1.getSelectedIndex()) {
                 case 0:
-                    targetCell.setIcon(new ImageIcon(CustomGameDAO.textures.get("ground1")));
+                    targetCell.setIcon(CustomGameDAO.textures.get("ground1"));
                     break;
                 case 1:
-                    targetCell.setIcon(new ImageIcon(CustomGameDAO.textures.get("ground2")));
+                    targetCell.setIcon(CustomGameDAO.textures.get("ground2"));
                     break;
                 case 2:
-                    targetCell.setIcon(new ImageIcon(CustomGameDAO.textures.get("ground3")));
+                    targetCell.setIcon(CustomGameDAO.textures.get("ground3"));
                     break;
             }
         }
         if(radioButton2.isSelected()) {
             switch (comboBox2.getSelectedIndex()) {
                 case 0:
-                    targetCell.setIcon(new ImageIcon(CustomGameDAO.textures.get("door_down_up")));
+                    targetCell.setIcon(CustomGameDAO.textures.get("door_down_up"));
                     break;
                 case 1:
-                    targetCell.setIcon(new ImageIcon(CustomGameDAO.textures.get("door_up_down")));
+                    targetCell.setIcon(CustomGameDAO.textures.get("door_up_down"));
                     break;
                 case 2:
-                    targetCell.setIcon(new ImageIcon(CustomGameDAO.textures.get("door_left_right")));
+                    targetCell.setIcon(CustomGameDAO.textures.get("door_left_right"));
                     break;
                 case 3:
-                    targetCell.setIcon(new ImageIcon(CustomGameDAO.textures.get("door_right_left")));
+                    targetCell.setIcon(CustomGameDAO.textures.get("door_right_left"));
                     break;
             }
         }

@@ -20,8 +20,15 @@ public class User implements Serializable {
 
     static {
         try {
-            ObjectInputStream objectIO = new ObjectInputStream(new FileInputStream(
-                    new File("src/user_data/all/users.dat")));
+            File userDataFile = new File("src/user_data/all/users.dat");
+            if (!userDataFile.exists()) {
+                userDataFile.createNewFile();
+                ObjectOutputStream objectIO = new ObjectOutputStream(new FileOutputStream(userDataFile));
+                objectIO.writeObject(users);
+                objectIO.close();
+            }
+
+            ObjectInputStream objectIO = new ObjectInputStream(new FileInputStream(userDataFile));
 
             users = (ArrayList<User>) objectIO.readObject();
             objectIO.close();

@@ -1,6 +1,8 @@
 package com.childrenOfTime.gui.fillForms;
 
+import com.childrenOfTime.gui.customGame.CusomGameEditorMenu;
 import com.childrenOfTime.gui.fillForms.dataHolders.WarriorClassDataHolder;
+import com.childrenOfTime.model.ChildrenOfTime;
 import com.childrenOfTime.utilities.GUIUtils;
 
 import javax.swing.*;
@@ -160,6 +162,12 @@ public class NewWarriorClassCreationDialog extends JDialog {
     private void onOK() {
 // add your code here
         collectData();
+        disposalProcess();
+
+    }
+
+    private void disposalProcess() {
+        ChildrenOfTime.changeContentPane(new CusomGameEditorMenu());
         dispose();
     }
 
@@ -202,7 +210,7 @@ public class NewWarriorClassCreationDialog extends JDialog {
 
     private void onCancel() {
 // add your code here if necessary
-        dispose();
+        disposalProcess();
     }
 
     public static void main(String[] args) {
