@@ -3,6 +3,7 @@ package com.childrenOfTime.gui.customGame;
 import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
+import com.childrenOfTime.gui.customizedElements.Scenario;
 import com.childrenOfTime.gui.fillForms.*;
 import com.childrenOfTime.gui.fillForms.dataHolders.*;
 import com.childrenOfTime.model.AbilityMaker;
@@ -83,7 +84,16 @@ public class CusomGameEditorMenu extends MenuScreenPanel {
         customScenario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ChildrenOfTime.changeContentPane(new CustomScenarioBuilderPanel());
+                Scenario createdScenario = new Scenario();
+                ChildrenOfTime.changeContentPane(new CustomScenarioBuilderPanel(createdScenario));
+                GUIUtils.deserializeUserFiles();
+                CustomGameDAO.currentUserCustomScenarios.add(createdScenario);
+                try {
+                    GUIUtils.serializeUserObject(CustomGameDAO.currentUserCustomScenarios, "scenarios");
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
             }
         });
         customAbility.addActionListener(new ActionListener() {

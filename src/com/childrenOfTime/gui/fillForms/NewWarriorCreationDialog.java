@@ -62,10 +62,6 @@ public class NewWarriorCreationDialog extends JDialog {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-
-        this.pack();
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
         setSpescificAbilitiesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -87,6 +83,10 @@ public class NewWarriorCreationDialog extends JDialog {
                 }
             }
         });
+
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
 
     private void onOK() {
