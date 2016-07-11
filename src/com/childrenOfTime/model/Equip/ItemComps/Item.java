@@ -4,7 +4,10 @@ import com.childrenOfTime.Completed;
 import com.childrenOfTime.exceptions.AbilityInCooldownException;
 import com.childrenOfTime.exceptions.NotEnoughEnergyPointsException;
 import com.childrenOfTime.exceptions.NotEnoughMagicPointsException;
-import com.childrenOfTime.model.Equip.*;
+import com.childrenOfTime.model.Equip.AlterPackage;
+import com.childrenOfTime.model.Equip.Effect;
+import com.childrenOfTime.model.Equip.EffectPerformer;
+import com.childrenOfTime.model.Equip.Target;
 import com.childrenOfTime.model.Interfaces.Castable;
 import com.childrenOfTime.model.Interfaces.TurnBase;
 import com.childrenOfTime.model.Warriors.Warrior;
@@ -76,9 +79,6 @@ public class Item implements Castable, TurnBase {
         }
     }
 
-    public void addToInvenTory(Inventory inventory) {
-
-    }
 
     public void removedFromInventory(Warrior... targets) {
         for (Effect F : effects) {

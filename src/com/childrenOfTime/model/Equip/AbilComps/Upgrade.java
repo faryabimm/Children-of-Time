@@ -34,7 +34,7 @@ public class Upgrade implements Castable, Comparable<Upgrade>, Serializable {
     int masrafMP;
     Messages messages;
     String[] upgradeRequirements;
-    private Boolean upgradeBoolean;
+    private Boolean upgradeBoolean = true;
     ArrayList<Effect> effects;
     Boolean castJustAfterAcquire = false;
     final Boolean recastable;

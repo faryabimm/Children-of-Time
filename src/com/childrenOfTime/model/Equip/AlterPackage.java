@@ -21,7 +21,7 @@ public class AlterPackage implements Serializable {
     private final Integer ProbabilyPercent;
 
     boolean woreOff = false;
-
+    public String name;
 
     public boolean isProbabilityOccured() {
         Random rand = new Random();
@@ -48,6 +48,13 @@ public class AlterPackage implements Serializable {
         this.ProbabilyPercent = 100;
     }
 
+
+    public AlterPackage(AlterPackage alterPackage, int probabilyPercent) {
+        this.DELTA = alterPackage.DELTA;
+        this.FACTORS = alterPackage.FACTORS;
+        this.ProbabilyPercent = probabilyPercent;
+    }
+
     public AlterPackage(Integer[] DELTA, Double[] FACTORS, Integer probabilyPercent) {
         this.DELTA = DELTA;
         this.FACTORS = FACTORS;
@@ -55,7 +62,7 @@ public class AlterPackage implements Serializable {
     }
 
     public void perform(Warrior... target_s) {
-
+        if (!isProbabilityOccured()) return;
         for (Warrior w : target_s) {
             w.receiveAlterPack(this);
         }

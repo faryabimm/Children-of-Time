@@ -5,9 +5,13 @@ import com.childrenOfTime.exceptions.NotEnoughEnergyPointsException;
 import com.childrenOfTime.exceptions.NotEnoughMagicPointsException;
 import com.childrenOfTime.exceptions.TradeException;
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
-import com.childrenOfTime.model.Equip.*;
+import com.childrenOfTime.model.Equip.AlterPackage;
+import com.childrenOfTime.model.Equip.Effect;
+import com.childrenOfTime.model.Equip.EffectPerformer;
+import com.childrenOfTime.model.Equip.Inventory;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
 import com.childrenOfTime.model.Equip.ItemComps.ItemType;
+import com.childrenOfTime.model.Interfaces.TurnBase;
 import com.childrenOfTime.model.Rules;
 
 import javax.swing.*;
@@ -19,7 +23,7 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
-public class Warrior implements Serializable {
+public class Warrior implements Serializable, TurnBase {
     public static int DEFAULT_Attack_EP_COST = 2;
 
 
@@ -46,10 +50,9 @@ public class Warrior implements Serializable {
     //private Boolean CanHaveHeroAbilities;
     //private Bool CanAttackMoreThanOneTarget;
 
-    private Map<Effect, Integer> imPermanentTurnBasedEffectsList = new HashMap<>();
-    private Map<Effect, Integer> autoRepeatEffList = new HashMap<>();
+    private Map<AlterPackage, Integer> imPermanentTurnBasedAPs = new HashMap<>();
+    private Map<AlterPackage, Integer> autoRepeatAPList = new HashMap<>();
     private Set<Effect> passiveEffects = new HashSet<>(3);
-    private Set<Effect> imPermanentManualWeearOffEffs = new HashSet<>();
 
     public List<Ability> abilities = new ArrayList<>();
 
@@ -58,11 +61,13 @@ public class Warrior implements Serializable {
     }
 
     public Warrior(String name, HeroClass heroClass, ArrayList<Ability> specificHeroAbilities, ImageIcon imageIcon) {
+        if (specificHeroAbilities == null) specificHeroAbilities = new ArrayList<>();
         this.info = new HeroClass(heroClass);
         this.name = name;
         this.image = imageIcon;
         this.image = imageIcon;
         this.specificHeroAbilities = specificHeroAbilities;
+
 
         for (Ability cAbility : info.classAbilities) {
             abilities.add(cAbility);
@@ -88,7 +93,6 @@ public class Warrior implements Serializable {
         Double[] FACTORS = alterPack.FACTORS;
 
 
-        int newMH = DELTA[2] + this.getMaxHealth();
         this.changeAttackPower((int) (DELTA[0] + this.getAttackPower() * (FACTORS[0] - 1)));
         this.changeHealth((int) (DELTA[1] + this.getCurrentHealth() * (FACTORS[1] - 1)), null);
         this.changeMaxHealth((int) (DELTA[2] + this.getMaxHealth() * (FACTORS[2]) - 1));
@@ -114,21 +118,18 @@ public class Warrior implements Serializable {
         return passiveEffects.contains(effect);
     }
 
-    public void addToImPermanentTurnBasedEffectsList(Effect effect, Integer duration) {
+    public void addToImPermanentTurnBasedEffectsList(AlterPackage aPackage, Integer duration) {
         Integer newDuration = duration;
 
-        if (imPermanentTurnBasedEffectsList.containsKey(effect)) {
-            newDuration += imPermanentTurnBasedEffectsList.get(effect);
+        if (imPermanentTurnBasedAPs.containsKey(aPackage)) {
+            newDuration += imPermanentTurnBasedAPs.get(aPackage);
         }
-        imPermanentTurnBasedEffectsList.put(effect, newDuration);
+        imPermanentTurnBasedAPs.put(aPackage, newDuration);
     }
 
-    public void addToImPermanentManualEffectsList(Effect effect) {
-        imPermanentManualWeearOffEffs.add(effect);
-    }
 
-    public void addToAutoRepeatEffList(Effect effect, Integer duration) {
-        autoRepeatEffList.put(effect, duration);
+    public void addToAutoRepeatEffList(AlterPackage effect, Integer duration) {
+        autoRepeatAPList.put(effect, duration);
     }
 
     public void decreasDuration(Map<Effect, Integer> list, Integer duration) {
@@ -140,22 +141,8 @@ public class Warrior implements Serializable {
     }
 
 
-    private void removeFromImPermanentManualEffectsList(Effect effect) {
-        try {
-            imPermanentManualWeearOffEffs.remove(effect);
-        } catch (Exception e) {
-        }
-    }
-
-    public void removeFromPerformedListOfWarrior(Effect effect) {
-        try {
-            imPermanentTurnBasedEffectsList.remove(effect);
-        } catch (Exception e) {
-        }
-    }
-
-    public Map<Effect, Integer> getImPermanentTurnBasedEffectsList() {
-        return imPermanentTurnBasedEffectsList;
+    public Map<AlterPackage, Integer> getImPermanentTurnBasedAPs() {
+        return imPermanentTurnBasedAPs;
     }
 
 
@@ -169,19 +156,20 @@ public class Warrior implements Serializable {
         changeEP(-EPCost);
         if (realAttack == null) realAttack = this.getAttackPower();
 
-        for (Effect eff : passiveEffects) {
-            Warrior[] targetsToPerformPassiveEffs = null;
-            if (eff.getTargetType() == Target.theAttackedOne) targetsToPerformPassiveEffs = targets;
-            EffectPerformer.performEffects(this.passiveEffects, this, targets, allEnemies, allTeamMates);
-        }
+        EffectPerformer.performEffects(this.passiveEffects, this, targets, allEnemies, allTeamMates);
 
         for (Warrior tar : targets) {
             if (tar == null) continue;
-            tar.changeHealth(-realAttack, null);
+            int damage = tar.changeHealth(-realAttack, null);
             //TODO DOROST SHAVAD
-            printOutput(getIdentity() + " has successfully attacked " + /*Inja h*/ getIdentity() + " with " + getAttackPower() + " power");
+            printOutput(toString() + " has successfully attacked " + /*Inja h*/ toString() + " with " + getAttackPower() + " power " + "\nDamage Made : " + damage);
         }
-
+        Set<Effect> toWearOff = new HashSet<>();
+        for (Effect eff : this.passiveEffects) {
+            if (eff.getEffectType().isIfPassiveInstantEffectJustForAttack())
+                toWearOff.add(eff);
+        }
+        EffectPerformer.wearOffEffects(toWearOff, this, targets, allEnemies, allTeamMates);
 
     }
 
@@ -193,14 +181,42 @@ public class Warrior implements Serializable {
         if (itemType.getAutoUseAfterBuoght()) {
             useItem(item, null, allEnemies, allTeamMates);
         }
-        if (itemType.getWearOffAfterSold()) {
-            for (Effect effect : item.getEffects()) {
-                addToImPermanentManualEffectsList(effect);
-            }
-        }
 
 
     }
+
+
+    @Override
+    public void aTurnHasPassed() {
+        this.currentEP = info.initialEP;
+        changeHealth(this.info.getHealthRefillRate(), 100);
+        changeCurrentMagic(this.info.getMagicRefillRate());
+        this.abilities.forEach(Ability::aTurnHasPassed);
+        this.inventory.getItems().forEach(Item::aTurnHasPassed);
+        for (AlterPackage aPackage : this.imPermanentTurnBasedAPs.keySet()) {
+            int i = imPermanentTurnBasedAPs.get(aPackage) - 1;
+            if (i <= 0) {
+                imPermanentTurnBasedAPs.remove(aPackage);
+                if (i == 0) {
+                    aPackage.wearOff(this);
+                    printOutput("Impermanent Effect :  " + aPackage.name + "   wore off by : " + this.toString());
+                }
+
+            } else imPermanentTurnBasedAPs.put(aPackage, i);
+        }
+        for (AlterPackage aPackage : this.autoRepeatAPList.keySet()) {
+            int i = autoRepeatAPList.get(aPackage) - 1;
+            if (i <= 0) {
+                imPermanentTurnBasedAPs.remove(aPackage);
+            }
+            if (i >= 0) {
+                aPackage.perform(this);
+                printOutput("Auto repeat Effect :  " + aPackage.name + "   performed on : " + this.toString());
+            }
+        }
+
+    }
+
 
     public void IWannaSellThisItem(Item item) {
         ItemType itemType = item.getType();
@@ -209,15 +225,13 @@ public class Warrior implements Serializable {
         inventory.removeFromInventoryIfYouCan(item);
         if (itemType.getWearOffAfterSold()) {
             item.removedFromInventory(this);
-            for (Effect effect : item.getEffects()) {
-                removeFromImPermanentManualEffectsList(effect);
-            }
+
         }
 
     }
 
     public void castAbility(Ability ability, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeamMates) {
-        if (!abilities.contains(ability.getName())) return;
+        if (!abilities.contains(ability)) return;
         ability.cast(this, selectedTargets, allEnemies, allTeamMates);
     }
 /*
@@ -237,7 +251,7 @@ public class Warrior implements Serializable {
         int newAP = this.currentAttackPower + num;
         if (newAP < 0) {
             if (!Rules.AttackPowerCanBeNegative) this.currentAttackPower = newAP;
-            printOutput(getIdentity() + "'s " + "AttackPower has Gone Under zero !! ");
+            printOutput(toString() + "'s " + "AttackPower has Gone Under zero !! ");
         }
         this.currentAttackPower = newAP;
     }
@@ -279,12 +293,19 @@ public class Warrior implements Serializable {
         this.info.healthRefillRate = newHRR;
     }
 
-    public void changeHealth(int i, Integer damageEffitioncyFactor) {
+    public int changeHealth(int i, Integer damageEffitioncyFactor) {
+        int initHealth = currentHealth;
         if (damageEffitioncyFactor == null) damageEffitioncyFactor = calculateDamageEffitioncy();
+        if (i >= 0) damageEffitioncyFactor = 100;
         i = (int) (i * damageEffitioncyFactor / 100.0);
+        if (!wasAlive() & willDye(i)) {
+
+            throw new RuntimeException("He is dead !");
+
+        }
         if (wasAlive() & !willDye(i)) {
             changeHealthWithInsuranceOfLiving(i);
-            return;
+            return this.currentHealth - initHealth;
         }
 
         if (wasAlive() & willDye(i)) {
@@ -302,16 +323,21 @@ public class Warrior implements Serializable {
                     asksForImmortalityPotion = false;
                 } else {
                     isDead = true;
-                    printOutput(info.getDyingActionMessage());
+                    printOutput(this + info.getDyingActionMessage());
 
                 }
+
+            } else {
+                isDead = true;
+                printOutput(this + info.getDyingActionMessage());
 
             }
         }
 
-        if (info.CanHaveFBFeatures) {
+        if (info.CanHaveFBFeatures && !isDead()) {
             updateFinalBossHealthChanges();
         }
+        return currentHealth - initHealth;
     }
 
     public void changeMaxHealth(int i) {
@@ -325,11 +351,13 @@ public class Warrior implements Serializable {
             return;
         }
         if (this.currentEP + i < 0) {
-            throw new NotEnoughEnergyPointsException(getIdentity() + " doesn't have Enough EP to perform this" +
+            throw new NotEnoughEnergyPointsException(toString() + " doesn't have Enough EP to perform this" +
                     " move\ncurrent EP : " + currentEP + "\nrequired EP : " + -i + "\nYou need " +
                     (-i - currentEP) + " additional EPs.");
         }
         this.currentEP += i;
+
+        //TODO PakShavad
         printOutput(this + "current EP : " + currentEP);
 
     }
@@ -376,9 +404,15 @@ public class Warrior implements Serializable {
     }
 
     public void updateFinalBossHealthChanges() {
+        boolean firstTime = true;
         if (this.currentHealth <= this.info.healthBound) {
             this.currentAttackPower = this.info.attackPowerInLowHealth;
+            if (firstTime) {
+                printOutput(info.getMutationMessage());
+                firstTime = false;
+            }
         } else {
+            firstTime = true;
             this.currentAttackPower = this.info.attackPowerInHighHealth;
         }
     }
@@ -391,7 +425,9 @@ public class Warrior implements Serializable {
     public void burnEP(Warrior[] targets) {
         if (!info.CanHaveFBFeatures) return;
         for (Warrior target : targets) {
-            target.changeEP(-new Random().nextInt(info.heroBurningEnergy[1] - info.heroBurningEnergy[0]) + info.heroBurningEnergy[0]);
+            int amount = -new Random().nextInt(info.heroBurningEnergy[1] - info.heroBurningEnergy[0]) + info.heroBurningEnergy[0];
+            target.getInfo().changeInitialEP(amount);
+            target.changeEP(amount);
         }
     }
 
@@ -400,21 +436,25 @@ public class Warrior implements Serializable {
     }
 
     public boolean willDye(int q) {
-        return currentHealth + q < 0;
+        return currentHealth + q <= 0;
     }
 
     public void useImmortalityPotion() {
         this.currentHealth = this.info.maxHealth;
     }
 
-    public String getIdentity() {
-        return this.name + " " + this.getId() + " , ";
+    public String toString() {
+        return this.name + " " + this.getId() + " ," + "  (" + this.info.getClassName() + ") - ";
     }
 
+    private transient Random random = new Random();
     public Integer calculateDamageEffitioncy() {
-        int i = 10 - this.info.damageEfficiencyIntelligenceOutOfTen;
-        int j = (int) (this.currentHealth * (20 - i));
-        return 100 - (i * 2500) / j;
+        int i = this.info.damageEfficiencyIntelligenceOutOfTen;
+        int j = (int) (this.currentHealth + 1);
+        int sout = (100 - ((i * 7 * 1400) / j * (random.nextInt(30 - i * 2) + 70 + 2 * i) / 1000));
+        if (sout > 100) sout = 100;
+        if (sout < 0) sout = 0;
+        return sout;
     }
 
     public int getDamageEfficiencyIntelligenceOutOfTen() {
@@ -455,11 +495,11 @@ public class Warrior implements Serializable {
 
 
     public void showCurrentItems() {
-        String toPrint = this.getIdentity() + " has ";
+        String toPrint = this.toString() + " has ";
         for (Item i : inventory.getItems()) {
             toPrint += i.getName() + " worth " + i.getInitialPrice() + " dollars(InitialPrice), ";
         }
-        if (toPrint.equals(this.getIdentity() + " has ")) {
+        if (toPrint.equals(this.toString() + " has ")) {
             printOutput(toPrint + "no items yet!");
         } else {
             printOutput(toPrint);
@@ -483,9 +523,6 @@ public class Warrior implements Serializable {
         return asksForImmortalityPotion;
     }
 
-    public String toString() {
-        return this.getIdentity() + " (" + this.info.getClassName() + ") - ";
-    }
 
     public Inventory getInventory() {
         return inventory;
@@ -498,4 +535,5 @@ public class Warrior implements Serializable {
     public HeroClass getInfo() {
         return info;
     }
+
 }

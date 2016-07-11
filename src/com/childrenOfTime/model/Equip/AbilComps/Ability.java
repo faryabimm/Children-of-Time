@@ -97,6 +97,7 @@ public class Ability implements Castable, TurnBase, Serializable {
 
     public Integer upgrade(Warrior performer, Integer i, Warrior[] allEnemies, Warrior[] allTeammates) throws UpgradeException {
         if (currentLevel == null) {
+            if (!i.equals(baseState.getNumberOfUpgrade())) return 0;
             return acquire(performer, allEnemies, allTeammates);
         }
 
@@ -169,6 +170,22 @@ public class Ability implements Castable, TurnBase, Serializable {
         this.Upgrades.add(upgrade);
         if (upgrade.isBaseUpgrade) baseState = upgrade;
         upgrade.setMessages(this.messages);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Ability ability = (Ability) o;
+
+        return !(name != null ? !name.equals(ability.name) : ability.name != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
     }
 }
 

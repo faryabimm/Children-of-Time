@@ -23,7 +23,7 @@ public class MultiPlayer {
     public static final int DEFAULT_PORT = 2050;
 
     private String recivedMessage = "";
-    private String toSendMessage = "";
+    private String toSendMessage = "This is Saeed Talking To you";
     private Player yourPlayer;
     private Player enemyPlayer;
     private Battle battle;
@@ -38,7 +38,7 @@ public class MultiPlayer {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         MultiPlayer multiPlayer = new MultiPlayer();
-        multiPlayer.startAsHost();
+        multiPlayer.startJoin(InetAddress.getLocalHost(), 3000);
     }
 
 
@@ -64,10 +64,10 @@ public class MultiPlayer {
             }
         } while (!portIsFree);
 
-        Thread dataReceiver = new Thread(new Communicator<Player>(SS1, this, ConnectionType.Host, Job.Recieve));
-        Thread dataSender = new Thread(new Communicator<Player>(SS2, this, ConnectionType.Host, Job.Send));
-        Thread messageReceiver = new Thread(new Communicator<String>(SS3, this, ConnectionType.Host, Job.Recieve));
-        Thread messageSender = new Thread(new Communicator<String>(SS4, this, ConnectionType.Host, Job.Send));
+        Thread dataReceiver = new Thread(new Communicator(SS1, this, ConnectionType.Host, Job.Recieve, ObjectType.Player));
+        Thread dataSender = new Thread(new Communicator(SS2, this, ConnectionType.Host, Job.Send, ObjectType.Player));
+        Thread messageReceiver = new Thread(new Communicator(SS3, this, ConnectionType.Host, Job.Recieve, ObjectType.Message));
+        Thread messageSender = new Thread(new Communicator(SS4, this, ConnectionType.Host, Job.Send, ObjectType.Message));
 
         dataReceiver.start();
         dataSender.start();
@@ -83,10 +83,10 @@ public class MultiPlayer {
     public void startJoin(@NotNull InetAddress address, @Nullable Integer port) {
         if (port == null) port = MultiPlayer.DEFAULT_PORT;
 
-        Thread dataReceiver = new Thread(new Communicator<Player>(this, ConnectionType.Join, port, address, Job.Recieve));
-        Thread dataSender = new Thread(new Communicator<Player>(this, ConnectionType.Join, port, address, Job.Send));
-        Thread messageReceiver = new Thread(new Communicator<String>(this, ConnectionType.Join, port, address, Job.Recieve));
-        Thread messageSender = new Thread(new Communicator<String>(this, ConnectionType.Join, port, address, Job.Send));
+        Thread dataReceiver = new Thread(new Communicator(this, ConnectionType.Join, port, address, Job.Recieve, ObjectType.Player));
+        Thread dataSender = new Thread(new Communicator(this, ConnectionType.Join, port + 1, address, Job.Send, ObjectType.Player));
+        Thread messageReceiver = new Thread(new Communicator(this, ConnectionType.Join, port + 2, address, Job.Recieve, ObjectType.Message));
+        Thread messageSender = new Thread(new Communicator(this, ConnectionType.Join, port + 3, address, Job.Send, ObjectType.Message));
 
         dataReceiver.start();
         dataSender.start();
@@ -111,6 +111,120 @@ public class MultiPlayer {
 
     public void setRecivedMessage(String recivedMessage) {
         this.recivedMessage = recivedMessage;
+    }
+
+    public void setToSendMessage(String toSendMessage) {
+        this.toSendMessage = toSendMessage;
+    }
+
+    public String getRecivedMessage() {
+        return recivedMessage;
+    }
+    //    public void setRecivedMessage(String recivedMessage) {
+//        this.recivedMessage = recivedMessage;
+//    }
+//
+//    public String getRecivedMessage() {
+//        return recivedMessage;
+//    }
+}
+
+
+enum ConnectionType {Join, Host}
+
+enum Job {Send, Recieve}
+
+enum ObjectType {Message, Player}
+
+class Communicator implements Runnable {
+    Closeable performer;
+    MultiPlayer multiPlayer;
+    ConnectionType connectionType;
+    Job job;
+    int port;
+    InetAddress IPAddress;
+    ObjectType transformingObjectType;
+
+    public Communicator(ServerSocket performer, MultiPlayer multiPlayer, ConnectionType connectionType, Job job, ObjectType transformingObjectType) {
+        this.performer = performer;
+        this.multiPlayer = multiPlayer;
+        this.connectionType = connectionType;
+        this.job = job;
+        this.transformingObjectType = transformingObjectType;
+        System.out.println("Const");
+    }
+
+    public Communicator(MultiPlayer multiPlayer, ConnectionType connectionType, int port, InetAddress IPAddress, Job job, ObjectType transformingObjectType) {
+        this.multiPlayer = multiPlayer;
+        this.connectionType = connectionType;
+        this.IPAddress = IPAddress;
+        this.port = port;
+        this.job = job;
+        this.transformingObjectType = transformingObjectType;
+
+    }
+
+    @Override
+    public void run() {
+        try {
+            Socket socket = null;
+            while (true) {
+                switch (connectionType) {
+                    case Host:
+                        System.out.println("Port Opened");
+                        socket = ((ServerSocket) this.performer).accept();
+                        System.out.println("Connected");
+                        break;
+                    case Join:
+                        socket = new Socket(this.IPAddress, this.port);
+                        break;
+                }
+                Object tosend = null;
+                switch (transformingObjectType) {
+                    case Message:
+                        tosend = multiPlayer.getToSendMessage();
+                        break;
+                    case Player:
+                        tosend = multiPlayer.getYourPlayer();
+                        break;
+                }
+
+                Object recObj = null;
+                switch (job) {
+                    case Send:
+                        sendData(socket, tosend);
+                        break;
+                    case Recieve:
+                        recObj = recieveData(socket);
+                        break;
+                }
+
+                switch (transformingObjectType) {
+                    case Message:
+                        multiPlayer.setRecievedMesssage((String) recObj);
+                        break;
+                    case Player:
+                        multiPlayer.setEnemyPlayer((Player) recObj);
+                        break;
+                }
+
+                if (connectionType == ConnectionType.Join) socket.close();
+            }
+
+        } catch (Exception e) {
+        }
+    }
+
+    private Object recieveData(Socket socket) throws IOException, ClassNotFoundException {
+        ObjectInputStream oips = new ObjectInputStream(socket.getInputStream());
+        return oips.readObject();
+    }
+
+
+    private void sendData(Socket socket, Object data) throws IOException {
+        ObjectOutputStream oops = new ObjectOutputStream(socket.getOutputStream());
+        oops.writeObject(data);
+        oops.flush();
     }
 }
 
@@ -147,75 +261,3 @@ public class MultiPlayer {
 //    }
 //}
 
-
-enum ConnectionType {Join, Host}
-
-enum Job {Send, Recieve}
-
-class Communicator<T> implements Runnable {
-    Closeable performer;
-    MultiPlayer multiPlayer;
-    ConnectionType connectionType;
-    Job job;
-    int port;
-    InetAddress IPAddress;
-
-
-    public Communicator(ServerSocket performer, MultiPlayer multiPlayer, ConnectionType connectionType, Job job) {
-        this.performer = performer;
-        this.multiPlayer = multiPlayer;
-        this.connectionType = connectionType;
-        this.job = job;
-        System.out.println("Const");
-    }
-
-    public Communicator(MultiPlayer multiPlayer, ConnectionType connectionType, int port, InetAddress IPAddress, Job job) {
-        this.multiPlayer = multiPlayer;
-        this.connectionType = connectionType;
-        this.IPAddress = IPAddress;
-        this.port = port;
-        this.job = job;
-    }
-
-    @Override
-    public void run() {
-        try {
-            Socket socket = null;
-            while (true) {
-                switch (connectionType) {
-                    case Host:
-                        System.out.println("Port Opened");
-                        socket = ((ServerSocket) this.performer).accept();
-                        System.out.println("Connected");
-                        break;
-                    case Join:
-                        socket = new Socket(this.IPAddress, this.port);
-                        break;
-                }
-                switch (job) {
-                    case Send:
-                        sendData(socket, (T) multiPlayer.getToSendMessage());
-                        break;
-                    case Recieve:
-                        recieveData(socket);
-                        break;
-                }
-                if (connectionType == ConnectionType.Join) socket.close();
-            }
-
-        } catch (Exception e) {
-        }
-    }
-
-    private T recieveData(Socket socket) throws IOException, ClassNotFoundException {
-        ObjectInputStream oips = new ObjectInputStream(socket.getInputStream());
-        return (T) oips.readObject();
-    }
-
-
-    private void sendData(Socket socket, T data) throws IOException {
-        ObjectOutputStream oops = new ObjectOutputStream(socket.getOutputStream());
-        oops.writeObject(data);
-        oops.flush();
-    }
-}

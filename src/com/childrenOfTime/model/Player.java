@@ -5,6 +5,7 @@ import com.childrenOfTime.exceptions.NotEnoughMoneyException;
 import com.childrenOfTime.exceptions.NotEnoughXPException;
 import com.childrenOfTime.exceptions.TradeException;
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
+import com.childrenOfTime.model.Equip.AlterPackage;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
 import com.childrenOfTime.model.Interfaces.TurnBase;
 import com.childrenOfTime.model.Warriors.Warrior;
@@ -34,6 +35,7 @@ public class Player implements TurnBase, Serializable {
     public Player() {
     }
 
+
     public Player(String name) {
         this.name = name;
     }
@@ -43,6 +45,15 @@ public class Player implements TurnBase, Serializable {
         return "Player{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+
+
+    public void getImpermanentHalfEP() {
+        //  AP , H , MH ,  HRF  , MP , MMP , MPRF  , EP ;
+        Double[] a = {null, null, null, null, null, null, null, 0.5};
+        for (Warrior warrior : this.myTeam) {
+            warrior.addToImPermanentTurnBasedEffectsList(new AlterPackage(null, a), 1);
+        }
     }
 
     public void useImmortalityPotion() throws NoImmortalityPotionLeftException {
@@ -131,7 +142,7 @@ public class Player implements TurnBase, Serializable {
         changeCurrentWealth(itemCurrenPriceToSell);
         printOutput("Item " + item.getName() + " was successfully sold for $" +
                 itemCurrenPriceToSell + " and was removed form (" +
-                target.getIdentity() + ") Hero.");
+                target.toString() + ") Hero.");
         printOutput("your Current Wealth is: $" + getCurrentWealth());
     }
 
@@ -156,7 +167,11 @@ public class Player implements TurnBase, Serializable {
 
     //TODO Each Hero Can Attack Multiple Targets
     public void giveAttack(Warrior attackingHero, Warrior[] selectedTargets) {
-        attackingHero.attack(selectedTargets, null, null, toArray(this.enemyTeam), toArray(this.myTeam));
+        try {
+            attackingHero.attack(selectedTargets, null, null, toArray(this.enemyTeam), toArray(this.myTeam));
+        } catch (Exception e) {
+        }
+
     }
 
     public static Warrior[] toArray(Collection<Warrior> collection) {
