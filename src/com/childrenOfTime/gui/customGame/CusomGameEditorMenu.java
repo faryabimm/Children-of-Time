@@ -3,12 +3,8 @@ package com.childrenOfTime.gui.customGame;
 import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
-import com.childrenOfTime.gui.fillForms.NewEffectCreationDialog;
-import com.childrenOfTime.gui.fillForms.NewAbilityCreationDialog;
-import com.childrenOfTime.gui.fillForms.NewItemCreationDialog;
-import com.childrenOfTime.gui.fillForms.dataHolders.AbilityDataHolder;
-import com.childrenOfTime.gui.fillForms.dataHolders.EffectDataHolder;
-import com.childrenOfTime.gui.fillForms.dataHolders.ItemDataHolder;
+import com.childrenOfTime.gui.fillForms.*;
+import com.childrenOfTime.gui.fillForms.dataHolders.*;
 import com.childrenOfTime.model.AbilityMaker;
 import com.childrenOfTime.model.ChildrenOfTime;
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
@@ -19,11 +15,16 @@ import com.childrenOfTime.model.Equip.EffectType;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
 import com.childrenOfTime.model.Equip.ItemComps.ItemType;
 import com.childrenOfTime.model.Equip.ItemComps.Messages;
+import com.childrenOfTime.model.Store;
+import com.childrenOfTime.model.Warriors.HeroClass;
+import com.childrenOfTime.model.Warriors.Warrior;
 import com.childrenOfTime.utilities.GUIUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by mohammadmahdi on 7/8/16.
@@ -163,6 +164,61 @@ public class CusomGameEditorMenu extends MenuScreenPanel {
             CustomGameDAO.currentUserCustomEffects.add(createdEffect);
             try {
                 GUIUtils.serializeUserObject(CustomGameDAO.currentUserCustomEffects,"effects");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        customStore.addActionListener(e -> {
+            fade();
+            StoreDataHolder dataHolder = new StoreDataHolder();
+            new NewStoreCreationDialog(dataHolder);
+            Map<Item, Integer> storeMappesItems = new HashMap<>();
+            for (Item storeItem : dataHolder.storeItems) {
+                storeMappesItems.put(storeItem, dataHolder.storeItems.indexOf(storeItem));
+            }
+            Store createdStore = new Store(storeMappesItems, dataHolder.acceptsBargains,
+                    dataHolder.canInflatePrices, dataHolder.inflationRate);
+            GUIUtils.deserializeUserFiles();
+            CustomGameDAO.currentUserCustomStores.add(createdStore);
+            try {
+                GUIUtils.serializeUserObject(CustomGameDAO.currentUserCustomStores, "stores");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+        customWarriorClass.addActionListener(e -> {
+            fade();
+            WarriorClassDataHolder dataHolder = new WarriorClassDataHolder();
+            new NewWarriorClassCreationDialog(dataHolder);
+            int heroBurnEnergyRange[] = {dataHolder.burnEPRangeStart, dataHolder.burnEPRangeEnd};
+            HeroClass createdWarriorClass = new HeroClass(dataHolder.canAttack, dataHolder.healthRelatedAP,
+                    dataHolder.APInHighHealthLevel, dataHolder.APInLowHealthLevel, dataHolder.mutationHealthLimit,
+                    dataHolder.canBurnEP, heroBurnEnergyRange, dataHolder.EPCostForPerformer, dataHolder.mutationMessage,
+                    dataHolder.EPBurningMessage, dataHolder.MPChangeSystem, dataHolder.EPChangeSystem, dataHolder.canBuyItems,
+                    dataHolder.CanUseImmortalityPotion, dataHolder.CanUseRefilSystemFeatures, dataHolder.ActionMessage,
+                    dataHolder.dyingMessage, dataHolder.name, dataHolder.AI, dataHolder.maxH, dataHolder.HRR, dataHolder.maxM,
+                    dataHolder.MRR, dataHolder.turnInitialEP, dataHolder.inventorySize, dataHolder.description, dataHolder.backStory,
+                    dataHolder.warriorClassAbilities);
+            GUIUtils.deserializeUserFiles();
+            CustomGameDAO.currentUserCustomWarriorClasses.add(createdWarriorClass);
+            try {
+                GUIUtils.serializeUserObject(CustomGameDAO.currentUserCustomWarriorClasses, "warriorClasses");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+        customWarrior.addActionListener(e -> {
+            fade();
+            WarriorDataHolder dataHolder = new WarriorDataHolder();
+            new NewWarriorCreationDialog(dataHolder);
+            ImageIcon icon = GUIUtils.getIConByFilePath(dataHolder.imageFilePath);
+            Warrior createdWarrior = new Warrior(dataHolder.name, dataHolder.warriorClass, dataHolder.specificAbilities, icon);
+            GUIUtils.deserializeUserFiles();
+            CustomGameDAO.currentUserCustomWarriors.add(createdWarrior);
+            try {
+                GUIUtils.serializeUserObject(CustomGameDAO.currentUserCustomWarriors, "warriors");
             } catch (IOException e1) {
                 e1.printStackTrace();
             }

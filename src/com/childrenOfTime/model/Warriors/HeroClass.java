@@ -48,7 +48,7 @@ public class HeroClass implements Serializable {
     String BackStory;
     ArrayList<Ability> classAbilities;
 
-    public HeroClass(Boolean canAttack, Boolean canHaveFBFeatures, int attackPowerInHighHealth, int attackPowerInLowHealth, int healthBound, Boolean canBurnEP, int[] heroBurningEnergy, int EPBurningCost, String mutationMessage, String epBurningMessage, Boolean canChangeMP, Boolean canChangeEP, Boolean canBuyItems, Boolean canUseImmortalityPotions, Boolean canUseRefillFeature, String specificActionMessage, String dyingActionMessage, String className, Integer damageEfficiencyIntelligenceOutOfTen, int heroAttackingNumberPerTurn, int maxHealth, int healthRefillRate, int maxMagic, int magicRefillRate, int initialEP, int inventorySize, String classDescription, String backStory, ArrayList<Ability> classAbilities) {
+    public HeroClass(Boolean canAttack, Boolean canHaveFBFeatures, int attackPowerInHighHealth, int attackPowerInLowHealth, int healthBound, Boolean canBurnEP, int[] heroBurningEnergy, int EPBurningCost, String mutationMessage, String epBurningMessage, Boolean canChangeMP, Boolean canChangeEP, Boolean canBuyItems, Boolean canUseImmortalityPotions, Boolean canUseRefillFeature, String specificActionMessage, String dyingActionMessage, String className, Integer damageEfficiencyIntelligenceOutOfTen, int maxHealth, int healthRefillRate, int maxMagic, int magicRefillRate, int initialEP, int inventorySize, String classDescription, String backStory, ArrayList<Ability> classAbilities) {
         CanAttack = canAttack;
         CanHaveFBFeatures = canHaveFBFeatures;
         this.attackPowerInHighHealth = attackPowerInHighHealth;

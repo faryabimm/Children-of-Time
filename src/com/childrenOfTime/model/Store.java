@@ -20,6 +20,13 @@ public class Store implements Serializable {
     long t1 = System.nanoTime();
 
 
+    public Store(Map<Item, Integer> items, boolean canBate, boolean canInflatePrices, int inflationPercentPer15Minutes) {
+        this.items = items;
+        this.canBate = canBate;
+        this.canInflatePrices = canInflatePrices;
+        this.inflationPercentPer15Minutes = inflationPercentPer15Minutes;
+    }
+
     private void resetTimer() {
         t1 = System.nanoTime();
     }
@@ -54,13 +61,5 @@ public class Store implements Serializable {
         if (items.containsKey(item)) return;
         player.buy(item, warrior);
         items.remove(item);
-    }
-
-
-    public Store(Map<Item, Integer> items, boolean canBate, boolean canInflatePrices, int inflationPercentPer15Minutes) {
-        this.items = items;
-        this.canBate = canBate;
-        this.canInflatePrices = canInflatePrices;
-        this.inflationPercentPer15Minutes = inflationPercentPer15Minutes;
     }
 }

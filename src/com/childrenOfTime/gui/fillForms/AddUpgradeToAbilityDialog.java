@@ -98,7 +98,7 @@ public class AddUpgradeToAbilityDialog extends JDialog {
         boolean hasRequirements = hasRequirementsCheckBox.isSelected();
         String requirements[] = textField7.getText().split("\\s");
 
-        toAdd = new Upgrade(upgradeID, coolDownTime, XPCostToUpgrade, EPCOstToCast, MPCOstToCast, isActive, isRecastable, addedEffects, requirements);
+        toAdd = new Upgrade(upgradeID, coolDownTime, XPCostToUpgrade, EPCOstToCast, MPCOstToCast, isActive, isRecastable, addedEffects, isBaseUpgrade, requirements);
 
 
 // add your code here
