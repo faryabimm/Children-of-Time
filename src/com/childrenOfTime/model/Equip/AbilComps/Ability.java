@@ -134,6 +134,7 @@ public class Ability implements Serializable, Castable, TurnBase {
     }
     public void addToUpgrades(Upgrade upgrade) {
         this.Upgrades.add(upgrade);
+        if (upgrade.isBaseUpgrade) baseState = upgrade;
         upgrade.setMessages(this.messages);
     }
 }

@@ -38,7 +38,6 @@ public class HeroClass implements Serializable {
     String ClassName;
 
     Integer damageEfficiencyIntelligenceOutOfTen = 0;
-    private int heroAttackingNumberPerTurn;
     int maxHealth;
     int healthRefillRate;
     int maxMagic;
@@ -68,7 +67,6 @@ public class HeroClass implements Serializable {
         DyingActionMessage = dyingActionMessage;
         ClassName = className;
         this.damageEfficiencyIntelligenceOutOfTen = damageEfficiencyIntelligenceOutOfTen;
-        this.heroAttackingNumberPerTurn = heroAttackingNumberPerTurn;
         this.maxHealth = maxHealth;
         this.healthRefillRate = healthRefillRate;
         this.maxMagic = maxMagic;
@@ -99,7 +97,6 @@ public class HeroClass implements Serializable {
         DyingActionMessage = heroClass.DyingActionMessage;
         ClassName = heroClass.ClassName;
         this.damageEfficiencyIntelligenceOutOfTen = heroClass.damageEfficiencyIntelligenceOutOfTen;
-        this.heroAttackingNumberPerTurn = heroClass.heroAttackingNumberPerTurn;
         this.maxHealth = heroClass.maxHealth;
         this.healthRefillRate = heroClass.healthRefillRate;
         this.maxMagic = heroClass.maxMagic;
@@ -169,9 +166,6 @@ public class HeroClass implements Serializable {
         return damageEfficiencyIntelligenceOutOfTen;
     }
 
-    public int getHeroAttackingNumberPerTurn() {
-        return heroAttackingNumberPerTurn;
-    }
 
     public int getMaxHealth() {
         return maxHealth;

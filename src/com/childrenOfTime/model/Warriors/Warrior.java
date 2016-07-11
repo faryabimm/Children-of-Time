@@ -53,12 +53,14 @@ public class Warrior implements Serializable {
 
     public List<Ability> abilities = new ArrayList<>();
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public Warrior(String name, int id, HeroClass heroClass, ArrayList<Ability> specificHeroAbilities, ImageIcon imageIcon) {
+    public Warrior(String name, HeroClass heroClass, ArrayList<Ability> specificHeroAbilities, ImageIcon imageIcon) {
         this.info = new HeroClass(heroClass);
         this.name = name;
         this.image = imageIcon;
-        this.id = id;
         this.image = imageIcon;
         this.specificHeroAbilities = specificHeroAbilities;
 
