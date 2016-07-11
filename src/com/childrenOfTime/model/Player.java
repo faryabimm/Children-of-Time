@@ -9,6 +9,7 @@ import com.childrenOfTime.model.Equip.ItemComps.Item;
 import com.childrenOfTime.model.Interfaces.TurnBase;
 import com.childrenOfTime.model.Warriors.Warrior;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -17,7 +18,7 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
-public class Player implements TurnBase {
+public class Player implements TurnBase, Serializable {
 
     PlayerType playerType;
     String name;

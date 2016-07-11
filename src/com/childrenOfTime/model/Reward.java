@@ -1,6 +1,7 @@
 package com.childrenOfTime.model;
 
 
+import java.io.Serializable;
 import java.util.Random;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
@@ -8,7 +9,7 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
 /**
  * Created by mohammadmahdi on 5/10/16.
  */
-public class Reward {
+public class Reward implements Serializable {
     private int rewardedXP;
     private int reWardedMoney;
     private int ImmortalityPotion;

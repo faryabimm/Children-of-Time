@@ -9,12 +9,13 @@ import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 
 import javax.swing.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by SaeedHD on 07/06/2016.
  */
-public class AbilityMaker {
+public class AbilityMaker implements Serializable {
     private Ability ability;
 
     public void newCustomAbility(@NotNull String name, @NotNull Target targetType, Messages messages, ImageIcon imageIcon, int powerOutOfTen) {

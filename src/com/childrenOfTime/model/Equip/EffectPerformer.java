@@ -2,13 +2,14 @@ package com.childrenOfTime.model.Equip;
 
 import com.childrenOfTime.model.Warriors.Warrior;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 
 /**
  * Created by SaeedHD on 07/09/2016.
  */
-public class EffectPerformer {
+public class EffectPerformer implements Serializable {
 
     private static boolean doesPassiveAllowsToContinue(Effect effect, Warrior performer) {
         if (effect.getEffectType().isPassive()) {

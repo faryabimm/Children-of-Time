@@ -2,14 +2,16 @@ package com.childrenOfTime.model.Equip;
 
 import com.childrenOfTime.exceptions.NotEnoughInventorySpaceException;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
+import com.sun.org.apache.xml.internal.utils.SerializableLocatorImpl;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
-public class Inventory {
+public class Inventory implements Serializable {
 
     private int maxCapacity;
     private ArrayList<Item> items;

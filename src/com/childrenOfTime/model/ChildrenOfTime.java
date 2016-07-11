@@ -11,12 +11,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by mohammadmahdi on 5/7/16.
  */
-public final class ChildrenOfTime {
+public final class ChildrenOfTime implements Serializable {
 
 
 

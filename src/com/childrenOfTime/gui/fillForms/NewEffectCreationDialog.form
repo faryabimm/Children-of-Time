@@ -98,6 +98,7 @@
                         </constraints>
                         <properties>
                           <enabled value="false"/>
+                          <text value="0"/>
                         </properties>
                       </component>
                       <component id="f58ac" class="javax.swing.JLabel">
@@ -126,6 +127,7 @@
                         </constraints>
                         <properties>
                           <enabled value="false"/>
+                          <text value="0"/>
                         </properties>
                       </component>
                       <component id="f971d" class="javax.swing.JLabel">
@@ -154,6 +156,7 @@
                         </constraints>
                         <properties>
                           <enabled value="false"/>
+                          <text value="100"/>
                         </properties>
                       </component>
                       <component id="986e0" class="javax.swing.JLabel">
@@ -442,7 +445,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <text value="0"/>
+            </properties>
           </component>
           <component id="41630" class="javax.swing.JTextField" binding="textField3" default-binding="true">
             <constraints>
@@ -451,7 +456,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value=""/>
+              <text value="0"/>
             </properties>
           </component>
           <component id="1fb83" class="javax.swing.JTextField" binding="textField6">
@@ -460,7 +465,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <text value="0"/>
+            </properties>
           </component>
           <component id="2944d" class="javax.swing.JTextField" binding="textField7">
             <constraints>
@@ -468,7 +475,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <text value="0"/>
+            </properties>
           </component>
           <component id="60c71" class="javax.swing.JTextField" binding="textField8">
             <constraints>
@@ -477,7 +486,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value=""/>
+              <text value="0"/>
             </properties>
           </component>
           <component id="d9718" class="javax.swing.JTextField" binding="textField9">
@@ -487,7 +496,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value=""/>
+              <text value="0"/>
             </properties>
           </component>
           <component id="8e2df" class="javax.swing.JTextField" binding="textField10">
@@ -497,7 +506,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value=""/>
+              <text value="0"/>
             </properties>
           </component>
           <component id="ee281" class="javax.swing.JTextField" binding="textField11">
@@ -507,7 +516,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value=""/>
+              <text value="0"/>
             </properties>
           </component>
           <component id="424c0" class="javax.swing.JTextField" binding="textField12">
@@ -517,7 +526,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value=""/>
+              <text value="0"/>
             </properties>
           </component>
           <component id="78674" class="javax.swing.JTextField" binding="textField13">
@@ -527,7 +536,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value=""/>
+              <text value="0"/>
             </properties>
           </component>
           <component id="d021d" class="javax.swing.JTextField" binding="textField14">
@@ -537,7 +546,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value=""/>
+              <text value="0"/>
             </properties>
           </component>
           <component id="69060" class="javax.swing.JTextField" binding="textField15">
@@ -547,7 +556,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value=""/>
+              <text value="0"/>
             </properties>
           </component>
           <component id="f3f41" class="javax.swing.JTextField" binding="textField16">
@@ -557,7 +566,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value=""/>
+              <text value="0"/>
             </properties>
           </component>
           <component id="4065f" class="javax.swing.JTextField" binding="textField17">
@@ -567,7 +576,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value=""/>
+              <text value="0"/>
             </properties>
           </component>
         </children>

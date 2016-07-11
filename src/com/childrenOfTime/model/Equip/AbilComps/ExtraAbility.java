@@ -1,9 +1,11 @@
 package com.childrenOfTime.model.Equip.AbilComps;
 
+import java.io.Serializable;
+
 /**
  * Created by SaeedHD on 07/07/2016.
  */
-public class ExtraAbility {
+public class ExtraAbility implements Serializable {
 }
 //    private Boolean swirlingHeal;
 //    private Integer[] swirlingHealPercents;

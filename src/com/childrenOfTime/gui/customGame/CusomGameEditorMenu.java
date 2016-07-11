@@ -6,11 +6,19 @@ import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
 import com.childrenOfTime.gui.fillForms.NewEffectCreationDialog;
 import com.childrenOfTime.gui.fillForms.NewAbilityCreationDialog;
 import com.childrenOfTime.gui.fillForms.NewItemCreationDialog;
+import com.childrenOfTime.gui.fillForms.dataHolders.AbilityDataHolder;
 import com.childrenOfTime.gui.fillForms.dataHolders.EffectDataHolder;
+import com.childrenOfTime.gui.fillForms.dataHolders.ItemDataHolder;
+import com.childrenOfTime.model.AbilityMaker;
 import com.childrenOfTime.model.ChildrenOfTime;
+import com.childrenOfTime.model.Equip.AbilComps.Ability;
+import com.childrenOfTime.model.Equip.AbilComps.Upgrade;
 import com.childrenOfTime.model.Equip.AlterPackage;
 import com.childrenOfTime.model.Equip.Effect;
 import com.childrenOfTime.model.Equip.EffectType;
+import com.childrenOfTime.model.Equip.ItemComps.Item;
+import com.childrenOfTime.model.Equip.ItemComps.ItemType;
+import com.childrenOfTime.model.Equip.ItemComps.Messages;
 import com.childrenOfTime.utilities.GUIUtils;
 
 import javax.swing.*;
@@ -74,22 +82,78 @@ public class CusomGameEditorMenu extends MenuScreenPanel {
         customScenario.addActionListener(e -> ChildrenOfTime.changeContentPane(new CustomScenarioBuilderPanel()));
         customAbility.addActionListener(e -> {
             fade();
-            new NewAbilityCreationDialog();
+            AbilityDataHolder dataHolder = new AbilityDataHolder();
+            new NewAbilityCreationDialog(dataHolder);
+
+            Messages abilityMessages = new Messages(dataHolder.description, dataHolder.successMessage,
+                    dataHolder.EPFailiureMessage, dataHolder.MPFailiureMessage, dataHolder.cooldownFailiureMessage,
+                    dataHolder.notAcqiredFailiureMessage);
+
+            ImageIcon icon = GUIUtils.getIConByFilePath(dataHolder.imagePath);
+
+            AbilityMaker abilityMaker = new AbilityMaker();
+
+            abilityMaker.newCustomAbility(dataHolder.abilityName, dataHolder.targetType,
+                    abilityMessages, icon, dataHolder.power);
+            if (!dataHolder.upgrades.isEmpty()) {
+                for (Upgrade upgrade : dataHolder.upgrades) {
+                    abilityMaker.addCustomUpgrade(upgrade);
+                    if (upgrade.getUpgradeBoolean()) abilityMaker.setBaseUpgrade(upgrade.getNumberOfUpgrade());
+                }
+            }
+
+            Ability createdAbility = abilityMaker.returnAbility();
+            GUIUtils.deserializeUserFiles();
+            CustomGameDAO.currentUserCustomAbilities.add(createdAbility);
+            try {
+                GUIUtils.serializeUserObject(CustomGameDAO.currentUserCustomAbilities, "abilities");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         });
         customItem.addActionListener(e -> {
             fade();
-            new NewItemCreationDialog();
+            ItemDataHolder dataHolder = new ItemDataHolder();
+            new NewItemCreationDialog(dataHolder);
+
+            ItemType type = new ItemType(dataHolder.hasInflation, dataHolder.isReusable, dataHolder.autoUseAfterPurchse,
+                    dataHolder.placableInInventory, dataHolder.removeFromInventoryAfterUsageLimit, dataHolder.wearOffEffectsAfterSelling,
+                    dataHolder.hasCooldown, dataHolder.cooldownTurns, dataHolder.initialPrice, dataHolder.reusableTimes, dataHolder.inflationRate);
+
+            Messages messages = new Messages(dataHolder.description, dataHolder.successMessage, dataHolder.EPFailiureMessage,
+                    dataHolder.MPFailiureMessage, dataHolder.cooldownFailiureMessage, dataHolder.notAcqiredFailiureMessage);
+
+            Integer delta[] = {dataHolder.APIncrement, dataHolder.HRRIncrement, dataHolder.MPIncrement, dataHolder.MMPIncrement,
+                    dataHolder.EPIncrement, dataHolder.HRRIncrement, dataHolder.MMRRIncrement};
+            Double factor[] = {dataHolder.APCoefficient, dataHolder.HCoefficient, dataHolder.MPCoefficient, dataHolder.MMPCoefficient,
+                    dataHolder.EPCoefficient, dataHolder.HRRCoefficient, dataHolder.MMRRCoefficient};
+
+            AlterPackage sideCost = new AlterPackage(delta, factor);
+
+            ImageIcon icon = GUIUtils.getIConByFilePath(dataHolder.imagePath);  //do not use imageFilePath.
+            Item createdItem = new Item(dataHolder.itemName, type, messages, dataHolder.targetType, dataHolder.effects, sideCost, icon);
+
+            GUIUtils.deserializeUserFiles();
+            CustomGameDAO.currentUserCustomItems.add(createdItem);
+
+            try {
+                GUIUtils.serializeUserObject(CustomGameDAO.currentUserCustomItems, "items");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         });
         customEffect.addActionListener(e -> {
             fade();
             EffectDataHolder dataHolder = new EffectDataHolder();
+
+            new NewEffectCreationDialog(true, dataHolder);
+
             Integer delta[] = {dataHolder.APIncrement,dataHolder.HRRIncrement,dataHolder.MPIncrement,dataHolder.MMPIncrement,
                     dataHolder.EPIncrement,dataHolder.HRRIncrement,dataHolder.MMRRIncrement};
             Double factor[] = {dataHolder.APCoefficient,dataHolder.HCoefficient,dataHolder.MPCoefficient,dataHolder.MMPCoefficient,
                     dataHolder.EPCoefficient,dataHolder.HRRCoefficient,dataHolder.MMRRCoefficient};
 
 
-            new NewEffectCreationDialog(true, dataHolder);
             Effect createdEffect = new Effect(dataHolder.name, new EffectType(dataHolder.automaticTargetSelection,dataHolder.applyUponAttack,
                     dataHolder.autoRepeatable,!dataHolder.temporaryEffect,dataHolder.indefiniteExcecution,
                     dataHolder.wearOffEffectsAfterExcecution), new AlterPackage(delta,factor,

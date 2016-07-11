@@ -1,7 +1,13 @@
 package com.childrenOfTime.cgd;
 
 import com.childrenOfTime.controller.GameEngine;
+import com.childrenOfTime.model.*;
+import com.childrenOfTime.model.Equip.AbilComps.Ability;
 import com.childrenOfTime.model.Equip.Effect;
+import com.childrenOfTime.model.Equip.ItemComps.Item;
+import com.childrenOfTime.model.Store;
+import com.childrenOfTime.model.Warriors.HeroClass;
+import com.childrenOfTime.model.Warriors.Warrior;
 import com.childrenOfTime.utilities.GUIUtils;
 
 import java.awt.*;
@@ -26,6 +32,14 @@ public class CustomGameDAO {
 
 
     public static ArrayList<Effect> currentUserCustomEffects = new ArrayList<>();
+    public static ArrayList<Ability> currentUserCustomAbilities = new ArrayList<>();
+    public static ArrayList<Item> currentUserCustomItems = new ArrayList<>();
+    public static ArrayList<Battle> currentUserCustomBattles = new ArrayList<>();
+    public static ArrayList<Scenario> currentUserCustomScenarios = new ArrayList<>();
+    public static ArrayList<Warrior> currentUserCustomWarriors = new ArrayList<>();
+    public static ArrayList<HeroClass> currentUserCustomWarriorClasses = new ArrayList<>();
+    public static ArrayList<Store> currentUserCustomStores = new ArrayList<>();
+
 
 
     static {
@@ -74,6 +88,8 @@ public class CustomGameDAO {
     }
 
     public static void loadCurrentUserData() {
+        currentUserDataPath = "src/user_data/" + currentUser.getUserName() + "/";
+        currentUserCGDataPath = currentUserDataPath + "custom_game/";
         GUIUtils.deserializeUserFiles();
     }
 
@@ -89,7 +105,25 @@ public class CustomGameDAO {
         new File(currentUserCGDataPath + "scenarios" + ".dat").createNewFile();
         new File(currentUserCGDataPath + "warriorClasses" + ".dat").createNewFile();
         new File(currentUserCGDataPath + "warriors" + ".dat").createNewFile();
-        currentUserCustomEffects = new ArrayList<Effect>();
+        new File(currentUserCGDataPath + "stores" + ".dat").createNewFile();
+
+        currentUserCustomEffects = new ArrayList<>();
+        currentUserCustomAbilities = new ArrayList<>();
+        currentUserCustomItems = new ArrayList<>();
+        currentUserCustomBattles = new ArrayList<>();
+        currentUserCustomScenarios = new ArrayList<>();
+        currentUserCustomWarriors = new ArrayList<>();
+        currentUserCustomWarriorClasses = new ArrayList<>();
+        currentUserCustomStores = new ArrayList<>();
+
         GUIUtils.serializeUserObject(currentUserCustomEffects,"effects");
+        GUIUtils.serializeUserObject(currentUserCustomEffects, "abilities");
+        GUIUtils.serializeUserObject(currentUserCustomItems, "items");
+        GUIUtils.serializeUserObject(currentUserCustomBattles, "battles");
+        GUIUtils.serializeUserObject(currentUserCustomScenarios, "scenarios");
+        GUIUtils.serializeUserObject(currentUserCustomWarriors, "warriors");
+        GUIUtils.serializeUserObject(currentUserCustomWarriorClasses, "warriorClasses");
+        GUIUtils.serializeUserObject(currentUserCustomStores, "stores");
+
     }
 }

@@ -2,12 +2,13 @@ package com.childrenOfTime.model.Warriors;
 
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by SaeedHD on 05/11/2016.
  */
-public class HeroClass {
+public class HeroClass implements Serializable {
 
     Boolean CanAttack;
 

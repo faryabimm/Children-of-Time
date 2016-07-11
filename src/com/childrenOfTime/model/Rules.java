@@ -1,9 +1,11 @@
 package com.childrenOfTime.model;
 
+import java.io.Serializable;
+
 /**
  * Created by SaeedHD on 07/09/2016.
  */
-public class Rules {
+public class Rules implements Serializable {
     public static int INITIAL_XP = 40;
     public static int INITIAL_MONEY = 15;
 
