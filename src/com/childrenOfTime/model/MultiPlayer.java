@@ -176,42 +176,49 @@ class Communicator implements Runnable {
                         System.out.println("Connected");
                         break;
                     case Join:
+                        System.out.println("Befor new Socket");
                         socket = new Socket(this.IPAddress, this.port);
                         break;
                 }
                 Object tosend = null;
-                switch (transformingObjectType) {
-                    case Message:
-                        tosend = multiPlayer.getToSendMessage();
-                        break;
-                    case Player:
-                        tosend = multiPlayer.getYourPlayer();
-                        break;
+                if (job == Job.Send) {
+                    switch (transformingObjectType) {
+                        case Message:
+                            tosend = multiPlayer.getToSendMessage();
+                            break;
+                        case Player:
+                            tosend = multiPlayer.getYourPlayer();
+                            break;
+                    }
                 }
 
                 Object recObj = null;
                 switch (job) {
                     case Send:
                         sendData(socket, tosend);
+                        printOutput("RESID INJA");
+
                         break;
                     case Recieve:
                         recObj = recieveData(socket);
                         break;
                 }
-
-                switch (transformingObjectType) {
-                    case Message:
-                        multiPlayer.setRecievedMesssage((String) recObj);
-                        break;
-                    case Player:
-                        multiPlayer.setEnemyPlayer((Player) recObj);
-                        break;
+                if (job == Job.Recieve) {
+                    switch (transformingObjectType) {
+                        case Message:
+                            multiPlayer.setRecievedMesssage((String) recObj);
+                            break;
+                        case Player:
+                            multiPlayer.setEnemyPlayer((Player) recObj);
+                            break;
+                    }
                 }
 
                 if (connectionType == ConnectionType.Join) socket.close();
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
