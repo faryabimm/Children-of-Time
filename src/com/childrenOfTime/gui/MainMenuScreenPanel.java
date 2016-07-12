@@ -5,6 +5,7 @@ import com.childrenOfTime.gui.customGame.CustomGameMenuScreenPanel;
 import com.childrenOfTime.gui.customGame.CustomGameUserHubPanel;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
+import com.childrenOfTime.gui.singlePlayer.SinglePlayerMenuScreenPanel;
 import com.childrenOfTime.model.ChildrenOfTime;
 
 import javax.swing.*;

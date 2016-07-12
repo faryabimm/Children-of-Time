@@ -1,9 +1,9 @@
-package com.childrenOfTime.gui;
+package com.childrenOfTime.gui.singlePlayer;
 
 import com.childrenOfTime.cgd.CustomGameDAO;
+import com.childrenOfTime.gui.MainMenuScreenPanel;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
-import com.childrenOfTime.gui.customizedElements.Scenario;
 import com.childrenOfTime.gui.fillForms.CustomScenarioSelectorDialog;
 import com.childrenOfTime.gui.fillForms.dataHolders.CustomScenarioInfoHolder;
 import com.childrenOfTime.model.ChildrenOfTime;
@@ -45,6 +45,8 @@ public class SinglePlayerMenuScreenPanel extends MenuScreenPanel {
                 fade();
                 CustomScenarioInfoHolder infoHolder = new CustomScenarioInfoHolder();
                 new CustomScenarioSelectorDialog(infoHolder);
+
+
                 //TODO To Be IMPLEMENTED
             }
         });

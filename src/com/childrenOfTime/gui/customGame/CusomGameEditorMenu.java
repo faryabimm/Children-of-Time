@@ -84,16 +84,7 @@ public class CusomGameEditorMenu extends MenuScreenPanel {
         customScenario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Scenario createdScenario = new Scenario();
-                ChildrenOfTime.changeContentPane(new CustomScenarioBuilderPanel(createdScenario));
-                GUIUtils.deserializeUserFiles();
-                CustomGameDAO.currentUserCustomScenarios.add(createdScenario);
-                try {
-                    GUIUtils.serializeUserObject(CustomGameDAO.currentUserCustomScenarios, "scenarios");
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-
+                ChildrenOfTime.changeContentPane(new CustomScenarioBuilderPanel());
             }
         });
         customAbility.addActionListener(new ActionListener() {
@@ -243,14 +234,16 @@ public class CusomGameEditorMenu extends MenuScreenPanel {
                 CusomGameEditorMenu.this.fade();
                 WarriorDataHolder dataHolder = new WarriorDataHolder();
                 new NewWarriorCreationDialog(dataHolder);
-                ImageIcon icon = GUIUtils.getIConByFilePath(dataHolder.imageFilePath);
-                Warrior createdWarrior = new Warrior(dataHolder.name, dataHolder.warriorClass, dataHolder.specificAbilities, icon);
-                GUIUtils.deserializeUserFiles();
-                CustomGameDAO.currentUserCustomWarriors.add(createdWarrior);
-                try {
-                    GUIUtils.serializeUserObject(CustomGameDAO.currentUserCustomWarriors, "warriors");
-                } catch (IOException e1) {
-                    e1.printStackTrace();
+                if (!dataHolder.operationCancelled) {
+                    ImageIcon icon = GUIUtils.getIConByFilePath(dataHolder.imageFilePath);
+                    Warrior createdWarrior = new Warrior(dataHolder.name, dataHolder.warriorClass, dataHolder.specificAbilities, icon);
+                    GUIUtils.deserializeUserFiles();
+                    CustomGameDAO.currentUserCustomWarriors.add(createdWarrior);
+                    try {
+                        GUIUtils.serializeUserObject(CustomGameDAO.currentUserCustomWarriors, "warriors");
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }
         });

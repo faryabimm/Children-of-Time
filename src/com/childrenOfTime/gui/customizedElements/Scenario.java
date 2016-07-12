@@ -11,26 +11,20 @@ import java.util.ArrayList;
 public class Scenario implements Serializable {
 
     private String name;
+    private ArrayList<ScenarioCell> map = new ArrayList<>();
+
 
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
-    private ArrayList<ScenarioCell> map = new ArrayList<>(CustomScenarioBuilderPanel.NUMBER_OF_MAP_COLUMNS
-            * CustomScenarioBuilderPanel.NUMBER_OF_MAP_ROWS);
-
     public void addAnewCell(ScenarioCell cell) {
         map.add(cell);
     }
-
     public ScenarioCell getIJ(int i, int j) {
         int index = CustomScenarioBuilderPanel.NUMBER_OF_MAP_COLUMNS * j + i;
         return map.get(index);
     }
-
-
 }
