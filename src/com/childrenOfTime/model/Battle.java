@@ -37,7 +37,13 @@ public class Battle implements Serializable {
     }
 
 
-    public void setPlayers(Player You, Player Enemy) {
+    public void startSinglePlayer(Player human) {
+        startPvP(human, createComputerBot());
+
+    }
+
+
+    public void startPvP(Player You, Player Enemy) {
         this.You = You;
 
         if (Enemy != null) {
@@ -48,10 +54,10 @@ public class Battle implements Serializable {
         this.Enemy.setEnemyTeam(You.getMyTeam());
     }
 
-    public void createComputerBot() {
-        Player player = new Player(defualtFoes, name, PlayerType.Computer);
-        this.initiateComputerEnemy(player);
-        this.Enemy = player;
+    public Player createComputerBot() {
+        Player bot = new Player(defualtFoes, name, PlayerType.Computer);
+        this.initiateComputerEnemy(bot);
+        return bot;
     }
 
     public ArrayList<Warrior> getDefualtFoes() {
@@ -82,8 +88,10 @@ public class Battle implements Serializable {
 
 
     private void initiateComputerEnemy(Player bot) {
-        this.aritificailBrain = new ArtificialBrain(bot, You);
-        // aritificailBrain.
+        if (bot.playerType == PlayerType.Computer) {
+            this.aritificailBrain = new ArtificialBrain(bot, You);
+            // aritificailBrain.
+        }
     }
 
 

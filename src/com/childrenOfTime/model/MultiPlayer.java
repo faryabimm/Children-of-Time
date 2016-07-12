@@ -147,7 +147,7 @@ public class MultiPlayer {
     public void setEnemyPlayer(Player enemyPlayer) {
         synchronized (this.enemyPlayer) {
             this.enemyPlayer = enemyPlayer;
-            battle.setPlayers(this.yourPlayer, enemyPlayer);
+            battle.startPvP(this.yourPlayer, enemyPlayer);
         }
     }
 
