@@ -23,7 +23,7 @@ public class Reward implements Serializable {
 
     }
 
-    public void giveRevard(Player player) {
+    public void giveReward(Player player) {
         if (player.playerType == PlayerType.Computer) return;
         boolean isWinner = !player.isDefeated();
 

@@ -28,7 +28,9 @@ public class EffectPerformer implements Serializable {
 
         while (itr.hasNext()) {
             Effect nextEffect = itr.next();
+            if (!doesPassiveAllowsToContinue(nextEffect, performer)) return;
             finalTargets = chooseTargts(nextEffect, performer, selectedTargets, allEnemies, allTeamMates);
+
             nextEffect.perform(finalTargets);
 
         }

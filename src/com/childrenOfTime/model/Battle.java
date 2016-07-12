@@ -4,6 +4,7 @@ import com.childrenOfTime.Completed;
 import com.childrenOfTime.model.Warriors.Warrior;
 
 import java.io.Serializable;
+import java.util.List;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
 
@@ -26,21 +27,36 @@ public class Battle implements Serializable {
     private boolean itIsFirstTurn = true;
     ArtificialBrain aritificailBrain;
 
-    public Battle(String name, String defeatStory, Reward reward) {
+    public Battle(String name, String defeatStory, Reward reward, List<Warrior> foes) {
         this.name = name;
         DefeatStory = defeatStory;
         this.reward = reward;
+        //TODO doros she inja
     }
 
 
     public void setPlayers(Player You, Player Enemy) {
-        if (Enemy.playerType == PlayerType.Computer) {
+        this.You = You;
+
+        if (Enemy != null) {
+            this.Enemy = Enemy;
+        }
+
+        if (this.Enemy.playerType == PlayerType.Computer) {
             initiateComputerEnemy();
         }
-        this.You = You;
-        this.Enemy = Enemy;
+
         You.setEnemyTeam(Enemy.getMyTeam());
-        Enemy.setEnemyTeam(You.getMyTeam());
+        this.Enemy.setEnemyTeam(You.getMyTeam());
+    }
+
+    public void setDefualtFoes(List<Warrior> foes) {
+
+    }
+
+
+    public List<Warrior> getDefualtFoes() {
+        return null;
     }
 
 
@@ -93,7 +109,7 @@ public class Battle implements Serializable {
 
         You.aTurnHasPassed();
         Enemy.aTurnHasPassed();
-            showCurrentBattleInfo();
+        showCurrentBattleInfo();
 
 
     }
@@ -330,8 +346,8 @@ public class Battle implements Serializable {
     public void finishTheBattle() {
         You.setEnemyTeam(null);
         Enemy.setEnemyTeam(null);
-        reward.giveRevard(You);
-        reward.giveRevard(Enemy);
+        reward.giveReward(You);
+        reward.giveReward(Enemy);
     }
 
     public int shouldBattleContinue() {
@@ -341,7 +357,7 @@ public class Battle implements Serializable {
         }
         if (Enemy.isDefeated()) {
             finishTheBattle();
-            return 0;
+            return -1;
         }
         return 0;
 
