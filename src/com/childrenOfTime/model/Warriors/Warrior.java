@@ -12,6 +12,7 @@ import com.childrenOfTime.model.Equip.Inventory;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
 import com.childrenOfTime.model.Equip.ItemComps.ItemType;
 import com.childrenOfTime.model.Interfaces.TurnBase;
+import com.childrenOfTime.model.MultiPlayer;
 import com.childrenOfTime.model.Rules;
 
 import javax.swing.*;
@@ -63,6 +64,8 @@ public class Warrior implements Serializable, TurnBase {
 
     public void setId(int id) {
         this.id = id;
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+
     }
 
     public Warrior(String name, HeroClass heroClass, ArrayList<Ability> specificHeroAbilities, ImageIcon imageIcon) {
@@ -93,25 +96,43 @@ public class Warrior implements Serializable, TurnBase {
 
 
     public void receiveAlterPack(AlterPackage alterPack) {
-        if (alterPack != null) return;
-        Integer[] DELTA = alterPack.DELTA;
-        Double[] FACTORS = alterPack.FACTORS;
+        if (isDead()) return;
+        if (alterPack == null) return;
+        try {
+
+            Integer[] DELTA = alterPack.DELTA;
+            Double[] FACTORS = alterPack.FACTORS;
 
 
-        this.changeAttackPower((int) (DELTA[0] + this.getAttackPower() * (FACTORS[0] - 1)));
-        this.changeHealth((int) (DELTA[1] + this.getCurrentHealth() * (FACTORS[1] - 1)), null);
-        this.changeMaxHealth((int) (DELTA[2] + this.getMaxHealth() * (FACTORS[2]) - 1));
-        int deltaHRF = (int) (DELTA[3] + getHealthcRefillRate() * (FACTORS[3] - 1));
-        int deltaMP = (int) (DELTA[4] + getCurrentMagic() * (FACTORS[4] - 1));
-        int deltaMMP = (int) (DELTA[5] + getMaxMagic() * (FACTORS[5] - 1));
-        int deltaMPRF = (int) (DELTA[6] + getMagicRefillRate() * (FACTORS[6] - 1));
-        int deltaEP = (int) (DELTA[7] + getCurrentEP() * (FACTORS[7] - 1));
+            this.changeMaxHealth((int) (DELTA[2] + this.getMaxHealth() * (FACTORS[2] - 1)));
+            int deltaMMP = (int) (DELTA[5] + getMaxMagic() * (FACTORS[5] - 1));
+            this.changeAttackPower((int) (DELTA[0] + this.getAttackPower() * (FACTORS[0] - 1)));
+            this.changeHealth((int) (DELTA[1] + this.getCurrentHealth() * (FACTORS[1] - 1)), null);
+            int deltaHRF = (int) (DELTA[3] + getHealthcRefillRate() * (FACTORS[3] - 1));
+            int deltaMP = (int) (DELTA[4] + getCurrentMagic() * (FACTORS[4] - 1));
+            int deltaMPRF = (int) (DELTA[6] + getMagicRefillRate() * (FACTORS[6] - 1));
+            int deltaEP = (int) (DELTA[7] + getCurrentEP() * (FACTORS[7] - 1));
 
-        changeHealthRefillRate(deltaHRF);
-        changeCurrentMagic(deltaMP);
-        changeMagicRefillRate(deltaMPRF);
-        changeMaxMagic(deltaMMP);
-        changeEP(deltaEP);
+            changeHealthRefillRate(deltaHRF);
+            changeCurrentMagic(deltaMP);
+            changeMagicRefillRate(deltaMPRF);
+            changeMaxMagic(deltaMMP);
+            changeEP(deltaEP);
+            if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+
+        } catch (NotEnoughMagicPointsException e) {
+            if (alterPack.asCost) {
+                throw new NotEnoughMagicPointsException(e.getMessage());
+            } else currentMagic = 0;
+            if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+
+        } catch (NotEnoughEnergyPointsException e) {
+            if (alterPack.asCost) {
+                throw new NotEnoughEnergyPointsException(e.getMessage());
+            } else currentMagic = 0;
+            if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+
+        }
 
     }
 
@@ -130,11 +151,15 @@ public class Warrior implements Serializable, TurnBase {
             newDuration += imPermanentTurnBasedAPs.get(aPackage);
         }
         imPermanentTurnBasedAPs.put(aPackage, newDuration);
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+
     }
 
 
     public void addToAutoRepeatEffList(AlterPackage effect, Integer duration) {
         autoRepeatAPList.put(effect, duration);
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+
     }
 
     public void decreasDuration(Map<Effect, Integer> list, Integer duration) {
@@ -143,6 +168,8 @@ public class Warrior implements Serializable, TurnBase {
             newDuration = list.get(ef) - duration;
             list.put(ef, newDuration);
         }
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+
     }
 
 
@@ -153,10 +180,14 @@ public class Warrior implements Serializable, TurnBase {
 
     //TODO check More This One
     public void useItem(Item item, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeamMates) {
+        if (isDead()) return;
         item.cast(this, selectedTargets, allEnemies, allTeamMates);
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+
     }
 
     public void attack(Warrior[] targets, Integer realAttack, Integer EPCost, Warrior[] allEnemies, Warrior[] allTeamMates) throws NotEnoughEnergyPointsException {
+        if (isDead()) return;
         if (EPCost == null) EPCost = DEFAULT_Attack_EP_COST;
         changeEP(-EPCost);
         if (realAttack == null) realAttack = this.getAttackPower();
@@ -175,10 +206,12 @@ public class Warrior implements Serializable, TurnBase {
                 toWearOff.add(eff);
         }
         EffectPerformer.wearOffEffects(toWearOff, this, targets, allEnemies, allTeamMates);
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
     public void IWannaBuyItemForYou(Item item, Warrior[] allEnemies, Warrior[] allTeamMates) {
+        if (isDead()) return;
         ItemType itemType = item.getType();
         if (itemType.getCanBeInInventory()) {
             inventory.addToInventoryIfYouCan(item);
@@ -186,6 +219,7 @@ public class Warrior implements Serializable, TurnBase {
         if (itemType.getAutoUseAfterBuoght()) {
             useItem(item, null, allEnemies, allTeamMates);
         }
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
 
     }
@@ -193,6 +227,7 @@ public class Warrior implements Serializable, TurnBase {
 
     @Override
     public void aTurnHasPassed() {
+        if (isDead()) return;
         this.currentEP = info.initialEP;
         changeHealth(this.info.getHealthRefillRate(), 100);
         changeCurrentMagic(this.info.getMagicRefillRate());
@@ -200,6 +235,7 @@ public class Warrior implements Serializable, TurnBase {
         this.inventory.getItems().forEach(Item::aTurnHasPassed);
         for (AlterPackage aPackage : this.imPermanentTurnBasedAPs.keySet()) {
             int i = imPermanentTurnBasedAPs.get(aPackage) - 1;
+            if (aPackage.woreOff) i = -1;
             if (i <= 0) {
                 imPermanentTurnBasedAPs.remove(aPackage);
                 if (i == 0) {
@@ -211,33 +247,39 @@ public class Warrior implements Serializable, TurnBase {
         }
         for (AlterPackage aPackage : this.autoRepeatAPList.keySet()) {
             int i = autoRepeatAPList.get(aPackage) - 1;
+            if (aPackage.woreOff) i = -1;
             if (i <= 0) {
-                imPermanentTurnBasedAPs.remove(aPackage);
+                autoRepeatAPList.remove(aPackage);
             }
             if (i >= 0) {
                 aPackage.perform(this);
                 printOutput("Auto repeat Effect :  " + aPackage.name + "   performed on : " + this.toString());
             }
         }
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
 
-    public void IWannaSellThisItem(Item item) {
+    public void IWannaSellThisItem(Item item, Warrior[] allEnemies, Warrior[] allTeamMates) {
+        if (isDead()) return;
         ItemType itemType = item.getType();
         if (!item.canBeSold()) throw new ItemCannotBeSold("This Item Is not permitted to sell ! ");
         if (!inventory.contains(item)) throw new TradeException("Hero doesn't have this . ");
         inventory.removeFromInventoryIfYouCan(item);
         if (itemType.getWearOffAfterSold()) {
-            item.removedFromInventory(this);
+            item.removedFromInventory(this, allEnemies, allTeamMates);
 
         }
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
     public void castAbility(Ability ability, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeamMates) {
+        if (isDead()) return;
         if (!abilities.contains(ability)) return;
         ability.cast(this, selectedTargets, allEnemies, allTeamMates);
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
     }
 /*
     public void castAbility(String name, Warrior[] selectedTargets) {
@@ -248,7 +290,10 @@ public class Warrior implements Serializable, TurnBase {
 */
 
     public void upgradeAbility(Ability ability, Integer i, Warrior[] allEnemies, Warrior[] allTeamMates) {
+        if (isDead()) return;
         ability.upgrade(this, i, allEnemies, allTeamMates);
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+
     }
 
 
@@ -259,6 +304,7 @@ public class Warrior implements Serializable, TurnBase {
             printOutput(toString() + "'s " + "AttackPower has Gone Under zero !! ");
         }
         this.currentAttackPower = newAP;
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
     }
 
     public void changeMaxMagic(int i) {
@@ -266,6 +312,7 @@ public class Warrior implements Serializable, TurnBase {
         int newMMP = i + this.info.maxMagic;
         if (getMaxMagic() < 0) newMMP = 0;
         this.info.maxMagic = newMMP;
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
     }
 
     public void changeCurrentMagic(int i) {
@@ -277,6 +324,8 @@ public class Warrior implements Serializable, TurnBase {
                     (-i - currentEP) + " additional MPs.");
         if (newMP > this.info.maxMagic) newMP = this.info.maxMagic;
         this.currentMagic = newMP;
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+
     }
 
     public void changeMagicRefillRate(int i) {
@@ -287,6 +336,8 @@ public class Warrior implements Serializable, TurnBase {
             else printOutput(this.name + " " + getId() + "'s " + "RefillRate has Gone Under zero !! ");
         }
         this.info.magicRefillRate = newMRR;
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+
     }
 
     public void changeHealthRefillRate(int i) {
@@ -296,6 +347,8 @@ public class Warrior implements Serializable, TurnBase {
             if (!Rules.RefillRatesCanBeNegative) newHRR = 0;
         }
         this.info.healthRefillRate = newHRR;
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+
     }
 
     public int changeHealth(int i, Integer damageEffitioncyFactor) {
@@ -324,6 +377,7 @@ public class Warrior implements Serializable, TurnBase {
                 }
                 if (PlayerAllowsUsingImmortality) {
                     useImmortalityPotion();
+                    isDead = false;
                     PlayerAllowsUsingImmortality = false;
                     asksForImmortalityPotion = false;
                 } else {
@@ -342,13 +396,17 @@ public class Warrior implements Serializable, TurnBase {
         if (info.CanHaveFBFeatures && !isDead()) {
             updateFinalBossHealthChanges();
         }
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+
         return currentHealth - initHealth;
     }
 
     public void changeMaxHealth(int i) {
         int newMH = i + this.info.maxHealth;
         if (getMaxMagic() < 0) newMH = 0;
-        this.info.maxMagic = newMH;
+        this.info.maxHealth = newMH;
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+
     }
 
     public void changeEP(int i) throws NotEnoughEnergyPointsException {
@@ -364,6 +422,7 @@ public class Warrior implements Serializable, TurnBase {
 
         //TODO PakShavad
         printOutput(this + "current EP : " + currentEP);
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
@@ -420,6 +479,8 @@ public class Warrior implements Serializable, TurnBase {
             firstTime = true;
             this.currentAttackPower = this.info.attackPowerInHighHealth;
         }
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+
     }
 
     public void changeHealthWithInsuranceOfLiving(int quantity) {

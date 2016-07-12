@@ -1,8 +1,6 @@
 package com.childrenOfTime.model.Equip.AbilComps;
 
-import com.childrenOfTime.exceptions.AbilityNotAquiredException;
-import com.childrenOfTime.exceptions.RequirementsNotMetException;
-import com.childrenOfTime.exceptions.UpgradeException;
+import com.childrenOfTime.exceptions.*;
 import com.childrenOfTime.model.BST;
 import com.childrenOfTime.model.Equip.ItemComps.Messages;
 import com.childrenOfTime.model.Equip.Target;
@@ -76,14 +74,24 @@ public class Ability implements Castable, TurnBase, Serializable {
 
     @Override
     public void cast(Warrior caster, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeammates) {
+        try {
+
         if (currentLevel == null) throw new AbilityNotAquiredException("You didn't acquire this");
-        if (currentLevel.recastable) {
+            if (!currentLevel.recastable) {
             if (currentLevel.castedOnce) {
                 return;
             }
             currentLevel.castedOnce = true;
         }
         currentLevel.cast(caster, selectedTargets, allEnemies, allTeammates);
+        } catch (NotEnoughEnergyPointsException e) {
+            throw new NotEnoughEnergyPointsException(messages.getEpFailureMessage());
+        } catch (NotEnoughMagicPointsException e) {
+            throw new NotEnoughMagicPointsException(messages.getMpSuccessMessage());
+        } catch (AbilityInCooldownException e) {
+            throw new AbilityInCooldownException(messages.getCoolDownFailureMessage());
+        }
+
     }
 
 
@@ -92,6 +100,7 @@ public class Ability implements Castable, TurnBase, Serializable {
         if (!baseState.getUpgradeBoolean()) throw new RequirementsNotMetException();
         this.currentLevel = Upgrades.getMinElement();
         if (currentLevel.castJustAfterAcquire) cast(warrior, null, allEnemies, allTeammates);
+        currentLevel.acquired = true;
         return currentLevel.getXPCost();
     }
 
@@ -107,6 +116,7 @@ public class Ability implements Castable, TurnBase, Serializable {
             if (!result.getUpgradeBoolean()) throw new RequirementsNotMetException();
             currentLevel = result;
         }
+        currentLevel.acquired = true;
         if (currentLevel.castJustAfterAcquire) cast(performer, null, allEnemies, allTeammates);
         return result.getXPCost();
     }

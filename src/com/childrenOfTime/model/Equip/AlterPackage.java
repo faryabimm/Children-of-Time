@@ -20,7 +20,8 @@ public class AlterPackage implements Serializable {
     public final Double[] FACTORS;
     private final Integer ProbabilyPercent;
 
-    boolean woreOff = false;
+    public boolean woreOff = false;
+    public boolean asCost = false;
     public String name;
 
     public boolean isProbabilityOccured() {
@@ -49,6 +50,7 @@ public class AlterPackage implements Serializable {
     }
 
 
+
     public AlterPackage(AlterPackage alterPackage, int probabilyPercent) {
         this.DELTA = alterPackage.DELTA;
         this.FACTORS = alterPackage.FACTORS;
@@ -69,6 +71,7 @@ public class AlterPackage implements Serializable {
     }
 
     public void asCost(Warrior... ta) {
+        asCost = true;
         wearOff(ta);
     }
 

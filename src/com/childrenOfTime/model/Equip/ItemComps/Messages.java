@@ -8,25 +8,20 @@ import java.io.Serializable;
 public class Messages implements Serializable {
 
 
-    public String description;
-    private String SuccessMessage;
-    public String epFailureMessage;
-    public String mpSuccessMessage;
-    public String coolDownFailureMessage;
+    public String description = "No Description Added";
+    private String SuccessMessage = "Ability / Item Casted Succesful ";
+    public String epFailureMessage = "Not Enough EP";
+    public String mpSuccessMessage = "Not Enough MP";
+    public String coolDownFailureMessage = "Ability / Item is still in Cooldown";
 
     public Messages() {
-        this.description = "No Description Added";
-        SuccessMessage = "No Description Added";
-        this.epFailureMessage = "No Description Added";
-        this.mpSuccessMessage = "No Description Added";
-        this.coolDownFailureMessage = "No Description Added";
     }
     public Messages(String description, String successMessage, String epFailureMessage, String mpSuccessMessage, String coolDownFailureMessage, String notAcquiredFailureMessage) {
-        this.description = description;
-        SuccessMessage = successMessage;
-        this.epFailureMessage = epFailureMessage;
-        this.mpSuccessMessage = mpSuccessMessage;
-        this.coolDownFailureMessage = coolDownFailureMessage;
+        if (description != null) this.description = description;
+        if (successMessage != null) SuccessMessage = successMessage;
+        if (epFailureMessage != null) this.epFailureMessage = epFailureMessage;
+        if (mpSuccessMessage != null) this.mpSuccessMessage = mpSuccessMessage;
+        if (coolDownFailureMessage != null) this.coolDownFailureMessage = coolDownFailureMessage;
     }
     public String getDescription() {
         return description;

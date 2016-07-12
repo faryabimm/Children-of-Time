@@ -38,6 +38,7 @@ public class Player implements TurnBase, Serializable {
 
     public Player(String name) {
         this.name = name;
+        checkForImmortatlitryRequest();
     }
 
     @Override
@@ -60,6 +61,7 @@ public class Player implements TurnBase, Serializable {
         if (immprtalityPotions - 1 < 0) {
             throw new NoImmortalityPotionLeftException(name + " : No Immortality Potion Left");
         }
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
     }
 
     public void checkForImmortatlitryRequest() {
@@ -86,7 +88,6 @@ public class Player implements TurnBase, Serializable {
         immortalityRequest.setDaemon(true);
         immortalityRequest.setName("Immortality Request");
         immortalityRequest.start();
-
     }
 
 
@@ -106,6 +107,7 @@ public class Player implements TurnBase, Serializable {
 
         changeCurrentExperience(-ability.getUpgradeByNumber(id).getXPCost());
         targetHero.upgradeAbility(ability, id, toArray(this.enemyTeam), toArray(this.myTeam));
+
     }
 
     public void buy(Item item, Warrior hero) throws TradeException {
@@ -121,7 +123,10 @@ public class Player implements TurnBase, Serializable {
         //TODO Jaye In moshakhas shavad
         printOutput(item.getName() + " bought Successfully\n" +
                 "your Current Wealth is: $" + getCurrentWealth());
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+
     }
+
 
 
     public void castAbility(Warrior castingHero, Ability castedAbility, Warrior... selectedTargets) {
@@ -137,13 +142,15 @@ public class Player implements TurnBase, Serializable {
     public void sell(Item item, Warrior target) throws TradeException {
 
 
-        target.IWannaSellThisItem(item);
+        target.IWannaSellThisItem(item, toArray(enemyTeam), toArray(myTeam));
         int itemCurrenPriceToSell = item.getCurrentPriceToSell();
         changeCurrentWealth(itemCurrenPriceToSell);
         printOutput("Item " + item.getName() + " was successfully sold for $" +
                 itemCurrenPriceToSell + " and was removed form (" +
                 target.toString() + ") Hero.");
         printOutput("your Current Wealth is: $" + getCurrentWealth());
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+
     }
 
     public boolean isDefeated() {
@@ -171,6 +178,7 @@ public class Player implements TurnBase, Serializable {
             attackingHero.attack(selectedTargets, null, null, toArray(this.enemyTeam), toArray(this.myTeam));
         } catch (Exception e) {
         }
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
@@ -195,6 +203,8 @@ public class Player implements TurnBase, Serializable {
         } else {
             this.currentExperience += num;
         }
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+
     }
 
     public void changeCurrentWealth(int i) {
@@ -206,6 +216,8 @@ public class Player implements TurnBase, Serializable {
         else {
             this.currentExperience += i;
         }
+        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+
     }
 
 
@@ -237,6 +249,10 @@ public class Player implements TurnBase, Serializable {
 
     @Override
     public void aTurnHasPassed() {
+        for (Warrior warrior :
+                myTeam) {
+            warrior.aTurnHasPassed();
+        }
 
     }
 

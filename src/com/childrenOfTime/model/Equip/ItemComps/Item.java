@@ -80,10 +80,8 @@ public class Item implements Castable, TurnBase {
     }
 
 
-    public void removedFromInventory(Warrior... targets) {
-        for (Effect F : effects) {
-            F.wearOff(targets);
-        }
+    public void removedFromInventory(Warrior performer, Warrior[] allEnemies, Warrior[] allTeamMates) {
+        EffectPerformer.wearOffEffects(effects, performer, null, allEnemies, allTeamMates);
     }
 
     public Integer getCurrentPriceToBuy(int timesBought) {

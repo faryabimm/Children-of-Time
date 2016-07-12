@@ -20,7 +20,17 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
 
 
 public class MultiPlayer {
+
     public static final int DEFAULT_PORT = 2050;
+
+    public static MultiPlayer Instacne;
+
+    public MultiPlayer(Player yourPlayer, Player enemyPlayer, Battle battle) {
+        this.yourPlayer = yourPlayer;
+        this.enemyPlayer = enemyPlayer;
+        this.battle = battle;
+        Instacne = this;
+    }
 
     private String recivedMessage = "";
     private String toSendMessage = "This is Saeed Talking To you";
@@ -36,9 +46,23 @@ public class MultiPlayer {
     }
 
 
+    public String getRecivedMessage() {
+        synchronized (this.recivedMessage) {
+            return recivedMessage;
+        }
+    }
+
+
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        MultiPlayer multiPlayer = new MultiPlayer();
-        multiPlayer.startJoin(InetAddress.getLocalHost(), 3000);
+        //MultiPlayer multiPlayer = new MultiPlayer();
+        //multiPlayer.startAsHost();
+        //multiPlayer.startJoin(InetAddress.getLocalHost(), 3000);
+
+    }
+
+
+    public void quitMultiPlayer() {
+        Instacne = null;
     }
 
 
@@ -96,30 +120,55 @@ public class MultiPlayer {
 
     }
 
+    public void sendPlayerChanges() {
+        synchronized (this.yourPlayer) {
+            this.yourPlayer.notify();
+        }
+    }
+
     public Player getYourPlayer() {
-        return yourPlayer;
+        synchronized (this.yourPlayer) {
+            try {
+                this.yourPlayer.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return yourPlayer;
+        }
+    }
+
+
+    public Player getEnemyPlayer() {
+        synchronized (enemyPlayer) {
+            return enemyPlayer;
+        }
     }
 
     public void setEnemyPlayer(Player enemyPlayer) {
-        this.enemyPlayer = enemyPlayer;
-        battle.setPlayers(this.yourPlayer, enemyPlayer);
+        synchronized (this.enemyPlayer) {
+            this.enemyPlayer = enemyPlayer;
+            battle.setPlayers(this.yourPlayer, enemyPlayer);
+        }
     }
 
     public String getToSendMessage() {
-        return toSendMessage;
-    }
-
-    public void setRecivedMessage(String recivedMessage) {
-        this.recivedMessage = recivedMessage;
+        synchronized (this.toSendMessage) {
+            try {
+                this.toSendMessage.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return toSendMessage;
+        }
     }
 
     public void setToSendMessage(String toSendMessage) {
-        this.toSendMessage = toSendMessage;
+        synchronized (this.toSendMessage) {
+            this.toSendMessage.notify();
+            this.toSendMessage = toSendMessage;
+        }
     }
 
-    public String getRecivedMessage() {
-        return recivedMessage;
-    }
     //    public void setRecivedMessage(String recivedMessage) {
 //        this.recivedMessage = recivedMessage;
 //    }

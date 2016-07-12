@@ -38,8 +38,8 @@ public class Upgrade implements Castable, Comparable<Upgrade>, Serializable {
     ArrayList<Effect> effects;
     Boolean castJustAfterAcquire = false;
     final Boolean recastable;
-    Boolean castedOnce;
-
+    boolean castedOnce = false;
+    boolean acquired;
     public Upgrade(@NotNull int numberOfUpgrade) {
         this.numberOfUpgrade = numberOfUpgrade;
         this.COOLDOWN_TIME = 0;
@@ -120,18 +120,17 @@ public class Upgrade implements Castable, Comparable<Upgrade>, Serializable {
         }
     }
     private void PayCosts(Warrior performer) {
-        int initEP = 0;
-        int initMP = 0;
 
-        //try {
-        initEP = performer.getCurrentEP();
-            initMP = performer.getCurrentMagic();
-            performer.changeEP(-masrafEP);
-        performer.changeCurrentMagic(-masrafMP);
-        //  } catch (AttackException e) {
-        //performer.changeEP(initEP);
-        //performer.setCurrentMagic(initMP);
-        // }
+        performer.changeEP(-masrafEP);
+        try {
+            performer.changeCurrentMagic(-masrafMP);
+        } catch (RuntimeException e) {
+            performer.changeEP(+masrafEP);
+            throw new RuntimeException(e.getMessage());
+            //performer.setCurrentMagic(initMP);
+            // }
+
+        }
     }
     public void aTurnHasPassed() {
         /*
