@@ -144,22 +144,22 @@ public class BlockPickerDialog extends JDialog {
                 case 0:
                     targetCell.reset();
                     targetCell.setIcon(CustomGameDAO.textures.get("door_down_up"));
-                    targetCell.setCellType(ScenarioCellType.DOOR);
+                    targetCell.setCellType(ScenarioCellType.DOOR_DOWN_UP);
                     break;
                 case 1:
                     targetCell.reset();
                     targetCell.setIcon(CustomGameDAO.textures.get("door_up_down"));
-                    targetCell.setCellType(ScenarioCellType.DOOR);
+                    targetCell.setCellType(ScenarioCellType.DOOR_UP_DOWN);
                     break;
                 case 2:
                     targetCell.reset();
                     targetCell.setIcon(CustomGameDAO.textures.get("door_left_right"));
-                    targetCell.setCellType(ScenarioCellType.DOOR);
+                    targetCell.setCellType(ScenarioCellType.DOOR_LEFT_RIGHT);
                     break;
                 case 3:
                     targetCell.reset();
                     targetCell.setIcon(CustomGameDAO.textures.get("door_right_left"));
-                    targetCell.setCellType(ScenarioCellType.DOOR);
+                    targetCell.setCellType(ScenarioCellType.DOOR_RIGHT_LEFT);
                     break;
             }
         }

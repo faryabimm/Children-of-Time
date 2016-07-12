@@ -6,8 +6,7 @@ import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
 import com.childrenOfTime.gui.customizedElements.Scenario;
 import com.childrenOfTime.gui.fillForms.*;
 import com.childrenOfTime.gui.fillForms.dataHolders.*;
-import com.childrenOfTime.model.AbilityMaker;
-import com.childrenOfTime.model.ChildrenOfTime;
+import com.childrenOfTime.model.*;
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
 import com.childrenOfTime.model.Equip.AbilComps.Upgrade;
 import com.childrenOfTime.model.Equip.AlterPackage;
@@ -16,7 +15,6 @@ import com.childrenOfTime.model.Equip.EffectType;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
 import com.childrenOfTime.model.Equip.ItemComps.ItemType;
 import com.childrenOfTime.model.Equip.ItemComps.Messages;
-import com.childrenOfTime.model.Store;
 import com.childrenOfTime.model.Warriors.HeroClass;
 import com.childrenOfTime.model.Warriors.Warrior;
 import com.childrenOfTime.utilities.GUIUtils;
@@ -245,6 +243,25 @@ public class CusomGameEditorMenu extends MenuScreenPanel {
                         e1.printStackTrace();
                     }
                 }
+            }
+        });
+        customBattle.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CusomGameEditorMenu.this.fade();
+                BattleDataHolder dataHolder = new BattleDataHolder();
+                new NewBattleCreationDialog(dataHolder);
+
+                Reward battleReward = new Reward(dataHolder.rewardXP, dataHolder.rewardMoney, dataHolder.rewardImmortalityPotion);
+                Battle createdBattle = new Battle(dataHolder.name, dataHolder.defeatStory, battleReward, dataHolder.battleFoes);
+                GUIUtils.deserializeUserFiles();
+                CustomGameDAO.currentUserCustomBattles.add(createdBattle);
+                try {
+                    GUIUtils.serializeUserObject(CustomGameDAO.currentUserCustomBattles, "battles");
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
             }
         });
         emerge();

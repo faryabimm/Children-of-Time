@@ -5,6 +5,7 @@ import com.childrenOfTime.gui.customGame.CustomGameMenuScreenPanel;
 import com.childrenOfTime.gui.customGame.CustomGameUserHubPanel;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
+import com.childrenOfTime.gui.fillForms.SettingsScreenDialog;
 import com.childrenOfTime.gui.singlePlayer.SinglePlayerMenuScreenPanel;
 import com.childrenOfTime.model.ChildrenOfTime;
 
@@ -46,6 +47,13 @@ public class MainMenuScreenPanel extends MenuScreenPanel {
                 ChildrenOfTime.PREFERRED_HEIGHT - 5*CustomizedJButton.BUTTON_HEIGHT - 5*ELEMENT_GAP);
 
         quitButton.addActionListener(e -> System.exit(0));
+        settingsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fade();
+                new SettingsScreenDialog();
+            }
+        });
         customGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

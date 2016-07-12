@@ -4,6 +4,7 @@ import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.gui.customGame.CustomScenarioBuilderPanel;
 import com.childrenOfTime.model.Battle;
 import com.childrenOfTime.model.Store;
+import com.childrenOfTime.model.Story;
 import com.childrenOfTime.utilities.GUIUtils;
 
 import javax.swing.*;
@@ -23,6 +24,12 @@ public class ScenarioCell extends JLabel implements Serializable {
     private int j;
     private Battle battle = null;
     private Store store;
+    private Story story;
+
+    public void setStory(Story story) {
+        this.story = story;
+    }
+
     private ScenarioCellType cellType = ScenarioCellType.GROUND;
 
     public Battle getBattle() {
@@ -94,5 +101,10 @@ public class ScenarioCell extends JLabel implements Serializable {
     public void setIcon(ImageIcon icon) {
         this.icon = icon;
         super.setIcon(icon);
+    }
+
+    public Story getStory() {
+
+        return null;
     }
 }

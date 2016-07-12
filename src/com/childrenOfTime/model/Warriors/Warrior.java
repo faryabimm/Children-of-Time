@@ -39,6 +39,11 @@ public class Warrior implements Serializable, TurnBase {
     }
 
     private int id = 0;
+
+    public ImageIcon getImage() {
+        return image;
+    }
+
     private ImageIcon image;
 
     private int currentAttackPower;

@@ -139,6 +139,7 @@ public class GUIUtils {
     }
 
     public static ImageIcon getScaledIcon(ImageIcon source, int width, int height, int hints) {
+        if (source == null) return null;
         return new ImageIcon(source.getImage().getScaledInstance(width, height, hints));
     }
 }
