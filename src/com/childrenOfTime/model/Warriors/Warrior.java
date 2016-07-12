@@ -195,7 +195,7 @@ public class Warrior implements Serializable, TurnBase {
         if (isDead()) return;
         if (EPCost == null) EPCost = DEFAULT_Attack_EP_COST;
 
-        EffectPerformer.performEffects(this.passiveEffects, this, targets, allEnemies, allTeamMates);
+        EffectPerformer.performEffects(true, this.passiveEffects, this, targets, allEnemies, allTeamMates);
 
         changeEP(-EPCost);
         if (realAttack == null) realAttack = this.getAttackPower();

@@ -13,7 +13,6 @@ public class EffectPerformer implements Serializable {
 
     private static boolean doesPassiveAllowsToContinue(Effect effect, Warrior performer) {
         if (effect.getEffectType().isPassive()) {
-            if (performer.containsPassiveEffect(effect)) return false;
             performer.addPassiveEffect(effect);
             return false;
         }
@@ -21,14 +20,14 @@ public class EffectPerformer implements Serializable {
     }
 
     //TODO anotherCheck required
-    public static void performEffects(Collection<Effect> effects, Warrior performer, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeamMates) {
+    public static void performEffects(boolean CalledByAttack, Collection<Effect> effects, Warrior performer, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeamMates) {
         if (effects.size() == 0) return;
         Iterator<Effect> itr = effects.iterator();
         Warrior[] finalTargets;
 
         while (itr.hasNext()) {
             Effect nextEffect = itr.next();
-            if (!doesPassiveAllowsToContinue(nextEffect, performer)) return;
+            if (!CalledByAttack && !doesPassiveAllowsToContinue(nextEffect, performer)) return;
             finalTargets = chooseTargts(nextEffect, performer, selectedTargets, allEnemies, allTeamMates);
 
             nextEffect.perform(finalTargets);

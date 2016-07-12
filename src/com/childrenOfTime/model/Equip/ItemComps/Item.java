@@ -67,7 +67,7 @@ public class Item implements Castable, TurnBase {
                 this.leftUsages--;
             }
             cost.asCost(performer);
-            EffectPerformer.performEffects(this.effects, performer, selectedTargets, allEnemies, allTeammates);
+            EffectPerformer.performEffects(false, this.effects, performer, selectedTargets, allEnemies, allTeammates);
             if (type.getHasCoolDown()) {
                 isInCoolDown = true;
             }

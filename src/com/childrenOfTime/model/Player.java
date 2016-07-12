@@ -9,6 +9,7 @@ import com.childrenOfTime.model.Equip.AlterPackage;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
 import com.childrenOfTime.model.Interfaces.TurnBase;
 import com.childrenOfTime.model.Warriors.Warrior;
+import com.sun.istack.internal.NotNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,8 +29,8 @@ public class Player implements TurnBase, Serializable {
     private int currentExperience;
     private int immprtalityPotions = 3;
     private ArrayList<Item> itemsBougt;
-    private Collection<Warrior> myTeam;
-    private Collection<Warrior> enemyTeam;
+    private ArrayList<Warrior> myTeam;
+    private ArrayList<Warrior> enemyTeam;
     ArrayList<Battle> WonBattles;
 
     public Player() {
@@ -39,6 +40,17 @@ public class Player implements TurnBase, Serializable {
     public Player(String name) {
         this.name = name;
         checkForImmortatlitryRequest();
+    }
+
+
+    public Player(@NotNull ArrayList<Warrior> myTeam, String name, PlayerType playerType) {
+        if (name == null) name = "COM";
+        this.name = name;
+        this.myTeam = myTeam;
+        this.immprtalityPotions = Rules.INITIAL_IMMORTALITY_POTION;
+        this.currentWealth = Rules.INITIAL_MONEY;
+        this.currentExperience = Rules.INITIAL_XP;
+        this.playerType = playerType;
     }
 
     @Override
@@ -77,8 +89,9 @@ public class Player implements TurnBase, Serializable {
                         e.printStackTrace();
                     }
                     if (myHero.doesAskForImmortalityPotion()) {
-                        myHero.PlayerAllowsUsingImmortality = true;
+                        //TODO Set Try catch
                         useImmortalityPotion();
+                        myHero.PlayerAllowsUsingImmortality = true;
                     }
                 }
             }
@@ -234,11 +247,11 @@ public class Player implements TurnBase, Serializable {
     }
 
 
-    public Collection<Warrior> getMyTeam() {
+    public ArrayList<Warrior> getMyTeam() {
         return myTeam;
     }
 
-    public void setMyTeam(Collection<Warrior> myTeam) {
+    public void setMyTeam(ArrayList<Warrior> myTeam) {
         this.myTeam = myTeam;
     }
 
@@ -257,7 +270,7 @@ public class Player implements TurnBase, Serializable {
     }
 
 
-    public void setEnemyTeam(Collection<Warrior> enemyTeam) {
+    public void setEnemyTeam(ArrayList<Warrior> enemyTeam) {
         this.enemyTeam = enemyTeam;
     }
 }

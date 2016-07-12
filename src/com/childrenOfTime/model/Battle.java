@@ -4,6 +4,7 @@ import com.childrenOfTime.Completed;
 import com.childrenOfTime.model.Warriors.Warrior;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
@@ -50,13 +51,13 @@ public class Battle implements Serializable {
         this.Enemy.setEnemyTeam(You.getMyTeam());
     }
 
-    public void setDefualtFoes(List<Warrior> foes) {
-
+    public void setDefualtFoes(ArrayList<Warrior> foes) {
+        Player player = new Player(foes, name, PlayerType.Computer);
+        this.Enemy = player;
     }
 
-
-    public List<Warrior> getDefualtFoes() {
-        return null;
+    public ArrayList<Warrior> getDefualtFoes() {
+        return this.Enemy.getMyTeam();
     }
 
 

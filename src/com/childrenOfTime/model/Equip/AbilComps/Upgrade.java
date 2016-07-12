@@ -110,7 +110,7 @@ public class Upgrade implements Castable, Comparable<Upgrade>, Serializable {
         if (isInCoolDown) throw new AbilityInCooldownException(messages.getCoolDownFailureMessage());
         try {
             PayCosts(performer);
-            EffectPerformer.performEffects(this.effects, performer, selectedTargets, allEnemies, allTeammates);
+            EffectPerformer.performEffects(false, this.effects, performer, selectedTargets, allEnemies, allTeammates);
             if (this.COOLDOWN_TIME != 0) isInCoolDown = true;
             printOutput(messages.getSuccessMessage());
         } catch (NotEnoughEnergyPointsException e) {
@@ -133,12 +133,6 @@ public class Upgrade implements Castable, Comparable<Upgrade>, Serializable {
         }
     }
     public void aTurnHasPassed() {
-        /*
-        for (Effect eff : currentUserCustomEffects) {
-            if (eff instanceof TurnBase) {
-                ((TurnBase) eff).aTurnHasPassed();
-            }
-        }
         if (!isInCoolDown) return;
         if (leftTurnsToCoolDown == 1) {
             this.isInCoolDown = false;
@@ -146,7 +140,7 @@ public class Upgrade implements Castable, Comparable<Upgrade>, Serializable {
         } else {
             leftTurnsToCoolDown--;
         }
-        */
+
 
     }
     @Override

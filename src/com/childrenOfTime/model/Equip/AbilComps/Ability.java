@@ -147,7 +147,7 @@ public class Ability implements Castable, TurnBase, Serializable {
 
     @Override
     public void aTurnHasPassed() {
-        currentLevel.aTurnHasPassed();
+        if (currentLevel != null) currentLevel.aTurnHasPassed();
     }
 
     public void showDescription() {
