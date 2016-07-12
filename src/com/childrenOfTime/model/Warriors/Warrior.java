@@ -189,17 +189,20 @@ public class Warrior implements Serializable, TurnBase {
     public void attack(Warrior[] targets, Integer realAttack, Integer EPCost, Warrior[] allEnemies, Warrior[] allTeamMates) throws NotEnoughEnergyPointsException {
         if (isDead()) return;
         if (EPCost == null) EPCost = DEFAULT_Attack_EP_COST;
+
+        EffectPerformer.performEffects(this.passiveEffects, this, targets, allEnemies, allTeamMates);
+
         changeEP(-EPCost);
         if (realAttack == null) realAttack = this.getAttackPower();
 
-        EffectPerformer.performEffects(this.passiveEffects, this, targets, allEnemies, allTeamMates);
 
         for (Warrior tar : targets) {
             if (tar == null) continue;
             int damage = tar.changeHealth(-realAttack, null);
             //TODO DOROST SHAVAD
-            printOutput(toString() + " has successfully attacked " + /*Inja h*/ toString() + " with " + getAttackPower() + " power " + "\nDamage Made : " + damage);
+            printOutput(toString() + " has successfully attacked " + /*Inja h*/ tar.toString() + " with " + getAttackPower() + " power " + "\nDamage Made : " + damage);
         }
+
         Set<Effect> toWearOff = new HashSet<>();
         for (Effect eff : this.passiveEffects) {
             if (eff.getEffectType().isIfPassiveInstantEffectJustForAttack())

@@ -18,4 +18,5 @@ public class Rules implements Serializable {
     public static Integer Quantitiy_Of_Targets_For_Manual_Multiple_Target_Choosing = 3;
 
 
+    public static boolean giveRandomRewardByDifferentiationBetweenWinnerAndLoser = true;
 }

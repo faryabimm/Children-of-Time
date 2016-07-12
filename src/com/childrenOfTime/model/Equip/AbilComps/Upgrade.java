@@ -39,7 +39,7 @@ public class Upgrade implements Castable, Comparable<Upgrade>, Serializable {
     Boolean castJustAfterAcquire = false;
     final Boolean recastable;
     boolean castedOnce = false;
-    boolean acquired;
+    public boolean acquired;
     public Upgrade(@NotNull int numberOfUpgrade) {
         this.numberOfUpgrade = numberOfUpgrade;
         this.COOLDOWN_TIME = 0;

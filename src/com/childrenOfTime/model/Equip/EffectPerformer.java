@@ -13,7 +13,7 @@ public class EffectPerformer implements Serializable {
 
     private static boolean doesPassiveAllowsToContinue(Effect effect, Warrior performer) {
         if (effect.getEffectType().isPassive()) {
-            if (performer.containsPassiveEffect(effect)) return true;
+            if (performer.containsPassiveEffect(effect)) return false;
             performer.addPassiveEffect(effect);
             return false;
         }

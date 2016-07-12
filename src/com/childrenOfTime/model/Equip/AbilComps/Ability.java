@@ -99,8 +99,9 @@ public class Ability implements Castable, TurnBase, Serializable {
         this.baseState = Upgrades.getGodFatherElement();
         if (!baseState.getUpgradeBoolean()) throw new RequirementsNotMetException();
         this.currentLevel = Upgrades.getMinElement();
-        if (currentLevel.castJustAfterAcquire) cast(warrior, null, allEnemies, allTeammates);
         currentLevel.acquired = true;
+        printOutput("Ability : " + name + " Upgrade " + currentLevel.numberOfUpgrade + " is accessible now !");
+        if (currentLevel.castJustAfterAcquire) cast(warrior, null, allEnemies, allTeammates);
         return currentLevel.getXPCost();
     }
 
@@ -117,7 +118,10 @@ public class Ability implements Castable, TurnBase, Serializable {
             currentLevel = result;
         }
         currentLevel.acquired = true;
+        printOutput("Ability : " + name + " Upgrade " + currentLevel.numberOfUpgrade + " is accessible now !");
+
         if (currentLevel.castJustAfterAcquire) cast(performer, null, allEnemies, allTeammates);
+
         return result.getXPCost();
     }
 
