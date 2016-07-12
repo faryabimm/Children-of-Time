@@ -44,21 +44,18 @@ public class Battle implements Serializable {
             this.Enemy = Enemy;
         }
 
-        if (this.Enemy.playerType == PlayerType.Computer) {
-            initiateComputerEnemy();
-        }
-
         You.setEnemyTeam(Enemy.getMyTeam());
         this.Enemy.setEnemyTeam(You.getMyTeam());
     }
 
-    public void setDefualtFoes() {
+    public void createComputerBot() {
         Player player = new Player(defualtFoes, name, PlayerType.Computer);
+        this.initiateComputerEnemy(player);
         this.Enemy = player;
     }
 
     public ArrayList<Warrior> getDefualtFoes() {
-        return this.Enemy.getMyTeam();
+        return this.defualtFoes;
     }
 
 
@@ -84,8 +81,8 @@ public class Battle implements Serializable {
     }
 
 
-    private void initiateComputerEnemy() {
-        this.aritificailBrain = new ArtificialBrain(Enemy, You);
+    private void initiateComputerEnemy(Player bot) {
+        this.aritificailBrain = new ArtificialBrain(bot, You);
         // aritificailBrain.
     }
 
