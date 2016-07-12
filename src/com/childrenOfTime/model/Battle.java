@@ -5,7 +5,6 @@ import com.childrenOfTime.model.Warriors.Warrior;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
 
@@ -27,8 +26,10 @@ public class Battle implements Serializable {
     private Reward reward;
     private boolean itIsFirstTurn = true;
     ArtificialBrain aritificailBrain;
+    ArrayList<Warrior> defualtFoes;
 
-    public Battle(String name, String defeatStory, Reward reward, List<Warrior> foes) {
+    public Battle(String name, String defeatStory, Reward reward, ArrayList<Warrior> defualtFoes) {
+        this.defualtFoes = defualtFoes;
         this.name = name;
         DefeatStory = defeatStory;
         this.reward = reward;
@@ -51,8 +52,8 @@ public class Battle implements Serializable {
         this.Enemy.setEnemyTeam(You.getMyTeam());
     }
 
-    public void setDefualtFoes(ArrayList<Warrior> foes) {
-        Player player = new Player(foes, name, PlayerType.Computer);
+    public void setDefualtFoes() {
+        Player player = new Player(defualtFoes, name, PlayerType.Computer);
         this.Enemy = player;
     }
 
@@ -318,15 +319,15 @@ public class Battle implements Serializable {
 //    @Completed
 //    private Foe findFoeByNameAndId(String name, Integer id) {
 //        Foe currentFoe;
-//        for (Foe foe : foes) {
+//        for (Foe foe : defualtFoes) {
 //            if (foe.getName().equals(name) & foe.getId() == id) return foe;
 //        }
 //
 //
 //        // TODO Why Did you write this ? this is just fucking the project ?
 //        /*
-//        for (int i = 0; i < foes.size(); i++) {
-//            currentFoe = foes.get(i);
+//        for (int i = 0; i < defualtFoes.size(); i++) {
+//            currentFoe = defualtFoes.get(i);
 //            if (currentFoe.equals(new Foe(name, StrengthOfFoes.Able, 0)) && currentFoe.getId() == id) return currentFoe;
 //        }
 //        */
@@ -336,8 +337,8 @@ public class Battle implements Serializable {
 ////    @Completed
 //    private Foe findFoeByName(String name) {
 //        Foe currentFoe;
-//        for (int i = 0; i < foes.size(); i++) {
-//            currentFoe = foes.get(i);
+//        for (int i = 0; i < defualtFoes.size(); i++) {
+//            currentFoe = defualtFoes.get(i);
 //            if (currentFoe.equals(new Foe(name, StrengthOfFoes.Able, 0))) return currentFoe;
 //        }
 //        return null;
@@ -375,7 +376,7 @@ public class Battle implements Serializable {
 //        }
 //
 //        printOutput("\n\nYour Foes:\n");
-//        for (Foe foe : foes) {
+//        for (Foe foe : defualtFoes) {
 //            printOutput(foe.getName() + " " + foe.getId());
 //            printOutput(foe.showCurrentTraits());
 //            printOutput("\n---------------------\n");
