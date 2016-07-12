@@ -7,10 +7,10 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.BindException;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
+import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
 
@@ -54,10 +54,81 @@ public class MultiPlayer {
 
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        //MultiPlayer multiPlayer = new MultiPlayer();
+        MultiPlayer multiPlayer = new MultiPlayer(null, null, null);
         //multiPlayer.startAsHost();
         //multiPlayer.startJoin(InetAddress.getLocalHost(), 3000);
+        Thread discoveryThread = new Thread(DiscoveryThread.getInstance());
+        discoveryThread.start();
 
+    }
+
+
+    public void findIPAddress() {
+        // Find the server using UDP broadcast
+        try {
+            //Open a random port to send the package
+            DatagramSocket c = new DatagramSocket();
+            c.setBroadcast(true);
+
+            byte[] sendData = "DISCOVER_FUIFSERVER_REQUEST".getBytes();
+
+            //Try the 255.255.255.255 first
+            try {
+                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("255.255.255.255"), 8888);
+                c.send(sendPacket);
+                System.out.println(getClass().getName() + ">>> Request packet sent to: 255.255.255.255 (DEFAULT)");
+            } catch (Exception e) {
+            }
+
+            // Broadcast the message over all the network interfaces
+            Enumeration interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = (NetworkInterface) interfaces.nextElement();
+
+                if (networkInterface.isLoopback() || !networkInterface.isUp()) {
+                    continue; // Don't want to broadcast to the loopback interface
+                }
+
+                for (InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()) {
+                    InetAddress broadcast = interfaceAddress.getBroadcast();
+                    if (broadcast == null) {
+                        continue;
+                    }
+
+                    // Send the broadcast package!
+                    try {
+                        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, broadcast, 8888);
+                        c.send(sendPacket);
+                    } catch (Exception e) {
+                    }
+
+                    System.out.println(getClass().getName() + ">>> Request packet sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName());
+                }
+            }
+
+            System.out.println(getClass().getName() + ">>> Done looping over all network interfaces. Now waiting for a reply!");
+
+            //Wait for a response
+            byte[] recvBuf = new byte[15000];
+            DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
+            c.receive(receivePacket);
+
+            //We have a response
+            System.out.println(getClass().getName() + ">>> Broadcast response from server: " + receivePacket.getAddress().getHostAddress());
+
+            //Check if the message is correct
+            String message = new String(receivePacket.getData()).trim();
+            if (message.equals("DISCOVER_FUIFSERVER_RESPONSE")) {
+                //DO SOMETHING WITH THE SERVER'S IP (for example, store it in your controller)
+                System.out.println(receivePacket.getAddress());
+            }
+
+            //Close the port!
+            c.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return;
     }
 
 
@@ -81,7 +152,9 @@ public class MultiPlayer {
                 SS3 = new ServerSocket(port + 2);
                 SS4 = new ServerSocket(port + 3);
                 portIsFree = true;
-                printOutput("IP Address : " + SS1.getInetAddress() + "    Port : " + port);
+
+                printOutput("IP Address : " + "    Port : " + port);
+
             } catch (BindException be) {
                 portIsFree = false;
                 port += 100;
@@ -97,9 +170,15 @@ public class MultiPlayer {
         dataSender.start();
         messageReceiver.start();
         messageSender.start();
-
-
-
+        Enumeration e = NetworkInterface.getNetworkInterfaces();
+        while (e.hasMoreElements()) {
+            NetworkInterface n = (NetworkInterface) e.nextElement();
+            Enumeration ee = n.getInetAddresses();
+            while (ee.hasMoreElements()) {
+                InetAddress i = (InetAddress) ee.nextElement();
+                System.out.println(i.getHostAddress());
+            }
+        }
 
 
     }
@@ -283,6 +362,70 @@ class Communicator implements Runnable {
         oops.flush();
     }
 }
+
+
+class DiscoveryThread implements Runnable {
+
+
+    DatagramSocket socket;
+
+    @Override
+    public void run() {
+        try {
+            //Keep a socket open to listen to all the UDP trafic that is destined for this port
+            socket = new DatagramSocket(8888, InetAddress.getByName("0.0.0.0"));
+            socket.setBroadcast(true);
+
+            while (true) {
+                System.out.println(getClass().getName() + ">>>Ready to receive broadcast packets!");
+
+                //Receive a packet
+                byte[] recvBuf = new byte[15000];
+                DatagramPacket packet = new DatagramPacket(recvBuf, recvBuf.length);
+                socket.receive(packet);
+
+                //Packet received
+                System.out.println(getClass().getName() + ">>>Discovery packet received from: " + packet.getAddress().getHostAddress());
+                System.out.println(getClass().getName() + ">>>Packet received; data: " + new String(packet.getData()));
+
+                //See if the packet holds the right command (message)
+                String message = new String(packet.getData()).trim();
+                if (message.equals("DISCOVER_FUIFSERVER_REQUEST")) {
+                    byte[] sendData = "DISCOVER_FUIFSERVER_RESPONSE".getBytes();
+
+                    //Send a response
+                    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, packet.getAddress(), packet.getPort());
+                    socket.send(sendPacket);
+
+                    System.out.println(getClass().getName() + ">>>Sent packet to: " + sendPacket.getAddress().getHostAddress());
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(DiscoveryThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+
+    public static DiscoveryThread getInstance() {
+        return DiscoveryThreadHolder.INSTANCE;
+    }
+
+    private static class DiscoveryThreadHolder {
+
+        private static final DiscoveryThread INSTANCE = new DiscoveryThread();
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
 
 
 //class salam implements Runnable {

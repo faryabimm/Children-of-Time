@@ -183,6 +183,11 @@ public class Upgrade implements Castable, Comparable<Upgrade>, Serializable {
     public void addEffect(Effect effect) {
         effects.add(effect);
     }
+
+    public ArrayList<Effect> getEffects() {
+        return effects;
+    }
+
     public String getDescription() {
         return messages.description;
     }

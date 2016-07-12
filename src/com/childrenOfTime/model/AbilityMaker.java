@@ -1,6 +1,5 @@
 package com.childrenOfTime.model;
 
-import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
 import com.childrenOfTime.model.Equip.AbilComps.Upgrade;
 import com.childrenOfTime.model.Equip.Effect;
@@ -44,7 +43,6 @@ public class AbilityMaker implements Serializable {
 
     public void addCustomUpgrade(Upgrade upgrade) {
         ability.addToUpgrades(upgrade);
-        upgrade.setEffects(new ArrayList<Effect>(1));
     }
 
     public void setBaseUpgrade(Integer upgradeNumber) {
@@ -84,6 +82,7 @@ public class AbilityMaker implements Serializable {
     public void addCustomEffect(Integer upgradeNumber, Effect effect) {
         Upgrade upgrade = getUpgradeByNumber(upgradeNumber);
         if (upgrade == null) return;
+        if (upgrade.getEffects() == null) upgrade.setEffects(new ArrayList<Effect>());
         upgrade.addEffect(effect);
     }
 

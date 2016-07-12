@@ -6,6 +6,9 @@ import com.childrenOfTime.model.Equip.AbilComps.Upgrade;
 import com.childrenOfTime.model.Equip.AlterPackage;
 import com.childrenOfTime.model.Equip.Effect;
 import com.childrenOfTime.model.Equip.EffectType;
+import com.childrenOfTime.model.Equip.ItemComps.Item;
+import com.childrenOfTime.model.Equip.ItemComps.ItemType;
+import com.childrenOfTime.model.Equip.ItemComps.Messages;
 import com.childrenOfTime.model.Equip.Target;
 import junit.framework.TestCase;
 
@@ -22,7 +25,7 @@ public class HeroClassTest extends TestCase {
     Effect E2;
     Ability AB1;
     private Ability AB2;
-
+    Item I1;
     public void setUp() throws Exception {
         super.setUp();
 
@@ -37,11 +40,11 @@ public class HeroClassTest extends TestCase {
         EffectType ET1 = new EffectType(true, false, true, false, false, false);
         EffectType ET2 = new EffectType(true, true, false, true, false, false);
         Effect E1 = new Effect("Ef1", ET1, A1, Target.AllEnemies, 100, 2, 1);
-        E2 = new Effect("Ef2", ET2, A1, Target.theAttackedOne, 100, 0, 0);
+        E2 = new Effect("Ef2", ET2, A1, Target.AllEnemies, 100, 0, 0);
         ArrayList<Effect> effects = new ArrayList<>(1);
-        effects.add(E1);
+        effects.add(E2);
         Upgrade UP1 = new Upgrade(1, 0, 5, 2, 5, false, true, effects, true, "");
-        Upgrade UP2 = new Upgrade(1, 3, 5, 2, 5, false, true, effects, true, "", "");
+        Upgrade UP2 = new Upgrade(1, 3, 5, 2, 5, false, true, null, true, "", "");
         AbilityMaker abMaker = new AbilityMaker();
         abMaker.newCustomAbility("Ab1", Target.AllEnemies, null, null, 5);
         abMaker.addCustomUpgrade(UP1);
@@ -60,6 +63,8 @@ public class HeroClassTest extends TestCase {
         W3 = new Warrior("saeed", HC1, null, null);
         W2.setId(2);
         W3.setId(3);
+        ItemType iT = new ItemType(false, true, true, false, false, false, false, 0, 5, 2, 0);
+        I1 = new Item("Item1 ", iT, new Messages(), Target.AllTeammates, effects, null, null);
     }
 
     //All Health Changes Have been Completely tested !
@@ -99,7 +104,7 @@ public class HeroClassTest extends TestCase {
 
     }
 
-    //Recastabilty : tested !!!     passiveEffects : tested ! ;
+    //Recastabilty : tested !!!     passiveEffects : tested ! , CoolDown : tested ! ;
     public void testAbilityMore() throws Exception {
         testMakeAWarrior();
         Warrior[] myTeam = {W2, W3};
@@ -107,6 +112,7 @@ public class HeroClassTest extends TestCase {
         W2.upgradeAbility(AB2, 1, enemy, myTeam);
         assertEquals(W2.getCurrentHealth(), 300);
         W2.castAbility(AB2, null, enemy, myTeam);
+        W2.aTurnHasPassed();
         W2.aTurnHasPassed();
         W2.aTurnHasPassed();
         W2.castAbility(AB2, null, enemy, myTeam);
@@ -133,7 +139,15 @@ public class HeroClassTest extends TestCase {
 
     }
 
-    public void testGetMutationMessage() throws Exception {
+    public void testItem() throws Exception {
+        testMakeAWarrior();
+        Warrior[] enemy = {W2, W3};
+        Warrior[] myTeam = {W1};
+
+        W1.IWannaBuyItemForYou(I1, enemy, myTeam);
+        assertEquals(W1.getAttackPower(), 200);
+        W1.attack(enemy, null, null, enemy, myTeam);
+        assertEquals(W1.getAttackPower(), 405);
 
     }
 
