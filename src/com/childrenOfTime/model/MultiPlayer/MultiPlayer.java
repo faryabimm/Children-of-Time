@@ -1,8 +1,10 @@
 package com.childrenOfTime.model.MultiPlayer;
 
+import com.childrenOfTime.gui.notification.NotificationType;
 import com.childrenOfTime.model.Battle;
 import com.childrenOfTime.model.Player;
 import com.childrenOfTime.model.PlayerType;
+import com.childrenOfTime.utilities.GUIUtils;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 
@@ -54,17 +56,20 @@ public class MultiPlayer {
 //
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        new MultiPlayer(new Player(null, "Mohammadmahdi", PlayerType.Human));
-        //multiPlayer.startJoin(InetAddress.getLocalHost(), 3000);
-        Thread discoveryThread = new Thread(DiscoveryThread.getInstance());
-        discoveryThread.start();
-//        Instacne.startAsHost();
+        try {
+            new MultiPlayer(new Player(null, "SaeedTeam", PlayerType.Human));
+            //multiPlayer.startJoin(InetAddress.getLocalHost(), 3000);
+            Thread discoveryThread = new Thread(DiscoveryThread.getInstance());
+            discoveryThread.start();
+            Instacne.startAsHost();
 
-        Instacne.findIPAddress();
+//        Instacne.findIPAddress();
 
 
-        Instacne.addToSendObjects(Instacne.thiss);
-
+            Instacne.addToSendObjects(Instacne.thiss);
+        } catch (Exception e) {
+            System.out.println("OK!");
+        }
     }
 
 
@@ -128,7 +133,7 @@ public class MultiPlayer {
                 //DO SOMETHING WITH THE SERVER'S IP (for example, store it in your controller)
                 InetAddress inetAddress = receivePacket.getAddress();
                 //InetAddress.getByName("81.31.172.145") ;
-                System.out.println(inetAddress.getHostName());
+                GUIUtils.showNotification(thiss.getName(), NotificationType.MESSAGE);
                 startJoin(inetAddress, MultiPlayer.DEFAULT_PORT);
                 return;
 
