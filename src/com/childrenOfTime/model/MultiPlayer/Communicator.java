@@ -1,5 +1,8 @@
 package com.childrenOfTime.model.MultiPlayer;
 
+import com.childrenOfTime.gui.notification.NotificationType;
+import com.childrenOfTime.utilities.GUIUtils;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,7 +14,7 @@ import java.net.Socket;
 /**
  * Created by SaeedHD on 07/13/2016.
  */
-public class Communicator implements Runnable {
+public class Communicator extends Thread {
     Closeable performer;
     MultiPlayer multiPlayer;
     ConnectionType connectionType;
@@ -38,56 +41,85 @@ public class Communicator implements Runnable {
 
     }
 
+    Thread blinker;
+
+    public void stopp() {
+        blinker = null;
+    }
+
     @Override
     public void run() {
+        blinker = Thread.currentThread();
         try {
             Socket socket = null;
-            while (true) {
-                switch (connectionType) {
-                    case Host:
-                        socket = ((ServerSocket) this.performer).accept();
-                        break;
-                    case Join:
-                        socket = new Socket(this.IPAddress, this.port);
-                        break;
-                }
-                Object toSend = null;
-                if (job == Job.Send) {
-                    switch (transformingObjectType) {
-                        case Message:
-                            toSend = multiPlayer.getToSendMessage();
+            long t1 = System.currentTimeMillis();
+            boolean errorHasPrinted = false;
+            while (blinker == Thread.currentThread()) {
+                try {
+                    switch (connectionType) {
+                        case Host:
+                            socket = ((ServerSocket) this.performer).accept();
                             break;
-                        case Object:
-                            toSend = multiPlayer.getToSendObject();
+                        case Join:
+                            socket = new Socket(this.IPAddress, this.port);
                             break;
                     }
-                }
+                    Object toSend = null;
+                    if (job == Job.Send) {
+                        switch (transformingObjectType) {
+                            case Message:
+                                toSend = multiPlayer.getToSendMessage();
+                                break;
+                            case Object:
+                                toSend = multiPlayer.getToSendObject();
+                                break;
+                        }
+                    }
 
-                Object recObj = null;
-                switch (job) {
-                    case Send:
-                        sendData(socket, toSend);
-                        break;
-                    case Recieve:
-                        recObj = recieveData(socket);
-                        break;
-                }
-                if (job == Job.Recieve) {
-                    switch (transformingObjectType) {
-                        case Message:
-                            multiPlayer.setRecievedMesssage((String) recObj);
+                    Object recObj = null;
+                    switch (job) {
+                        case Send:
+                            sendData(socket, toSend);
                             break;
-                        case Object:
-                            multiPlayer.addReceivedObject(recObj);
+                        case Recieve:
+                            recObj = recieveData(socket);
                             break;
                     }
-                }
+                    if (job == Job.Recieve) {
+                        switch (transformingObjectType) {
+                            case Message:
+                                multiPlayer.setRecievedMesssage((String) recObj);
+                                break;
+                            case Object:
+                                multiPlayer.addReceivedObject(recObj);
+                                break;
+                        }
+                    }
 
-                if (connectionType == ConnectionType.Join) socket.close();
+                    if (connectionType == ConnectionType.Join) socket.close();
+                } catch (IOException e) {
+                    if (connectionType == ConnectionType.Join) {
+                        if (!errorHasPrinted) {
+                            GUIUtils.showNotification("Reconnecting...", NotificationType.BAD);
+                            errorHasPrinted = true;
+                        }
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e1) {
+                            e1.printStackTrace();
+                        }
+                        if (System.currentTimeMillis() - t1 > 8000) {
+                            throw new IOException();
+                        }
+                    }
+                } catch (ClassNotFoundException e) {
+                }
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        } catch (IOException io) {
+            if (transformingObjectType == ObjectType.Object && job == Job.Recieve)
+                GUIUtils.showNotification("Connection Lost... ! ", NotificationType.BAD);
         }
     }
 

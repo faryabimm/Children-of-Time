@@ -57,21 +57,19 @@ public class MultiPlayer {
         try {
             new MultiPlayer(new Player(null, "SaeedTeam", PlayerType.Human));
             //multiPlayer.startJoin(InetAddress.getLocalHost(), 3000);
-            Thread discoveryThread = new Thread(DiscoveryThread.getInstance());
-            discoveryThread.start();
+
             Instacne.startAsHost();
 
-//        Instacne.findIPAddress();
+//        Instacne.autoJoin();
 
 
             Instacne.addToSendObjects(Instacne.thiss);
         } catch (Exception e) {
-            System.out.println("OK!");
         }
     }
 
 
-    public void findIPAddress() {
+    public void autoJoin() {
         // Find the server using UDP broadcast
         try {
             //Open a random port to send the package
@@ -150,9 +148,19 @@ public class MultiPlayer {
         Instacne = null;
     }
 
+    private DiscoveryThread discoveryThread;
+    private Thread dataReceiver;
+    private Thread dataSender;
+    private Thread messageSender;
+    private Thread messageReceiver;
 
     public void startAsHost() throws IOException, ClassNotFoundException {
         int port = DEFAULT_PORT;
+
+        Instacne.discoveryThread = new DiscoveryThread();
+        Instacne.discoveryThread.start();
+
+
         boolean portIsFree;
         ServerSocket SS1 = null;
         ServerSocket SS2 = null;
@@ -175,25 +183,43 @@ public class MultiPlayer {
             }
         } while (!portIsFree);
 
-        Thread dataReceiver = new Thread(new Communicator(SS2, this, ConnectionType.Host, Job.Recieve, ObjectType.Object));
-        Thread dataSender = new Thread(new Communicator(SS1, this, ConnectionType.Host, Job.Send, ObjectType.Object));
-        Thread messageReceiver = new Thread(new Communicator(SS4, this, ConnectionType.Host, Job.Recieve, ObjectType.Message));
-        Thread messageSender = new Thread(new Communicator(SS3, this, ConnectionType.Host, Job.Send, ObjectType.Message));
+        dataReceiver = new Communicator(SS2, this, ConnectionType.Host, Job.Recieve, ObjectType.Object);
+        dataSender = new Communicator(SS1, this, ConnectionType.Host, Job.Send, ObjectType.Object);
+        messageReceiver = new Communicator(SS4, this, ConnectionType.Host, Job.Recieve, ObjectType.Message);
+        messageSender = new Communicator(SS3, this, ConnectionType.Host, Job.Send, ObjectType.Message);
 
         dataReceiver.start();
         dataSender.start();
         messageReceiver.start();
         messageSender.start();
 
+        try {
+            Thread.sleep(8000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        forceStopConnection();
     }
+
+
+    public void forceStopConnection() {
+        if (this.discoveryThread != null) (discoveryThread).stopp();
+        if (this.dataReceiver != null) ((Communicator) dataReceiver).stopp();
+        if (this.dataSender != null) ((Communicator) dataReceiver).stopp();
+        if (this.messageReceiver != null) ((Communicator) dataReceiver).stopp();
+        if (this.messageSender != null) ((Communicator) dataReceiver).stopp();
+        GUIUtils.showNotification("Successfully Disconnected !", NotificationType.NORMAL);
+
+    }
+
 
     public void startJoin(@NotNull InetAddress address, @Nullable Integer port) {
         if (port == null) port = MultiPlayer.DEFAULT_PORT;
 
-        Thread dataReceiver = new Thread(new Communicator(this, ConnectionType.Join, port, address, Job.Recieve, ObjectType.Object));
-        Thread dataSender = new Thread(new Communicator(this, ConnectionType.Join, port + 1, address, Job.Send, ObjectType.Object));
-        Thread messageReceiver = new Thread(new Communicator(this, ConnectionType.Join, port + 2, address, Job.Recieve, ObjectType.Message));
-        Thread messageSender = new Thread(new Communicator(this, ConnectionType.Join, port + 3, address, Job.Send, ObjectType.Message));
+        Thread dataReceiver = new Communicator(this, ConnectionType.Join, port, address, Job.Recieve, ObjectType.Object);
+        Thread dataSender = new Communicator(this, ConnectionType.Join, port + 1, address, Job.Send, ObjectType.Object);
+        Thread messageReceiver = new Communicator(this, ConnectionType.Join, port + 2, address, Job.Recieve, ObjectType.Message);
+        Thread messageSender = new Communicator(this, ConnectionType.Join, port + 3, address, Job.Send, ObjectType.Message);
 
         dataReceiver.start();
         dataSender.start();
@@ -246,7 +272,7 @@ public class MultiPlayer {
 
 
     public void setRecievedMesssage(String recievedMesssage) {
-        GUIUtils.showNotification(recievedMesssage, NotificationType.MESSAGE);
+        GUIUtils.showNotification(recievedMesssage, NotificationType.BAD);
         this.receivedMessage = recievedMesssage;
     }
 
