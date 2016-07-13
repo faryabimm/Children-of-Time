@@ -13,7 +13,7 @@ public enum Target implements Serializable {
     Target(boolean implicit, boolean isTeammate) {
         Implicit = implicit;
         if (implicit) this.numberOftargetsNeededToChoose = 0;
-        else this.numberOftargetsNeededToChoose = Rules.Quantitiy_Of_Targets_For_Manual_Multiple_Target_Choosing;
+        else this.numberOftargetsNeededToChoose = null;
 
     }
     Target(boolean implicit, Integer numberOftargetsNeededToChoose, boolean isTeammate) {
@@ -25,7 +25,9 @@ public enum Target implements Serializable {
         return Implicit;
     }
     public Integer getNumberOftargetsNeededToChoose() {
-        return numberOftargetsNeededToChoose;
+
+
+        return numberOftargetsNeededToChoose == null ? Rules.Quantitiy_Of_Targets_For_Manual_Multiple_Target_Choosing : numberOftargetsNeededToChoose;
     }
     public boolean isTeammate() {
         return isTeammate;

@@ -15,7 +15,7 @@ import com.sun.istack.internal.NotNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
 
@@ -68,10 +68,12 @@ public class Player implements TurnBase, Serializable {
             throw new NoImmortalityPotionLeftException(name + " : No Immortality Potion Left");
         } else {
             immprtalityPotions--;
+            System.out.println(immprtalityPotions);
         }
-        if (MultiPlayer.Instacne != null) {
+
+        if (MultiPlayer.getInstacne() != null) {
             TransferPack TP = new TransferPack(getStats());
-            MultiPlayer.Instacne.addToSendObjects(TP);
+            MultiPlayer.getInstacne().addToSendObjects(TP);
         }
     }
 
@@ -88,22 +90,23 @@ public class Player implements TurnBase, Serializable {
             while (true) {
 
                 for (Warrior myHero : myTeam) {
-                    try {
-                        Thread.sleep(0, 100000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+
                     if (myHero.doesAskForImmortalityPotion()) {
                         //TODO Set Try catch
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        myHero.setPlayerAllowsUsingImmortality(true);
                         useImmortalityPotion();
-                        myHero.PlayerAllowsUsingImmortality = true;
                     }
                 }
             }
         });
 
-        immortalityRequest.setPriority(Thread.NORM_PRIORITY + 2);
-        immortalityRequest.setDaemon(true);
+//        immortalityRequest.setPriority(Thread.NORM_PRIORITY + 2);
+//        immortalityRequest.setDaemon(true);
         immortalityRequest.setName("Immortality Request");
         immortalityRequest.start();
     }
@@ -191,11 +194,12 @@ public class Player implements TurnBase, Serializable {
 
     }
 
-    public static Warrior[] toArray(Collection<Warrior> collection) {
-        for (Warrior warrior : collection) {
-//            collection;
+    public static Warrior[] toArray(List<Warrior> collection) {
+        Warrior[] warriors = new Warrior[collection.size()];
+        for (int i = 0; i < collection.size(); i++) {
+            warriors[i] = collection.get(i);
         }
-        return (Warrior[]) collection.toArray();
+        return warriors;
     }
 
 
@@ -215,9 +219,9 @@ public class Player implements TurnBase, Serializable {
         } else {
             this.currentExperience += num;
         }
-        if (MultiPlayer.Instacne != null) {
+        if (MultiPlayer.getInstacne() != null) {
             TransferPack TP = new TransferPack(getStats());
-            MultiPlayer.Instacne.addToSendObjects(TP);
+            MultiPlayer.getInstacne().addToSendObjects(TP);
         }
     }
 
@@ -230,9 +234,9 @@ public class Player implements TurnBase, Serializable {
         else {
             this.currentExperience += i;
         }
-        if (MultiPlayer.Instacne != null) {
+        if (MultiPlayer.getInstacne() != null) {
             TransferPack TP = new TransferPack(getStats());
-            MultiPlayer.Instacne.addToSendObjects(TP);
+            MultiPlayer.getInstacne().addToSendObjects(TP);
         }
     }
 
@@ -261,9 +265,9 @@ public class Player implements TurnBase, Serializable {
         } else {
             this.immprtalityPotions += i;
         }
-        if (MultiPlayer.Instacne != null) {
+        if (MultiPlayer.getInstacne() != null) {
             TransferPack TP = new TransferPack(getStats());
-            MultiPlayer.Instacne.addToSendObjects(TP);
+            MultiPlayer.getInstacne().addToSendObjects(TP);
         }
     }
 

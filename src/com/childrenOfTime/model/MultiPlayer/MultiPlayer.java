@@ -3,7 +3,6 @@ package com.childrenOfTime.model.MultiPlayer;
 import com.childrenOfTime.gui.notification.NotificationType;
 import com.childrenOfTime.model.Battle;
 import com.childrenOfTime.model.Player;
-import com.childrenOfTime.model.PlayerType;
 import com.childrenOfTime.utilities.GUIUtils;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
@@ -23,15 +22,21 @@ public class MultiPlayer {
 
     public static final int DEFAULT_PORT = 3050;
 
-    public static MultiPlayer Instacne;
+    private static MultiPlayer Instacne;
 
     private Player thiss;
     private Player oponent;
 
 
-    public MultiPlayer(Player myPlayer) {
-        this.thiss = myPlayer;
-        Instacne = this;
+    public static MultiPlayer getInstacne() {
+        if (Instacne == null) {
+            Instacne = new MultiPlayer();
+        }
+        return Instacne;
+    }
+
+    public void setThisPlayer(Player thiss) {
+        this.thiss = thiss;
     }
 
     private String receivedMessage;
@@ -55,19 +60,20 @@ public class MultiPlayer {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         try {
-            new MultiPlayer(new Player(null, "SaeedTeam", PlayerType.Human));
             //multiPlayer.startJoin(InetAddress.getLocalHost(), 3000);
 
-            Instacne.startAsHost();
 
 //        Instacne.autoJoin();
 
 
-            Instacne.addToSendObjects(Instacne.thiss);
         } catch (Exception e) {
         }
     }
 
+
+    public void initializeBattle() {
+        Instacne.addToSendObjects(Instacne.thiss);
+    }
 
     public void autoJoin() {
         // Find the server using UDP broadcast

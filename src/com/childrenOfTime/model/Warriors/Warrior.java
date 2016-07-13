@@ -4,6 +4,7 @@ import com.childrenOfTime.exceptions.ItemCannotBeSold;
 import com.childrenOfTime.exceptions.NotEnoughEnergyPointsException;
 import com.childrenOfTime.exceptions.NotEnoughMagicPointsException;
 import com.childrenOfTime.exceptions.TradeException;
+import com.childrenOfTime.gui.notification.NotificationType;
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
 import com.childrenOfTime.model.Equip.AlterPackage;
 import com.childrenOfTime.model.Equip.Effect;
@@ -13,6 +14,7 @@ import com.childrenOfTime.model.Equip.ItemComps.Item;
 import com.childrenOfTime.model.Equip.ItemComps.ItemType;
 import com.childrenOfTime.model.Interfaces.TurnBase;
 import com.childrenOfTime.model.Rules;
+import com.childrenOfTime.utilities.GUIUtils;
 
 import javax.swing.*;
 import java.io.Serializable;
@@ -27,9 +29,26 @@ public class Warrior implements Serializable, TurnBase {
     public transient static int DEFAULT_Attack_EP_COST = 2;
 
 
-    public transient boolean PlayerAllowsUsingImmortality = false;
+    private transient Boolean PlayerAllowsUsingImmortality = false;
 
+    public boolean isPlayerAllowsUsingImmortality() {
+        synchronized (PlayerAllowsUsingImmortality) {
+            try {
+                PlayerAllowsUsingImmortality.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return PlayerAllowsUsingImmortality;
+        }
+    }
 
+    public void setPlayerAllowsUsingImmortality(boolean playerAllowsUsingImmortality) {
+        synchronized (PlayerAllowsUsingImmortality) {
+            PlayerAllowsUsingImmortality = playerAllowsUsingImmortality;
+            System.out.println("PlayerCame Here");
+            PlayerAllowsUsingImmortality.notify();
+        }
+    }
 
     private String name;
 
@@ -49,7 +68,7 @@ public class Warrior implements Serializable, TurnBase {
     private int currentHealth;
     private int currentMagic;
     private int currentEP;
-    private transient boolean asksForImmortalityPotion = false;
+    private Boolean asksForImmortalityPotion = false;
     private boolean isDead = false;
     private Inventory inventory;
     private HeroClass info;
@@ -290,6 +309,14 @@ public class Warrior implements Serializable, TurnBase {
     }
 
 
+    public void setAsksForImmortalityPotion(Boolean asksForImmortalityPotion) {
+        synchronized (this.asksForImmortalityPotion) {
+            this.asksForImmortalityPotion = asksForImmortalityPotion;
+            this.asksForImmortalityPotion.notify();
+            System.out.println("Hero Request Sent " + this.asksForImmortalityPotion);
+        }
+    }
+
     public void changeAttackPower(int num) {
         int newAP = this.currentAttackPower + num;
         if (newAP < 0) {
@@ -350,22 +377,22 @@ public class Warrior implements Serializable, TurnBase {
             throw new RuntimeException("He is dead !");
 
         }
-
+        if (wasAlive() & !willDye(i)) {
+            changeHealthWithInsuranceOfLiving(i);
+            return this.currentHealth - initHealth;
+        }
 
         if (wasAlive() & willDye(i)) {
             currentHealth = 0;
             if (info.CanUseImmortalityPotions) {
-                asksForImmortalityPotion = true;
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if (PlayerAllowsUsingImmortality) {
+                setAsksForImmortalityPotion(true);
+                if (isPlayerAllowsUsingImmortality()) {
+                    System.out.println("Allowed");
                     useImmortalityPotion();
                     isDead = false;
                     PlayerAllowsUsingImmortality = false;
                     asksForImmortalityPotion = false;
+
                 } else {
                     isDead = true;
                     printOutput(this + info.getDyingActionMessage());
@@ -464,7 +491,7 @@ public class Warrior implements Serializable, TurnBase {
     }
 
     public void changeHealthWithInsuranceOfLiving(int quantity) {
-        currentHealth = currentHealth + quantity > info.maxHealth ? info.maxHealth : currentHealth + quantity;
+        currentHealth = (currentHealth + quantity) > info.maxHealth ? info.maxHealth : (currentHealth + quantity);
     }
 
 
@@ -486,7 +513,9 @@ public class Warrior implements Serializable, TurnBase {
     }
 
     public void useImmortalityPotion() {
-        changeHealth(this.info.maxHealth, null);
+        this.currentHealth = this.info.maxHealth;
+//        printOutput(" Immortality ");
+        GUIUtils.showNotification("Player Used Immortality Potion . ", NotificationType.MESSAGE);
     }
 
     public String toString() {
@@ -565,8 +594,19 @@ public class Warrior implements Serializable, TurnBase {
     }
 
 
-    public boolean doesAskForImmortalityPotion() {
-        return asksForImmortalityPotion;
+    public Boolean doesAskForImmortalityPotion() {
+//        System.out.println(asksForImmortalityPotion);
+        synchronized (this.asksForImmortalityPotion) {
+            try {
+                System.out.println("Hero Waits For Requests");
+                this.asksForImmortalityPotion.wait();
+                System.out.println("Hero Received The Request");
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return this.asksForImmortalityPotion;
+        }
     }
 
 

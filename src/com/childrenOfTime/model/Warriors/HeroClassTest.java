@@ -59,7 +59,7 @@ public class HeroClassTest extends TestCase {
         ArrayList<Ability> abilities = new ArrayList<>(1);
         abilities.add(AB2);
 
-        HC1 = new HeroClass(true, true, 200, 3000, 80, true, burnEP, 3, "Muta", "Ep burn", true, true, true, false, true, "Man Kardam ", "mordam ", "saeeds", 0, 300, 10, 200, 10, 6, 10, "Koskholan", "Balihan", abilities);
+        HC1 = new HeroClass(true, true, 200, 3000, 80, true, burnEP, 3, "Muta", "Ep burn", true, true, true, true, true, "Man Kardam ", "mordam ", "saeeds", 0, 300, 10, 200, 10, 6, 10, "Koskholan", "Balihan", abilities);
         W1 = new Warrior("saeed", HC1, null, null);
         W2 = new Warrior("saeed", HC1, null, null);
         W3 = new Warrior("saeed", HC1, null, null);
