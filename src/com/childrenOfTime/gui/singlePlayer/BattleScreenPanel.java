@@ -338,7 +338,12 @@ class WarriorIndicatorPanel extends JPanel {
     }
     private void createAndShowPanel() {
 
-        MouseListener listener = new MouseClickListener();
+        MouseListener listener = new MouseClickListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println(e.getComponent().getClass());
+            }
+        };
         this.addMouseListener(listener);
         for (Warrior warrior : warriors) {
             WarriorIndicatorElement toAdd = new WarriorIndicatorElement(warrior);

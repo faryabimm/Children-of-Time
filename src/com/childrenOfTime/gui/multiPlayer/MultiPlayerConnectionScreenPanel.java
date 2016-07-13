@@ -1,13 +1,15 @@
 package com.childrenOfTime.gui.multiPlayer;
 
 import com.childrenOfTime.gui.MainMenuScreenPanel;
-import com.childrenOfTime.gui.customGame.CustomGameMenuScreenPanel;
+
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
 import com.childrenOfTime.model.ChildrenOfTime;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by mohammadmahdi on 7/12/16.
@@ -35,6 +37,12 @@ public class MultiPlayerConnectionScreenPanel extends MenuScreenPanel {
         hostAGame.setLocation(ELEMENT_GAP,
                 ChildrenOfTime.PREFERRED_HEIGHT - 3 * CustomizedJButton.BUTTON_HEIGHT - 3 * ELEMENT_GAP);
         back.addActionListener(e -> ChildrenOfTime.changeContentPane(new MainMenuScreenPanel()));
+        hostAGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ChildrenOfTime.changeContentPane(new MutilpllayerHostTheGameMenu());
+            }
+        });
         emerge();
     }
 }

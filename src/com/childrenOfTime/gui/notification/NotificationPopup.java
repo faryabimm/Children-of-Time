@@ -15,6 +15,9 @@ public class NotificationPopup extends JDialog {
     public static final Color NOTIFICATION_BORDER_COLOR_NORMAL = Color.white;
     public static final Color NOTIFICATION_BORDER_COLOR_GOOD = Color.green;
     public static final Color NOTIFICATION_BORDER_COLOR_MESSAGE = Color.blue;
+    public static final Color NOTIFICATION_BORDER_COLOR_DEVELOPER = Color.yellow;
+
+    public static final Color NOTIFICATION_COLOR_ERROR = Color.red;
 
     public static final Color NOTIFICATION_BACKGROUND_COLOR = new Color(48, 48, 48);
     public static final Color NOTIFICATION_FONT_COLOR = Color.white;
@@ -26,6 +29,7 @@ public class NotificationPopup extends JDialog {
     private final LinearGradientPaint lpg;
 
     private Color borderColor;
+    private Color backGroundColor = NOTIFICATION_BACKGROUND_COLOR;
     private NotificationType type;
 
     public NotificationPopup(NotificationType type) {
@@ -45,6 +49,13 @@ public class NotificationPopup extends JDialog {
             case MESSAGE:
                 borderColor = NOTIFICATION_BORDER_COLOR_MESSAGE;
                 break;
+            case DEVELOPER:
+                borderColor = NOTIFICATION_BORDER_COLOR_DEVELOPER;
+                break;
+            case ERROR:
+                backGroundColor = NOTIFICATION_COLOR_ERROR;
+                backGroundColor = NOTIFICATION_COLOR_ERROR;
+                break;
         }
 
         setUndecorated(true);
@@ -61,8 +72,8 @@ public class NotificationPopup extends JDialog {
         // background paint
         lpg = new LinearGradientPaint(0, 0, 0, getHeight() / 2,
                 new float[]{0f, 0.3f, 1f}, new Color[]
-                {NOTIFICATION_BACKGROUND_COLOR, NOTIFICATION_BACKGROUND_COLOR,
-                        NOTIFICATION_BACKGROUND_COLOR});
+                {backGroundColor, backGroundColor,
+                        backGroundColor});
 
         // blue background panel
         setContentPane(new BackgroundPanel());

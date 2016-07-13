@@ -6,13 +6,7 @@ import java.awt.event.MouseListener;
 /**
  * Created by mohammadmahdi on 7/13/16.
  */
-public class MouseClickListener implements MouseListener {
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        System.out.println(e.getComponent().getClass());
-
-    }
+public abstract class MouseClickListener implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
