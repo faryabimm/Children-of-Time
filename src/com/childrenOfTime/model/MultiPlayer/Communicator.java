@@ -41,21 +41,21 @@ public class Communicator extends Thread {
 
     }
 
-    Thread blinker;
+    boolean sho = true;
 
     public void stopp() {
         System.out.println("Fucked");
-        blinker = null;
+        sho = false;
     }
 
     @Override
     public void run() {
-        blinker = Thread.currentThread();
         try {
             Socket socket = null;
             long t1 = System.currentTimeMillis();
             boolean errorHasPrinted = false;
-            while (blinker == Thread.currentThread()) {
+            while (true) {
+                if (!sho) Thread.currentThread().interrupt();
                 try {
                     switch (connectionType) {
                         case Host:
@@ -111,17 +111,17 @@ public class Communicator extends Thread {
                             e1.printStackTrace();
                         }
                         if (System.currentTimeMillis() - t1 > 8000) {
-                            throw new IOException();
+                            throw new ConnectionLostException();
                         }
                     }
                 } catch (ClassNotFoundException e) {
                 }
             }
-            System.out.println("YES");
-//            if (transformingObjectType == ObjectType.Object && job == Job.Recieve)
-            GUIUtils.showNotification("Connection Lost... ! ", NotificationType.BAD);
+//            System.out.println("YES");
+////            if (transformingObjectType == ObjectType.Object && job == Job.Recieve)
+//            GUIUtils.showNotification("Connection Lost... ! ", NotificationType.BAD);
 
-        } catch (IOException io) {
+        } catch (ConnectionLostException io) {
             if (transformingObjectType == ObjectType.Object && job == Job.Recieve)
                 GUIUtils.showNotification("Connection Lost... ! ", NotificationType.BAD);
         }
