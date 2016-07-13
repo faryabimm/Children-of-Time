@@ -4,6 +4,7 @@ import com.childrenOfTime.controller.GameEngine;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
 import com.childrenOfTime.gui.customizedElements.CustomizedJImage;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
+import com.childrenOfTime.gui.customizedListeners.MouseClickListener;
 import com.childrenOfTime.model.Battle;
 import com.childrenOfTime.model.ChildrenOfTime;
 import com.childrenOfTime.model.Warriors.Warrior;
@@ -13,6 +14,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 
@@ -45,7 +48,7 @@ public class BattleScreenPanel extends MenuScreenPanel {
 
     @Override
     public void initialize() {
-        initializePanel();
+
     }
 
 
@@ -53,8 +56,8 @@ public class BattleScreenPanel extends MenuScreenPanel {
 
         bodyPanel = new BodyPanel(warriors.get(0), battle.getDefualtFoes().get(0));
         infoPanel = new InfoIndicatorPanel(warriors.get(0), battle.getDefualtFoes().get(0));
-        leftWarriorIndicatiorPanel = new WarriorIndicatorPanel(warriors);
-        rightWarriorIndicatiorPanel = new WarriorIndicatorPanel(battle.getDefualtFoes());
+        leftWarriorIndicatiorPanel = new WarriorIndicatorPanel(warriors, true);
+        rightWarriorIndicatiorPanel = new WarriorIndicatorPanel(battle.getDefualtFoes(), false);
 
         this.add(bodyPanel, BorderLayout.CENTER);
         this.add(infoPanel, BorderLayout.NORTH);
@@ -63,7 +66,6 @@ public class BattleScreenPanel extends MenuScreenPanel {
     }
 
 }
-
 class BattleScreenPanelStaticData extends JFrame {
 
 
@@ -119,8 +121,6 @@ class BattleScreenPanelStaticData extends JFrame {
         battleFrame.setVisible(true);
     }
 }
-
-
 class BodyPanel extends JPanel {
 
     public static int DOWN_AND_SIDES_GAP = 50;
@@ -130,13 +130,21 @@ class BodyPanel extends JPanel {
     private Warrior leftWarrior;
     private Warrior rightWarrior;
 
-    private JButton leftWarriorImage = new JButton(GUIUtils.getScaledIcon(leftWarrior.getImage(), WARRIOR_IMAGES_SIZE, WARRIOR_IMAGES_SIZE, 0));
-    private JButton rightWarriorImage = new JButton(GUIUtils.getScaledIcon(rightWarrior.getImage(), WARRIOR_IMAGES_SIZE, WARRIOR_IMAGES_SIZE, 0));
+
+    private CustomizedJImage leftWarriorImage;
+    private CustomizedJImage rightWarriorImage;
+
+
 
     public BodyPanel(Warrior leftWarrior, Warrior rightWarrior) {
 
         this.leftWarrior = leftWarrior;
         this.rightWarrior = rightWarrior;
+
+
+        leftWarriorImage = new CustomizedJImage(leftWarrior.getImage(), WARRIOR_IMAGES_SIZE, WARRIOR_IMAGES_SIZE);
+        rightWarriorImage = new CustomizedJImage(rightWarrior.getImage(), WARRIOR_IMAGES_SIZE, WARRIOR_IMAGES_SIZE);
+
 
         this.setLayout(null);
         this.setPreferredSize(BattleScreenPanelStaticData.BODY_PANEL_DIMENSION);
@@ -146,11 +154,14 @@ class BodyPanel extends JPanel {
 
 
     private void initializePanel() {
+
         this.add(leftWarriorImage);
         this.add(rightWarriorImage);
 
-        leftWarriorImage.setLocation(DOWN_AND_SIDES_GAP, BattleScreenPanelStaticData.INFO_PANEL_HEIGHT - WARRIOR_IMAGES_SIZE - DOWN_AND_SIDES_GAP);
-        leftWarriorImage.setLocation(BattleScreenPanelStaticData.BODY_PANEL_WIDTH - DOWN_AND_SIDES_GAP - WARRIOR_IMAGES_SIZE, BattleScreenPanelStaticData.INFO_PANEL_HEIGHT - WARRIOR_IMAGES_SIZE - DOWN_AND_SIDES_GAP);
+        leftWarriorImage.setLocation(DOWN_AND_SIDES_GAP, BattleScreenPanelStaticData.WARRIOR_INDICATOR_PANEL_HEIGHT - WARRIOR_IMAGES_SIZE);
+        rightWarriorImage.setLocation(BattleScreenPanelStaticData.BODY_PANEL_WIDTH - DOWN_AND_SIDES_GAP - WARRIOR_IMAGES_SIZE, BattleScreenPanelStaticData.WARRIOR_INDICATOR_PANEL_HEIGHT - WARRIOR_IMAGES_SIZE);
+
+
     }
 
     @Override
@@ -160,9 +171,9 @@ class BodyPanel extends JPanel {
         g2d.setColor(ChildrenOfTime.GREY);
         g2d.fillRect(0, 0, BattleScreenPanelStaticData.BODY_PANEL_WIDTH, BattleScreenPanelStaticData.WARRIOR_INDICATOR_PANEL_HEIGHT);
         g2d.drawImage(GameEngine.DEFAULT_TOOLKIT.getImage("src/ui/background/body.png"), 0, 0, this);
+
     }
 }
-
 class InfoIndicatorPanel extends JPanel {
 
     public static final int BORDER_GAP = 20;
@@ -207,6 +218,25 @@ class InfoIndicatorPanel extends JPanel {
     private int rightSideWarriorCurrentMagic = 30;
     private int rightSideWarriorCurrentEnergy = 50;
 
+    public InfoIndicatorPanel(Warrior leftSideWarrior, Warrior rightSideWarrior) {
+        this.leftSideWarrior = leftSideWarrior;
+        this.rightSideWarrior = rightSideWarrior;
+
+
+        leftSideWarriorMaxHealth = leftSideWarrior.getMaxHealth();
+        leftSideWarriorMaxMagic = leftSideWarrior.getMaxMagic();
+        leftSideWarriorMaxEnergy = leftSideWarrior.getInfo().getInitialEP();
+        rightSideWarriorMaxHealth = rightSideWarrior.getMaxHealth();
+        rightSideWarriorMaxMagic = rightSideWarrior.getMaxMagic();
+        rightSideWarriorMaxEnergy = rightSideWarrior.getInfo().getInitialEP();
+
+
+        this.setLayout(null);
+        this.setPreferredSize(BattleScreenPanelStaticData.INFO_PANEL_DIMENSION);
+        this.setBackground(ChildrenOfTime.GREY);
+        initializePanel();
+    }
+
     private void calculateARs() {
 
 
@@ -225,25 +255,6 @@ class InfoIndicatorPanel extends JPanel {
         rightSideWarriorHealthAR = ((double) rightSideWarriorCurrentHealth) / ((double) rightSideWarriorMaxHealth);
         rightSideWarriorMagicAR = ((double) rightSideWarriorCurrentMagic) / ((double) rightSideWarriorMaxMagic);
         rightSideWarriorEnergyAR = ((double) rightSideWarriorCurrentEnergy) / ((double) rightSideWarriorMaxEnergy);
-    }
-
-    public InfoIndicatorPanel(Warrior leftSideWarrior, Warrior rightSideWarrior) {
-        this.leftSideWarrior = leftSideWarrior;
-        this.rightSideWarrior = rightSideWarrior;
-
-
-        leftSideWarriorMaxHealth = leftSideWarrior.getMaxHealth();
-        leftSideWarriorMaxMagic = leftSideWarrior.getMaxMagic();
-        leftSideWarriorMaxEnergy = leftSideWarrior.getInfo().getInitialEP();
-        rightSideWarriorMaxHealth = rightSideWarrior.getMaxHealth();
-        rightSideWarriorMaxMagic = rightSideWarrior.getMaxMagic();
-        rightSideWarriorMaxEnergy = rightSideWarrior.getInfo().getInitialEP();
-
-
-        this.setLayout(null);
-        this.setPreferredSize(BattleScreenPanelStaticData.INFO_PANEL_DIMENSION);
-        this.setBackground(ChildrenOfTime.GREY);
-        initializePanel();
     }
 
     private void initializePanel() {
@@ -282,8 +293,8 @@ class InfoIndicatorPanel extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(ChildrenOfTime.GREY);
         g2d.fillRect(0, 0, BattleScreenPanelStaticData.INFO_PANEL_WIDTH, BattleScreenPanelStaticData.WARRIOR_INDICATOR_PANEL_HEIGHT);
-        g2d.drawImage(GameEngine.DEFAULT_TOOLKIT.getImage("src/ui/background/top.png"), 0, 0, this);
         g2d.fillRect(0, 0, BattleScreenPanelStaticData.INFO_PANEL_WIDTH, BattleScreenPanelStaticData.INFO_PANEL_HEIGHT);
+        g2d.drawImage(GameEngine.DEFAULT_TOOLKIT.getImage("src/ui/background/top.png"), 0, 0, this);
 
         calculateARs();
 
@@ -307,8 +318,10 @@ class InfoIndicatorPanel extends JPanel {
 class WarriorIndicatorPanel extends JPanel {
 
     private ArrayList<Warrior> warriors;
+    private boolean playable = true;
 
-    public WarriorIndicatorPanel(ArrayList<Warrior> warriors) {
+    public WarriorIndicatorPanel(ArrayList<Warrior> warriors, boolean playable) {
+        this.playable = true;
         this.warriors = warriors;
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.setPreferredSize(BattleScreenPanelStaticData.WARRIOR_INDICATOR_PANEL_DIMENSION);
@@ -316,9 +329,21 @@ class WarriorIndicatorPanel extends JPanel {
         createAndShowPanel();
     }
 
+    private boolean isPlayable() {
+        return playable;
+    }
+
+    public void setPlayable(boolean playable) {
+        playable = playable;
+    }
     private void createAndShowPanel() {
+
+        MouseListener listener = new MouseClickListener();
+        this.addMouseListener(listener);
         for (Warrior warrior : warriors) {
-            this.add(new WarriorIndicatorElement(warrior));
+            WarriorIndicatorElement toAdd = new WarriorIndicatorElement(warrior);
+            toAdd.addMouseListener(listener);
+            this.add(toAdd);
         }
     }
 }
@@ -334,9 +359,27 @@ class WarriorIndicatorElement extends JPanel {
 
     private Warrior warrior;
 
+
+    private ImageIcon icon;/* = GUIUtils.getScaledImageByFilePath("src/ui/Children Of Time Art Assets/COT (33).png",ICON_DIMENSION,ICON_DIMENSION,Image.SCALE_DEFAULT);*/
+    private int maxHealth = 100;
+    private int maxMagic = 100;
+    private int maxEnergy = 100;
+    private int currentHealth = 70;
+    private int currentMagic = 65;
+    private int currentEnergy = 25;
+
+    private double healthAR;
+    private double magicAR;
+    private double energyAR;
+
+
+
+
+
     public WarriorIndicatorElement(Warrior warrior) {
         this.warrior = warrior;
         this.setPreferredSize(BattleScreenPanelStaticData.WARRIOR_INDICATOR_ELEMENT_DIMENSION);
+        this.icon = warrior.getImage();
 
         maxHealth = warrior.getMaxHealth();
         maxMagic = warrior.getMaxMagic();
@@ -350,20 +393,9 @@ class WarriorIndicatorElement extends JPanel {
         maxHealth = warrior.getMaxHealth();
         maxMagic = warrior.getMaxMagic();
         maxEnergy = warrior.getInfo().getInitialEP();
+
     }
 
-
-    private Image icon;/* = GUIUtils.getScaledImageByFilePath("src/ui/Children Of Time Art Assets/COT (33).png",ICON_DIMENSION,ICON_DIMENSION,Image.SCALE_DEFAULT);*/
-    private int maxHealth = 100;
-    private int maxMagic = 100;
-    private int maxEnergy = 100;
-    private int currentHealth = 70;
-    private int currentMagic = 65;
-    private int currentEnergy = 25;
-
-    private double healthAR;
-    private double magicAR;
-    private double energyAR;
 
     public void calculateARs() {
 
@@ -383,7 +415,7 @@ class WarriorIndicatorElement extends JPanel {
         g2d.setColor(ChildrenOfTime.GREY);
         g2d.fillRect(0, 0, BattleScreenPanelStaticData.WARRIOR_INDICATOR_WIDTH, BattleScreenPanelStaticData.WARRIOR_INDICATOR_HEIGHT);
 
-        g2d.drawImage(icon, BattleScreenPanelStaticData.WARRIOR_INDICATOR_WIDTH - BORDER_GAP - ICON_DIMENSION,
+        g2d.drawImage(icon.getImage(), BattleScreenPanelStaticData.WARRIOR_INDICATOR_WIDTH - BORDER_GAP - ICON_DIMENSION,
                 BORDER_GAP, ICON_DIMENSION, ICON_DIMENSION, this);
 
         calculateARs();

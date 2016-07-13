@@ -29,6 +29,7 @@ public class MainMenuScreenPanel extends MenuScreenPanel {
 
     public static boolean isFirstRun = true;
 
+    @Override
     public void initialize() {
         JButton singlePlayerButton = new CustomizedJButton("Single Player");
         JButton pvpGameModeButton = new CustomizedJButton("Versus Mode");

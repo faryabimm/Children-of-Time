@@ -14,6 +14,8 @@ public class NotificationPopup extends JDialog {
     public static final Color NOTIFICATION_BORDER_COLOR_BAD = Color.red;
     public static final Color NOTIFICATION_BORDER_COLOR_NORMAL = Color.white;
     public static final Color NOTIFICATION_BORDER_COLOR_GOOD = Color.green;
+    public static final Color NOTIFICATION_BORDER_COLOR_MESSAGE = Color.blue;
+
     public static final Color NOTIFICATION_BACKGROUND_COLOR = new Color(48, 48, 48);
     public static final Color NOTIFICATION_FONT_COLOR = Color.white;
 
@@ -39,6 +41,9 @@ public class NotificationPopup extends JDialog {
                 break;
             case NORMAL:
                 borderColor = NOTIFICATION_BORDER_COLOR_NORMAL;
+                break;
+            case MESSAGE:
+                borderColor = NOTIFICATION_BORDER_COLOR_MESSAGE;
                 break;
         }
 

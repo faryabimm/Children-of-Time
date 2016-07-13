@@ -36,7 +36,7 @@ public class MultiPlayer {
 
     private String receivedMessage;
 
-    private String toSendMessage;
+    private String toSendMessage = "";
     private ArrayBlockingQueue inbox = new ArrayBlockingQueue(20);
     private ArrayBlockingQueue outbox = new ArrayBlockingQueue(20);
     private Battle battle;
@@ -54,13 +54,13 @@ public class MultiPlayer {
 //
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        new MultiPlayer(new Player(null, "SaeedTeam", PlayerType.Human));
+        new MultiPlayer(new Player(null, "Mohammadmahdi", PlayerType.Human));
         //multiPlayer.startJoin(InetAddress.getLocalHost(), 3000);
         Thread discoveryThread = new Thread(DiscoveryThread.getInstance());
         discoveryThread.start();
-        Instacne.startAsHost();
+//        Instacne.startAsHost();
 
-//        Instacne.findIPAddress();
+        Instacne.findIPAddress();
 
 
         Instacne.addToSendObjects(Instacne.thiss);

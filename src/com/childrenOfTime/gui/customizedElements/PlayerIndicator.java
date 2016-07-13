@@ -159,7 +159,7 @@ public class PlayerIndicator {
 
     private void loadBattle(Battle battle, ArrayList<Warrior> playerWarriors) {
         BattleScreenPanel battleScreenPanel = new BattleScreenPanel(battle, playerWarriors);
-
+        System.out.println("SOUT");
         ChildrenOfTime.changeContentPane(battleScreenPanel);
     }
 

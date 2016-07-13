@@ -2,6 +2,7 @@ package com.childrenOfTime.gui.customizedElements;
 
 import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.gui.LoadingScreenPanel;
+import com.childrenOfTime.gui.singlePlayer.BattleScreenPanel;
 import com.childrenOfTime.model.ChildrenOfTime;
 
 import javax.swing.*;
@@ -69,8 +70,11 @@ public abstract class MenuScreenPanel extends JPanel {
                     userAvatar.getHeight() + ELEMENT_GAP);
         }
 
-        this.add(userNameLabel);
-        this.add(userAvatar);
+        if (!(this instanceof BattleScreenPanel)) {
+            this.add(userNameLabel);
+            this.add(userAvatar);
+        }
+
 
 
     }

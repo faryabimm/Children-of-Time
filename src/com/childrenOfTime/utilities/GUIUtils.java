@@ -156,6 +156,12 @@ public class GUIUtils {
         return GameEngine.DEFAULT_TOOLKIT.getImage(filePath).getScaledInstance(width, height, hints);
     }
 
+
+    public static void showNotification_ALPHA(String message, NotificationType type) {
+        System.out.println("SHIT");
+    }
+
+
     public static void showNotification(String message, NotificationType type) {
 
         SwingUtilities.invokeLater(() -> {
