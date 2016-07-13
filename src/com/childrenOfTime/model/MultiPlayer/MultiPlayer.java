@@ -58,9 +58,9 @@ public class MultiPlayer {
             new MultiPlayer(new Player(null, "SaeedTeam", PlayerType.Human));
             //multiPlayer.startJoin(InetAddress.getLocalHost(), 3000);
 
-//            Instacne.startAsHost();
+            Instacne.startAsHost();
 
-            Instacne.autoJoin();
+//        Instacne.autoJoin();
 
 
             Instacne.addToSendObjects(Instacne.thiss);

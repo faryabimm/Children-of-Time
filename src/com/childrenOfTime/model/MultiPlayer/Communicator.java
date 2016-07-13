@@ -117,6 +117,9 @@ public class Communicator extends Thread {
                 } catch (ClassNotFoundException e) {
                 }
             }
+            System.out.println("YES");
+//            if (transformingObjectType == ObjectType.Object && job == Job.Recieve)
+            GUIUtils.showNotification("Connection Lost... ! ", NotificationType.BAD);
 
         } catch (IOException io) {
             if (transformingObjectType == ObjectType.Object && job == Job.Recieve)
