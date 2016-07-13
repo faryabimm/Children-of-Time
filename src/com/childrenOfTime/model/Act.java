@@ -1,5 +1,6 @@
 package com.childrenOfTime.model;
 
+import com.childrenOfTime.model.Warriors.ActionType;
 import com.childrenOfTime.model.Warriors.Warrior;
 
 /**
@@ -37,6 +38,3 @@ public class Act {
 }
 
 
-enum ActionType {
-    Attack, AbilityCast, BurnEP
-}

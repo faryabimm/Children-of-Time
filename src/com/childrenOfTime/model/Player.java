@@ -192,6 +192,9 @@ public class Player implements TurnBase, Serializable {
     }
 
     public static Warrior[] toArray(Collection<Warrior> collection) {
+        for (Warrior warrior : collection) {
+//            collection;
+        }
         return (Warrior[]) collection.toArray();
     }
 
