@@ -68,7 +68,6 @@ public class Warrior implements Serializable, TurnBase {
 
     public void setId(int id) {
         this.id = id;
-
     }
 
     public Warrior(String name, HeroClass heroClass, ArrayList<Ability> specificHeroAbilities, ImageIcon imageIcon) {
@@ -111,7 +110,7 @@ public class Warrior implements Serializable, TurnBase {
             int deltaMMP = (int) (DELTA[5] + getMaxMagic() * (FACTORS[5] - 1));
             this.changeAttackPower((int) (DELTA[0] + this.getAttackPower() * (FACTORS[0] - 1)));
             this.changeHealth((int) (DELTA[1] + this.getCurrentHealth() * (FACTORS[1] - 1)), null);
-            int deltaHRF = (int) (DELTA[3] + getHealthcRefillRate() * (FACTORS[3] - 1));
+            int deltaHRF = (int) (DELTA[3] + getHealthRefillRate() * (FACTORS[3] - 1));
             int deltaMP = (int) (DELTA[4] + getCurrentMagic() * (FACTORS[4] - 1));
             int deltaMPRF = (int) (DELTA[6] + getMagicRefillRate() * (FACTORS[6] - 1));
             int deltaEP = (int) (DELTA[7] + getCurrentEP() * (FACTORS[7] - 1));
@@ -260,8 +259,8 @@ public class Warrior implements Serializable, TurnBase {
     public void IWannaSellThisItem(Item item, Warrior[] allTeamMates) {
         if (isDead()) return;
         ItemType itemType = item.getType();
-        if (!item.canBeSold()) throw new ItemCannotBeSold("This Item Is not permitted to sell ! ");
         if (!inventory.contains(item)) throw new TradeException("Hero doesn't have this . ");
+        if (!item.canBeSold()) throw new ItemCannotBeSold("This Item Is not permitted to sell ! ");
         inventory.removeFromInventoryIfYouCan(item);
         if (itemType.getWearOffAfterSold()) {
             item.removedFromInventory(this, null, allTeamMates);
@@ -269,6 +268,7 @@ public class Warrior implements Serializable, TurnBase {
         }
 
     }
+
 
     public void castAbility(Ability ability, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeamMates) {
         if (isDead()) return;
@@ -340,6 +340,7 @@ public class Warrior implements Serializable, TurnBase {
     }
 
     public int changeHealth(int i, Integer damageEffitioncyFactor) {
+        if (isDead) return 0;
         int initHealth = currentHealth;
         if (damageEffitioncyFactor == null) damageEffitioncyFactor = calculateDamageEffitioncy();
         if (i >= 0) damageEffitioncyFactor = 100;
@@ -349,10 +350,7 @@ public class Warrior implements Serializable, TurnBase {
             throw new RuntimeException("He is dead !");
 
         }
-        if (wasAlive() & !willDye(i)) {
-            changeHealthWithInsuranceOfLiving(i);
-            return this.currentHealth - initHealth;
-        }
+
 
         if (wasAlive() & willDye(i)) {
             currentHealth = 0;
@@ -455,14 +453,12 @@ public class Warrior implements Serializable, TurnBase {
     public void updateFinalBossHealthChanges() {
         boolean firstTime = true;
         if (this.currentHealth <= this.info.healthBound) {
-            this.currentAttackPower = this.info.attackPowerInLowHealth;
+            if (this.currentAttackPower >= info.attackPowerInLowHealth) return;
             if (firstTime) {
+            this.currentAttackPower = this.info.attackPowerInLowHealth;
                 printOutput(info.getMutationMessage());
                 firstTime = false;
             }
-        } else {
-            firstTime = true;
-            this.currentAttackPower = this.info.attackPowerInHighHealth;
         }
 
     }
@@ -515,7 +511,7 @@ public class Warrior implements Serializable, TurnBase {
         return info.magicRefillRate;
     }
 
-    public int getHealthcRefillRate() {
+    public int getHealthRefillRate() {
         return info.healthRefillRate;
     }
 
@@ -586,6 +582,24 @@ public class Warrior implements Serializable, TurnBase {
         return info;
     }
 
+
+    public void setCurrentAttackPower(int currentAttackPower) {
+        this.currentAttackPower = currentAttackPower;
+    }
+
+    public void setCurrentHealth(int currentHealth) {
+        this.currentHealth = currentHealth;
+    }
+
+    public void setCurrentMagic(int currentMagic) {
+        this.currentMagic = currentMagic;
+    }
+
+    public void setCurrentEP(int currentEP) {
+        this.currentEP = currentEP;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -605,20 +619,7 @@ public class Warrior implements Serializable, TurnBase {
         return result;
     }
 
-
-    public void setCurrentAttackPower(int currentAttackPower) {
-        this.currentAttackPower = currentAttackPower;
-    }
-
-    public void setCurrentHealth(int currentHealth) {
-        this.currentHealth = currentHealth;
-    }
-
-    public void setCurrentMagic(int currentMagic) {
-        this.currentMagic = currentMagic;
-    }
-
-    public void setCurrentEP(int currentEP) {
-        this.currentEP = currentEP;
+    public Set<Effect> getPassiveEffects() {
+        return passiveEffects;
     }
 }

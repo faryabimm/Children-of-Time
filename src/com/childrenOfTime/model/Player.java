@@ -63,7 +63,7 @@ public class Player implements TurnBase, Serializable {
         }
     }
 
-    public void useImmortalityPotion() throws NoImmortalityPotionLeftException {
+    private void useImmortalityPotion() throws NoImmortalityPotionLeftException {
         if (immprtalityPotions - 1 < 0) {
             throw new NoImmortalityPotionLeftException(name + " : No Immortality Potion Left");
         } else {
@@ -75,13 +75,13 @@ public class Player implements TurnBase, Serializable {
         }
     }
 
-    private int[] getStats() {
+    public int[] getStats() {
         int[] stats = {this.currentExperience, this.currentWealth, this.immprtalityPotions};
         return stats;
     }
 
 
-    public void checkForImmortatlitryRequest() {
+    private void checkForImmortatlitryRequest() {
         if (myTeam == null) return;
 
         Thread immortalityRequest = new Thread(() -> {
@@ -187,10 +187,7 @@ public class Player implements TurnBase, Serializable {
 
     //TODO Each Hero Can Attack Multiple Targets
     public void giveAttack(Warrior attackingHero, Warrior[] selectedTargets, ArrayList<Warrior> allEnemies) {
-        try {
             attackingHero.attack(selectedTargets, null, null, toArray(allEnemies), toArray(this.myTeam));
-        } catch (Exception e) {
-        }
 
     }
 

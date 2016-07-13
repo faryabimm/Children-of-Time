@@ -10,7 +10,6 @@ public class ItemType implements Serializable {
     private final Boolean Reusable;
     private final Boolean autoUseAfterBuoght;
     private final Boolean canBeInInventory;
-    private final Boolean shouldRemoveWhenLeftUsageIsZero;
     private final Boolean wearOffAfterSold;
     private final Boolean hasCoolDown;
 
@@ -25,9 +24,11 @@ public class ItemType implements Serializable {
     public ItemType(Boolean inflative, Boolean reusable, Boolean autoUseAfterBuoght, Boolean canBeInInventory, Boolean shouldRemoveWhenLeftUsageIsZero, Boolean wearOffAfterSold, Boolean hasCoolDown, Integer coolDownTime, Integer initialPrice, Integer reusablityNumber, Integer priceInfaltionRate) {
         Inflative = inflative;
         Reusable = reusable;
+        if (reusablityNumber == null) reusablityNumber = 1;
+        if (reusablityNumber <= 0) reusablityNumber = 1;
+        if (priceInfaltionRate == null) priceInfaltionRate = 0;
         this.autoUseAfterBuoght = autoUseAfterBuoght;
         this.canBeInInventory = canBeInInventory;
-        this.shouldRemoveWhenLeftUsageIsZero = shouldRemoveWhenLeftUsageIsZero;
         this.wearOffAfterSold = wearOffAfterSold;
         this.hasCoolDown = hasCoolDown;
         this.coolDownTime = coolDownTime;
@@ -53,9 +54,6 @@ public class ItemType implements Serializable {
         return canBeInInventory;
     }
 
-    public Boolean getShouldRemoveWhenLeftUsageIsZero() {
-        return shouldRemoveWhenLeftUsageIsZero;
-    }
 
     public Boolean getWearOffAfterSold() {
         return wearOffAfterSold;

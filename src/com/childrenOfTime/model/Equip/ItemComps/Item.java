@@ -38,6 +38,7 @@ public class Item implements Castable, TurnBase {
 
     public Item(String name, ItemType type, Messages messages, Target targetType, ArrayList<Effect> effects, AlterPackage sideCost, ImageIcon image) {
         if (image == null) image = DEFAUL_ITEM_Image;
+
         this.name = name;
         this.type = type;
         this.messages = messages;
@@ -57,12 +58,15 @@ public class Item implements Castable, TurnBase {
     @Override
     public void cast(Warrior performer, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeammates) {
         try {
-
+            if (leftUsages <= 0) throw new RuntimeException("Can't Use this more");
             if (type.getHasCoolDown()) {
                 if (isInCoolDown) throw new AbilityInCooldownException(messages.getCoolDownFailureMessage());
             }
             if (type.getReusable()) {
                 this.leftUsages--;
+            }
+            if (leftUsages <= 0) {
+                this.removedFromInventory(performer, allEnemies, allTeammates);
             }
             EffectPerformer.performEffects(false, this.effects, performer, selectedTargets, allEnemies, allTeammates);
             if (type.getHasCoolDown()) {
@@ -82,8 +86,10 @@ public class Item implements Castable, TurnBase {
     }
 
     public Integer getCurrentPriceToBuy(int timesBought) {
-        return currentPrice + timesBought * type.getPriceInfaltionRate();
+
+        return type.getInflative() ? currentPrice + timesBought * type.getPriceInfaltionRate() : currentPrice;
     }
+
 
     public Integer getCurrentPriceToSell() {
         return (int) (type.getInitialPrice() * (0.5 * type.getReusablityNumber() - leftUsages) / (type.getReusablityNumber()));

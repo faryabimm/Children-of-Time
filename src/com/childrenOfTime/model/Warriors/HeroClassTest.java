@@ -10,6 +10,8 @@ import com.childrenOfTime.model.Equip.ItemComps.Item;
 import com.childrenOfTime.model.Equip.ItemComps.ItemType;
 import com.childrenOfTime.model.Equip.ItemComps.Messages;
 import com.childrenOfTime.model.Equip.Target;
+import com.childrenOfTime.model.Player;
+import com.childrenOfTime.model.PlayerType;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
@@ -38,9 +40,9 @@ public class HeroClassTest extends TestCase {
 
         AlterPackage A1 = new AlterPackage(Delta, Factor);
         EffectType ET1 = new EffectType(true, false, true, false, false, false);
-        EffectType ET2 = new EffectType(true, true, false, true, false, false);
+        EffectType ET2 = new EffectType(true, false, false, true, false, false);
         Effect E1 = new Effect("Ef1", ET1, A1, Target.AllEnemies, 100, 2, 1);
-        E2 = new Effect("Ef2", ET2, A1, Target.AllEnemies, 100, 0, 0);
+        E2 = new Effect("Ef2", ET2, A1, Target.AllTeammates, 100, 0, 0);
         ArrayList<Effect> effects = new ArrayList<>(1);
         effects.add(E2);
         Upgrade UP1 = new Upgrade(1, 0, 5, 2, 5, false, true, effects, true, "");
@@ -48,7 +50,7 @@ public class HeroClassTest extends TestCase {
         AbilityMaker abMaker = new AbilityMaker();
         abMaker.newCustomAbility("Ab1", Target.AllEnemies, null, null, 5);
         abMaker.addCustomUpgrade(UP1);
-        abMaker.addCustomEffect(1, E1);
+        //abMaker.addCustomEffect(1, E1);
         AB1 = abMaker.returnAbility();
         abMaker.newCustomAbility("Ab2", Target.AllTeammates, null, null, 5);
         abMaker.addCustomUpgrade(UP2);
@@ -63,7 +65,7 @@ public class HeroClassTest extends TestCase {
         W3 = new Warrior("saeed", HC1, null, null);
         W2.setId(2);
         W3.setId(3);
-        ItemType iT = new ItemType(false, true, true, false, false, false, false, 0, 5, 2, 0);
+        ItemType iT = new ItemType(false, false, false, true, false, true, false, 0, 5, 2, 0);
         I1 = new Item("Item1 ", iT, new Messages(), Target.AllTeammates, effects, null, null);
     }
 
@@ -144,14 +146,39 @@ public class HeroClassTest extends TestCase {
         Warrior[] enemy = {W2, W3};
         Warrior[] myTeam = {W1};
 
+
         W1.IWannaBuyItemForYou(I1, myTeam);
         assertEquals(W1.getAttackPower(), 200);
+        W1.useItem(I1, enemy, enemy, myTeam);
+        assertEquals(W1.getAttackPower(), 405);
+
+//        W1.useItem(I1 , enemy , enemy , myTeam);
+
         W1.attack(enemy, null, null, enemy, myTeam);
         assertEquals(W1.getAttackPower(), 405);
 
+//        assertEquals(W2.getCurrentHealth(), 100);
+        //W1.attack(enemy, null, null, enemy, myTeam);
+//        W1.attack(enemy, null, null, enemy, myTeam);
+        W1.IWannaSellThisItem(I1, myTeam);
+        assertEquals(W1.getAttackPower(), 198);
+
+
+
+
     }
 
-    public void testGetEpBurningMessage() throws Exception {
-
+    public void testPlayerForImmortalityPotion() throws Exception {
+        testMakeAWarrior();
+        ArrayList<Warrior> arrayList = new ArrayList<>(3);
+        arrayList.add(W1);
+        arrayList.add(W2);
+//        arrayList.add( W3 );
+        Player player = new Player(arrayList, "Saeed", PlayerType.Human);
+        W3.attack(Player.toArray(arrayList), null, 0, null, null);
+        W3.attack(Player.toArray(arrayList), null, 0, null, null);
+        W3.attack(Player.toArray(arrayList), null, -1, null, null);
+        W3.attack(Player.toArray(arrayList), null, -3, null, null);
+//        Playerplayer.isDefeated()
     }
 }

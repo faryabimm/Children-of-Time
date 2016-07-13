@@ -43,6 +43,11 @@ public class EffectPerformer implements Serializable {
 
         while (itr.hasNext()) {
             Effect nextEffect = itr.next();
+            if (nextEffect.effectType.isPassive()) {
+                if (performer.containsPassiveEffect(nextEffect)) {
+                    performer.getPassiveEffects().remove(nextEffect);
+                }
+            }
             finalTargets = chooseTargts(nextEffect, performer, selectedTargets, allEnemies, allTeamMates);
             nextEffect.wearOff(finalTargets);
 

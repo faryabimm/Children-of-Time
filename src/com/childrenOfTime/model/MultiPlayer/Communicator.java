@@ -111,7 +111,7 @@ public class Communicator extends Thread {
                             e1.printStackTrace();
                         }
                         if (System.currentTimeMillis() - t1 > 8000) {
-                            throw new ConnectionLostException();
+                            throw new Exception();
                         }
                     }
                 } catch (ClassNotFoundException e) {
@@ -121,7 +121,7 @@ public class Communicator extends Thread {
 ////            if (transformingObjectType == ObjectType.Object && job == Job.Recieve)
 //            GUIUtils.showNotification("Connection Lost... ! ", NotificationType.BAD);
 
-        } catch (ConnectionLostException io) {
+        } catch (Exception io) {
             if (transformingObjectType == ObjectType.Object && job == Job.Recieve)
                 GUIUtils.showNotification("Connection Lost... ! ", NotificationType.BAD);
         }

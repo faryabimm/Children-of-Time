@@ -201,8 +201,8 @@ public class SettingsScreenDialog extends JDialog {
         if (Rules.INITIAL_MONEY != Rules.INITIAL_MONEY_DEFAULT || Rules.INITIAL_XP != Rules.INITIAL_XP_DEFAULT || Rules.INITIAL_IMMORTALITY_POTION != Rules.INITIAL_IMMORTALITY_POTION_DEFAULT) {
             changeScenarioSInitialCheckBox.setSelected(true);
             slider1.setValue(Rules.INITIAL_MONEY);
-            slider1.setValue(Rules.INITIAL_XP);
-            slider1.setValue(Rules.INITIAL_IMMORTALITY_POTION);
+            slider2.setValue(Rules.INITIAL_XP);
+            slider3.setValue(Rules.INITIAL_IMMORTALITY_POTION);
         } else {
             changeScenarioSInitialCheckBox.setSelected(false);
         }
