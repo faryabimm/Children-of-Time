@@ -160,14 +160,14 @@ public class MultiPlayer {
     private Thread messageSender;
     private Thread messageReceiver;
 
-    public void startAsHost() throws IOException, ClassNotFoundException {
+    public void startAsHost() {
         int port = DEFAULT_PORT;
 
         Instacne.discoveryThread = new DiscoveryThread();
         Instacne.discoveryThread.start();
 
 
-        boolean portIsFree;
+        boolean portIsFree = false;
         ServerSocket SS1 = null;
         ServerSocket SS2 = null;
         ServerSocket SS3 = null;
@@ -186,6 +186,8 @@ public class MultiPlayer {
             } catch (BindException be) {
                 portIsFree = false;
                 port += 100;
+            } catch (IOException e) {
+
             }
         } while (!portIsFree);
 
