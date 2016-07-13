@@ -61,7 +61,7 @@ public class Player implements TurnBase, Serializable {
     }
 
 
-    public void getImpermanentHalfEP() {
+    public void makeImpermanentHalfEP() {
         //  AP , H , MH ,  HRF  , MP , MMP , MPRF  , EP ;
         Double[] a = {null, null, null, null, null, null, null, 0.5};
         for (Warrior warrior : this.myTeam) {
@@ -69,14 +69,14 @@ public class Player implements TurnBase, Serializable {
         }
     }
 
-    public void useImmortalityPotion() throws NoImmortalityPotionLeftException {
+    private void useImmortalityPotion() throws NoImmortalityPotionLeftException {
         if (immprtalityPotions - 1 < 0) {
             throw new NoImmortalityPotionLeftException(name + " : No Immortality Potion Left");
         }
         if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
     }
 
-    public void checkForImmortatlitryRequest() {
+    private void checkForImmortatlitryRequest() {
 
 
         Thread immortalityRequest = new Thread(() -> {

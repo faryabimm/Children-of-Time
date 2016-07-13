@@ -33,6 +33,7 @@ public class Battle implements Serializable {
         this.name = name;
         DefeatStory = defeatStory;
         this.reward = reward;
+
         //TODO doros she inja
     }
 

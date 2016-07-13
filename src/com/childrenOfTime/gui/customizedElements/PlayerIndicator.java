@@ -1,10 +1,10 @@
 package com.childrenOfTime.gui.customizedElements;
 
-import com.childrenOfTime.gui.MainMenuScreenPanel;
 import com.childrenOfTime.gui.customGame.CustomScenarioBuilderPanel;
 import com.childrenOfTime.gui.fillForms.dataHolders.CustomScenarioInfoHolder;
 import com.childrenOfTime.gui.singlePlayer.BattleScreenPanel;
 import com.childrenOfTime.model.Battle;
+import com.childrenOfTime.model.ChildrenOfTime;
 import com.childrenOfTime.model.Store;
 import com.childrenOfTime.model.Story;
 import com.childrenOfTime.model.Warriors.Warrior;
@@ -158,8 +158,9 @@ public class PlayerIndicator {
     }
 
     private void loadBattle(Battle battle, ArrayList<Warrior> playerWarriors) {
-        new BattleScreenPanel(battle, playerWarriors);
+        BattleScreenPanel battleScreenPanel = new BattleScreenPanel(battle, playerWarriors);
 
+        ChildrenOfTime.changeContentPane(battleScreenPanel);
     }
 
     public int getX() {

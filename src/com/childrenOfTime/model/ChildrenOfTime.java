@@ -25,7 +25,8 @@ public final class ChildrenOfTime implements Serializable {
     public static final int PREFERRED_WIDTH = 1000;
     public static final int PREFERRED_HEIGHT = 600;
     public static final Dimension PREFERRED_DIMENSION = new Dimension(PREFERRED_WIDTH, PREFERRED_HEIGHT);
-    public static final Color GREY = new Color(50 , 50, 50);
+    public static final Color GREY_LIGHT = new Color(127, 127, 127);
+    public static final Color GREY = new Color(48, 48, 48);
 
     public static Font ASFALTO_FONT = null;
     public static Font TIZA_FONT = null;

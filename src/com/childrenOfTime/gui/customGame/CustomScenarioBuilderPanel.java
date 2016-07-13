@@ -19,6 +19,8 @@ public class CustomScenarioBuilderPanel extends MenuScreenPanel {
     public static final int NUMBER_OF_MAP_COLUMNS = 14;
     public static final int MAP_CELL_DIMENTION = 50;
     public static final int BORDER_GAP = 15;
+
+
     public Scenario newScenario;
 
     @Override

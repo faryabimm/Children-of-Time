@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.*;
 import java.util.Enumeration;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,7 +22,7 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
 
 public class MultiPlayer {
 
-    public static final int DEFAULT_PORT = 2050;
+    public static final int DEFAULT_PORT = 3050;
 
     public static MultiPlayer Instacne;
 
@@ -33,16 +34,17 @@ public class MultiPlayer {
     }
 
     private String recivedMessage = "";
-    private String toSendMessage = "This is Saeed Talking To you";
+    private String toSendMessage = "This is Ali Talking To you";
     private Player yourPlayer;
     private Player enemyPlayer;
     private Battle battle;
 
 
     public void setRecievedMesssage(String recievedMesssage) {
-        synchronized (this.recivedMessage) {
+//        synchronized (this.recivedMessage) {
+        System.out.println(recievedMesssage);
             this.recivedMessage = recievedMesssage;
-        }
+//        }
     }
 
 
@@ -56,10 +58,8 @@ public class MultiPlayer {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         MultiPlayer multiPlayer = new MultiPlayer(null, null, null);
         //multiPlayer.startAsHost();
-        //multiPlayer.startJoin(InetAddress.getLocalHost(), 3000);
-        Thread discoveryThread = new Thread(DiscoveryThread.getInstance());
-        discoveryThread.start();
-
+        // multiPlayer.startJoin(InetAddress.getByName("81.31.172.145") , DEFAULT_PORT);
+        multiPlayer.findIPAddress();
     }
 
 
@@ -74,7 +74,7 @@ public class MultiPlayer {
 
             //Try the 255.255.255.255 first
             try {
-                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("255.255.255.255"), 8888);
+                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("192.168.1.255"), 8888);
                 c.send(sendPacket);
                 System.out.println(getClass().getName() + ">>> Request packet sent to: 255.255.255.255 (DEFAULT)");
             } catch (Exception e) {
@@ -120,7 +120,10 @@ public class MultiPlayer {
             String message = new String(receivePacket.getData()).trim();
             if (message.equals("DISCOVER_FUIFSERVER_RESPONSE")) {
                 //DO SOMETHING WITH THE SERVER'S IP (for example, store it in your controller)
-                System.out.println(receivePacket.getAddress());
+                InetAddress inetAddress = receivePacket.getAddress();
+                //InetAddress.getByName("81.31.172.145") ;
+                System.out.println(inetAddress.getHostName());
+                startJoin(inetAddress, MultiPlayer.DEFAULT_PORT);
             }
 
             //Close the port!
@@ -186,13 +189,13 @@ public class MultiPlayer {
     public void startJoin(@NotNull InetAddress address, @Nullable Integer port) {
         if (port == null) port = MultiPlayer.DEFAULT_PORT;
 
-        Thread dataReceiver = new Thread(new Communicator(this, ConnectionType.Join, port, address, Job.Recieve, ObjectType.Player));
-        Thread dataSender = new Thread(new Communicator(this, ConnectionType.Join, port + 1, address, Job.Send, ObjectType.Player));
+//        Thread dataReceiver = new Thread(new Communicator(this, ConnectionType.Join, port, address, Job.Recieve, ObjectType.Player));
+//        Thread dataSender = new Thread(new Communicator(this, ConnectionType.Join, port + 1, address, Job.Send, ObjectType.Player));
         Thread messageReceiver = new Thread(new Communicator(this, ConnectionType.Join, port + 2, address, Job.Recieve, ObjectType.Message));
         Thread messageSender = new Thread(new Communicator(this, ConnectionType.Join, port + 3, address, Job.Send, ObjectType.Message));
 
-        dataReceiver.start();
-        dataSender.start();
+//        dataReceiver.start();
+//        dataSender.start();
         messageReceiver.start();
         messageSender.start();
 
@@ -231,14 +234,15 @@ public class MultiPlayer {
     }
 
     public String getToSendMessage() {
-        synchronized (this.toSendMessage) {
-            try {
-                this.toSendMessage.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return toSendMessage;
-        }
+//        synchronized (this.toSendMessage) {
+//            try {
+//                this.toSendMessage.wait();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+
+        return new Scanner(System.in).nextLine();
+//        }
     }
 
     public void setToSendMessage(String toSendMessage) {
@@ -300,14 +304,22 @@ class Communicator implements Runnable {
                 switch (connectionType) {
                     case Host:
                         System.out.println("Port Opened");
+
                         socket = ((ServerSocket) this.performer).accept();
                         System.out.println("Connected");
                         break;
                     case Join:
                         System.out.println("Befor new Socket");
                         socket = new Socket(this.IPAddress, this.port);
+                        System.out.println("Befor new Socket");
+
                         break;
                 }
+
+                socket.setSoTimeout(10000);
+
+
+
                 Object tosend = null;
                 if (job == Job.Send) {
                     switch (transformingObjectType) {
@@ -321,16 +333,25 @@ class Communicator implements Runnable {
                 }
 
                 Object recObj = null;
-                switch (job) {
-                    case Send:
-                        sendData(socket, tosend);
-                        printOutput("RESID INJA");
 
-                        break;
-                    case Recieve:
-                        recObj = recieveData(socket);
-                        break;
+                try {
+
+                    switch (job) {
+                        case Send:
+                            sendData(socket, tosend);
+                            printOutput("RESID INJA");
+
+                            break;
+                        case Recieve:
+                            recObj = recieveData(socket);
+                            break;
+                    }
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+
                 }
+
                 if (job == Job.Recieve) {
                     switch (transformingObjectType) {
                         case Message:

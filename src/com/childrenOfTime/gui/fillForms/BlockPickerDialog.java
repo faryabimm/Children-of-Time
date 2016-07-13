@@ -3,6 +3,8 @@ package com.childrenOfTime.gui.fillForms;
 import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.gui.customizedElements.ScenarioCell;
 import com.childrenOfTime.gui.customizedElements.ScenarioCellType;
+import com.childrenOfTime.gui.fillForms.dataHolders.BattleWrapper;
+import com.childrenOfTime.gui.fillForms.dataHolders.StoreWrapper;
 import com.childrenOfTime.model.Battle;
 import com.childrenOfTime.model.Store;
 
@@ -62,8 +64,6 @@ public class BlockPickerDialog extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
-        this.pack();
-        this.setLocationRelativeTo(null);
         buttonOK.addActionListener(e -> onOK());
         buttonCancel.addActionListener(e -> onCancel());
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -73,6 +73,8 @@ public class BlockPickerDialog extends JDialog {
             }
         });
         contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        this.pack();
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
 
 
@@ -89,9 +91,9 @@ public class BlockPickerDialog extends JDialog {
             targetCell.reset();
             targetCell.setIcon(CustomGameDAO.textures.get("store"));
             targetCell.setCellType(ScenarioCellType.STORE);
-            Store selectedStore = null;
-            new SingleStoreChooserDialog(selectedStore);
-            targetCell.setStore(selectedStore);
+            StoreWrapper storeWrapper = new StoreWrapper();
+            new SingleStoreChooserDialog(storeWrapper.store);
+            targetCell.setStore(storeWrapper.store);
         }
         if (radioButton5.isSelected()) {
             targetCell.reset();
@@ -107,17 +109,19 @@ public class BlockPickerDialog extends JDialog {
             targetCell.reset();
             targetCell.setIcon(CustomGameDAO.textures.get("battle"));
             targetCell.setCellType(ScenarioCellType.BATTLE);
-            Battle selectedBattle = null;
-            new SingleBattleChooserDialog(selectedBattle);
-            targetCell.setBattle(selectedBattle);
+
+            BattleWrapper battleWrapper = new BattleWrapper();
+            new SingleBattleChooserDialog(battleWrapper);
+            targetCell.setBattle(battleWrapper.battle);
         }
         if (radioButton8.isSelected()) {
             targetCell.reset();
             targetCell.setIcon(CustomGameDAO.textures.get("boss"));
             targetCell.setCellType(ScenarioCellType.BOSS);
-            Battle selectedBattle = null;
-            new SingleBattleChooserDialog(selectedBattle);
-            targetCell.setBattle(selectedBattle);
+
+            BattleWrapper battleWrapper = new BattleWrapper();
+            new SingleBattleChooserDialog(battleWrapper);
+            targetCell.setBattle(battleWrapper.battle);
         }
 
         if(radioButton1.isSelected()) {

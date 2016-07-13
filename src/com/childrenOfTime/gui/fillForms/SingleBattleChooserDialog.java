@@ -1,6 +1,7 @@
 package com.childrenOfTime.gui.fillForms;
 
 import com.childrenOfTime.cgd.CustomGameDAO;
+import com.childrenOfTime.gui.fillForms.dataHolders.BattleWrapper;
 import com.childrenOfTime.model.Battle;
 import com.childrenOfTime.model.Store;
 
@@ -15,12 +16,12 @@ public class SingleBattleChooserDialog extends JDialog {
     private JButton buttonCancel;
     private JComboBox comboBox1;
 
-    private Battle selectedBattle;
+    private BattleWrapper battleWrapper;
 
-    public SingleBattleChooserDialog(Battle selectedBattle) {
+    public SingleBattleChooserDialog(BattleWrapper battleWrapper) {
 
 
-        this.selectedBattle = selectedBattle;
+        this.battleWrapper = battleWrapper;
 
 
         ArrayList<String> battleNames = CustomGameDAO.currentUserCustomBattles.stream().map(Battle::getName).
@@ -67,7 +68,7 @@ public class SingleBattleChooserDialog extends JDialog {
 
     private void onOK() {
 // add your code here
-        selectedBattle = CustomGameDAO.currentUserCustomBattles.get(comboBox1.getSelectedIndex());
+        battleWrapper.battle = CustomGameDAO.currentUserCustomBattles.get(comboBox1.getSelectedIndex());
         dispose();
     }
 

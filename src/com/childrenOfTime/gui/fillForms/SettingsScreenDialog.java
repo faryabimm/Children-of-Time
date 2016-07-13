@@ -1,9 +1,11 @@
 package com.childrenOfTime.gui.fillForms;
 
 import com.childrenOfTime.gui.MainMenuScreenPanel;
+import com.childrenOfTime.gui.notification.NotificationType;
 import com.childrenOfTime.model.ChildrenOfTime;
 import com.childrenOfTime.model.DIFFICUALTY;
 import com.childrenOfTime.model.Rules;
+import com.childrenOfTime.utilities.GUIUtils;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -239,6 +241,7 @@ public class SettingsScreenDialog extends JDialog {
 
     private void disposalProcess() {
         ChildrenOfTime.changeContentPane(new MainMenuScreenPanel());
+        GUIUtils.showNotification("Your settings were saved successfully!", NotificationType.GOOD);
         dispose();
     }
 

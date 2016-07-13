@@ -8,6 +8,7 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
 /**
  * Created by mohammadmahdi on 5/8/16.
  */
+@Deprecated
 public class Store {
 //    private static ArrayList<Store> stores = new ArrayList<>();
 //

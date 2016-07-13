@@ -3,6 +3,8 @@ package com.childrenOfTime.utilities;
 import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.controller.GameEngine;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
+import com.childrenOfTime.gui.notification.NotificationPopup;
+import com.childrenOfTime.gui.notification.NotificationType;
 import com.childrenOfTime.model.Battle;
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
 import com.childrenOfTime.model.Equip.Effect;
@@ -15,6 +17,8 @@ import com.childrenOfTime.model.Warriors.Warrior;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -141,5 +145,63 @@ public class GUIUtils {
     public static ImageIcon getScaledIcon(ImageIcon source, int width, int height, int hints) {
         if (source == null) return null;
         return new ImageIcon(source.getImage().getScaledInstance(width, height, hints));
+    }
+
+    public static ImageIcon getScaledIconByFilePath(String filePath, int width, int height, int hints) {
+        ImageIcon source = new ImageIcon(filePath);
+        return GUIUtils.getScaledIcon(source, width, height, hints);
+    }
+
+    public static Image getScaledImageByFilePath(String filePath, int width, int height, int hints) {
+        return GameEngine.DEFAULT_TOOLKIT.getImage(filePath).getScaledInstance(width, height, hints);
+    }
+
+    public static void showNotification(String message, NotificationType type) {
+
+        SwingUtilities.invokeLater(() -> {
+//                try {
+//                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//                } catch (final Exception e1) {
+//                    e1.printStackTrace();
+//                }
+            final NotificationPopup f = new NotificationPopup(type);
+
+            final Container c = f.getContentPane();
+            c.setLayout(new GridBagLayout());
+
+            final GridBagConstraints constraints = new GridBagConstraints();
+            constraints.gridx = 0;
+            constraints.gridy = 0;
+            constraints.weightx = 1.0f;
+            constraints.weighty = 1.0f;
+            constraints.insets = new Insets(5, 5, 5, 5);
+            constraints.fill = GridBagConstraints.BOTH;
+
+            final JLabel l = new JLabel(message);
+            l.setForeground(NotificationPopup.NOTIFICATION_FONT_COLOR);
+            l.setHorizontalAlignment(SwingConstants.CENTER);
+            l.setOpaque(false);
+            c.add(l, constraints);
+            constraints.gridx++;
+            constraints.weightx = 0f;
+            constraints.weighty = 0f;
+            constraints.fill = GridBagConstraints.NONE;
+            constraints.anchor = GridBagConstraints.NORTH;
+//        final JButton b = new JButton(new AbstractAction("x") {
+//
+//          @Override
+//          public void actionPerformed(final ActionEvent e) {
+//            f.dispose();
+//          }
+//        });
+//
+//        b.setOpaque(false);
+//        b.setMargin(new Insets(1, 4, 1, 4));
+//        b.setFocusable(false);
+//
+//        c.add(b, constraints);
+            f.setVisible(true);
+            new Timer(NotificationPopup.NOTIFICATION_DELAY_TIME, e -> f.dispose()).start();
+        });
     }
 }
