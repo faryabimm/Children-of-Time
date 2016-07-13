@@ -57,11 +57,11 @@ public class MultiPlayer {
         try {
             new MultiPlayer(new Player(null, "SaeedTeam", PlayerType.Human));
             //multiPlayer.startJoin(InetAddress.getLocalHost(), 3000);
-            Thread discoveryThread = new Thread(DiscoveryThread.getInstance());
-            discoveryThread.start();
-            Instacne.startAsHost();
+//            Thread discoveryThread = new Thread(DiscoveryThread.getInstance());
+//            discoveryThread.start();
+//            Instacne.startAsHost();
 
-//        Instacne.findIPAddress();
+            Instacne.findIPAddress();
 
 
             Instacne.addToSendObjects(Instacne.thiss);
@@ -232,15 +232,9 @@ public class MultiPlayer {
 
         System.out.println(" Object Received    :    " + receivedObject.getClass().getSimpleName());
 
-        if (receivedObject instanceof Player) {
-            this.oponent = (Player) receivedObject;
 
-            System.out.println("Player   :    " + ((Player) receivedObject).getName());
 
-            return;
-        } else {
             inbox.add(receivedObject);
-        }
 
     }
 

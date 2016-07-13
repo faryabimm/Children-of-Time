@@ -91,7 +91,11 @@ public class MainMenuScreenPanel extends MenuScreenPanel {
         pvpGameModeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ChildrenOfTime.changeContentPane(new MultiPlayerConnectionScreenPanel());
+                if (CustomGameDAO.getCurrentUser() == null) {
+                    GUIUtils.showNotification("You must first log into your account!", NotificationType.BAD);
+                } else {
+                    ChildrenOfTime.changeContentPane(new MultiPlayerConnectionScreenPanel());
+                }
             }
         });
 
