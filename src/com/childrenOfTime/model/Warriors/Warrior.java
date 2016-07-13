@@ -12,7 +12,6 @@ import com.childrenOfTime.model.Equip.Inventory;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
 import com.childrenOfTime.model.Equip.ItemComps.ItemType;
 import com.childrenOfTime.model.Interfaces.TurnBase;
-import com.childrenOfTime.model.MultiPlayer;
 import com.childrenOfTime.model.Rules;
 
 import javax.swing.*;
@@ -25,10 +24,10 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
  * Created by mohammadmahdi on 5/8/16.
  */
 public class Warrior implements Serializable, TurnBase {
-    public static int DEFAULT_Attack_EP_COST = 2;
+    public transient static int DEFAULT_Attack_EP_COST = 2;
 
 
-    public boolean PlayerAllowsUsingImmortality = false;
+    public transient boolean PlayerAllowsUsingImmortality = false;
 
 
 
@@ -50,26 +49,25 @@ public class Warrior implements Serializable, TurnBase {
     private int currentHealth;
     private int currentMagic;
     private int currentEP;
-    private boolean asksForImmortalityPotion = false;
+    private transient boolean asksForImmortalityPotion = false;
     private boolean isDead = false;
     private Inventory inventory;
     private HeroClass info;
-    private ArrayList<Ability> specificHeroAbilities;
+    private transient ArrayList<Ability> specificHeroAbilities;
 
     //private ExAbiltyInfo exAbiltyInfo;
     //private ExAbiltyInfo exAbiltyInfo;
     //private Boolean CanHaveHeroAbilities;
     //private Bool CanAttackMoreThanOneTarget;
 
-    private Map<AlterPackage, Integer> imPermanentTurnBasedAPs = new HashMap<>();
-    private Map<AlterPackage, Integer> autoRepeatAPList = new HashMap<>();
-    private Set<Effect> passiveEffects = new HashSet<>(3);
+    private transient Map<AlterPackage, Integer> imPermanentTurnBasedAPs = new HashMap<>();
+    private transient Map<AlterPackage, Integer> autoRepeatAPList = new HashMap<>();
+    private transient Set<Effect> passiveEffects = new HashSet<>(3);
 
     public List<Ability> abilities = new ArrayList<>();
 
     public void setId(int id) {
         this.id = id;
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
@@ -123,19 +121,16 @@ public class Warrior implements Serializable, TurnBase {
             changeMagicRefillRate(deltaMPRF);
             changeMaxMagic(deltaMMP);
             changeEP(deltaEP);
-            if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
         } catch (NotEnoughMagicPointsException e) {
             if (alterPack.asCost) {
                 throw new NotEnoughMagicPointsException(e.getMessage());
             } else currentMagic = 0;
-            if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
         } catch (NotEnoughEnergyPointsException e) {
             if (alterPack.asCost) {
                 throw new NotEnoughEnergyPointsException(e.getMessage());
             } else currentMagic = 0;
-            if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
         }
 
@@ -156,14 +151,12 @@ public class Warrior implements Serializable, TurnBase {
             newDuration += imPermanentTurnBasedAPs.get(aPackage);
         }
         imPermanentTurnBasedAPs.put(aPackage, newDuration);
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
 
     public void addToAutoRepeatEffList(AlterPackage effect, Integer duration) {
         autoRepeatAPList.put(effect, duration);
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
@@ -173,7 +166,6 @@ public class Warrior implements Serializable, TurnBase {
             newDuration = list.get(ef) - duration;
             list.put(ef, newDuration);
         }
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
@@ -187,7 +179,6 @@ public class Warrior implements Serializable, TurnBase {
     public void useItem(Item item, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeamMates) {
         if (isDead()) return;
         item.cast(this, selectedTargets, allEnemies, allTeamMates);
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
@@ -214,20 +205,18 @@ public class Warrior implements Serializable, TurnBase {
                 toWearOff.add(eff);
         }
         EffectPerformer.wearOffEffects(toWearOff, this, targets, allEnemies, allTeamMates);
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
-    public void IWannaBuyItemForYou(Item item, Warrior[] allEnemies, Warrior[] allTeamMates) {
+    public void IWannaBuyItemForYou(Item item, Warrior[] allTeamMates) {
         if (isDead()) return;
         ItemType itemType = item.getType();
         if (itemType.getCanBeInInventory()) {
             inventory.addToInventoryIfYouCan(item);
         }
         if (itemType.getAutoUseAfterBuoght()) {
-            useItem(item, null, allEnemies, allTeamMates);
+            useItem(item, null, null, allTeamMates);
         }
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
 
     }
@@ -264,22 +253,20 @@ public class Warrior implements Serializable, TurnBase {
                 printOutput("Auto repeat Effect :  " + aPackage.name + "   performed on : " + this.toString());
             }
         }
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
 
-    public void IWannaSellThisItem(Item item, Warrior[] allEnemies, Warrior[] allTeamMates) {
+    public void IWannaSellThisItem(Item item, Warrior[] allTeamMates) {
         if (isDead()) return;
         ItemType itemType = item.getType();
         if (!item.canBeSold()) throw new ItemCannotBeSold("This Item Is not permitted to sell ! ");
         if (!inventory.contains(item)) throw new TradeException("Hero doesn't have this . ");
         inventory.removeFromInventoryIfYouCan(item);
         if (itemType.getWearOffAfterSold()) {
-            item.removedFromInventory(this, allEnemies, allTeamMates);
+            item.removedFromInventory(this, null, allTeamMates);
 
         }
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
@@ -287,7 +274,6 @@ public class Warrior implements Serializable, TurnBase {
         if (isDead()) return;
         if (!abilities.contains(ability)) return;
         ability.cast(this, selectedTargets, allEnemies, allTeamMates);
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
     }
 /*
     public void castAbility(String name, Warrior[] selectedTargets) {
@@ -297,10 +283,9 @@ public class Warrior implements Serializable, TurnBase {
 
 */
 
-    public void upgradeAbility(Ability ability, Integer i, Warrior[] allEnemies, Warrior[] allTeamMates) {
+    public void upgradeAbility(Ability ability, Integer i, Warrior[] allTeamMates) {
         if (isDead()) return;
-        ability.upgrade(this, i, allEnemies, allTeamMates);
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+        ability.upgrade(this, i, allTeamMates);
 
     }
 
@@ -312,7 +297,6 @@ public class Warrior implements Serializable, TurnBase {
             printOutput(toString() + "'s " + "AttackPower has Gone Under zero !! ");
         }
         this.currentAttackPower = newAP;
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
     }
 
     public void changeMaxMagic(int i) {
@@ -320,7 +304,6 @@ public class Warrior implements Serializable, TurnBase {
         int newMMP = i + this.info.maxMagic;
         if (getMaxMagic() < 0) newMMP = 0;
         this.info.maxMagic = newMMP;
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
     }
 
     public void changeCurrentMagic(int i) {
@@ -332,7 +315,6 @@ public class Warrior implements Serializable, TurnBase {
                     (-i - currentEP) + " additional MPs.");
         if (newMP > this.info.maxMagic) newMP = this.info.maxMagic;
         this.currentMagic = newMP;
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
@@ -344,7 +326,6 @@ public class Warrior implements Serializable, TurnBase {
             else printOutput(this.name + " " + getId() + "'s " + "RefillRate has Gone Under zero !! ");
         }
         this.info.magicRefillRate = newMRR;
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
@@ -355,7 +336,6 @@ public class Warrior implements Serializable, TurnBase {
             if (!Rules.RefillRatesCanBeNegative) newHRR = 0;
         }
         this.info.healthRefillRate = newHRR;
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
@@ -404,7 +384,6 @@ public class Warrior implements Serializable, TurnBase {
         if (info.CanHaveFBFeatures && !isDead()) {
             updateFinalBossHealthChanges();
         }
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
         return currentHealth - initHealth;
     }
@@ -413,7 +392,6 @@ public class Warrior implements Serializable, TurnBase {
         int newMH = i + this.info.maxHealth;
         if (getMaxMagic() < 0) newMH = 0;
         this.info.maxHealth = newMH;
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
@@ -430,7 +408,6 @@ public class Warrior implements Serializable, TurnBase {
 
         //TODO PakShavad
         printOutput(this + "current EP : " + currentEP);
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
@@ -487,7 +464,6 @@ public class Warrior implements Serializable, TurnBase {
             firstTime = true;
             this.currentAttackPower = this.info.attackPowerInHighHealth;
         }
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
@@ -514,7 +490,7 @@ public class Warrior implements Serializable, TurnBase {
     }
 
     public void useImmortalityPotion() {
-        this.currentHealth = this.info.maxHealth;
+        changeHealth(this.info.maxHealth, null);
     }
 
     public String toString() {
@@ -603,11 +579,46 @@ public class Warrior implements Serializable, TurnBase {
     }
 
     public boolean isDead() {
-        return isDead;
+        return this.currentHealth <= 0;
     }
 
     public HeroClass getInfo() {
         return info;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Warrior warrior = (Warrior) o;
+
+        if (id != warrior.id) return false;
+        return name.equals(warrior.name);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + id;
+        return result;
+    }
+
+
+    public void setCurrentAttackPower(int currentAttackPower) {
+        this.currentAttackPower = currentAttackPower;
+    }
+
+    public void setCurrentHealth(int currentHealth) {
+        this.currentHealth = currentHealth;
+    }
+
+    public void setCurrentMagic(int currentMagic) {
+        this.currentMagic = currentMagic;
+    }
+
+    public void setCurrentEP(int currentEP) {
+        this.currentEP = currentEP;
+    }
 }

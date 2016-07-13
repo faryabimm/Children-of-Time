@@ -20,13 +20,13 @@ import static com.childrenOfTime.view.IOHandler.printOutput;
  */
 
 
-public class MultiPlayer {
+public class MultiPlayer2 {
 
     public static final int DEFAULT_PORT = 3050;
 
-    public static MultiPlayer Instacne;
+    public static MultiPlayer2 Instacne;
 
-    public MultiPlayer(Player yourPlayer, Player enemyPlayer, Battle battle) {
+    public MultiPlayer2(Player yourPlayer, Player enemyPlayer, Battle battle) {
         this.yourPlayer = yourPlayer;
         this.enemyPlayer = enemyPlayer;
         this.battle = battle;
@@ -56,7 +56,7 @@ public class MultiPlayer {
 
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        MultiPlayer multiPlayer = new MultiPlayer(null, null, null);
+        MultiPlayer2 multiPlayer = new MultiPlayer2(null, null, null);
         //multiPlayer.startAsHost();
         // multiPlayer.startJoin(InetAddress.getByName("81.31.172.145") , DEFAULT_PORT);
         multiPlayer.findIPAddress();
@@ -123,7 +123,7 @@ public class MultiPlayer {
                 InetAddress inetAddress = receivePacket.getAddress();
                 //InetAddress.getByName("81.31.172.145") ;
                 System.out.println(inetAddress.getHostName());
-                startJoin(inetAddress, MultiPlayer.DEFAULT_PORT);
+                startJoin(inetAddress, MultiPlayer2.DEFAULT_PORT);
             }
 
             //Close the port!
@@ -187,7 +187,7 @@ public class MultiPlayer {
     }
 
     public void startJoin(@NotNull InetAddress address, @Nullable Integer port) {
-        if (port == null) port = MultiPlayer.DEFAULT_PORT;
+        if (port == null) port = MultiPlayer2.DEFAULT_PORT;
 
 //        Thread dataReceiver = new Thread(new Communicator(this, ConnectionType.Join, port, address, Job.Recieve, ObjectType.Player));
 //        Thread dataSender = new Thread(new Communicator(this, ConnectionType.Join, port + 1, address, Job.Send, ObjectType.Player));
@@ -270,14 +270,14 @@ enum ObjectType {Message, Player}
 
 class Communicator implements Runnable {
     Closeable performer;
-    MultiPlayer multiPlayer;
+    MultiPlayer2 multiPlayer;
     ConnectionType connectionType;
     Job job;
     int port;
     InetAddress IPAddress;
     ObjectType transformingObjectType;
 
-    public Communicator(ServerSocket performer, MultiPlayer multiPlayer, ConnectionType connectionType, Job job, ObjectType transformingObjectType) {
+    public Communicator(ServerSocket performer, MultiPlayer2 multiPlayer, ConnectionType connectionType, Job job, ObjectType transformingObjectType) {
         this.performer = performer;
         this.multiPlayer = multiPlayer;
         this.connectionType = connectionType;
@@ -286,7 +286,7 @@ class Communicator implements Runnable {
         System.out.println("Const");
     }
 
-    public Communicator(MultiPlayer multiPlayer, ConnectionType connectionType, int port, InetAddress IPAddress, Job job, ObjectType transformingObjectType) {
+    public Communicator(MultiPlayer2 multiPlayer, ConnectionType connectionType, int port, InetAddress IPAddress, Job job, ObjectType transformingObjectType) {
         this.multiPlayer = multiPlayer;
         this.connectionType = connectionType;
         this.IPAddress = IPAddress;

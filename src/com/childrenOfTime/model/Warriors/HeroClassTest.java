@@ -89,7 +89,7 @@ public class HeroClassTest extends TestCase {
         Warrior[] myTeam = {W1};
 
         //Allenemies , auto-Repeat 1 turn - impermanet 2 turns !
-        W1.upgradeAbility(AB1, 1, enemy, null);
+        W1.upgradeAbility(AB1, 1, null);
         W2.aTurnHasPassed();
         assertEquals(W2.getCurrentHealth(), (2 * 300 + 5) * 2 + 5);
         W2.aTurnHasPassed();
@@ -109,7 +109,7 @@ public class HeroClassTest extends TestCase {
         testMakeAWarrior();
         Warrior[] myTeam = {W2, W3};
         Warrior[] enemy = {W1};
-        W2.upgradeAbility(AB2, 1, enemy, myTeam);
+        W2.upgradeAbility(AB2, 1, myTeam);
         assertEquals(W2.getCurrentHealth(), 300);
         W2.castAbility(AB2, null, enemy, myTeam);
         W2.aTurnHasPassed();
@@ -144,7 +144,7 @@ public class HeroClassTest extends TestCase {
         Warrior[] enemy = {W2, W3};
         Warrior[] myTeam = {W1};
 
-        W1.IWannaBuyItemForYou(I1, enemy, myTeam);
+        W1.IWannaBuyItemForYou(I1, myTeam);
         assertEquals(W1.getAttackPower(), 200);
         W1.attack(enemy, null, null, enemy, myTeam);
         assertEquals(W1.getAttackPower(), 405);

@@ -33,7 +33,6 @@ public class Item implements Castable, TurnBase {
     public int currentPrice;
     private boolean isInCoolDown = false;
     private Integer turnsLeftToCoolDown;
-    private AlterPackage cost = new AlterPackage(null, null);
     ImageIcon image;
 
 
@@ -44,7 +43,6 @@ public class Item implements Castable, TurnBase {
         this.messages = messages;
         this.effects = effects;
         this.targetType = targetType;
-        this.cost = sideCost;
         this.leftUsages = type.getReusablityNumber();
         this.image = image;
         this.currentPrice = type.getInitialPrice();
@@ -66,7 +64,6 @@ public class Item implements Castable, TurnBase {
             if (type.getReusable()) {
                 this.leftUsages--;
             }
-            if (cost != null) cost.asCost(performer);
             EffectPerformer.performEffects(false, this.effects, performer, selectedTargets, allEnemies, allTeammates);
             if (type.getHasCoolDown()) {
                 isInCoolDown = true;
@@ -155,9 +152,6 @@ public class Item implements Castable, TurnBase {
         return turnsLeftToCoolDown;
     }
 
-    public AlterPackage getCost() {
-        return cost;
-    }
 
     public ImageIcon getImage() {
         return image;

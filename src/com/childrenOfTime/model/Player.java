@@ -8,6 +8,8 @@ import com.childrenOfTime.model.Equip.AbilComps.Ability;
 import com.childrenOfTime.model.Equip.AlterPackage;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
 import com.childrenOfTime.model.Interfaces.TurnBase;
+import com.childrenOfTime.model.MultiPlayer.MultiPlayer;
+import com.childrenOfTime.model.MultiPlayer.TransferPack;
 import com.childrenOfTime.model.Warriors.Warrior;
 import com.sun.istack.internal.NotNull;
 
@@ -28,19 +30,10 @@ public class Player implements TurnBase, Serializable {
     private int currentWealth;
     private int currentExperience;
     private int immprtalityPotions = 3;
-    private ArrayList<Item> itemsBougt;
+    private transient ArrayList<Item> itemsBougt;
     private ArrayList<Warrior> myTeam;
-    private ArrayList<Warrior> enemyTeam;
-    ArrayList<Battle> WonBattles;
-
-    public Player() {
-    }
 
 
-    public Player(String name) {
-        this.name = name;
-        checkForImmortatlitryRequest();
-    }
 
 
     public Player(@NotNull ArrayList<Warrior> myTeam, String name, PlayerType playerType) {
@@ -51,17 +44,18 @@ public class Player implements TurnBase, Serializable {
         this.currentWealth = Rules.INITIAL_MONEY;
         this.currentExperience = Rules.INITIAL_XP;
         this.playerType = playerType;
+        checkForImmortatlitryRequest();
     }
 
     @Override
     public String toString() {
-        return "Player{" +
+        return "Object{" +
                 "name='" + name + '\'' +
                 '}';
     }
 
 
-    public void makeImpermanentHalfEP() {
+    public void getImpermanentHalfEP() {
         //  AP , H , MH ,  HRF  , MP , MMP , MPRF  , EP ;
         Double[] a = {null, null, null, null, null, null, null, 0.5};
         for (Warrior warrior : this.myTeam) {
@@ -69,15 +63,26 @@ public class Player implements TurnBase, Serializable {
         }
     }
 
-    private void useImmortalityPotion() throws NoImmortalityPotionLeftException {
+    public void useImmortalityPotion() throws NoImmortalityPotionLeftException {
         if (immprtalityPotions - 1 < 0) {
             throw new NoImmortalityPotionLeftException(name + " : No Immortality Potion Left");
+        } else {
+            immprtalityPotions--;
         }
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+        if (MultiPlayer.Instacne != null) {
+            TransferPack TP = new TransferPack(getStats());
+            MultiPlayer.Instacne.addToSendObjects(TP);
+        }
     }
 
-    private void checkForImmortatlitryRequest() {
+    private int[] getStats() {
+        int[] stats = {this.currentExperience, this.currentWealth, this.immprtalityPotions};
+        return stats;
+    }
 
+
+    public void checkForImmortatlitryRequest() {
+        if (myTeam == null) return;
 
         Thread immortalityRequest = new Thread(() -> {
             while (true) {
@@ -116,11 +121,8 @@ public class Player implements TurnBase, Serializable {
     }
 
     public void upgradeAbility(Ability ability, Warrior targetHero, int id) {
-
-
         changeCurrentExperience(-ability.getUpgradeByNumber(id).getXPCost());
-        targetHero.upgradeAbility(ability, id, toArray(this.enemyTeam), toArray(this.myTeam));
-
+        targetHero.upgradeAbility(ability, id, toArray(this.myTeam));
     }
 
     public void buy(Item item, Warrior hero) throws TradeException {
@@ -128,7 +130,7 @@ public class Player implements TurnBase, Serializable {
         int itemsPrice = item.getCurrentPriceToBuy(getNumbersBought(item));
         changeCurrentWealth(-itemsPrice);
         try {
-            hero.IWannaBuyItemForYou(item, toArray(this.enemyTeam), toArray(this.myTeam));
+            hero.IWannaBuyItemForYou(item, toArray(this.myTeam));
         } catch (RuntimeException e) {
             changeCurrentWealth(itemsPrice);
             throw new RuntimeException(e.getMessage());
@@ -136,33 +138,31 @@ public class Player implements TurnBase, Serializable {
         //TODO Jaye In moshakhas shavad
         printOutput(item.getName() + " bought Successfully\n" +
                 "your Current Wealth is: $" + getCurrentWealth());
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
+
 
     }
 
 
+    public void castAbility(Warrior castingHero, Ability castedAbility, ArrayList<Warrior> allEnemies, Warrior... selectedTargets) {
 
-    public void castAbility(Warrior castingHero, Ability castedAbility, Warrior... selectedTargets) {
-
-        castingHero.castAbility(castedAbility, selectedTargets, toArray(this.enemyTeam), toArray(this.myTeam));
+        castingHero.castAbility(castedAbility, selectedTargets, toArray(allEnemies), toArray(this.myTeam));
 
     }
 
-    public void useItem(Warrior usingHero, Item usedItem, Warrior... selectedTargets) {
-        usingHero.useItem(usedItem, selectedTargets, toArray(this.enemyTeam), toArray(this.myTeam));
+    public void useItem(Warrior usingHero, Item usedItem, ArrayList<Warrior> allEnemies, Warrior... selectedTargets) {
+        usingHero.useItem(usedItem, selectedTargets, toArray(allEnemies), toArray(this.myTeam));
     }
 
     public void sell(Item item, Warrior target) throws TradeException {
 
 
-        target.IWannaSellThisItem(item, toArray(enemyTeam), toArray(myTeam));
+        target.IWannaSellThisItem(item, toArray(myTeam));
         int itemCurrenPriceToSell = item.getCurrentPriceToSell();
         changeCurrentWealth(itemCurrenPriceToSell);
         printOutput("Item " + item.getName() + " was successfully sold for $" +
                 itemCurrenPriceToSell + " and was removed form (" +
                 target.toString() + ") Hero.");
         printOutput("your Current Wealth is: $" + getCurrentWealth());
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
@@ -186,12 +186,11 @@ public class Player implements TurnBase, Serializable {
     }
 
     //TODO Each Hero Can Attack Multiple Targets
-    public void giveAttack(Warrior attackingHero, Warrior[] selectedTargets) {
+    public void giveAttack(Warrior attackingHero, Warrior[] selectedTargets, ArrayList<Warrior> allEnemies) {
         try {
-            attackingHero.attack(selectedTargets, null, null, toArray(this.enemyTeam), toArray(this.myTeam));
+            attackingHero.attack(selectedTargets, null, null, toArray(allEnemies), toArray(this.myTeam));
         } catch (Exception e) {
         }
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
 
     }
 
@@ -216,8 +215,10 @@ public class Player implements TurnBase, Serializable {
         } else {
             this.currentExperience += num;
         }
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
-
+        if (MultiPlayer.Instacne != null) {
+            TransferPack TP = new TransferPack(getStats());
+            MultiPlayer.Instacne.addToSendObjects(TP);
+        }
     }
 
     public void changeCurrentWealth(int i) {
@@ -229,8 +230,10 @@ public class Player implements TurnBase, Serializable {
         else {
             this.currentExperience += i;
         }
-        if (MultiPlayer.Instacne != null) MultiPlayer.Instacne.sendPlayerChanges();
-
+        if (MultiPlayer.Instacne != null) {
+            TransferPack TP = new TransferPack(getStats());
+            MultiPlayer.Instacne.addToSendObjects(TP);
+        }
     }
 
 
@@ -251,12 +254,17 @@ public class Player implements TurnBase, Serializable {
         return myTeam;
     }
 
-    public void setMyTeam(ArrayList<Warrior> myTeam) {
-        this.myTeam = myTeam;
-    }
 
     public void changeImmortalityPotion(int i) {
-        this.immprtalityPotions += i;
+        if (immprtalityPotions + i < 0) {
+            throw new NoImmortalityPotionLeftException(name + " : No Immortality Potion Left");
+        } else {
+            this.immprtalityPotions += i;
+        }
+        if (MultiPlayer.Instacne != null) {
+            TransferPack TP = new TransferPack(getStats());
+            MultiPlayer.Instacne.addToSendObjects(TP);
+        }
     }
 
 
@@ -270,8 +278,21 @@ public class Player implements TurnBase, Serializable {
     }
 
 
-    public void setEnemyTeam(ArrayList<Warrior> enemyTeam) {
-        this.enemyTeam = enemyTeam;
+    public void setCurrentWealth(int currentWealth) {
+        this.currentWealth = currentWealth;
+
+    }
+
+    public void setCurrentExperience(int currentExperience) {
+        this.currentExperience = currentExperience;
+    }
+
+    public void setImmprtalityPotions(int immprtalityPotions) {
+        this.immprtalityPotions = immprtalityPotions;
+    }
+
+    public String getName() {
+        return name;
     }
 }
 
@@ -281,7 +302,7 @@ public class Player implements TurnBase, Serializable {
 
 
 /*
-    public Player(ArrayList<Hero> heros) {
+    public Object(ArrayList<Hero> heros) {
         this.currentWealth = Rules.INITIAL_MONEY ;
         this.currentExperience = Rules.INITIAL_XP;
         this.immprtalityPotions = 3;

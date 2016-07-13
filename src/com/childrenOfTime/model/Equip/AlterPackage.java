@@ -30,7 +30,6 @@ public class AlterPackage implements Serializable {
         if (n > this.ProbabilyPercent) {
             return false;
         }
-
         return true;
     }
 

@@ -29,27 +29,40 @@ public class ArtificialBrain implements Serializable {
         initialize();
     }
 
-    public void playATurn() {
+    int tempEP;
+
+    public LinkedList<Act> playATurn() {
+
+
+        LinkedList<Act> actsToReturn = new LinkedList<>();
+
         for (Warrior hero : this.team) {
             if (hero.isDead()) continue;
             boolean CanAttack = hero.getInfo().getCanAttack();
             boolean CanHaveFinalBossFeaturs = hero.getInfo().getCanHaveFBFeatures();
+            boolean CanBurnEP = hero.getInfo().getCanBurnEP();
             boolean CanChangeEP = hero.getInfo().getCanChangeEP();
             boolean CanCastAb = hero.abilities.size() != 0;
+            int attackTmes = CanHaveFinalBossFeaturs ? 2 : 1;
+
             if (!CanChangeEP) {
-                int attackTmes = CanHaveFinalBossFeaturs ? 2 : 1;
                 for (int i = 0; i < attackTmes; i++) {
-                    attack(hero);
+
+                    actsToReturn.addLast(attack(hero));
+
                 }
-                castAbility(hero, true, false);
+                actsToReturn.addAll(castAbility(hero, true, false));
             }
 
             if (CanChangeEP && CanAttack && CanCastAb) {
-                castAbility(hero, false, true);
+                tempEP = hero.getCurrentEP();
+                actsToReturn.addAll(castAbility(hero, false, true));
 
-                while (true) {
+                while (tempEP > 0) {
                     try {
-                        attack(hero);
+
+                        actsToReturn.addLast(attack(hero));
+                        tempEP -= Warrior.DEFAULT_Attack_EP_COST;
                     } catch (Exception e) {
                         e.printStackTrace();
                         break;
@@ -58,9 +71,11 @@ public class ArtificialBrain implements Serializable {
             }
             if (CanChangeEP && !CanCastAb) {
 
-                while (true) {
+                while (tempEP > 0) {
                     try {
-                        attack(hero);
+                        actsToReturn.addLast(attack(hero));
+                        tempEP -= Warrior.DEFAULT_Attack_EP_COST;
+
                     } catch (Exception e) {
                         e.printStackTrace();
                         break;
@@ -68,10 +83,44 @@ public class ArtificialBrain implements Serializable {
                 }
             }
             if (CanChangeEP && !CanAttack && CanCastAb) {
-                castAbility(hero, false, false);
+                actsToReturn.addAll(castAbility(hero, false, false));
+
+            }
+            if (CanBurnEP) {
+                Warrior[] targets = new Warrior[attackTmes];
+                targets = findTarget(true, false, attackTmes);
+//            hero.burnEP(targets);
+                actsToReturn.addLast(new Act(ActionType.BurnEP, hero, targets, null));
             }
         }
+
+
+        return actsToReturn;
     }
+
+
+    public void doTheAct(Act act) {
+
+        switch (act.getActionType()) {
+            case Attack:
+                act.getPerformer().attack(act.getSelectedTargets(), null, null, this.enemyTeam, this.team);
+                break;
+            case AbilityCast:
+                for (Ability ab : act.getPerformer().abilities) {
+                    if (ab.hashCode() == act.getHashCodeOfAbility()) {
+                        act.getPerformer().castAbility(ab, act.getSelectedTargets(), this.enemyTeam, this.team);
+                        break;
+                    }
+                }
+                break;
+            case BurnEP:
+                act.getPerformer().burnEP(act.getSelectedTargets());
+                break;
+        }
+
+    }
+
+
 
     public void initialize() {
         acquireAbilities();
@@ -164,7 +213,7 @@ public class ArtificialBrain implements Serializable {
 
     }
 
-    private void castAbility(Warrior myWarrior, boolean CastJustThoseWithoutEPCost, boolean CastJustPowerfuls) {
+    private LinkedList<Act> castAbility(Warrior myWarrior, boolean CastJustThoseWithoutEPCost, boolean CastJustPowerfuls) {
 
         LinkedList<Ability> toCast = new LinkedList<>();
         boolean chooseTargetRandomly = true;
@@ -189,28 +238,34 @@ public class ArtificialBrain implements Serializable {
 
         }
 
-
+        LinkedList<Act> abilityAct = new LinkedList<>();
         try {
             for (Ability toCastAbility : toCast) {
                 Target targetType = toCastAbility.getTargetType();
-                myWarrior.castAbility(toCastAbility, findTarget(chooseTargetRandomly, targetType.isTeammate(), targetType.getNumberOftargetsNeededToChoose()), this.enemyTeam, team);
+                Warrior[] warriors = findTarget(chooseTargetRandomly, targetType.isTeammate(), targetType.getNumberOftargetsNeededToChoose());
+//              myWarrior.castAbility(toCastAbility, warriors , this.enemyTeam, team);
+                abilityAct.addLast(new Act(ActionType.AbilityCast, myWarrior, warriors, toCastAbility.hashCode()));
+                this.tempEP -= toCastAbility.getCurrentLevel().getMasrafEP();
             }
         } catch (Exception e) {
             e.printStackTrace();
             //TODO Remove This
         }
-        }
+        return abilityAct;
+    }
 
 
-    private void attack(Warrior warrior) {
-        warrior.attack(findTarget(false, false, Rules.Quantitiy_Of_Targets_For_Manual_Multiple_Target_Choosing), null, null, this.enemyTeam, this.team);
+    private Act attack(Warrior warrior) {
+        Warrior[] targets = findTarget(false, false, Rules.Quantitiy_Of_Targets_For_Manual_Multiple_Target_Choosing);
+//        warrior.attack(targets, null, null, this.enemyTeam, this.team);
+        return new Act(ActionType.Attack, warrior, targets, null);
     }
 
     private void acquireAbilities() {
         if (Rules.DIFFICUALTY == DIFFICUALTY.Easy) return;
         for (Warrior upgrader : this.team) {
             for (Ability ability : upgrader.abilities) {
-                ability.acquire(upgrader, this.enemyTeam, this.team);
+                ability.acquire(upgrader, this.team);
                 ability.forceUpgrade(upgrader, getUpgradeNumber(ability), this.enemyTeam, this.team);
             }
         }

@@ -134,7 +134,7 @@ public final class ChildrenOfTime implements Serializable {
         battleHeros.add(new Hero("Bolti", "Supporter", 0));
         battleHeros.add(new Hero("Eley", "Fighter", 0));
         battleHeros.add(new Hero("Chrome", "Fighter", 0));
-        players.add(new Player(battleHeros));
+        players.add(new Object(battleHeros));
 
         Store store = new Store();
         Store.addStore(store);
@@ -198,7 +198,7 @@ public final class ChildrenOfTime implements Serializable {
     }
     private boolean battleIsFinishing(Battle battle) {
         boolean playersAreDefeated = true;
-        for (Player p : players) {
+        for (Object p : players) {
             if (!p.isDefeated()) playersAreDefeated = false;
         }
         return battle.checkFoesAreDied() || playersAreDefeated;
@@ -207,7 +207,7 @@ public final class ChildrenOfTime implements Serializable {
         printOutput("Battle #" + battle.id + ":");
         printOutput("Fight : ");
         while (battle.battleState != BattleState.finished) {
-            Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
+            Object currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
 
             if (!currentPlayer.isDefeated()) {
 
@@ -349,7 +349,7 @@ public final class ChildrenOfTime implements Serializable {
                 break;
             case fight:
                 battle.showCurrentFoeStats();
-                for (Player player : players) {
+                for (Object player : players) {
                     player.showCurrentHeroStats();
                 }
                 break;
@@ -357,7 +357,7 @@ public final class ChildrenOfTime implements Serializable {
 
 
     }
-    public ArrayList<Player> getPlayers() {
+    public ArrayList<Object> getPlayers() {
         return players;
     }
 

@@ -47,7 +47,7 @@ public class ClientTest {
             //BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             // System.out.println("Type a message:");
 //            ObjectOutputStream ObOut = new ObjectOutputStream(client.getOutputStream());
-//            ObOut.writeObject(new Player("Team A"));
+//            ObOut.writeObject(new Object("Team A"));
 //            ObOut.flush();
 
             //ObjectInputStream ObIn = new ObjectInputStream(client.getInputStream());

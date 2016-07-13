@@ -21,8 +21,8 @@ public class Battle implements Serializable {
 
     public String name;
     protected String DefeatStory;
-    Player You;
-    Player Enemy;
+    private Player You;
+    private Player Enemy;
     private Reward reward;
     private boolean itIsFirstTurn = true;
     ArtificialBrain aritificailBrain;
@@ -51,8 +51,6 @@ public class Battle implements Serializable {
             this.Enemy = Enemy;
         }
 
-        You.setEnemyTeam(Enemy.getMyTeam());
-        this.Enemy.setEnemyTeam(You.getMyTeam());
     }
 
     public Player createComputerBot() {
@@ -116,7 +114,7 @@ public class Battle implements Serializable {
     public void goToNextTurn() {
 
         You.aTurnHasPassed();
-        Enemy.aTurnHasPassed();
+        if (this.Enemy.playerType == PlayerType.Computer) Enemy.aTurnHasPassed();
         showCurrentBattleInfo();
 
 
@@ -305,7 +303,7 @@ public class Battle implements Serializable {
 //
 
 //    @Completed
-//    private Warrior findWarriorByNameAndId(String name, int id, Player currentPlayer) {
+//    private Warrior findWarriorByNameAndId(String name, int id, Object currentPlayer) {
 //
 //        Foe foeToReturn = findFoeByNameAndId(name, id);
 //        if (foeToReturn != null) return foeToReturn;
@@ -315,7 +313,7 @@ public class Battle implements Serializable {
 //
 //    }
 //    @Completed
-//    private Warrior findWarriorByName(String name, Player currentPlayer) {
+//    private Warrior findWarriorByName(String name, Object currentPlayer) {
 //        Foe foeToReturn = findFoeByName(name);
 //        if (foeToReturn != null) return foeToReturn;
 //        Hero heroToReturn = currentPlayer.findHeroByName(name);
@@ -352,8 +350,6 @@ public class Battle implements Serializable {
 
 
     public void finishTheBattle() {
-        You.setEnemyTeam(null);
-        Enemy.setEnemyTeam(null);
         reward.giveReward(You);
         reward.giveReward(Enemy);
     }
@@ -456,6 +452,13 @@ public class Battle implements Serializable {
                 "4\tdone  -proceed to next stage-");
     }
 
+    public Player getYou() {
+        return You;
+    }
+
+    public Player getEnemy() {
+        return Enemy;
+    }
 }
 
 
@@ -467,7 +470,7 @@ public class Battle implements Serializable {
 
         try {
 
-        Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
+        Object currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
         Store currentStore = Store.getStores().get(0);
         if (firstTime) {
             currentStore.showItems();       //not implemented yet
@@ -561,7 +564,7 @@ public class Battle implements Serializable {
     @Completed
     public void startUpgradeSession(boolean showFirstThings) {
         try {
-            Player currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
+            Object currentPlayer = ChildrenOfTime.getInstance().getPlayers().get(0);
             if (showFirstThings) {
                 printOutput("Your current experience is:" + currentPlayer.getCurrentExperience());
                 for (int i = 0; i < currentPlayer.getHeros().size(); i++) {

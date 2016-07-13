@@ -95,20 +95,20 @@ public class Ability implements Castable, TurnBase, Serializable {
     }
 
 
-    public Integer acquire(Warrior warrior, Warrior[] allEnemies, Warrior[] allTeammates) {
+    public Integer acquire(Warrior warrior, Warrior[] allTeammates) {
         this.baseState = Upgrades.getGodFatherElement();
         if (!baseState.getUpgradeBoolean()) throw new RequirementsNotMetException();
         this.currentLevel = Upgrades.getMinElement();
         currentLevel.acquired = true;
         printOutput("Ability : " + name + " Upgrade " + currentLevel.numberOfUpgrade + " is accessible now !");
-        if (currentLevel.castJustAfterAcquire) cast(warrior, null, allEnemies, allTeammates);
+        if (currentLevel.castJustAfterAcquire) cast(warrior, null, null, allTeammates);
         return currentLevel.getXPCost();
     }
 
-    public Integer upgrade(Warrior performer, Integer i, Warrior[] allEnemies, Warrior[] allTeammates) throws UpgradeException {
+    public Integer upgrade(Warrior performer, Integer i, Warrior[] allTeammates) throws UpgradeException {
         if (currentLevel == null) {
             if (!i.equals(baseState.getNumberOfUpgrade())) return 0;
-            return acquire(performer, allEnemies, allTeammates);
+            return acquire(performer, allTeammates);
         }
 
         Upgrade fake = new Upgrade(i);
@@ -120,7 +120,7 @@ public class Ability implements Castable, TurnBase, Serializable {
         currentLevel.acquired = true;
         printOutput("Ability : " + name + " Upgrade " + currentLevel.numberOfUpgrade + " is accessible now !");
 
-        if (currentLevel.castJustAfterAcquire) cast(performer, null, allEnemies, allTeammates);
+        if (currentLevel.castJustAfterAcquire) cast(performer, null, null, allTeammates);
 
         return result.getXPCost();
     }
@@ -201,6 +201,7 @@ public class Ability implements Castable, TurnBase, Serializable {
     public int hashCode() {
         return name != null ? name.hashCode() : 0;
     }
+
 }
 
 

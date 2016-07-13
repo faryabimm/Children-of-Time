@@ -18,7 +18,7 @@ public class WarriorMessages implements Serializable {
 
 
         @Completed
-        public static String getDyingMessageForHero(Player player,Hero hero){
+        public static String getDyingMessageForHero(Object player,Hero hero){
             String s = hero.name + hero.getId() + " is dying, immortality potion was used for reincarnation process, you now have "
                     + player.getImmprtalityPotions() + "immortality potions left";
             return s;

@@ -215,4 +215,16 @@ public class HeroClass implements Serializable {
         if (i + initialEP <= 0) this.initialEP = 0;
         else this.initialEP += i;
     }
+
+    public void setMaxMagic(int maxMagic) {
+        this.maxMagic = maxMagic;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
+    public Boolean getCanBurnEP() {
+        return CanBurnEP;
+    }
 }

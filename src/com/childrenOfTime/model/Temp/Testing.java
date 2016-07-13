@@ -12,7 +12,7 @@ public class Testing {
         a.add(hero);
         a.add(hero2);
 
-        Player player = new Player(a);
+        Object player = new Object(a);
         Foe foe = new Foe("Final Boss", StrengthOfFoes.Dramatic, 1);
         System.out.println(foe.attackPower);
         hero2.abilities.get("Fight training").upgrade(hero2, player);
