@@ -53,8 +53,8 @@ public class NotificationPopup extends JDialog {
                 borderColor = NOTIFICATION_BORDER_COLOR_DEVELOPER;
                 break;
             case ERROR:
-                borderColor = NOTIFICATION_COLOR_ERROR;
-                borderColor = NOTIFICATION_COLOR_ERROR;
+                backGroundColor = NOTIFICATION_COLOR_ERROR;
+                backGroundColor = NOTIFICATION_COLOR_ERROR;
                 break;
         }
 
@@ -72,8 +72,8 @@ public class NotificationPopup extends JDialog {
         // background paint
         lpg = new LinearGradientPaint(0, 0, 0, getHeight() / 2,
                 new float[]{0f, 0.3f, 1f}, new Color[]
-                {NOTIFICATION_BACKGROUND_COLOR, NOTIFICATION_BACKGROUND_COLOR,
-                        NOTIFICATION_BACKGROUND_COLOR});
+                {backGroundColor, backGroundColor,
+                        backGroundColor});
 
         // blue background panel
         setContentPane(new BackgroundPanel());
