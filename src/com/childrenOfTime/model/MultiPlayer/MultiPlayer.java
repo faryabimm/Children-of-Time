@@ -126,7 +126,12 @@ public class MultiPlayer {
             String message = new String(receivePacket.getData()).trim();
             if (message.equals("DISCOVER_FUIFSERVER_RESPONSE")) {
                 //DO SOMETHING WITH THE SERVER'S IP (for example, store it in your controller)
-                System.out.println(receivePacket.getAddress());
+                InetAddress inetAddress = receivePacket.getAddress();
+                //InetAddress.getByName("81.31.172.145") ;
+                System.out.println(inetAddress.getHostName());
+                startJoin(inetAddress, MultiPlayer.DEFAULT_PORT);
+                return;
+
             }
 
             //Close the port!
