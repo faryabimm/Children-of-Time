@@ -44,6 +44,7 @@ public class Communicator extends Thread {
     Thread blinker;
 
     public void stopp() {
+        System.out.println("Fucked");
         blinker = null;
     }
 
@@ -102,6 +103,7 @@ public class Communicator extends Thread {
                         if (!errorHasPrinted) {
                             GUIUtils.showNotification("Reconnecting...", NotificationType.BAD);
                             errorHasPrinted = true;
+                            t1 = System.currentTimeMillis();
                         }
                         try {
                             Thread.sleep(500);
@@ -115,7 +117,6 @@ public class Communicator extends Thread {
                 } catch (ClassNotFoundException e) {
                 }
             }
-
 
         } catch (IOException io) {
             if (transformingObjectType == ObjectType.Object && job == Job.Recieve)
