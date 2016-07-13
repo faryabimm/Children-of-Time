@@ -14,8 +14,6 @@ import java.util.Enumeration;
 import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
 
-import static com.childrenOfTime.view.IOHandler.printOutput;
-
 /**
  * Created by SaeedHD on 07/11/2016.
  */
@@ -248,7 +246,7 @@ public class MultiPlayer {
 
 
     public void setRecievedMesssage(String recievedMesssage) {
-        printOutput(recievedMesssage);
+        GUIUtils.showNotification(recievedMesssage, NotificationType.MESSAGE);
         this.receivedMessage = recievedMesssage;
     }
 
