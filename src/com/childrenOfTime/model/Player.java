@@ -34,7 +34,10 @@ public class Player implements TurnBase, Serializable {
     private ArrayList<Warrior> myTeam;
 
 
-
+    public Player(String name, PlayerType playerType) {
+        this.name = name;
+        this.playerType = playerType;
+    }
 
     public Player(@NotNull ArrayList<Warrior> myTeam, String name, PlayerType playerType) {
         if (name == null) name = "COM";
