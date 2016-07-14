@@ -107,6 +107,8 @@ public class MutilpllayerLobbyMenu extends MenuScreenPanel {
             }
         });
 
+        messageServieceDaemon.setDaemon(true);
+        messageServieceDaemon.start();
 
         closeTheServer.addKeyListener(listener);
         openChatDialog.addKeyListener(listener);
