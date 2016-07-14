@@ -44,7 +44,6 @@ public class Communicator extends Thread {
     boolean sho = true;
 
     public void stopp() {
-        System.out.println("Fucked");
         sho = false;
     }
 

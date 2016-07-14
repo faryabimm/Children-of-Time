@@ -178,12 +178,6 @@ public class MultiPlayer {
         messageReceiver.start();
         messageSender.start();
 
-        try {
-            Thread.sleep(8000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        forceStopConnection();
     }
 
 
