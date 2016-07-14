@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.net.*;
 import java.util.Enumeration;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 
 /**
  * Created by SaeedHD on 07/11/2016.
@@ -41,8 +43,11 @@ public class MultiPlayer {
         this.thiss = thiss;
     }
 
-    private String receivedMessage = "";
 
+    CyclicBarrier rBar = new CyclicBarrier(2);
+    CyclicBarrier sBar = new CyclicBarrier(2);
+
+    private String receivedMessage = "";
     private String toSendMessage = "";
     private ArrayBlockingQueue inbox = new ArrayBlockingQueue(30);
     private ArrayBlockingQueue outbox = new ArrayBlockingQueue(30);
@@ -234,14 +239,15 @@ public class MultiPlayer {
 
 
     public String getRecievedMessage() {
-        synchronized (this.receivedMessage) {
-            try {
-                this.receivedMessage.wait();
-            } catch (InterruptedException e) {
-            }
 
-            return this.receivedMessage;
+        try {
+            rBar.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (BrokenBarrierException e) {
+            e.printStackTrace();
         }
+        return this.receivedMessage;
     }
 
 
@@ -281,32 +287,41 @@ public class MultiPlayer {
 
 
     public void setRecievedMesssage(String recievedMesssage) {
-        GUIUtils.showNotification(recievedMesssage, NotificationType.BAD);
-        synchronized (this.receivedMessage) {
-            this.receivedMessage = recievedMesssage;
-            this.receivedMessage.notify();
+        try {
+            rBar.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (BrokenBarrierException e) {
+            e.printStackTrace();
         }
+
+        GUIUtils.showNotification(recievedMesssage, NotificationType.BAD);
+        this.receivedMessage = recievedMesssage;
     }
 
 
     public String getToSendMessage() {
-        synchronized (this.toSendMessage) {
-            try {
-                this.toSendMessage.wait();
-            } catch (InterruptedException e) {
-            }
-            return this.toSendMessage;
+        try {
+            sBar.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (BrokenBarrierException e) {
+            e.printStackTrace();
         }
+
+        return this.toSendMessage;
     }
 
 
     public void setToSendMessage(String toSendMessage) {
-        if (toSendMessage == null) return;
-        if (toSendMessage.length() == 0) return;
-        synchronized (this.toSendMessage) {
-            this.toSendMessage = toSendMessage;
-            this.toSendMessage.notify();
+        try {
+            sBar.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (BrokenBarrierException e) {
+            e.printStackTrace();
         }
+        this.toSendMessage = toSendMessage;
     }
 
 
