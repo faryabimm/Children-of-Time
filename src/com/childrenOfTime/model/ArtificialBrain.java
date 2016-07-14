@@ -91,7 +91,7 @@ public class ArtificialBrain implements Serializable {
                 Warrior[] targets = new Warrior[attackTmes];
                 targets = findTarget(true, false, attackTmes);
 //            hero.burnEP(targets);
-                actsToReturn.addLast(new Act(ActionType.BurnEP, hero, targets, null));
+                actsToReturn.addLast(new Act(ActionType.BurnEP, hero, targets, null, null));
             }
         }
 
@@ -245,7 +245,7 @@ public class ArtificialBrain implements Serializable {
                 Target targetType = toCastAbility.getTargetType();
                 Warrior[] warriors = findTarget(chooseTargetRandomly, targetType.isTeammate(), targetType.getNumberOftargetsNeededToChoose());
 //              myWarrior.castAbility(toCastAbility, warriors , this.enemyTeam, team);
-                abilityAct.addLast(new Act(ActionType.AbilityCast, myWarrior, warriors, toCastAbility.hashCode()));
+                abilityAct.addLast(new Act(ActionType.AbilityCast, myWarrior, warriors, toCastAbility.hashCode(), null));
                 this.tempEP -= toCastAbility.getCurrentLevel().getMasrafEP();
             }
         } catch (Exception e) {
@@ -259,7 +259,7 @@ public class ArtificialBrain implements Serializable {
     private Act attack(Warrior warrior) {
         Warrior[] targets = findTarget(false, false, Rules.Quantitiy_Of_Targets_For_Manual_Multiple_Target_Choosing);
 //        warrior.attack(targets, null, null, this.enemyTeam, this.team);
-        return new Act(ActionType.Attack, warrior, targets, null);
+        return new Act(ActionType.Attack, warrior, targets, null, null);
     }
 
     private void acquireAbilities() {
