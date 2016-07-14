@@ -6,7 +6,9 @@ import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
 import com.childrenOfTime.gui.fillForms.SignInForm;
 import com.childrenOfTime.gui.fillForms.SignUpForm;
+import com.childrenOfTime.gui.notification.NotificationType;
 import com.childrenOfTime.model.ChildrenOfTime;
+import com.childrenOfTime.utilities.GUIUtils;
 
 import javax.jws.soap.SOAPBinding;
 import javax.swing.*;
@@ -56,6 +58,7 @@ public class CustomGameMenuScreenPanel extends MenuScreenPanel {
             CustomGameDAO.setCurrentUser(User.users.get(User.users.indexOf(new User("Mohammadmahdi74"))));
             CustomGameDAO.loadCurrentUserData();
             ChildrenOfTime.changeContentPane(new CustomGameUserHubPanel());
+            GUIUtils.showNotification("Welcome Back Mohammadmahdi!", NotificationType.DEVELOPER);
         });
         emerge();
     }

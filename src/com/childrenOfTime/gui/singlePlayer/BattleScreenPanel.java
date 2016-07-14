@@ -5,6 +5,8 @@ import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
 import com.childrenOfTime.gui.customizedElements.CustomizedJImage;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
 import com.childrenOfTime.gui.customizedListeners.MouseClickListener;
+import com.childrenOfTime.gui.fillForms.BattleActionChooserDialog;
+import com.childrenOfTime.gui.notification.NotificationType;
 import com.childrenOfTime.model.Battle;
 import com.childrenOfTime.model.ChildrenOfTime;
 import com.childrenOfTime.model.Warriors.Warrior;
@@ -20,17 +22,53 @@ import java.util.ArrayList;
 
 
 public class BattleScreenPanel extends MenuScreenPanel {
+
+    public static BattleScreenPanel lastState;
+
     private Battle battle;
     private ArrayList<Warrior> warriors;
-
 
     private BodyPanel bodyPanel;
     private InfoIndicatorPanel infoPanel;
     private WarriorIndicatorPanel leftWarriorIndicatiorPanel;
     private WarriorIndicatorPanel rightWarriorIndicatiorPanel;
 
+    public WarriorIndicatorPanel getRightWarriorIndicatiorPanel() {
+        return rightWarriorIndicatiorPanel;
+    }
+
+    public void setRightWarriorIndicatiorPanel(WarriorIndicatorPanel rightWarriorIndicatiorPanel) {
+        this.rightWarriorIndicatiorPanel = rightWarriorIndicatiorPanel;
+    }
+
+    public WarriorIndicatorPanel getLeftWarriorIndicatiorPanel() {
+        return leftWarriorIndicatiorPanel;
+    }
+
+    public void setLeftWarriorIndicatiorPanel(WarriorIndicatorPanel leftWarriorIndicatiorPanel) {
+        this.leftWarriorIndicatiorPanel = leftWarriorIndicatiorPanel;
+    }
+
+    public ArrayList<Warrior> warriorChoosingWizard(int maximumNumber) {
+        ArrayList<Warrior> chosenWarriors = new ArrayList<>();
+        changeBodyPane(new WarriorChoosingPanel(this, maximumNumber, chosenWarriors));
+        return chosenWarriors;
+    }
+
+    public void changeBodyPane(MenuScreenPanel newBodyPane) {
+        MenuScreenPanel currentBodyPane = bodyPanel;
+        currentBodyPane.fade();
+        add(newBodyPane, BorderLayout.CENTER);
+        ChildrenOfTime.frame.pack();
+        ChildrenOfTime.frame.setLocationRelativeTo(null);
+        ChildrenOfTime.frame.setVisible(true);
+        newBodyPane.requestFocus();
+        newBodyPane.repaint();
+        newBodyPane.emerge();
+    }
 
     public BattleScreenPanel(Battle battle, ArrayList<Warrior> warriors) {
+        lastState = this;
         this.battle = battle;
         this.warriors = warriors;
         this.setLayout(new BorderLayout());
@@ -38,26 +76,18 @@ public class BattleScreenPanel extends MenuScreenPanel {
         this.setBackground(ChildrenOfTime.GREY);
         initializePanel();
     }
-
     public BattleScreenPanel() {
         this.setLayout(new BorderLayout());
         this.setPreferredSize(BattleScreenPanelStaticData.BATTLE_SCREEN_PANEL_DIMENTION);
         this.setBackground(ChildrenOfTime.GREY);
         initializePanel();
     }
-
-    @Override
-    public void initialize() {
-
-    }
-
-
     private void initializePanel() {
 
         bodyPanel = new BodyPanel(warriors.get(0), battle.getDefualtFoes().get(0));
         infoPanel = new InfoIndicatorPanel(warriors.get(0), battle.getDefualtFoes().get(0));
-        leftWarriorIndicatiorPanel = new WarriorIndicatorPanel(warriors, true);
-        rightWarriorIndicatiorPanel = new WarriorIndicatorPanel(battle.getDefualtFoes(), false);
+        leftWarriorIndicatiorPanel = new WarriorIndicatorPanel(warriors, true, this);
+        rightWarriorIndicatiorPanel = new WarriorIndicatorPanel(battle.getDefualtFoes(), false, this);
 
         this.add(bodyPanel, BorderLayout.CENTER);
         this.add(infoPanel, BorderLayout.NORTH);
@@ -65,7 +95,13 @@ public class BattleScreenPanel extends MenuScreenPanel {
         this.add(rightWarriorIndicatiorPanel, BorderLayout.EAST);
     }
 
+    @Override
+    public void initialize() {
+
+    }
 }
+
+
 class BattleScreenPanelStaticData extends JFrame {
 
 
@@ -92,36 +128,9 @@ class BattleScreenPanelStaticData extends JFrame {
     public static final int BATTLE_SCREEN_PANEL_HEIGHT = INFO_PANEL_HEIGHT + WARRIOR_INDICATOR_PANEL_HEIGHT;
 
     public static Dimension BATTLE_SCREEN_PANEL_DIMENTION = new Dimension(BATTLE_SCREEN_PANEL_WIDTH, BATTLE_SCREEN_PANEL_HEIGHT);
-
-
-    public JFrame battleFrame;
-
-    private Battle battle;
-    private ArrayList<Warrior> warriors;
-
-
-    public BattleScreenPanelStaticData(Battle battle, ArrayList<Warrior> warriors) {
-        this.battle = battle;
-        this.warriors = warriors;
-
-        createAndShowFrame();
-
-
-    }
-
-    private void createAndShowFrame() {
-        battleFrame = new JFrame("Children of Time");
-        battleFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        battleFrame.setIconImage(new ImageIcon("src/ui/icon/app_icon.png").getImage());
-        battleFrame.setResizable(false);
-        BattleScreenPanel battleScreenPanel = new BattleScreenPanel(battle, warriors);
-        battleFrame.setContentPane(battleScreenPanel);
-        battleFrame.pack();
-        battleFrame.setLocationRelativeTo(null);
-        battleFrame.setVisible(true);
-    }
 }
-class BodyPanel extends JPanel {
+
+class BodyPanel extends MenuScreenPanel {
 
     public static int DOWN_AND_SIDES_GAP = 50;
     public static int WARRIOR_IMAGES_SIZE = 300;
@@ -165,6 +174,11 @@ class BodyPanel extends JPanel {
     }
 
     @Override
+    public void initialize() {
+
+    }
+
+    @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -172,6 +186,90 @@ class BodyPanel extends JPanel {
         g2d.fillRect(0, 0, BattleScreenPanelStaticData.BODY_PANEL_WIDTH, BattleScreenPanelStaticData.WARRIOR_INDICATOR_PANEL_HEIGHT);
         g2d.drawImage(GameEngine.DEFAULT_TOOLKIT.getImage("src/ui/background/body.png"), 0, 0, this);
 
+    }
+}
+
+class WarriorChoosingPanel extends MenuScreenPanel {
+
+    private ArrayList<Warrior> selectedWarriors;
+    private BattleScreenPanel battleScreenPanel;
+
+    private int maxNumberOfChoosableWarriors;
+
+
+    public WarriorChoosingPanel(BattleScreenPanel battleScreenPanel, int maximumNumber, ArrayList<Warrior> selectedWarriors) {
+
+        this.selectedWarriors = selectedWarriors;
+        this.maxNumberOfChoosableWarriors = maximumNumber;
+        this.battleScreenPanel = battleScreenPanel;
+        this.setLayout(null);
+        this.setPreferredSize(BattleScreenPanelStaticData.BODY_PANEL_DIMENSION);
+        this.setBackground(ChildrenOfTime.GREY);
+        doOperations();
+    }
+
+    private void doOperations() {
+        MouseListener listener = new MouseClickListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if ()
+                    selectedWarriors.add(((WarriorIndicatorElement) e.getComponent()).getWarrior());
+                System.out.println(selectedWarriors.size());
+                System.out.println(((WarriorIndicatorElement) e.getComponent()).getWarrior().getName());
+                //TODO FIX FIX FIX FIX FIX FIX
+            }
+        };
+
+        for (Component component : battleScreenPanel.getLeftWarriorIndicatiorPanel().getComponents()) {
+            component.addMouseListener(listener);
+        }
+
+        for (Component component : battleScreenPanel.getRightWarriorIndicatiorPanel().getComponents()) {
+            component.addMouseListener(listener);
+        }
+        battleScreenPanel.getLeftWarriorIndicatiorPanel().addMouseListener(listener);
+        battleScreenPanel.getRightWarriorIndicatiorPanel().addMouseListener(listener);
+        battleScreenPanel.addMouseListener(listener);
+    }
+
+
+    @Override
+    public void initialize() {
+        CustomizedJButton okButton = new CustomizedJButton("OK");
+        okButton.setLocation((BattleScreenPanelStaticData.BODY_PANEL_WIDTH - CustomizedJButton.BUTTON_WIDTH) / 2,
+                (BattleScreenPanelStaticData.WARRIOR_INDICATOR_PANEL_HEIGHT - CustomizedJButton.BUTTON_HEIGHT) / 2);
+        this.add(okButton);
+
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (Component component : battleScreenPanel.getLeftWarriorIndicatiorPanel().getComponents()) {
+                    component.addMouseListener(new MouseClickListener() {
+                        @Override
+
+                        public void mouseClicked(MouseEvent e) {
+                            if (!battleScreenPanel.getLeftWarriorIndicatiorPanel().isPlayable()) {
+                                GUIUtils.showNotification("You cant play with your Rival team's Warriors!", NotificationType.ERROR);
+                            } else {
+                                Warrior target = ((WarriorIndicatorElement) e.getComponent()).getWarrior();
+                                GUIUtils.showNotification("Warrior " + target.getName() + " (" + target.getInfo().getClassName() + ") " + target.getId() + " has been selected. Choose the operation", NotificationType.NORMAL);
+                                new BattleActionChooserDialog(target, battleScreenPanel);
+                            }
+                            System.out.println(e.getComponent().getClass());
+                        }
+                    });
+                }
+            }
+        });
+        emerge();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setColor(ChildrenOfTime.GREY);
+        g2d.fillRect(0, 0, BattleScreenPanelStaticData.BODY_PANEL_WIDTH, BattleScreenPanelStaticData.WARRIOR_INDICATOR_PANEL_HEIGHT);
     }
 }
 class InfoIndicatorPanel extends JPanel {
@@ -282,6 +380,8 @@ class InfoIndicatorPanel extends JPanel {
         pauseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                BattleScreenPanel battleScreenPanel = (BattleScreenPanel) ChildrenOfTime.frame.getContentPane();
+                ChildrenOfTime.changeContentPane(new BattleScreenPanelPause(battleScreenPanel));
 
             }
         }); //TODO IMPLEMENT
@@ -314,14 +414,16 @@ class InfoIndicatorPanel extends JPanel {
         g2d.fillRect(4 * BORDER_GAP + USER_AVATAR_DIMENTION + MAX_BAR_WIDTH + PAUSE_BUTTON_WIDTH + (int) ((1 - rightSideWarriorEnergyAR) * MAX_BAR_WIDTH), 3 * BORDER_GAP + 2 * BAR_HEIGHT, (int) (rightSideWarriorEnergyAR * MAX_BAR_WIDTH), BAR_HEIGHT);
     }
 }
-
 class WarriorIndicatorPanel extends JPanel {
 
     private ArrayList<Warrior> warriors;
     private boolean playable = true;
+    private BattleScreenPanel battleScreenPanel;
 
-    public WarriorIndicatorPanel(ArrayList<Warrior> warriors, boolean playable) {
-        this.playable = true;
+    public WarriorIndicatorPanel(ArrayList<Warrior> warriors, boolean playable, BattleScreenPanel battleScreenPanel) {
+
+        this.battleScreenPanel = battleScreenPanel;
+        this.playable = playable;
         this.warriors = warriors;
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.setPreferredSize(BattleScreenPanelStaticData.WARRIOR_INDICATOR_PANEL_DIMENSION);
@@ -329,7 +431,7 @@ class WarriorIndicatorPanel extends JPanel {
         createAndShowPanel();
     }
 
-    private boolean isPlayable() {
+    public boolean isPlayable() {
         return playable;
     }
 
@@ -341,6 +443,13 @@ class WarriorIndicatorPanel extends JPanel {
         MouseListener listener = new MouseClickListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                if (!playable) {
+                    GUIUtils.showNotification("You cant play with your Rival team's Warriors!", NotificationType.ERROR);
+                } else {
+                    Warrior target = ((WarriorIndicatorElement) e.getComponent()).getWarrior();
+                    GUIUtils.showNotification("Warrior " + target.getName() + " (" + target.getInfo().getClassName() + ") " + target.getId() + " has been selected. Choose the operation", NotificationType.NORMAL);
+                    new BattleActionChooserDialog(target, battleScreenPanel);
+                }
                 System.out.println(e.getComponent().getClass());
             }
         };
@@ -352,7 +461,6 @@ class WarriorIndicatorPanel extends JPanel {
         }
     }
 }
-
 class WarriorIndicatorElement extends JPanel {
 
 
@@ -364,6 +472,9 @@ class WarriorIndicatorElement extends JPanel {
 
     private Warrior warrior;
 
+    public Warrior getWarrior() {
+        return warrior;
+    }
 
     private ImageIcon icon;/* = GUIUtils.getScaledImageByFilePath("src/ui/Children Of Time Art Assets/COT (33).png",ICON_DIMENSION,ICON_DIMENSION,Image.SCALE_DEFAULT);*/
     private int maxHealth = 100;

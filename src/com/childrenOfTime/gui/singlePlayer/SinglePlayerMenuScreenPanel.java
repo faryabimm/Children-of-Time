@@ -6,7 +6,9 @@ import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
 import com.childrenOfTime.gui.fillForms.CustomScenarioSelectorDialog;
 import com.childrenOfTime.gui.fillForms.dataHolders.CustomScenarioInfoHolder;
+import com.childrenOfTime.gui.notification.NotificationType;
 import com.childrenOfTime.model.ChildrenOfTime;
+import com.childrenOfTime.utilities.GUIUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,9 +32,8 @@ public class SinglePlayerMenuScreenPanel extends MenuScreenPanel {
 
         this.add(back);
         this.add(defaultScenario);
-        if (CustomGameDAO.getCurrentUser() != null) {
-            this.add(customScenario);
-        }
+        this.add(customScenario);
+
 
         back.setLocation(ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - CustomizedJButton.BUTTON_HEIGHT - ELEMENT_GAP);
         customScenario.setLocation(ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 2 * CustomizedJButton.BUTTON_HEIGHT - 2 * ELEMENT_GAP);
@@ -42,11 +43,14 @@ public class SinglePlayerMenuScreenPanel extends MenuScreenPanel {
         customScenario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                fade();
-                CustomScenarioInfoHolder infoHolder = new CustomScenarioInfoHolder();
-                new CustomScenarioSelectorDialog(infoHolder);
 
-
+                if (CustomGameDAO.getCurrentUser() == null) {
+                    GUIUtils.showNotification("You must first log into your account!", NotificationType.BAD);
+                } else {
+                    fade();
+                    CustomScenarioInfoHolder infoHolder = new CustomScenarioInfoHolder();
+                    new CustomScenarioSelectorDialog(infoHolder);
+                }
                 //TODO To Be IMPLEMENTED
             }
         });

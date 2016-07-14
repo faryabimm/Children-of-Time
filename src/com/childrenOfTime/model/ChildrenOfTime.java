@@ -416,6 +416,7 @@ public final class ChildrenOfTime implements Serializable {
         mainMenuScreenPanel.repaint();
     }
     public static void changeContentPane(MenuScreenPanel newContentPane) {
+
         MenuScreenPanel currentContentPane = (MenuScreenPanel)frame.getContentPane();
         currentContentPane.fade();
         frame.getContentPane().removeAll();

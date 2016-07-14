@@ -136,10 +136,8 @@ public class GUIUtils {
     public static ImageIcon getIConByFilePath(String filePath) {
 
         if (filePath == null) return null;
-        Image image = GameEngine.DEFAULT_TOOLKIT.getImage(filePath).getScaledInstance(
-                MenuScreenPanel.PREFFERED_ELEMENT_ICON_SIZE, MenuScreenPanel.PREFFERED_ELEMENT_ICON_SIZE, 0);
 
-        return GUIUtils.imageToIcon(image);
+        return new ImageIcon(filePath);
     }
 
     public static ImageIcon getScaledIcon(ImageIcon source, int width, int height, int hints) {

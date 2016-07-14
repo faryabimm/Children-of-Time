@@ -1,5 +1,7 @@
 package com.childrenOfTime.gui.fillForms;
 
+import com.childrenOfTime.model.MultiPlayer.MultiPlayer;
+
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -10,9 +12,10 @@ public class MultiplayerChatDialog extends JDialog {
     private JTextField textField1;
     String yourUserName;
 
+    private boolean isHost;
 
-    public MultiplayerChatDialog(String yourUserName) {
-
+    public MultiplayerChatDialog(String yourUserName, boolean isHost) {
+        this.isHost = isHost;
         this.yourUserName = yourUserName;
 
         setContentPane(contentPane);
@@ -55,8 +58,8 @@ public class MultiplayerChatDialog extends JDialog {
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        textField1.grabFocus();
-//        textField1.requestFocus();
+//        textField1.grabFocus();
+        textField1.requestFocusInWindow();
     }
 
     private void onOK() {
@@ -71,14 +74,16 @@ public class MultiplayerChatDialog extends JDialog {
     }
 
     public static void main(String[] args) {
-        MultiplayerChatDialog dialog = new MultiplayerChatDialog("Mohammadmahdi");
-        dialog.setVisible(true);
+//        MultiplayerChatDialog dialog = new MultiplayerChatDialog("Mohammadmahdi", isHost);
+//        dialog.setVisible(true);
     }
 
 
     public void addMessage(String message, String senderName) {
         if (!message.equals("")) {
             textArea1.setText(textArea1.getText() + "\n[" + senderName + "]: " + message);
+
+            MultiPlayer.getInstacne().setToSendMessage(textArea1.getText() + "\n[" + senderName + "]: " + message);
         }
     }
 }

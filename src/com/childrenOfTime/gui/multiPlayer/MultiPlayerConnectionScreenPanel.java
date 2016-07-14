@@ -5,6 +5,7 @@ import com.childrenOfTime.gui.MainMenuScreenPanel;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
 import com.childrenOfTime.model.ChildrenOfTime;
+import com.childrenOfTime.model.MultiPlayer.MultiPlayer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +41,18 @@ public class MultiPlayerConnectionScreenPanel extends MenuScreenPanel {
         hostAGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ChildrenOfTime.changeContentPane(new MutilpllayerHostTheGameMenu());
+
+                MultiPlayer.startMultiPlayer();
+                MultiPlayer.getInstacne().startAsHost();
+                ChildrenOfTime.changeContentPane(new MutilpllayerLobbyMenu(true));
+            }
+        });
+        joinAGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MultiPlayer.startMultiPlayer();
+                MultiPlayer.getInstacne().autoJoin();
+                ChildrenOfTime.changeContentPane(new MutilpllayerLobbyMenu(false));
             }
         });
         emerge();
