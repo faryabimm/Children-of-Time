@@ -1,5 +1,6 @@
 package com.childrenOfTime.model.MultiPlayer;
 
+import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.gui.notification.NotificationType;
 import com.childrenOfTime.model.Act;
 import com.childrenOfTime.model.Battle;
@@ -112,7 +113,7 @@ public class MultiPlayer {
                 //DO SOMETHING WITH THE SERVER'S IP (for example, store it in your controller)
                 InetAddress inetAddress = receivePacket.getAddress();
                 //InetAddress.getByName("81.31.172.145") ;
-                GUIUtils.showNotification(thiss.getName(), NotificationType.MESSAGE);
+                GUIUtils.showNotification(CustomGameDAO.getCurrentUser().getUserName(), NotificationType.MESSAGE);
                 startJoin(inetAddress, MultiPlayer.DEFAULT_PORT);
                 return;
 
