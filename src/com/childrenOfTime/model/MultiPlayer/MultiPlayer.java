@@ -257,6 +257,9 @@ public class MultiPlayer {
             object = this.inbox.take();
             if (object instanceof Act)
                 return (Act) object;
+            if (object instanceof trnsfrPack) {
+                return PackTranslator.translate(thiss, oponent, (TransferAct) object);
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
