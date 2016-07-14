@@ -41,7 +41,7 @@ public class MultiPlayer {
         this.thiss = thiss;
     }
 
-    private String receivedMessage;
+    private String receivedMessage = "";
 
     private String toSendMessage = "";
     private ArrayBlockingQueue inbox = new ArrayBlockingQueue(30);
