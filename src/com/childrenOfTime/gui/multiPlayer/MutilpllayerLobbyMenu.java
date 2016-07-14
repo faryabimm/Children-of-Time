@@ -70,12 +70,13 @@ public class MutilpllayerLobbyMenu extends MenuScreenPanel {
 
         this.addKeyListener(listener);
 
+        chatDialog = new MultiplayerChatDialog(CustomGameDAO.getCurrentUser().getUserName(), isHost);
 
         messageServieceDaemon = new Thread(() -> {
             while (true) {
                 String message = MultiPlayer.getInstacne().getRecievedMessage();
 
-                chatDialog.addMessage(message, "");
+                chatDialog.importMessage(message, "");
             }
         });
 
@@ -87,7 +88,6 @@ public class MutilpllayerLobbyMenu extends MenuScreenPanel {
         initiateABattle.addKeyListener(listener);
 
         closeTheServer.addActionListener(e -> MultiPlayer.getInstacne().forceStopConnection());
-        chatDialog = new MultiplayerChatDialog(CustomGameDAO.getCurrentUser().getUserName(), isHost);
         emerge();
     }
 

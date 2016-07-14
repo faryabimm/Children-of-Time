@@ -83,7 +83,13 @@ public class MultiplayerChatDialog extends JDialog {
 
         if (message != null || !message.equals("")) {
             textArea1.setText(textArea1.getText() + "\n[" + senderName + "]: " + message);
-            MultiPlayer.getInstacne().setToSendMessage(textArea1.getText() + "\n[" + senderName + "]: " + message);
+            MultiPlayer.getInstacne().setToSendMessage("\n[" + senderName + "]: " + message);
+        }
+    }
+
+    public void importMessage(String message) {
+        if (message != null || !message.equals("")) {
+            textArea1.setText(textArea1.getText() + "\n" + message);
         }
     }
 }

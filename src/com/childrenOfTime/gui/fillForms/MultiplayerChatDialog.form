@@ -78,7 +78,7 @@
                     <properties>
                       <editable value="false"/>
                       <minimumSize width="500" height="300"/>
-                      <text value=""/>
+                      <text value="Chat:&#10;"/>
                     </properties>
                   </component>
                 </children>
