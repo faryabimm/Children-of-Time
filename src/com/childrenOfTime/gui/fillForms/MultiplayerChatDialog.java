@@ -80,9 +80,9 @@ public class MultiplayerChatDialog extends JDialog {
 
 
     public void addMessage(String message, String senderName) {
-        if (!message.equals("")) {
-            textArea1.setText(textArea1.getText() + "\n[" + senderName + "]: " + message);
 
+        if (message != null || !message.equals("")) {
+            textArea1.setText(textArea1.getText() + "\n[" + senderName + "]: " + message);
             MultiPlayer.getInstacne().setToSendMessage(textArea1.getText() + "\n[" + senderName + "]: " + message);
         }
     }

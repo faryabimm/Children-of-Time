@@ -39,13 +39,7 @@ public class MutilpllayerLobbyMenu extends MenuScreenPanel {
         KeyTypeListener listener = new KeyTypeListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-                if (e.getKeyChar() == 'y') {
-                    if (chatDialog == null) {
-                        chatDialog = new MultiplayerChatDialog(CustomGameDAO.getCurrentUser().getUserName(), isHost);
-                    } else {
-                        chatDialog.setVisible(true);
-                    }
-                }
+                chatDialog.setVisible(true);
             }
         };
 
@@ -67,43 +61,21 @@ public class MutilpllayerLobbyMenu extends MenuScreenPanel {
         initiateABattle.setLocation(ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 3 * CustomizedJButton.BUTTON_HEIGHT - 3 * ELEMENT_GAP);
 
 
-        closeTheServer.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ChildrenOfTime.changeContentPane(new MainMenuScreenPanel());
-                chatDialog.dispose();
-            }
+        closeTheServer.addActionListener(e -> {
+            ChildrenOfTime.changeContentPane(new MainMenuScreenPanel());
+            chatDialog.dispose();
         });
 
-        openChatDialog.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        openChatDialog.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (chatDialog == null) {
-                    chatDialog = new MultiplayerChatDialog(CustomGameDAO.getCurrentUser().getUserName(), isHost);
-                } else {
-                    chatDialog.setVisible(true);
-                }
-            }
-        });
-
+        openChatDialog.addActionListener(e -> openChatWindow());
 
         this.addKeyListener(listener);
 
 
-        messageServieceDaemon = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    String message = MultiPlayer.getInstacne().getRecievedMessage();
+        messageServieceDaemon = new Thread(() -> {
+            while (true) {
+                String message = MultiPlayer.getInstacne().getRecievedMessage();
 
-                    chatDialog.addMessage(message, "");
-                }
+                chatDialog.addMessage(message, "");
             }
         });
 
@@ -114,7 +86,13 @@ public class MutilpllayerLobbyMenu extends MenuScreenPanel {
         openChatDialog.addKeyListener(listener);
         initiateABattle.addKeyListener(listener);
 
+        closeTheServer.addActionListener(e -> MultiPlayer.getInstacne().forceStopConnection());
+        chatDialog = new MultiplayerChatDialog(CustomGameDAO.getCurrentUser().getUserName(), isHost);
         emerge();
+    }
+
+    private void openChatWindow() {
+        chatDialog.setVisible(true);
     }
 
 }
