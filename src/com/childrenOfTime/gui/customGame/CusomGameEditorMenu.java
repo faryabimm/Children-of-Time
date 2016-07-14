@@ -82,6 +82,7 @@ public class CusomGameEditorMenu extends MenuScreenPanel {
         customScenario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                fade();
                 ChildrenOfTime.changeContentPane(new CustomScenarioBuilderPanel());
             }
         });

@@ -23,10 +23,12 @@ public class SinglePlayerGame extends MenuScreenPanel {
 
     private PlayerIndicator indicator;
     private MapScreenListener controller;
+    public static SinglePlayerGame lastState;
 
     CustomScenarioInfoHolder infoHolder;
 
     public SinglePlayerGame(CustomScenarioInfoHolder infoHolder) {
+        lastState = this;
         this.infoHolder = infoHolder;
         indicator = new PlayerIndicator(infoHolder);
         initializeCells();

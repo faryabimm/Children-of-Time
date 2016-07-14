@@ -47,7 +47,7 @@ public class CustomScenarioBuilderPanel extends MenuScreenPanel {
     }
 }
 
-class MenuScreenPanel_RightSide extends JPanel {
+class MenuScreenPanel_RightSide extends MenuScreenPanel {
 
     private JLabel userNameLabel = new CustomizedJLabel("");
     private JLabel userAvatar = new CustomizedJImage();
@@ -79,11 +79,11 @@ class MenuScreenPanel_RightSide extends JPanel {
         this.add(userNameLabel);
         this.add(userAvatar);
 
+        initializeForm();
+
     }
 
-    public void initialize() {
-
-
+    private void initializeForm() {
         JButton save = new CustomizedJButton("Save Scenario");
         JButton cancel = new CustomizedJButton("Discard Changes");
 
@@ -125,6 +125,11 @@ class MenuScreenPanel_RightSide extends JPanel {
             JOptionPane.showMessageDialog(this, "Custom Scenario \"" + parent.newScenario.getName() + "\" saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             ChildrenOfTime.changeContentPane(new CusomGameEditorMenu());
         });
+    }
+
+    @Override
+    public void initialize() {
+
     }
 
     private void addSamples(int initialX, int initialY) {

@@ -96,9 +96,9 @@ public class SettingsScreenDialog extends JDialog {
                 Rules.INITIAL_IMMORTALITY_POTION = slider3.getValue();
             }
         });
-        changeScenarioSInitialCheckBox.addActionListener(new ActionListener() {
+        changeScenarioSInitialCheckBox.addItemListener(new ItemListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void itemStateChanged(ItemEvent e) {
                 if (changeScenarioSInitialCheckBox.isSelected()) {
                     slider1.setEnabled(true);
                     slider2.setEnabled(true);
@@ -194,6 +194,32 @@ public class SettingsScreenDialog extends JDialog {
                 Rules.INTELLIJENT_DAMGES = intelligentEnemyDamageTakingCheckBox.isSelected();
             }
         });
+        attackPowerCanBeCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (attackPowerCanBeCheckBox.isSelected()) {
+                    Rules.AttackPowerCanBeNegative = true;
+                } else {
+                    Rules.AttackPowerCanBeNegative = false;
+                }
+            }
+        });
+        refilRatesCanBeCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (refilRatesCanBeCheckBox.isSelected()) {
+                    Rules.RefillRatesCanBeNegative = true;
+                } else {
+                    Rules.RefillRatesCanBeNegative = false;
+                }
+            }
+        });
+        giveRewardBasedOnCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Rules.giveRandomRewardByDifferentiationBetweenWinnerAndLoser = giveRewardBasedOnCheckBox.isSelected();
+            }
+        });
     }
 
     private void loadTheForm() {
@@ -205,6 +231,18 @@ public class SettingsScreenDialog extends JDialog {
             slider3.setValue(Rules.INITIAL_IMMORTALITY_POTION);
         } else {
             changeScenarioSInitialCheckBox.setSelected(false);
+            slider1.setEnabled(false);
+            slider2.setEnabled(false);
+            slider3.setEnabled(false);
+            label1.setEnabled(false);
+            label2.setEnabled(false);
+            label3.setEnabled(false);
+            label4.setEnabled(false);
+            label5.setEnabled(false);
+            label6.setEnabled(false);
+            slider1.setValue(Rules.INITIAL_MONEY_DEFAULT);
+            slider2.setValue(Rules.INITIAL_XP_DEFAULT);
+            slider3.setValue(Rules.INITIAL_IMMORTALITY_POTION_DEFAULT);
         }
 
         switch (Rules.DIFFICUALTY) {
@@ -223,9 +261,23 @@ public class SettingsScreenDialog extends JDialog {
         }
 
         slider4.setValue(Rules.Quantitiy_Of_Targets_For_Manual_Multiple_Target_Choosing);
+        label7.setText(String.valueOf(slider4.getValue()));
 
-        if (Rules.NUMBER_OF_HEROS_DYE_FROM_HUMAN_PLAYER_TO_DEFEAT == 1000) allOfPlayerSCheckBox.setSelected(true);
-        else allOfPlayerSCheckBox.setSelected(false);
+        if (Rules.NUMBER_OF_HEROS_DYE_FROM_HUMAN_PLAYER_TO_DEFEAT == 1000) {
+            allOfPlayerSCheckBox.setSelected(true);
+            label8.setEnabled(false);
+            label9.setEnabled(false);
+            slider5.setEnabled(false);
+            slider5.setValue(Rules.NUMBER_OF_HEROS_DYE_FROM_HUMAN_PLAYER_TO_DEFEAT_DEFAULT);
+        } else {
+            allOfPlayerSCheckBox.setSelected(false);
+            label8.setEnabled(true);
+            label9.setEnabled(true);
+            slider5.setEnabled(true);
+            slider5.setValue(Rules.NUMBER_OF_HEROS_DYE_FROM_HUMAN_PLAYER_TO_DEFEAT);
+        }
+
+
 
         attackPowerCanBeCheckBox.setSelected(Rules.AttackPowerCanBeNegative);
         refilRatesCanBeCheckBox.setSelected(Rules.RefillRatesCanBeNegative);
