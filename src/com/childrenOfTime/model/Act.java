@@ -11,17 +11,23 @@ public class Act {
     private final ActionType actionType;
     private final Warrior performer;
     private final Warrior[] selectedTargets;
-    private final int hashCodeOfAbility;
+    private final Integer hashCodeOfAbility;
+    private final Integer hashCodeOfItem;
 
-    public Act(ActionType actionType, Warrior performer, Warrior[] selectedTargets, Integer hashCodeOfAbility) {
+    public Act(ActionType actionType, Warrior performer, Warrior[] selectedTargets, Integer hashCodeOfAbility, Integer hashCodeOfItem) {
         this.actionType = actionType;
         this.performer = performer;
         this.selectedTargets = selectedTargets;
         this.hashCodeOfAbility = hashCodeOfAbility;
+        this.hashCodeOfItem = hashCodeOfItem;
     }
 
     public ActionType getActionType() {
         return actionType;
+    }
+
+    public Integer getHashCodeOfItem() {
+        return hashCodeOfItem;
     }
 
     public Warrior getPerformer() {
