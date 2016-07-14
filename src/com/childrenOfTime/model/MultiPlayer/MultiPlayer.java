@@ -1,6 +1,7 @@
 package com.childrenOfTime.model.MultiPlayer;
 
 import com.childrenOfTime.gui.notification.NotificationType;
+import com.childrenOfTime.model.Act;
 import com.childrenOfTime.model.Battle;
 import com.childrenOfTime.model.Player;
 import com.childrenOfTime.utilities.GUIUtils;
@@ -26,6 +27,7 @@ public class MultiPlayer {
     private Player thiss;
     private Player oponent;
 
+
     public static void startMultiPlayer() {
         Instacne = new MultiPlayer();
     }
@@ -41,8 +43,8 @@ public class MultiPlayer {
     private String receivedMessage;
 
     private String toSendMessage = "";
-    private ArrayBlockingQueue inbox = new ArrayBlockingQueue(20);
-    private ArrayBlockingQueue outbox = new ArrayBlockingQueue(20);
+    private ArrayBlockingQueue inbox = new ArrayBlockingQueue(30);
+    private ArrayBlockingQueue outbox = new ArrayBlockingQueue(30);
     private Battle battle;
 
 
@@ -236,18 +238,43 @@ public class MultiPlayer {
     }
 
 
+    public String getRecievedMessage() {
+        synchronized (this.receivedMessage) {
+            try {
+                this.receivedMessage.wait();
+            } catch (InterruptedException e) {
+            }
+
+            return this.receivedMessage;
+        }
+    }
+
+
+    public Act getRecievedActs() {
+
+        Object object = null;
+        try {
+            object = this.inbox.take();
+            if (object instanceof Act)
+                return (Act) object;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
     public void addReceivedObject(Object receivedObject) {
         if (receivedObject == null) return;
 //        this.receivedObject = receivedObject;
 
-        System.out.println(" Object Received    :    " + receivedObject.getClass().getSimpleName());
+
+        GUIUtils.showNotification(" Wait please . . .  ", NotificationType.GOOD);
 
         if (receivedObject instanceof Player) {
             this.oponent = (Player) receivedObject;
-
-            System.out.println("Player   :    " + ((Player) receivedObject).getName());
-
-            return;
+            GUIUtils.showNotification("Now We Can Start the Game ! ", NotificationType.GOOD);
         } else {
             inbox.add(receivedObject);
         }
@@ -257,7 +284,10 @@ public class MultiPlayer {
 
     public void setRecievedMesssage(String recievedMesssage) {
         GUIUtils.showNotification(recievedMesssage, NotificationType.BAD);
-        this.receivedMessage = recievedMesssage;
+        synchronized (this.receivedMessage) {
+            this.receivedMessage = recievedMesssage;
+            this.receivedMessage.notify();
+        }
     }
 
 
