@@ -19,6 +19,8 @@ import com.childrenOfTime.utilities.GUIUtils;
 import javax.swing.*;
 import java.io.Serializable;
 import java.util.*;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
 
@@ -29,25 +31,31 @@ public class Warrior implements Serializable, TurnBase {
     public transient static int DEFAULT_Attack_EP_COST = 2;
 
 
-    private transient Boolean PlayerAllowsUsingImmortality = false;
+    private transient Boolean isPlayerOk = false;
 
-    public boolean isPlayerAllowsUsingImmortality() {
-        synchronized (PlayerAllowsUsingImmortality) {
-            try {
-                PlayerAllowsUsingImmortality.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return PlayerAllowsUsingImmortality;
+    public boolean getIsPlayerOk() {
+        try {
+            Lock2.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (BrokenBarrierException e) {
+            e.printStackTrace();
         }
+
+        return isPlayerOk;
     }
 
-    public void setPlayerAllowsUsingImmortality(boolean playerAllowsUsingImmortality) {
-        synchronized (PlayerAllowsUsingImmortality) {
-            PlayerAllowsUsingImmortality = playerAllowsUsingImmortality;
-            System.out.println("PlayerCame Here");
-            PlayerAllowsUsingImmortality.notify();
+    public void setIsPlayerOk(boolean isPlayerOk) {
+        this.isPlayerOk = isPlayerOk;
+        try {
+            Lock2.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (BrokenBarrierException e) {
+            e.printStackTrace();
         }
+        String answer = isPlayerOk ? "Yes" : "No";
+        System.out.println("*********Players says " + answer);
     }
 
     private String name;
@@ -68,7 +76,7 @@ public class Warrior implements Serializable, TurnBase {
     private int currentHealth;
     private int currentMagic;
     private int currentEP;
-    private Boolean asksForImmortalityPotion = false;
+    private Boolean needsImo = false;
     private boolean isDead = false;
     private Inventory inventory;
     private HeroClass info;
@@ -309,14 +317,6 @@ public class Warrior implements Serializable, TurnBase {
     }
 
 
-    public void setAsksForImmortalityPotion(Boolean asksForImmortalityPotion) {
-        synchronized (this.asksForImmortalityPotion) {
-            this.asksForImmortalityPotion = asksForImmortalityPotion;
-            this.asksForImmortalityPotion.notify();
-            System.out.println("Hero Request Sent " + this.asksForImmortalityPotion);
-        }
-    }
-
     public void changeAttackPower(int num) {
         int newAP = this.currentAttackPower + num;
         if (newAP < 0) {
@@ -385,13 +385,14 @@ public class Warrior implements Serializable, TurnBase {
         if (wasAlive() & willDye(i)) {
             currentHealth = 0;
             if (info.CanUseImmortalityPotions) {
-                setAsksForImmortalityPotion(true);
-                if (isPlayerAllowsUsingImmortality()) {
-                    System.out.println("Allowed");
+
+                setNeedsImo(true);
+                System.out.println("******" + this + " Wants");
+                if (getIsPlayerOk()) {
                     useImmortalityPotion();
                     isDead = false;
-                    PlayerAllowsUsingImmortality = false;
-                    asksForImmortalityPotion = false;
+                    isPlayerOk = false;
+                    needsImo = false;
 
                 } else {
                     isDead = true;
@@ -514,7 +515,6 @@ public class Warrior implements Serializable, TurnBase {
 
     public void useImmortalityPotion() {
         this.currentHealth = this.info.maxHealth;
-//        printOutput(" Immortality ");
         GUIUtils.showNotification("Player Used Immortality Potion . ", NotificationType.MESSAGE);
     }
 
@@ -593,20 +593,31 @@ public class Warrior implements Serializable, TurnBase {
         printOutput(toPrint);
     }
 
+    CyclicBarrier Lock2 = new CyclicBarrier(2);
+    CyclicBarrier Lock1 = new CyclicBarrier(2);
 
-    public Boolean doesAskForImmortalityPotion() {
-//        System.out.println(asksForImmortalityPotion);
-        synchronized (this.asksForImmortalityPotion) {
-            try {
-                System.out.println("Hero Waits For Requests");
-                this.asksForImmortalityPotion.wait();
-                System.out.println("Hero Received The Request");
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return this.asksForImmortalityPotion;
+    public Boolean needsImo() {
+        try {
+            Lock1.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (BrokenBarrierException e) {
+            e.printStackTrace();
         }
+        return this.needsImo;
+    }
+
+
+    public void setNeedsImo(Boolean needsImo) {
+        this.needsImo = needsImo;
+        try {
+            Lock1.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (BrokenBarrierException e) {
+            e.printStackTrace();
+        }
+//        System.out.println("*****Hero Request Sent " + this.needsImo);
     }
 
 

@@ -4,6 +4,7 @@ import com.childrenOfTime.exceptions.NoImmortalityPotionLeftException;
 import com.childrenOfTime.exceptions.NotEnoughMoneyException;
 import com.childrenOfTime.exceptions.NotEnoughXPException;
 import com.childrenOfTime.exceptions.TradeException;
+import com.childrenOfTime.gui.notification.NotificationType;
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
 import com.childrenOfTime.model.Equip.AlterPackage;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
@@ -11,6 +12,7 @@ import com.childrenOfTime.model.Interfaces.TurnBase;
 import com.childrenOfTime.model.MultiPlayer.MultiPlayer;
 import com.childrenOfTime.model.MultiPlayer.TransferPack;
 import com.childrenOfTime.model.Warriors.Warrior;
+import com.childrenOfTime.utilities.GUIUtils;
 import com.sun.istack.internal.NotNull;
 
 import java.io.Serializable;
@@ -67,12 +69,8 @@ public class Player implements TurnBase, Serializable {
     }
 
     private void useImmortalityPotion() throws NoImmortalityPotionLeftException {
-        if (immprtalityPotions - 1 < 0) {
-            throw new NoImmortalityPotionLeftException(name + " : No Immortality Potion Left");
-        } else {
-            immprtalityPotions--;
-            System.out.println(immprtalityPotions);
-        }
+        immprtalityPotions--;
+        System.out.println(immprtalityPotions);
 
         if (MultiPlayer.getInstacne() != null) {
             TransferPack TP = new TransferPack(getStats());
@@ -94,23 +92,22 @@ public class Player implements TurnBase, Serializable {
 
                 for (Warrior myHero : myTeam) {
 
-                    if (myHero.doesAskForImmortalityPotion()) {
+                    if (myHero.needsImo()) {
                         //TODO Set Try catch
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                        boolean opinion = this.immprtalityPotions - 1 >= 0;
+                        myHero.setIsPlayerOk(opinion);
+                        if (!opinion) {
+                            GUIUtils.showNotification("IMMO : Zero ! ", NotificationType.ERROR);
+                        } else {
+                            useImmortalityPotion();
                         }
-                        myHero.setPlayerAllowsUsingImmortality(true);
-                        useImmortalityPotion();
                     }
                 }
             }
         });
 
-//        immortalityRequest.setPriority(Thread.NORM_PRIORITY + 2);
-//        immortalityRequest.setDaemon(true);
-        immortalityRequest.setName("Immortality Request");
+        immortalityRequest.setPriority(Thread.NORM_PRIORITY);
+        immortalityRequest.setDaemon(false);
         immortalityRequest.start();
     }
 

@@ -179,6 +179,10 @@ public class HeroClassTest extends TestCase {
         W3.attack(Player.toArray(arrayList), null, 0, null, null);
         W3.attack(Player.toArray(arrayList), null, -1, null, null);
         W3.attack(Player.toArray(arrayList), null, -3, null, null);
+        W3.attack(Player.toArray(arrayList), null, -3, null, null);
+        W3.attack(Player.toArray(arrayList), null, -3, null, null);
+        assertEquals(player.isDefeated(), true);
 //        Playerplayer.isDefeated()
     }
+
 }

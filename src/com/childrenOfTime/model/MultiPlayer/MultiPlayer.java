@@ -10,7 +10,6 @@ import com.sun.istack.internal.Nullable;
 import java.io.IOException;
 import java.net.*;
 import java.util.Enumeration;
-import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
@@ -27,11 +26,10 @@ public class MultiPlayer {
     private Player thiss;
     private Player oponent;
 
-
+    public static void startMultiPlayer() {
+        Instacne = new MultiPlayer();
+    }
     public static MultiPlayer getInstacne() {
-        if (Instacne == null) {
-            Instacne = new MultiPlayer();
-        }
         return Instacne;
     }
 
@@ -47,31 +45,7 @@ public class MultiPlayer {
     private Battle battle;
 
 
-//
-//    static HeroClass HC1;
-//    static Warrior W1;
-//    static Warrior W2;
-//    static Warrior W3;
-//    static Effect E2;
-//    static Ability AB1;
-//    static private Ability AB2;
-//    static Item I1;
-//
-
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-        try {
-            //multiPlayer.startJoin(InetAddress.getLocalHost(), 3000);
-
-
-//        Instacne.autoJoin();
-
-
-        } catch (Exception e) {
-        }
-    }
-
-
-    public void initializeBattle() {
+    public void initializeGame() {
         Instacne.addToSendObjects(Instacne.thiss);
     }
 
@@ -287,14 +261,14 @@ public class MultiPlayer {
 
     public String getToSendMessage() {
         synchronized (this.toSendMessage) {
-//            try {
-//                this.toSendMessage.wait();
-//            } catch (InterruptedException e) {
-//            }
-//            return this.toSendMessage;
-            return new Scanner(System.in).nextLine();
+            try {
+                this.toSendMessage.wait();
+            } catch (InterruptedException e) {
+            }
+            return this.toSendMessage;
         }
     }
+
 
     public void setToSendMessage(String toSendMessage) {
         if (toSendMessage == null) return;
