@@ -212,7 +212,7 @@ class WarriorChoosingPanel extends MenuScreenPanel {
         MouseListener listener = new MouseClickListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if ()
+//                if ()
                     selectedWarriors.add(((WarriorIndicatorElement) e.getComponent()).getWarrior());
                 System.out.println(selectedWarriors.size());
                 System.out.println(((WarriorIndicatorElement) e.getComponent()).getWarrior().getName());
