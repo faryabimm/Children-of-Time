@@ -33,6 +33,7 @@ public class MultiPlayer {
         return Instacne;
     }
 
+
     public void setThisPlayer(Player thiss) {
         this.thiss = thiss;
     }
@@ -214,6 +215,7 @@ public class MultiPlayer {
     public void addToSendObjects(Object toSendObject) {
         if (toSendObject == null) return;
         try {
+
             this.outbox.put(toSendObject);
             System.out.println(" Object Sent    :    " + toSendObject.getClass().getSimpleName());
             if (toSendObject instanceof Player) System.out.println("Sent : " + ((Player) toSendObject).getName());
