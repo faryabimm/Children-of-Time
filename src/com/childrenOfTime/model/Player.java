@@ -10,7 +10,8 @@ import com.childrenOfTime.model.Equip.AlterPackage;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
 import com.childrenOfTime.model.Interfaces.TurnBase;
 import com.childrenOfTime.model.MultiPlayer.MultiPlayer;
-import com.childrenOfTime.model.MultiPlayer.TransferPack;
+import com.childrenOfTime.model.MultiPlayer.TransferAct;
+import com.childrenOfTime.model.Warriors.ActionType;
 import com.childrenOfTime.model.Warriors.Warrior;
 import com.childrenOfTime.utilities.GUIUtils;
 import com.sun.istack.internal.NotNull;
@@ -71,11 +72,6 @@ public class Player implements TurnBase, Serializable {
     private void useImmortalityPotion() throws NoImmortalityPotionLeftException {
         immprtalityPotions--;
         System.out.println(immprtalityPotions);
-
-        if (MultiPlayer.getInstacne() != null) {
-            TransferPack TP = new TransferPack(getStats());
-            MultiPlayer.getInstacne().addToSendObjects(TP);
-        }
     }
 
     public int[] getStats() {
@@ -149,11 +145,18 @@ public class Player implements TurnBase, Serializable {
     public void castAbility(Warrior castingHero, Ability castedAbility, ArrayList<Warrior> allEnemies, Warrior... selectedTargets) {
 
         castingHero.castAbility(castedAbility, selectedTargets, toArray(allEnemies), toArray(this.myTeam));
-
+        if (MultiPlayer.getInstacne() != null) {
+            TransferAct TP = new TransferAct(this.hashCode(), castingHero.hashCode(), ActionType.AbilityCast, toHash(selectedTargets), castedAbility.hashCode(), null);
+            MultiPlayer.getInstacne().addToSendObjects(TP);
+        }
     }
 
     public void useItem(Warrior usingHero, Item usedItem, ArrayList<Warrior> allEnemies, Warrior... selectedTargets) {
         usingHero.useItem(usedItem, selectedTargets, toArray(allEnemies), toArray(this.myTeam));
+        if (MultiPlayer.getInstacne() != null) {
+            TransferAct TP = new TransferAct(this.hashCode(), usingHero.hashCode(), ActionType.UseItem, toHash(selectedTargets), null, usedItem.hashCode());
+            MultiPlayer.getInstacne().addToSendObjects(TP);
+        }
     }
 
     public void sell(Item item, Warrior target) throws TradeException {
@@ -191,7 +194,19 @@ public class Player implements TurnBase, Serializable {
     //TODO Each Hero Can Attack Multiple Targets
     public void giveAttack(Warrior attackingHero, Warrior[] selectedTargets, ArrayList<Warrior> allEnemies) {
             attackingHero.attack(selectedTargets, null, null, toArray(allEnemies), toArray(this.myTeam));
+        if (MultiPlayer.getInstacne() != null) {
+            TransferAct TP = new TransferAct(this.hashCode(), attackingHero.hashCode(), ActionType.Attack, toHash(selectedTargets), null, null);
+            MultiPlayer.getInstacne().addToSendObjects(TP);
+        }
+    }
 
+    private Integer[] toHash(Warrior[] selectedTargets) {
+        if (selectedTargets == null) return null;
+        Integer[] hashes = new Integer[selectedTargets.length];
+        for (int i = 0; i < selectedTargets.length; i++) {
+            hashes[i] = selectedTargets[i].hashCode();
+        }
+        return hashes;
     }
 
     public static Warrior[] toArray(List<Warrior> collection) {
@@ -219,10 +234,7 @@ public class Player implements TurnBase, Serializable {
         } else {
             this.currentExperience += num;
         }
-        if (MultiPlayer.getInstacne() != null) {
-            TransferPack TP = new TransferPack(getStats());
-            MultiPlayer.getInstacne().addToSendObjects(TP);
-        }
+
     }
 
     public void changeCurrentWealth(int i) {
@@ -233,10 +245,6 @@ public class Player implements TurnBase, Serializable {
                     (i - currentWealth) + "$ additional Money.");
         else {
             this.currentExperience += i;
-        }
-        if (MultiPlayer.getInstacne() != null) {
-            TransferPack TP = new TransferPack(getStats());
-            MultiPlayer.getInstacne().addToSendObjects(TP);
         }
     }
 
@@ -265,10 +273,6 @@ public class Player implements TurnBase, Serializable {
         } else {
             this.immprtalityPotions += i;
         }
-        if (MultiPlayer.getInstacne() != null) {
-            TransferPack TP = new TransferPack(getStats());
-            MultiPlayer.getInstacne().addToSendObjects(TP);
-        }
     }
 
 
@@ -291,12 +295,29 @@ public class Player implements TurnBase, Serializable {
         this.currentExperience = currentExperience;
     }
 
-    public void setImmprtalityPotions(int immprtalityPotions) {
+    public void setImmortalityPotions(int immprtalityPotions) {
         this.immprtalityPotions = immprtalityPotions;
     }
 
     public String getName() {
         return name;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Player player = (Player) o;
+
+        return name.equals(player.name);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
     }
 }
 
