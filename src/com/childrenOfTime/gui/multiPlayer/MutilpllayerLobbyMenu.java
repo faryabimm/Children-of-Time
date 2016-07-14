@@ -6,10 +6,12 @@ import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
 import com.childrenOfTime.gui.customizedListeners.KeyTypeListener;
 import com.childrenOfTime.gui.fillForms.MultiplayerChatDialog;
+import com.childrenOfTime.gui.notification.NotificationType;
 import com.childrenOfTime.model.ChildrenOfTime;
 import com.childrenOfTime.model.MultiPlayer.MultiPlayer;
 import com.childrenOfTime.model.Player;
 import com.childrenOfTime.model.PlayerType;
+import com.childrenOfTime.utilities.GUIUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -71,16 +73,20 @@ public class MutilpllayerLobbyMenu extends MenuScreenPanel {
         this.addKeyListener(listener);
 
         chatDialog = new MultiplayerChatDialog(CustomGameDAO.getCurrentUser().getUserName(), isHost);
+        chatDialog.setVisible(false);
+
+
 
         messageServieceDaemon = new Thread(() -> {
             while (true) {
                 String message = MultiPlayer.getInstacne().getRecievedMessage();
-
-                chatDialog.importMessage(message, "");
+                chatDialog.importMessage(message);
             }
         });
 
+
         messageServieceDaemon.setDaemon(true);
+        messageServieceDaemon.setPriority(Thread.NORM_PRIORITY + 2);
         messageServieceDaemon.start();
 
         closeTheServer.addKeyListener(listener);
