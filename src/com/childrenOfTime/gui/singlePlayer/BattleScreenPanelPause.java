@@ -45,8 +45,7 @@ public class BattleScreenPanelPause extends MenuScreenPanel {
         resume.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ChildrenOfTime.changeContentPane(BattleScreenPanel.lastState);
-                BattleScreenPanel.lastState.emerge();
+                ChildrenOfTime.changeContentPaneNOANIMATION(BattleScreenPanel.lastState);
             }
         });
 

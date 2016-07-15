@@ -92,7 +92,6 @@ public class SinglePlayerGame extends MenuScreenPanel {
         g2d.fillRoundRect(indicator.getX(), indicator.getY(), PlayerIndicator.PLAYER_INDICATOR_DIAMETER
                 , PlayerIndicator.PLAYER_INDICATOR_DIAMETER, PlayerIndicator.PLAYER_INDICATOR_DIAMETER,
                 PlayerIndicator.PLAYER_INDICATOR_DIAMETER);
-
     }
 
 }
