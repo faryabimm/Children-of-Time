@@ -27,7 +27,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-public class BattleScreenPanel extends MenuScreenPanel {
+public class BattleScreenPanel extends JPanel {
 
     public static BattleScreenPanel lastState;
 
@@ -42,11 +42,6 @@ public class BattleScreenPanel extends MenuScreenPanel {
     private WarriorIndicatorPanel leftWarriorIndicatiorPanel;
     private WarriorIndicatorPanel rightWarriorIndicatiorPanel;
 
-
-    public void revertBodyTolastState() {
-        bodyPanel = BodyPanel.lastState;
-        BodyPanel.lastState.emerge();
-    }
 
 
     public Player getUserPlayer() {
@@ -67,18 +62,24 @@ public class BattleScreenPanel extends MenuScreenPanel {
         return chosenWarriors;
     }
 
-    public void changeBodyPane(MenuScreenPanel newBodyPane) {
+    public void changeBodyPane(JPanel newBodyPane) {
         BodyPanel currentBodyPane = bodyPanel;
         BodyPanel.lastState = bodyPanel;
-        currentBodyPane.fade();
         add(newBodyPane, BorderLayout.CENTER);
         ChildrenOfTime.frame.pack();
         ChildrenOfTime.frame.setLocationRelativeTo(null);
         ChildrenOfTime.frame.setVisible(true);
-        newBodyPane.requestFocus();
         newBodyPane.repaint();
-        newBodyPane.emerge();
-        BodyPanel.lastState.resetPageOpacityToOne();
+        newBodyPane.requestFocus();
+    }
+
+    public void revertChangeContentPane() {
+        add(BodyPanel.lastState, BorderLayout.CENTER);
+        ChildrenOfTime.frame.pack();
+        ChildrenOfTime.frame.setLocationRelativeTo(null);
+        ChildrenOfTime.frame.setVisible(true);
+        BodyPanel.lastState.repaint();
+        BodyPanel.lastState.requestFocus();
     }
 
     public BattleScreenPanel(Battle battle, ArrayList<Warrior> warriors, Player userPlayer) {
@@ -106,12 +107,9 @@ public class BattleScreenPanel extends MenuScreenPanel {
         this.add(rightWarriorIndicatiorPanel, BorderLayout.EAST);
     }
 
-    @Override
-    public void initialize() {
-
-    }
 }
-class BattleScreenPanelStaticData extends JFrame {
+
+class BattleScreenPanelStaticData {
 
 
     public static final int ELEMENT_GAP = MenuScreenPanel.ELEMENT_GAP;
@@ -138,7 +136,8 @@ class BattleScreenPanelStaticData extends JFrame {
 
     public static Dimension BATTLE_SCREEN_PANEL_DIMENTION = new Dimension(BATTLE_SCREEN_PANEL_WIDTH, BATTLE_SCREEN_PANEL_HEIGHT);
 }
-class BodyPanel extends MenuScreenPanel {
+
+class BodyPanel extends JPanel {
 
 
     public static BodyPanel lastState;
@@ -184,11 +183,6 @@ class BodyPanel extends MenuScreenPanel {
     }
 
     @Override
-    public void initialize() {
-
-    }
-
-    @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -198,7 +192,8 @@ class BodyPanel extends MenuScreenPanel {
 
     }
 }
-class WarriorChoosingPanel extends MenuScreenPanel {
+
+class WarriorChoosingPanel extends JPanel {
 
 
     private Warrior executingWarrior;
@@ -218,7 +213,7 @@ class WarriorChoosingPanel extends MenuScreenPanel {
     public WarriorChoosingPanel(BattleScreenPanel battleScreenPanel, int maximumNumber, ArrayList<Warrior> selectedWarriors,
                                 Warrior executingWarrior, ActionType executionType, @Nullable Ability castedAbility, @Nullable Item usedItem) {
 
-
+        initialize();
         this.castedAbility = castedAbility;
         this.usedItem = usedItem;
         this.executionType = executionType;
@@ -289,8 +284,6 @@ class WarriorChoosingPanel extends MenuScreenPanel {
         battleScreenPanel.addMouseListener(listener);
     }
 
-
-    @Override
     public void initialize() {
         CustomizedJButton okButton = new CustomizedJButton("OK");
         okButton.setLocation((BattleScreenPanelStaticData.BODY_PANEL_WIDTH - CustomizedJButton.BUTTON_WIDTH) / 2,
@@ -300,7 +293,7 @@ class WarriorChoosingPanel extends MenuScreenPanel {
 
         counterLabel = new CustomizedJLabel("selected: " + 0 + " warriors");
         counterLabel.setLocation((BattleScreenPanelStaticData.BODY_PANEL_WIDTH - CustomizedJLabel.LABEL_WIDTH) / 2,
-                (BattleScreenPanelStaticData.WARRIOR_INDICATOR_PANEL_HEIGHT - CustomizedJButton.BUTTON_HEIGHT) / 2 - CustomizedJLabel.LABEL_HEIGHT - ELEMENT_GAP);
+                (BattleScreenPanelStaticData.WARRIOR_INDICATOR_PANEL_HEIGHT - CustomizedJButton.BUTTON_HEIGHT) / 2 - CustomizedJLabel.LABEL_HEIGHT - MenuScreenPanel.ELEMENT_GAP);
         this.add(counterLabel);
 
         //TODO may have some unfinished business here
@@ -391,10 +384,9 @@ class WarriorChoosingPanel extends MenuScreenPanel {
                 /////////////////////CLOSE WARRIOR CHOOSING DIALOG///////////////////////////////
                 /////////////////////////////////////////////////////////////////////////////////
 
-                battleScreenPanel.revertBodyTolastState();
+                battleScreenPanel.revertChangeContentPane();
             }
         });
-        emerge();
     }
 
     @Override

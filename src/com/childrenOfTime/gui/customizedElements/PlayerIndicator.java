@@ -146,7 +146,7 @@ public class PlayerIndicator {
 
     private void loadBattle(Battle battle, ArrayList<Warrior> playerWarriors, Player playingPlayer) {
         BattleScreenPanel battleScreenPanel = new BattleScreenPanel(battle, playerWarriors, playingPlayer);
-        ChildrenOfTime.changeContentPane(battleScreenPanel);
+        ChildrenOfTime.changeContentPaneNOANIMATION(battleScreenPanel);
     }
     public int getX() {
         return X;

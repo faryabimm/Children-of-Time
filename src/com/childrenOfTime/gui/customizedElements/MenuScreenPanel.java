@@ -77,10 +77,10 @@ public abstract class MenuScreenPanel extends JPanel {
                     userAvatar.getHeight() + ELEMENT_GAP);
         }
 
-        if (!(this instanceof BattleScreenPanel)) {
-            this.add(userNameLabel);
-            this.add(userAvatar);
-        }
+//        if (!(this instanceof BattleScreenPanel)) {
+//            this.add(userNameLabel);
+//            this.add(userAvatar);
+//        }
 
 
 

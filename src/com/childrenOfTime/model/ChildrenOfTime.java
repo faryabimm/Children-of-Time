@@ -415,6 +415,19 @@ public final class ChildrenOfTime implements Serializable {
         mainMenuScreenPanel.requestFocus();
         mainMenuScreenPanel.repaint();
     }
+
+    public static void changeContentPaneNOANIMATION(JPanel newContentPane) {
+        JPanel currentContentPane = (JPanel) frame.getContentPane();
+
+        frame.getContentPane().removeAll();
+        frame.setContentPane(newContentPane);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        newContentPane.requestFocus();
+        newContentPane.repaint();
+    }
+
     public static void changeContentPane(MenuScreenPanel newContentPane) {
 
         MenuScreenPanel currentContentPane = (MenuScreenPanel)frame.getContentPane();
