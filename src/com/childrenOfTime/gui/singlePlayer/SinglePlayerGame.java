@@ -1,13 +1,13 @@
 package com.childrenOfTime.gui.singlePlayer;
 
+import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.gui.customGame.CustomScenarioBuilderPanel;
-import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
-import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
-import com.childrenOfTime.gui.customizedElements.PlayerIndicator;
-import com.childrenOfTime.gui.customizedElements.Scenario;
+import com.childrenOfTime.gui.customizedElements.*;
 import com.childrenOfTime.gui.customizedListeners.MapScreenListener;
 import com.childrenOfTime.gui.fillForms.dataHolders.CustomScenarioInfoHolder;
 import com.childrenOfTime.model.ChildrenOfTime;
+import com.childrenOfTime.model.Player;
+import com.childrenOfTime.model.PlayerType;
 import com.childrenOfTime.model.Warriors.Warrior;
 import com.childrenOfTime.utilities.GUIUtils;
 
@@ -25,12 +25,16 @@ public class SinglePlayerGame extends MenuScreenPanel {
     private MapScreenListener controller;
     public static SinglePlayerGame lastState;
 
+    private Player playingPlayer;
+
     CustomScenarioInfoHolder infoHolder;
 
     public SinglePlayerGame(CustomScenarioInfoHolder infoHolder) {
+
+        playingPlayer = new Player(infoHolder.playerWarriors, CustomGameDAO.getCurrentUser().getUserName(), PlayerType.Human);
         lastState = this;
         this.infoHolder = infoHolder;
-        indicator = new PlayerIndicator(infoHolder);
+        indicator = new PlayerIndicator(infoHolder, playingPlayer);
         initializeCells();
         controller = new MapScreenListener(indicator, this);
         addKeyListener(controller);
@@ -47,54 +51,19 @@ public class SinglePlayerGame extends MenuScreenPanel {
     public void initialize() {
         JButton saveGame = new CustomizedJButton("Save the game");
         JButton quit = new CustomizedJButton("Quit");
-//        JButton up = new CustomizedJButton("UP");
-//        JButton down = new CustomizedJButton("DOWN");
-//        JButton right = new CustomizedJButton("LEFT");
-//        JButton left = new CustomizedJButton("RIGHT");
 
         quit.setBackground(Color.red);
         quit.setForeground(Color.yellow);
 
         this.add(quit);
         this.add(saveGame);
-//        this.add(up);
-//        this.add(down);
-//        this.add(left);
-//        this.add(right);
 
         quit.setLocation(ChildrenOfTime.PREFERRED_WIDTH - ELEMENT_GAP - CustomizedJButton.BUTTON_WIDTH,
                 ChildrenOfTime.PREFERRED_HEIGHT - CustomizedJButton.BUTTON_HEIGHT - ELEMENT_GAP);
         saveGame.setLocation(ChildrenOfTime.PREFERRED_WIDTH - ELEMENT_GAP - CustomizedJButton.BUTTON_WIDTH,
                 ChildrenOfTime.PREFERRED_HEIGHT - 2 * CustomizedJButton.BUTTON_HEIGHT - 2 * ELEMENT_GAP);
-//        up.setLocation(ChildrenOfTime.PREFERRED_WIDTH - ELEMENT_GAP - CustomizedJButton.BUTTON_WIDTH,
-//                ChildrenOfTime.PREFERRED_HEIGHT - 3 * CustomizedJButton.BUTTON_HEIGHT - 3 * ELEMENT_GAP);
-//        down.setLocation(ChildrenOfTime.PREFERRED_WIDTH - ELEMENT_GAP - CustomizedJButton.BUTTON_WIDTH,
-//                ChildrenOfTime.PREFERRED_HEIGHT - 4 * CustomizedJButton.BUTTON_HEIGHT - 4 * ELEMENT_GAP);
-//        left.setLocation(ChildrenOfTime.PREFERRED_WIDTH - ELEMENT_GAP - CustomizedJButton.BUTTON_WIDTH,
-//                ChildrenOfTime.PREFERRED_HEIGHT - 5 * CustomizedJButton.BUTTON_HEIGHT - 5 * ELEMENT_GAP);
-//        right.setLocation(ChildrenOfTime.PREFERRED_WIDTH - ELEMENT_GAP - CustomizedJButton.BUTTON_WIDTH,
-//                ChildrenOfTime.PREFERRED_HEIGHT - 6 * CustomizedJButton.BUTTON_HEIGHT - 6 * ELEMENT_GAP);
-
 
         quit.addActionListener(e -> ChildrenOfTime.changeContentPane(new SinglePlayerMenuScreenPanel()));
-//        up.addActionListener(e -> {
-//            indicator.moveUp();
-//            repaint();
-//        });
-//        down.addActionListener(e -> {
-//            indicator.moveDown();
-//            repaint();
-//        });
-//        left.addActionListener(e -> {
-//            indicator.moveLeft();
-//            repaint();
-//        });
-//        right.addActionListener(e -> {
-//            indicator.moveRight();
-//            repaint();
-//        });
-
-
         emerge();
     }
 
@@ -111,7 +80,7 @@ public class SinglePlayerGame extends MenuScreenPanel {
 
         for (int i = 0; i < CustomScenarioBuilderPanel.NUMBER_OF_MAP_COLUMNS; i++) {
             for (int j = 0; j < CustomScenarioBuilderPanel.NUMBER_OF_MAP_ROWS; j++) {
-                g2d.drawImage(GUIUtils.iconToImage(infoHolder.playingScenario.getIJ(i, j).getIcon()),
+                g2d.drawImage(GUIUtils.iconToImage(GUIUtils.getScaledIcon(infoHolder.playingScenario.getIJ(i, j).getIcon(), ScenarioCell.SCENARIO_CELL_DIMENTION, ScenarioCell.SCENARIO_CELL_DIMENTION, 0)),
                         infoHolder.playingScenario.getIJ(i, j).getX(), infoHolder.playingScenario.getIJ(i, j).getY(), this);
             }
         }

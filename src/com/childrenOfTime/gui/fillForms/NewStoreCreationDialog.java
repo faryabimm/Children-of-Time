@@ -78,6 +78,12 @@ public class NewStoreCreationDialog extends JDialog {
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+        addItemButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
     }
 
     private void onOK() {

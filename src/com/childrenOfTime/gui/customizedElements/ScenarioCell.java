@@ -99,8 +99,8 @@ public class ScenarioCell extends JLabel implements Serializable {
     }
 
     public void setIcon(ImageIcon icon) {
-        this.icon = icon;
-        super.setIcon(icon);
+        this.icon = GUIUtils.getScaledIcon(icon, ScenarioCell.SCENARIO_CELL_DIMENTION, ScenarioCell.SCENARIO_CELL_DIMENTION, 0);
+        super.setIcon(GUIUtils.getScaledIcon(icon, ScenarioCell.SCENARIO_CELL_DIMENTION, ScenarioCell.SCENARIO_CELL_DIMENTION, 0));
     }
 
     public Story getStory() {

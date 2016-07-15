@@ -1,6 +1,7 @@
 package com.childrenOfTime.controller;
 
 import com.childrenOfTime.model.ChildrenOfTime;
+import com.childrenOfTime.model.Player;
 
 import javax.swing.*;
 import java.awt.*;

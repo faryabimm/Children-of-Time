@@ -7,6 +7,7 @@ import com.childrenOfTime.gui.fillForms.dataHolders.BattleWrapper;
 import com.childrenOfTime.gui.fillForms.dataHolders.StoreWrapper;
 import com.childrenOfTime.model.Battle;
 import com.childrenOfTime.model.Store;
+import com.childrenOfTime.utilities.GUIUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -84,12 +85,12 @@ public class BlockPickerDialog extends JDialog {
     private void onOK() {
         if (radioButton3.isSelected()) {
             targetCell.reset();
-            targetCell.setIcon(CustomGameDAO.textures.get("wall"));
+            targetCell.setIcon(GUIUtils.getScaledIcon(CustomGameDAO.textures.get("wall"), ScenarioCell.SCENARIO_CELL_DIMENTION, ScenarioCell.SCENARIO_CELL_DIMENTION, 0));
             targetCell.setCellType(ScenarioCellType.WALL);
         }
         if (radioButton4.isSelected()) {
             targetCell.reset();
-            targetCell.setIcon(CustomGameDAO.textures.get("store"));
+            targetCell.setIcon(GUIUtils.getScaledIcon(CustomGameDAO.textures.get("store"), ScenarioCell.SCENARIO_CELL_DIMENTION, ScenarioCell.SCENARIO_CELL_DIMENTION, 0));
             targetCell.setCellType(ScenarioCellType.STORE);
             StoreWrapper storeWrapper = new StoreWrapper();
             new SingleStoreChooserDialog(storeWrapper.store);
@@ -97,17 +98,17 @@ public class BlockPickerDialog extends JDialog {
         }
         if (radioButton5.isSelected()) {
             targetCell.reset();
-            targetCell.setIcon(CustomGameDAO.textures.get("upgrade"));
+            targetCell.setIcon(GUIUtils.getScaledIcon(CustomGameDAO.textures.get("upgrade"), ScenarioCell.SCENARIO_CELL_DIMENTION, ScenarioCell.SCENARIO_CELL_DIMENTION, 0));
             targetCell.setCellType(ScenarioCellType.UPGRADEPLACE);
         }
         if (radioButton6.isSelected()) {
             targetCell.reset();
-            targetCell.setIcon(CustomGameDAO.textures.get("story"));
+            targetCell.setIcon(GUIUtils.getScaledIcon(CustomGameDAO.textures.get("story"), ScenarioCell.SCENARIO_CELL_DIMENTION, ScenarioCell.SCENARIO_CELL_DIMENTION, 0));
             targetCell.setCellType(ScenarioCellType.STORY);
         }
         if (radioButton7.isSelected()) {
             targetCell.reset();
-            targetCell.setIcon(CustomGameDAO.textures.get("battle"));
+            targetCell.setIcon(GUIUtils.getScaledIcon(CustomGameDAO.textures.get("battle"), ScenarioCell.SCENARIO_CELL_DIMENTION, ScenarioCell.SCENARIO_CELL_DIMENTION, 0));
             targetCell.setCellType(ScenarioCellType.BATTLE);
 
             BattleWrapper battleWrapper = new BattleWrapper();
@@ -116,7 +117,7 @@ public class BlockPickerDialog extends JDialog {
         }
         if (radioButton8.isSelected()) {
             targetCell.reset();
-            targetCell.setIcon(CustomGameDAO.textures.get("boss"));
+            targetCell.setIcon(GUIUtils.getScaledIcon(CustomGameDAO.textures.get("boss"), ScenarioCell.SCENARIO_CELL_DIMENTION, ScenarioCell.SCENARIO_CELL_DIMENTION, 0));
             targetCell.setCellType(ScenarioCellType.BOSS);
 
             BattleWrapper battleWrapper = new BattleWrapper();
@@ -128,17 +129,17 @@ public class BlockPickerDialog extends JDialog {
             switch (comboBox1.getSelectedIndex()) {
                 case 0:
                     targetCell.reset();
-                    targetCell.setIcon(CustomGameDAO.textures.get("ground1"));
+                    targetCell.setIcon(GUIUtils.getScaledIcon(CustomGameDAO.textures.get("ground1"), ScenarioCell.SCENARIO_CELL_DIMENTION, ScenarioCell.SCENARIO_CELL_DIMENTION, 0));
                     targetCell.setCellType(ScenarioCellType.GROUND);
                     break;
                 case 1:
                     targetCell.reset();
-                    targetCell.setIcon(CustomGameDAO.textures.get("ground2"));
+                    targetCell.setIcon(GUIUtils.getScaledIcon(CustomGameDAO.textures.get("ground2"), ScenarioCell.SCENARIO_CELL_DIMENTION, ScenarioCell.SCENARIO_CELL_DIMENTION, 0));
                     targetCell.setCellType(ScenarioCellType.GROUND);
                     break;
                 case 2:
                     targetCell.reset();
-                    targetCell.setIcon(CustomGameDAO.textures.get("ground3"));
+                    targetCell.setIcon(GUIUtils.getScaledIcon(CustomGameDAO.textures.get("ground3"), ScenarioCell.SCENARIO_CELL_DIMENTION, ScenarioCell.SCENARIO_CELL_DIMENTION, 0));
                     targetCell.setCellType(ScenarioCellType.GROUND);
                     break;
             }
@@ -147,22 +148,22 @@ public class BlockPickerDialog extends JDialog {
             switch (comboBox2.getSelectedIndex()) {
                 case 0:
                     targetCell.reset();
-                    targetCell.setIcon(CustomGameDAO.textures.get("door_down_up"));
+                    targetCell.setIcon(GUIUtils.getScaledIcon(CustomGameDAO.textures.get("door_down_up"), ScenarioCell.SCENARIO_CELL_DIMENTION, ScenarioCell.SCENARIO_CELL_DIMENTION, 0));
                     targetCell.setCellType(ScenarioCellType.DOOR_DOWN_UP);
                     break;
                 case 1:
                     targetCell.reset();
-                    targetCell.setIcon(CustomGameDAO.textures.get("door_up_down"));
+                    targetCell.setIcon(GUIUtils.getScaledIcon(CustomGameDAO.textures.get("door_up_down"), ScenarioCell.SCENARIO_CELL_DIMENTION, ScenarioCell.SCENARIO_CELL_DIMENTION, 0));
                     targetCell.setCellType(ScenarioCellType.DOOR_UP_DOWN);
                     break;
                 case 2:
                     targetCell.reset();
-                    targetCell.setIcon(CustomGameDAO.textures.get("door_left_right"));
+                    targetCell.setIcon(GUIUtils.getScaledIcon(CustomGameDAO.textures.get("door_left_right"), ScenarioCell.SCENARIO_CELL_DIMENTION, ScenarioCell.SCENARIO_CELL_DIMENTION, 0));
                     targetCell.setCellType(ScenarioCellType.DOOR_LEFT_RIGHT);
                     break;
                 case 3:
                     targetCell.reset();
-                    targetCell.setIcon(CustomGameDAO.textures.get("door_right_left"));
+                    targetCell.setIcon(GUIUtils.getScaledIcon(CustomGameDAO.textures.get("door_right_left"), ScenarioCell.SCENARIO_CELL_DIMENTION, ScenarioCell.SCENARIO_CELL_DIMENTION, 0));
                     targetCell.setCellType(ScenarioCellType.DOOR_RIGHT_LEFT);
                     break;
             }
