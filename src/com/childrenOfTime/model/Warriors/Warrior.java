@@ -525,12 +525,11 @@ public class Warrior implements Serializable, TurnBase {
         return this.name + " " + this.getId() + "(" + this.info.getClassName() + ")   ";
     }
 
-    private transient Random random = new Random();
 
     public Integer calculateDamageEffitioncy() {
         int i = this.info.damageEfficiencyIntelligenceOutOfTen;
         int j = (int) (this.currentHealth + 1);
-        int sout = (100 - ((i * 7 * 1400) / j * (random.nextInt(30 - i * 2) + 70 + 2 * i) / 1000));
+        int sout = (100 - ((i * 7 * 1400) / j * (new Random().nextInt(30 - i * 2) + 70 + 2 * i) / 1000));
         if (sout > 100) sout = 100;
         if (sout < 0) sout = 0;
         return sout;
