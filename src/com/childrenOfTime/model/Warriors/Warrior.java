@@ -370,7 +370,14 @@ public class Warrior implements Serializable, TurnBase {
     }
 
     public int changeHealth(int i, Integer damageEffitioncyFactor) {
+        if (Lock1 == null) {
+            Lock1 = new CyclicBarrier(2);
+        }
+        if (Lock2 == null) {
+            Lock2 = new CyclicBarrier(2);
+        }
         if (isDead) return 0;
+
         int initHealth = currentHealth;
         if (damageEffitioncyFactor == null) damageEffitioncyFactor = calculateDamageEffitioncy();
         if (i >= 0) damageEffitioncyFactor = 100;
@@ -600,6 +607,12 @@ public class Warrior implements Serializable, TurnBase {
     transient CyclicBarrier Lock1 = new CyclicBarrier(2);
 
     public Boolean needsImo() {
+        if (Lock1 == null) {
+            Lock1 = new CyclicBarrier(2);
+        }
+        if (Lock2 == null) {
+            Lock2 = new CyclicBarrier(2);
+        }
         try {
             Lock1.await();
         } catch (InterruptedException e) {
