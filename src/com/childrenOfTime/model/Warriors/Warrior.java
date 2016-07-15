@@ -212,26 +212,29 @@ public class Warrior implements Serializable, TurnBase {
         if (isDead()) return;
         if (EPCost == null) EPCost = DEFAULT_Attack_EP_COST;
 
-        EffectPerformer.performEffects(true, this.passiveEffects, this, targets, allEnemies, allTeamMates);
+        if (passiveEffects != null)
+            EffectPerformer.performEffects(true, this.passiveEffects, this, targets, allEnemies, allTeamMates);
 
         changeEP(-EPCost);
         if (realAttack == null) realAttack = this.getAttackPower();
 
-
-        for (Warrior tar : targets) {
-            if (tar == null) continue;
-            int damage = tar.changeHealth(-realAttack, null);
-            //TODO DOROST SHAVAD
-            printOutput(toString() + " has successfully attacked " + /*Inja h*/ tar.toString() + " with " + getAttackPower() + " power " + "\nDamage Made : " + damage);
+        if (targets != null) {
+            for (Warrior tar : targets) {
+                if (tar == null) continue;
+                int damage = tar.changeHealth(-realAttack, null);
+                //TODO DOROST SHAVAD
+                printOutput(toString() + " has successfully attacked " + /*Inja h*/ tar.toString() + " with " + getAttackPower() + " power " + "\nDamage Made : " + damage);
+            }
         }
 
         Set<Effect> toWearOff = new HashSet<>();
-        for (Effect eff : this.passiveEffects) {
-            if (eff.getEffectType().isIfPassiveInstantEffectJustForAttack())
-                toWearOff.add(eff);
+        if (this.passiveEffects != null) {
+            for (Effect eff : this.passiveEffects) {
+                if (eff.getEffectType().isIfPassiveInstantEffectJustForAttack())
+                    toWearOff.add(eff);
+            }
+            EffectPerformer.wearOffEffects(toWearOff, this, targets, allEnemies, allTeamMates);
         }
-        EffectPerformer.wearOffEffects(toWearOff, this, targets, allEnemies, allTeamMates);
-
     }
 
     public void IWannaBuyItemForYou(Item item, Warrior[] allTeamMates) {
@@ -523,6 +526,7 @@ public class Warrior implements Serializable, TurnBase {
     }
 
     private transient Random random = new Random();
+
     public Integer calculateDamageEffitioncy() {
         int i = this.info.damageEfficiencyIntelligenceOutOfTen;
         int j = (int) (this.currentHealth + 1);

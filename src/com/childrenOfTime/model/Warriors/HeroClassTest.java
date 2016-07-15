@@ -87,8 +87,8 @@ public class HeroClassTest extends TestCase {
 //        AB2 = abMaker.returnAbility();
 
 
-        HC1 = new HeroClass(true, true, 200, 3000, 80, true, burnEP, 3, "Muta", "Ep burn", true, true, true, true, true, "Man Kardam ", "mordam ", "saeeds", 0, 300, 10, 200, 10, 6, 10, "Koskholan", "Balihan", abilities);
-        HC2 = new HeroClass(true, true, 200, 3000, 80, true, burnEP, 3, "Muta", "Ep burn", true, true, true, true, true, "Man Kardam ", "mordam ", "olaghha", 0, 300, 10, 200, 10, 6, 10, "Koskholan", "Balihan", abilities2);
+        HC1 = new HeroClass(true, true, 200, 3000, 80, true, burnEP, 3, "Muta", "Ep burn", true, true, true, true, true, "Man Kardam ", "mordam ", "saeeds", 0, 300, 10, 200, 10, 6, 10, "Koskholan", "Balihan", null);
+        HC2 = new HeroClass(true, true, 200, 3000, 80, true, burnEP, 3, "Muta", "Ep burn", true, true, true, true, true, "Man Kardam ", "mordam ", "olaghha", 0, 300, 10, 200, 10, 6, 10, "Koskholan", "Balihan", null);
         W1 = new Warrior("saeed", HC1, null, null);
         W2 = new Warrior("ali", HC2, null, null);
         W3 = new Warrior("keyvan", HC2, null, null);
@@ -97,6 +97,12 @@ public class HeroClassTest extends TestCase {
         W6 = new Warrior("memar", HC2, null, null);
         ItemType iT = new ItemType(false, false, false, true, false, true, false, 0, 5, 2, 0);
         I1 = new Item("Item1 ", iT, new Messages(), Target.AllTeammates, effects, null, null);
+    }
+
+    public void testAttack() {
+        testMakeAWarrior();
+        Warrior[] targets = {W2, W3, W4};
+        W1.attack(targets, null, null, targets, targets);
     }
 
     //All Health Changes Have been Completely tested !
