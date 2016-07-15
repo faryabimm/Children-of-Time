@@ -188,11 +188,11 @@ public class MultiPlayer {
 
 
     public void forceStopConnection() {
-        if (this.discoveryThread != null) (discoveryThread).stopp();
-        if (this.dataReceiver != null) ((Communicator) dataReceiver).stopp();
-        if (this.dataSender != null) ((Communicator) dataReceiver).stopp();
-        if (this.messageReceiver != null) ((Communicator) dataReceiver).stopp();
-        if (this.messageSender != null) ((Communicator) dataReceiver).stopp();
+        if (this.discoveryThread != null) (discoveryThread).stop();
+        if (this.dataReceiver != null) ((Communicator) dataReceiver).stop();
+        if (this.dataSender != null) ((Communicator) dataReceiver).stop();
+        if (this.messageReceiver != null) ((Communicator) dataReceiver).stop();
+        if (this.messageSender != null) ((Communicator) dataReceiver).stop();
         GUIUtils.showNotification("Successfully Disconnected !", NotificationType.NORMAL);
 
     }

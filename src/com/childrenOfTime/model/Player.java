@@ -18,7 +18,7 @@ import com.sun.istack.internal.NotNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
 
@@ -209,10 +209,13 @@ public class Player implements TurnBase, Serializable {
         return hashes;
     }
 
-    public static Warrior[] toArray(List<Warrior> collection) {
+    public static Warrior[] toArray(Collection<Warrior> collection) {
         Warrior[] warriors = new Warrior[collection.size()];
-        for (int i = 0; i < collection.size(); i++) {
-            warriors[i] = collection.get(i);
+        int i = 0;
+        for (Warrior warrior : collection) {
+            if (warrior == null) continue;
+            warriors[i] = warrior;
+            i++;
         }
         return warriors;
     }
