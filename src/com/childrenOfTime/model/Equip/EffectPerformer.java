@@ -21,6 +21,7 @@ public class EffectPerformer implements Serializable {
 
     //TODO anotherCheck required
     public static void performEffects(boolean CalledByAttack, Collection<Effect> effects, Warrior performer, Warrior[] selectedTargets, Warrior[] allEnemies, Warrior[] allTeamMates) {
+        if (effects == null) return;
         if (effects.size() == 0) return;
         Iterator<Effect> itr = effects.iterator();
         Warrior[] finalTargets;
