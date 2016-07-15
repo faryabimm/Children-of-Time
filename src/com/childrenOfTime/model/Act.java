@@ -1,5 +1,6 @@
 package com.childrenOfTime.model;
 
+import com.childrenOfTime.model.Equip.AbilComps.Ability;
 import com.childrenOfTime.model.Warriors.ActionType;
 import com.childrenOfTime.model.Warriors.Warrior;
 
@@ -41,6 +42,34 @@ public class Act {
     public int getHashCodeOfAbility() {
         return hashCodeOfAbility;
     }
+
+    public String toString() {
+        String toReturn = "\n" + actionType.name() + "  \n  " + " Performer  :  " + performer;
+        switch (this.getActionType()) {
+            case AbilityCast:
+                for (Ability ab : performer.abilities) {
+                    if (ab.hashCode() == this.getHashCodeOfAbility()) {
+                        toReturn += "\n   Ability : " + ab.getName() + "\n      Target Type :  " + ab.getTargetType() + "\n      Selected Targets If needed : ";
+                        break;
+                    }
+                }
+                break;
+            case Attack:
+            case BurnEP:
+                toReturn += "\n   Selected Targets : ";
+
+
+                break;
+
+        }
+        if (selectedTargets == null) return toReturn + "No Target !";
+
+        for (Warrior warrior : this.selectedTargets) {
+            toReturn += warrior;
+        }
+        return toReturn;
+    }
+
 }
 
 

@@ -12,7 +12,7 @@ public class Rules implements Serializable {
     public static final int INITIAL_XP_DEFAULT = 15;
     public static final int INITIAL_MONEY_DEFAULT = 40;
     public static final int INITIAL_IMMORTALITY_POTION_DEFAULT = 3;
-    public static DIFFICUALTY DIFFICUALTY = com.childrenOfTime.model.DIFFICUALTY.Medium;
+    public static DIFFICUALTY DIFFICUALTY = com.childrenOfTime.model.DIFFICUALTY.Hard;
     public static Integer Quantitiy_Of_Targets_For_Manual_Multiple_Target_Choosing = 3;
     public static final Integer Quantitiy_Of_Targets_For_Manual_Multiple_Target_Choosing_DEFAULT = 3;
     //TODO if it's 1000 It means All Heroes have to die to Defeat

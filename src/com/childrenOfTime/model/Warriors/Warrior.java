@@ -519,7 +519,7 @@ public class Warrior implements Serializable, TurnBase {
     }
 
     public String toString() {
-        return this.name + " " + this.getId() + " ," + "  (" + this.info.getClassName() + ") - ";
+        return this.name + " " + this.getId() + "(" + this.info.getClassName() + ")   ";
     }
 
     private transient Random random = new Random();
@@ -593,8 +593,8 @@ public class Warrior implements Serializable, TurnBase {
         printOutput(toPrint);
     }
 
-    CyclicBarrier Lock2 = new CyclicBarrier(2);
-    CyclicBarrier Lock1 = new CyclicBarrier(2);
+    transient CyclicBarrier Lock2 = new CyclicBarrier(2);
+    transient CyclicBarrier Lock1 = new CyclicBarrier(2);
 
     public Boolean needsImo() {
         try {

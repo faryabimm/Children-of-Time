@@ -8,6 +8,7 @@ import com.childrenOfTime.model.Warriors.Warrior;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -39,6 +40,7 @@ public class ArtificialBrain implements Serializable {
 
         for (Warrior hero : this.team) {
             if (hero.isDead()) continue;
+            tempEP = hero.getCurrentEP();
             boolean CanAttack = hero.getInfo().getCanAttack();
             boolean CanHaveFinalBossFeaturs = hero.getInfo().getCanHaveFBFeatures();
             boolean CanBurnEP = hero.getInfo().getCanBurnEP();
@@ -56,7 +58,6 @@ public class ArtificialBrain implements Serializable {
             }
 
             if (CanChangeEP && CanAttack && CanCastAb) {
-                tempEP = hero.getCurrentEP();
                 actsToReturn.addAll(castAbility(hero, false, true));
 
                 while (tempEP > 0) {
@@ -151,13 +152,14 @@ public class ArtificialBrain implements Serializable {
 
         if (count >= getAliveWarriorsCount(allTargets)) return allTargets;
 
-        LinkedList<Warrior> toReturn = new LinkedList<>();
+        HashSet<Warrior> toReturn = new HashSet<>();
 
         while (toReturn.size() < count) {
             int index = this.random.nextInt(allTargets.length);
+
             toReturn.add(allTargets[index]);
         }
-        return (Warrior[]) toReturn.toArray();
+        return Player.toArray(toReturn);
 
     }
 
@@ -165,8 +167,8 @@ public class ArtificialBrain implements Serializable {
         if (count == 0) return null;
 
         Warrior[] allTargets = teamMate ? this.team : this.enemyTeam;
-        if (count >= getAliveWarriorsCount(allTargets)) return allTargets;
 
+        if (count >= getAliveWarriorsCount(allTargets)) return allTargets;
 
         Warrior[] byHeatlh = sortEnemiesByHealth(allTargets);
         Warrior[] byDamageIndex = null;
@@ -180,7 +182,7 @@ public class ArtificialBrain implements Serializable {
 
 
         long minLong = 10000000l;
-        LinkedList<Warrior> targets = new LinkedList<>();
+        HashSet<Warrior> targets = new HashSet<>();
 
         boolean isTargetGood = true;
 
@@ -191,22 +193,22 @@ public class ArtificialBrain implements Serializable {
                     case Hard:
                         isHard = true;
                     case NightMare:
-                        isTargetGood = (((Arrays.binarySearch(byDamageIndex, e) + 1) * Arrays.binarySearch(byHeatlh, e) + 1) ^ 3) / Arrays.binarySearch(byAP, e) < minLong;
+                        isTargetGood = (((Arrays.binarySearch(byDamageIndex, e, (a, b) -> a.getDamageEfficiencyIntelligenceOutOfTen() - b.getDamageEfficiencyIntelligenceOutOfTen()) + 1) * Arrays.binarySearch(byHeatlh, e, (a, b) -> a.getCurrentHealth() - b.getCurrentHealth()) + 1) ^ 3) / Arrays.binarySearch(byAP, e, (a, b) -> a.getAttackPower() - b.getAttackPower()) < minLong;
                         if (isHard) isTargetGood &= this.random.nextBoolean();
                         break;
                     case Easy:
-                        isTargetGood = Arrays.binarySearch(byHeatlh, e) < minLong && this.random.nextBoolean();
+                        isTargetGood = Arrays.binarySearch(byHeatlh, e, (a, b) -> a.getCurrentHealth() - b.getCurrentHealth()) < minLong && this.random.nextBoolean();
                         break;
                     case Medium:
-                        isTargetGood = ((Arrays.binarySearch(byDamageIndex, e) + 1) * ((Arrays.binarySearch(byHeatlh, e) + 1) ^ 3) < minLong && this.random.nextBoolean());
+                        isTargetGood = ((Arrays.binarySearch(byDamageIndex, e, (a, b) -> a.getDamageEfficiencyIntelligenceOutOfTen() - b.getDamageEfficiencyIntelligenceOutOfTen()) + 1) * ((Arrays.binarySearch(byHeatlh, e, (a, b) -> a.getCurrentHealth() - b.getCurrentHealth()) + 1) ^ 3) < minLong && this.random.nextBoolean());
                         break;
                 }
             isTargetGood = teamMate ? !isTargetGood : isTargetGood;
             if (isTargetGood) targets.add(e);
             if (targets.size() >= count) break;
         }
-
-        return (Warrior[]) targets.toArray();
+        System.out.println(targets.size());
+        return Player.toArray(targets);
     }
 
     private Warrior[] findTarget(boolean randomly, boolean teamMate, int count) {
@@ -279,11 +281,11 @@ public class ArtificialBrain implements Serializable {
 
         switch (Rules.DIFFICUALTY) {
             case Medium:
-                return random.nextInt(max - min) / 3 + min;
+                return random.nextInt(max - min + 1) / 3 + min;
             case Hard:
-                return random.nextInt(max - min) + min;
+                return random.nextInt(max - min + 1) + min;
             case NightMare:
-                return random.nextInt(max - min) / 3 * -1 + max;
+                return random.nextInt(max - min + 1) / 3 * -1 + max;
         }
         return null;
     }

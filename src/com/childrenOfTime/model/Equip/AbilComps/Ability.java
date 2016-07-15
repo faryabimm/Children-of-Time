@@ -131,6 +131,7 @@ public class Ability implements Castable, TurnBase, Serializable {
         Upgrade fake = new Upgrade(i);
         Upgrade result = (Upgrade) Upgrades.getVar(fake);
         if (result != null) {
+            System.out.println("Force Upgrade : from " + currentLevel.numberOfUpgrade + " to " + result.numberOfUpgrade);
             currentLevel = result;
         }
         if (currentLevel.castJustAfterAcquire) cast(performer, null, allEnemies, allTeammates);

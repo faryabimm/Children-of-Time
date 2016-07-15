@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Created by SaeedHD on 07/07/2016.
  */
 public enum Target implements Serializable {
-    HimSelf(true, true), SingleEnemy(false, 1, false), SingleTeamMate(false, 1, true), SeveralEnemies(false, 0, false), SeveralTeamMates(false, true), AllTeammates(true, true), AllEnemies(true, false), theAttackedOne(true, false);
+    HimSelf(true, true), SingleEnemy(false, 1, false), SingleTeamMate(false, 1, true), SeveralEnemies(false, false), SeveralTeamMates(false, true), AllTeammates(true, true), AllEnemies(true, false), theAttackedOne(true, false);
 
     Target(boolean implicit, boolean isTeammate) {
         Implicit = implicit;
