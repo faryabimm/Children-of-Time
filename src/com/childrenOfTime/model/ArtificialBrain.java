@@ -1,6 +1,5 @@
 package com.childrenOfTime.model;
 
-import com.childrenOfTime.gui.notification.NotificationType;
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
 import com.childrenOfTime.model.Equip.AbilComps.Upgrade;
 import com.childrenOfTime.model.Equip.Target;
@@ -12,8 +11,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
-
-import static com.childrenOfTime.view.IOHandler.printOutput;
 
 /**
  * Created by SaeedHD on 07/10/2016.
@@ -106,7 +103,7 @@ public class ArtificialBrain implements Serializable {
 
     public void doTheAct(Act act) {
         System.out.println("Hello");
-        printOutput(act.toString(), NotificationType.BAD);
+        System.out.println(act.toString());
 
         try {
             switch (act.getActionType()) {

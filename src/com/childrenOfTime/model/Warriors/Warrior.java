@@ -46,7 +46,8 @@ public class Warrior implements Serializable, TurnBase {
     }
 
     public void setIsPlayerOk(boolean isPlayerOk) {
-        this.isPlayerOk = isPlayerOk;
+        if (Lock2 == null) Lock2 = new CyclicBarrier(2);
+
         try {
             Lock2.await();
         } catch (InterruptedException e) {
@@ -54,6 +55,7 @@ public class Warrior implements Serializable, TurnBase {
         } catch (BrokenBarrierException e) {
             e.printStackTrace();
         }
+        this.isPlayerOk = isPlayerOk;
         String answer = isPlayerOk ? "Yes" : "No";
         System.out.println("*********Players says " + answer);
     }
@@ -370,6 +372,7 @@ public class Warrior implements Serializable, TurnBase {
     }
 
     public int changeHealth(int i, Integer damageEffitioncyFactor) {
+
         if (Lock1 == null) {
             Lock1 = new CyclicBarrier(2);
         }
@@ -394,29 +397,34 @@ public class Warrior implements Serializable, TurnBase {
 
         if (wasAlive() & willDye(i)) {
             currentHealth = 0;
-            if (info.CanUseImmortalityPotions) {
 
-                setNeedsImo(true);
-                System.out.println("******" + this + " Wants");
-                if (getIsPlayerOk()) {
-                    useImmortalityPotion();
-                    isDead = false;
-                    isPlayerOk = false;
-                    needsImo = false;
+            if (new Random().nextBoolean()) {
+                isDead = false;
+                currentHealth = getMaxHealth();
+            }
 
-                } else {
-                    isDead = true;
-                    printOutput(this + info.getDyingActionMessage());
+//            if (false) {
+//
+////                setNeedsImo(true);
+//                System.out.println("******" + this + " Wants");
+//                if (getIsPlayerOk()) {
+//                    useImmortalityPotion();
+//                    isDead = false;
+//                    isPlayerOk = false;
+//                    needsImo = false;
+//
+//                } else {
+//                    isDead = true;
+//                    printOutput(this + info.getDyingActionMessage());
+//
+//                }
 
-                }
-
-            } else {
+            else {
                 isDead = true;
                 printOutput(this + info.getDyingActionMessage());
 
             }
         }
-
         if (info.CanHaveFBFeatures && !isDead()) {
             updateFinalBossHealthChanges();
         }
@@ -626,6 +634,7 @@ public class Warrior implements Serializable, TurnBase {
 
     public void setNeedsImo(Boolean needsImo) {
         this.needsImo = needsImo;
+
         try {
             Lock1.await();
         } catch (InterruptedException e) {
