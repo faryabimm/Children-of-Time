@@ -161,13 +161,19 @@ public class NewEffectCreationDialog extends JDialog {
         dataHolder.wearOffEffectsAfterExcecution = wearOffEffectsAfteCheckBox.isSelected();
         dataHolder.automaticTargetSelection = automaticTargetCheckBox.isSelected();
 
-        if (himselfRadioButton.isSelected()) dataHolder.TargetType = Target.HimSelf;
-        if (theEnemyRadioButton.isSelected()) dataHolder.TargetType = Target.SingleEnemy;
-        if (allTeammatesRadioButton.isSelected()) dataHolder.TargetType = Target.AllTeammates;
-        if (allEnemiesRadioButton.isSelected()) dataHolder.TargetType = Target.AllEnemies;
-        if (theChosenEnemyRadioButton.isSelected()) dataHolder.TargetType = Target.theAttackedOne;
-        if (singleTeammateRadioButton.isSelected()) dataHolder.TargetType = Target.SingleEnemy;
-
+        if (automaticTargetCheckBox.isSelected()) {
+            if (himselfRadioButton.isSelected()) dataHolder.TargetType = Target.HimSelf;
+            if (allTeammatesRadioButton.isSelected()) dataHolder.TargetType = Target.AllTeammates;
+            if (allEnemiesRadioButton.isSelected()) dataHolder.TargetType = Target.AllEnemies;
+            if (theChosenEnemyRadioButton.isSelected()) dataHolder.TargetType = Target.theAttackedOne;
+        } else {
+//            if (himselfRadioButton.isSelected()) dataHolder.TargetType = Target.HimSelf;
+            if (allTeammatesRadioButton.isSelected()) dataHolder.TargetType = Target.SeveralTeamMates;
+            if (allEnemiesRadioButton.isSelected()) dataHolder.TargetType = Target.SeveralEnemies;
+//            if (theChosenEnemyRadioButton.isSelected()) dataHolder.TargetType = Target.theAttackedOne;
+            if (singleTeammateRadioButton.isSelected()) dataHolder.TargetType = Target.SingleTeamMate;
+            if (theEnemyRadioButton.isSelected()) dataHolder.TargetType = Target.SingleEnemy;
+        }
 
         dataHolder.APCoefficient = Double.parseDouble(textField1.getText());
         dataHolder.HCoefficient = Double.parseDouble(textField6.getText());
