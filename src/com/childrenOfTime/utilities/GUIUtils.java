@@ -42,7 +42,7 @@ public class GUIUtils {
 
     public static void deserializeUserFiles() {
         try {
-
+            GUIUtils.showNotification("Loading ...", NotificationType.NORMAL);
             ObjectInputStream objectIO1 = new ObjectInputStream(new FileInputStream(
                     new File(CustomGameDAO.currentUserCGDataPath + "abilities.dat")));
             CustomGameDAO.currentUserCustomAbilities = (ArrayList<Ability>) objectIO1.readObject();

@@ -473,29 +473,7 @@ class InfoIndicatorPanel extends JPanel {
     private JButton pauseButton = new CustomizedJButton("40");
 
 
-    private Timer turnTimer = new Timer(1000, e -> {
-
-        if (pauseButton.getText().equals("0")) {
-
-            BattleScreenPanel.instance.playAITurn();
-            pauseButton.setText("40");
-            BattleScreenPanel.isPlayersTurn = !BattleScreenPanel.isPlayersTurn;
-        } else {
-            if (BattleScreenPanel.instance.getUserPlayer().isDefeated()) {
-
-                ModalAnnouncer announcer = new ModalAnnouncer();
-                BattleScreenPanel.instance.father.dispose();
-                announcer.addPanel(new GameOverAnnouncementPanel(announcer));
-                ((ModalAnnouncer) this.getParent()).dispose();
-            }
-            if (BattleScreenPanel.instance.getComputerPlayer().isDefeated()) {
-                GUIUtils.showNotification("You Won!", NotificationType.GOOD);
-                BattleScreenPanel.instance.father.dispose();
-            }
-            pauseButton.setText(String.valueOf(Integer.parseInt(pauseButton.getText()) - 1));
-            BattleScreenPanel.instance.repaint();
-        }
-    });
+    private Timer turnTimer;
 
 
     private CustomizedJImage leftUserAvatar = new CustomizedJImage("src/ui/icon/avatar.png", USER_AVATAR_DIMENTION, USER_AVATAR_DIMENTION);
@@ -563,6 +541,37 @@ class InfoIndicatorPanel extends JPanel {
     }
 
     private void initializePanel() {
+
+        turnTimer = new Timer(1000, e -> {
+
+            if (pauseButton.getText().equals("0")) {
+
+                BattleScreenPanel.instance.playAITurn();
+                pauseButton.setText("40");
+                BattleScreenPanel.isPlayersTurn = !BattleScreenPanel.isPlayersTurn;
+            } else {
+                if (BattleScreenPanel.instance.getUserPlayer().isDefeated()) {
+
+                    ModalAnnouncer announcer = new ModalAnnouncer();
+                    BattleScreenPanel.instance.father.dispose();
+                    announcer.addPanel(new GameOverAnnouncementPanel(announcer));
+                    GUIUtils.showNotification("You Lose!", NotificationType.BAD);
+                    ((ModalAnnouncer) this.getParent()).dispose();
+                    turnTimer.stop();
+                }
+                if (BattleScreenPanel.instance.getComputerPlayer().isDefeated()) {
+                    GUIUtils.showNotification("You Won!", NotificationType.GOOD);
+                    turnTimer.stop();
+                    BattleScreenPanel.instance.father.dispose();
+                }
+                pauseButton.setText(String.valueOf(Integer.parseInt(pauseButton.getText()) - 1));
+                BattleScreenPanel.instance.repaint();
+            }
+        });
+
+
+
+
         turnTimer.start();
         pauseButton.setSize(PAUSE_BUTTON_DIMENSION);
 

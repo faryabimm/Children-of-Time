@@ -27,6 +27,9 @@ public class SinglePlayerGame extends MenuScreenPanel {
     private MapScreenListener controller;
     public static SinglePlayerGame lastState;
 
+    CustomizedJLabel currentWealth;
+    CustomizedJLabel currentXp;
+
     private Player playingPlayer;
 
     CustomScenarioInfoHolder infoHolder;
@@ -40,6 +43,22 @@ public class SinglePlayerGame extends MenuScreenPanel {
         initializeCells();
         controller = new MapScreenListener(indicator, this);
         addKeyListener(controller);
+
+
+        currentWealth = new CustomizedJLabel("Current Money: " + String.valueOf(playingPlayer.getCurrentWealth()) + "$");
+        currentXp = new CustomizedJLabel("Current XP: " + String.valueOf(playingPlayer.getCurrentExperience()) + "XP");
+
+        this.add(currentWealth);
+        this.add(currentXp);
+
+
+        currentWealth.setLocation(ELEMENT_GAP,
+                ChildrenOfTime.PREFERRED_HEIGHT - CustomizedJLabel.LABEL_HEIGHT - ELEMENT_GAP);
+
+
+        currentXp.setLocation(ELEMENT_GAP,
+                ChildrenOfTime.PREFERRED_HEIGHT - 2 * CustomizedJLabel.LABEL_HEIGHT - 2 * ELEMENT_GAP);
+
     }
     private void initializeCells() {
         for (int i = 0; i < CustomScenarioBuilderPanel.NUMBER_OF_MAP_COLUMNS; i++) {
@@ -51,6 +70,8 @@ public class SinglePlayerGame extends MenuScreenPanel {
     }
     @Override
     public void initialize() {
+
+
         JButton saveGame = new CustomizedJButton("Save the game");
         JButton quit = new CustomizedJButton("Quit");
 
@@ -72,6 +93,10 @@ public class SinglePlayerGame extends MenuScreenPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+
+        currentWealth.setText("Current Money: " + String.valueOf(playingPlayer.getCurrentWealth()) + "$");
+        currentXp.setText("Current XP: " + String.valueOf(playingPlayer.getCurrentExperience()) + "XP");
 
         Graphics2D g2d = (Graphics2D) g;
 
