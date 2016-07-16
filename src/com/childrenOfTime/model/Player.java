@@ -85,9 +85,9 @@ public class Player implements TurnBase, Serializable {
 
         Thread immortalityRequest = new Thread(() -> {
             while (true) {
+                try {
 
                 for (Warrior myHero : myTeam) {
-
                     if (myHero.needsImo()) {
                         //TODO Set Try catch
                         boolean opinion = this.immprtalityPotions - 1 >= 0;
@@ -98,6 +98,10 @@ public class Player implements TurnBase, Serializable {
                             useImmortalityPotion();
                         }
                     }
+                }
+
+                } catch (Exception e) {
+                    printOutput(e.getMessage(), NotificationType.ERROR);
                 }
             }
         });
@@ -120,56 +124,72 @@ public class Player implements TurnBase, Serializable {
     }
 
     public void upgradeAbility(Ability ability, Warrior targetHero, int id) {
-        changeCurrentExperience(-ability.getUpgradeByNumber(id).getXPCost());
-        targetHero.upgradeAbility(ability, id, toArray(this.myTeam));
+        try {
+            changeCurrentExperience(-ability.getUpgradeByNumber(id).getXPCost());
+            targetHero.upgradeAbility(ability, id, toArray(this.myTeam));
+        } catch (Exception e) {
+            printOutput(e.getMessage(), NotificationType.ERROR);
+
+        }
     }
 
     public void buy(Item item, Warrior hero) throws TradeException {
-
-        int itemsPrice = item.getCurrentPriceToBuy(getNumbersBought(item));
-        changeCurrentWealth(-itemsPrice);
         try {
-            hero.IWannaBuyItemForYou(item, toArray(this.myTeam));
+            int itemsPrice = item.getCurrentPriceToBuy(getNumbersBought(item));
+            changeCurrentWealth(-itemsPrice);
+            try {
+                hero.IWannaBuyItemForYou(item, toArray(this.myTeam));
+            } catch (RuntimeException e) {
+                changeCurrentWealth(itemsPrice);
+                throw new RuntimeException(e.getMessage());
+            }
+            //TODO Jaye In moshakhas shavad
+            printOutput(item.getName() + " bought Successfully\n" +
+                    "your Current Wealth is: $" + getCurrentWealth());
+
         } catch (RuntimeException e) {
-            changeCurrentWealth(itemsPrice);
-            throw new RuntimeException(e.getMessage());
+            printOutput(e.getMessage(), NotificationType.ERROR);
         }
-        //TODO Jaye In moshakhas shavad
-        printOutput(item.getName() + " bought Successfully\n" +
-                "your Current Wealth is: $" + getCurrentWealth());
-
-
     }
 
 
     public void castAbility(Warrior castingHero, Ability castedAbility, ArrayList<Warrior> allEnemies, Warrior... selectedTargets) {
-
-        castingHero.castAbility(castedAbility, selectedTargets, toArray(allEnemies), toArray(this.myTeam));
-        if (MultiPlayer.getInstacne() != null) {
-            TransferAct TP = new TransferAct(this.hashCode(), castingHero.hashCode(), ActionType.AbilityCast, toHash(selectedTargets), castedAbility.hashCode(), null);
-            MultiPlayer.getInstacne().addToSendObjects(TP);
+        try {
+            castingHero.castAbility(castedAbility, selectedTargets, toArray(allEnemies), toArray(this.myTeam));
+            if (MultiPlayer.getInstacne() != null) {
+                TransferAct TP = new TransferAct(this.hashCode(), castingHero.hashCode(), ActionType.AbilityCast, toHash(selectedTargets), castedAbility.hashCode(), null);
+                MultiPlayer.getInstacne().addToSendObjects(TP);
+            }
+        } catch (RuntimeException e) {
+            printOutput(e.getMessage(), NotificationType.ERROR);
         }
     }
 
     public void useItem(Warrior usingHero, Item usedItem, ArrayList<Warrior> allEnemies, Warrior... selectedTargets) {
-        usingHero.useItem(usedItem, selectedTargets, toArray(allEnemies), toArray(this.myTeam));
-        if (MultiPlayer.getInstacne() != null) {
-            TransferAct TP = new TransferAct(this.hashCode(), usingHero.hashCode(), ActionType.UseItem, toHash(selectedTargets), null, usedItem.hashCode());
-            MultiPlayer.getInstacne().addToSendObjects(TP);
+        try {
+            usingHero.useItem(usedItem, selectedTargets, toArray(allEnemies), toArray(this.myTeam));
+            if (MultiPlayer.getInstacne() != null) {
+                TransferAct TP = new TransferAct(this.hashCode(), usingHero.hashCode(), ActionType.UseItem, toHash(selectedTargets), null, usedItem.hashCode());
+                MultiPlayer.getInstacne().addToSendObjects(TP);
+            }
+        } catch (Exception e) {
+            printOutput(e.getMessage(), NotificationType.ERROR);
         }
     }
 
     public void sell(Item item, Warrior target) throws TradeException {
 
-
-        target.IWannaSellThisItem(item, toArray(myTeam));
-        int itemCurrenPriceToSell = item.getCurrentPriceToSell();
-        changeCurrentWealth(itemCurrenPriceToSell);
-        printOutput("Item " + item.getName() + " was successfully sold for $" +
-                itemCurrenPriceToSell + " and was removed form (" +
-                target.toString() + ") Hero.");
-        printOutput("your Current Wealth is: $" + getCurrentWealth());
-
+        try {
+            target.IWannaSellThisItem(item, toArray(myTeam));
+            int itemCurrenPriceToSell = item.getCurrentPriceToSell();
+            changeCurrentWealth(itemCurrenPriceToSell);
+            printOutput("Item " + item.getName() + " was successfully sold for $" +
+                    itemCurrenPriceToSell + " and was removed form (" +
+                    target.toString() + ") Hero.");
+            printOutput("your Current Wealth is: $" + getCurrentWealth());
+        } catch (Exception e) {
+            printOutput(e.getMessage(), NotificationType.ERROR);
+        }
     }
 
     public boolean isDefeated() {
@@ -193,10 +213,17 @@ public class Player implements TurnBase, Serializable {
 
     //TODO Each Hero Can Attack Multiple Targets
     public void giveAttack(Warrior attackingHero, Warrior[] selectedTargets, ArrayList<Warrior> allEnemies) {
+        try {
+
+
             attackingHero.attack(selectedTargets, null, null, toArray(allEnemies), toArray(this.myTeam));
-        if (MultiPlayer.getInstacne() != null) {
-            TransferAct TP = new TransferAct(this.hashCode(), attackingHero.hashCode(), ActionType.Attack, toHash(selectedTargets), null, null);
-            MultiPlayer.getInstacne().addToSendObjects(TP);
+            if (MultiPlayer.getInstacne() != null) {
+                TransferAct TP = new TransferAct(this.hashCode(), attackingHero.hashCode(), ActionType.Attack, toHash(selectedTargets), null, null);
+                MultiPlayer.getInstacne().addToSendObjects(TP);
+            }
+        } catch (Exception e) {
+            printOutput(e.getMessage(), NotificationType.ERROR);
+
         }
     }
 
@@ -230,24 +257,33 @@ public class Player implements TurnBase, Serializable {
     }
 
     public void changeCurrentExperience(int num) throws NotEnoughXPException {
-        if (this.currentExperience + num < 0) {
-            throw new NotEnoughXPException("You don't have Enough XP points to apply this upgrade\n" +
-                    "your current XP : " + currentExperience + " \nrequired XP : " + -num + "\nYou need " +
-                    (-num - currentExperience) + " additional XP points.");
-        } else {
-            this.currentExperience += num;
+        try {
+            if (this.currentExperience + num < 0) {
+                throw new NotEnoughXPException("You don't have Enough XP points to apply this upgrade\n" +
+                        "your current XP : " + currentExperience + " \nrequired XP : " + -num + "\nYou need " +
+                        (-num - currentExperience) + " additional XP points.");
+            } else {
+                this.currentExperience += num;
+            }
+        } catch (Exception e) {
+            printOutput(e.getMessage(), NotificationType.ERROR);
         }
-
     }
 
     public void changeCurrentWealth(int i) {
-        if (i + currentWealth < 0)
-            throw new NotEnoughMoneyException("You don't have Enough Money to apply this upgrade\n" +
-                    "your current Wealth : " + currentWealth + "$\nrequired Money : " +
-                    i + "$\nYou need " +
-                    (i - currentWealth) + "$ additional Money.");
-        else {
-            this.currentExperience += i;
+        try {
+
+
+            if (i + currentWealth < 0)
+                throw new NotEnoughMoneyException("You don't have Enough Money to apply this upgrade\n" +
+                        "your current Wealth : " + currentWealth + "$\nrequired Money : " +
+                        i + "$\nYou need " +
+                        (i - currentWealth) + "$ additional Money.");
+            else {
+                this.currentExperience += i;
+            }
+        } catch (Exception e) {
+            printOutput(e.getMessage(), NotificationType.ERROR);
         }
     }
 
@@ -271,21 +307,31 @@ public class Player implements TurnBase, Serializable {
 
 
     public void changeImmortalityPotion(int i) {
-        if (immprtalityPotions + i < 0) {
-            throw new NoImmortalityPotionLeftException(name + " : No Immortality Potion Left");
-        } else {
-            this.immprtalityPotions += i;
+        try {
+
+            if (immprtalityPotions + i < 0) {
+                throw new NoImmortalityPotionLeftException(name + " : No Immortality Potion Left");
+            } else {
+                this.immprtalityPotions += i;
+            }
+        } catch (Exception e) {
+            printOutput(e.getMessage(), NotificationType.ERROR);
         }
     }
 
 
     @Override
     public void aTurnHasPassed() {
-        for (Warrior warrior :
-                myTeam) {
-            warrior.aTurnHasPassed();
-        }
+        try {
 
+            for (Warrior warrior :
+                    myTeam) {
+                warrior.aTurnHasPassed();
+            }
+        } catch (Exception er) {
+            printOutput(er.getMessage(), NotificationType.ERROR);
+
+        }
     }
 
 

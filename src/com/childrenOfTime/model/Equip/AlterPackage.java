@@ -64,6 +64,7 @@ public class AlterPackage implements Serializable {
 
     public void perform(Warrior... target_s) {
         if (!isProbabilityOccured()) return;
+        if (target_s == null) return;
         for (Warrior w : target_s) {
             w.receiveAlterPack(this);
         }

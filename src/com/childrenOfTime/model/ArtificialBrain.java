@@ -1,5 +1,6 @@
 package com.childrenOfTime.model;
 
+import com.childrenOfTime.gui.notification.NotificationType;
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
 import com.childrenOfTime.model.Equip.AbilComps.Upgrade;
 import com.childrenOfTime.model.Equip.Target;
@@ -11,6 +12,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
+
+import static com.childrenOfTime.view.IOHandler.printOutput;
 
 /**
  * Created by SaeedHD on 07/10/2016.
@@ -102,22 +105,31 @@ public class ArtificialBrain implements Serializable {
 
 
     public void doTheAct(Act act) {
+        System.out.println("Hello");
+        printOutput(act.toString(), NotificationType.BAD);
 
-        switch (act.getActionType()) {
-            case Attack:
-                act.getPerformer().attack(act.getSelectedTargets(), null, null, this.enemyTeam, this.team);
-                break;
-            case AbilityCast:
-                for (Ability ab : act.getPerformer().abilities) {
-                    if (ab.hashCode() == act.getHashCodeOfAbility()) {
-                        act.getPerformer().castAbility(ab, act.getSelectedTargets(), this.enemyTeam, this.team);
-                        break;
+        try {
+            switch (act.getActionType()) {
+                case Attack:
+                    act.getPerformer().attack(act.getSelectedTargets(), null, null, this.enemyTeam, this.team);
+                    break;
+                case AbilityCast:
+                    for (Ability ab : act.getPerformer().abilities) {
+                        if (ab.hashCode() == act.getHashCodeOfAbility()) {
+                            act.getPerformer().castAbility(ab, act.getSelectedTargets(), this.enemyTeam, this.team);
+                            break;
+                        }
                     }
-                }
-                break;
-            case BurnEP:
-                act.getPerformer().burnEP(act.getSelectedTargets());
-                break;
+                    break;
+                case BurnEP:
+                    act.getPerformer().burnEP(act.getSelectedTargets());
+                    break;
+            }
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+            }
+        } catch (Exception e) {
         }
 
     }
@@ -125,7 +137,10 @@ public class ArtificialBrain implements Serializable {
 
 
     public void initialize() {
-        acquireAbilities();
+        try {
+            acquireAbilities();
+        } catch (Exception e) {
+        }
     }
     private Warrior[] sortEnemiesByHealth(Warrior[] targets) {
         Warrior[] sortedByHealth = Arrays.copyOf(targets, targets.length);
@@ -146,6 +161,7 @@ public class ArtificialBrain implements Serializable {
     }
 
     private Warrior[] findRandomTarget(boolean teamMate, int count) {
+
         if (count == 0) return null;
         Warrior[] allTargets = teamMate ? this.team : this.enemyTeam;
         int len = allTargets.length;
@@ -212,14 +228,19 @@ public class ArtificialBrain implements Serializable {
     }
 
     private Warrior[] findTarget(boolean randomly, boolean teamMate, int count) {
-        return randomly ? findRandomTarget(teamMate, count) : findIntelligentTarget(teamMate, count);
 
+        try {
+            return randomly ? findRandomTarget(teamMate, count) : findIntelligentTarget(teamMate, count);
+        } catch (Exception e) {
+        }
+        return null;
     }
 
     private LinkedList<Act> castAbility(Warrior myWarrior, boolean CastJustThoseWithoutEPCost, boolean CastJustPowerfuls) {
-
-        LinkedList<Ability> toCast = new LinkedList<>();
-        boolean chooseTargetRandomly = true;
+        LinkedList<Act> abilityAct = new LinkedList<>();
+        try {
+            LinkedList<Ability> toCast = new LinkedList<>();
+            boolean chooseTargetRandomly = true;
             switch (Rules.DIFFICUALTY) {
                 case NightMare:
                     chooseTargetRandomly = false;
@@ -229,52 +250,62 @@ public class ArtificialBrain implements Serializable {
                     break;
             }
 
-        for (Ability ab : myWarrior.abilities) {
-            if (CastJustThoseWithoutEPCost && ab.getCurrentLevel().getMasrafEP() == 0) {
-                toCast.add(ab);
-                continue;
+            for (Ability ab : myWarrior.abilities) {
+                if (CastJustThoseWithoutEPCost && ab.getCurrentLevel().getMasrafEP() == 0) {
+                    toCast.add(ab);
+                    continue;
+                }
+                if (CastJustPowerfuls) if (ab.getPowerOutOften() > 6) {
+                    toCast.add(ab);
+                    continue;
+                } else toCast.add(ab);
+
             }
-            if (CastJustPowerfuls) if (ab.getPowerOutOften() > 6) {
-                toCast.add(ab);
-                continue;
-            } else toCast.add(ab);
 
-        }
-
-        LinkedList<Act> abilityAct = new LinkedList<>();
-        try {
-            for (Ability toCastAbility : toCast) {
-                Target targetType = toCastAbility.getTargetType();
-                Warrior[] warriors = findTarget(chooseTargetRandomly, targetType.isTeammate(), targetType.getNumberOftargetsNeededToChoose());
+            abilityAct = new LinkedList<>();
+            try {
+                for (Ability toCastAbility : toCast) {
+                    Target targetType = toCastAbility.getTargetType();
+                    Warrior[] warriors = findTarget(chooseTargetRandomly, targetType.isTeammate(), targetType.getNumberOftargetsNeededToChoose());
 //              myWarrior.castAbility(toCastAbility, warriors , this.enemyTeam, team);
-                abilityAct.addLast(new Act(ActionType.AbilityCast, myWarrior, warriors, toCastAbility.hashCode(), null));
-                this.tempEP -= toCastAbility.getCurrentLevel().getMasrafEP();
+                    abilityAct.addLast(new Act(ActionType.AbilityCast, myWarrior, warriors, toCastAbility.hashCode(), null));
+                    this.tempEP -= toCastAbility.getCurrentLevel().getMasrafEP();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                //TODO Remove This
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            //TODO Remove This
         }
         return abilityAct;
     }
 
 
     private Act attack(Warrior warrior) {
-        Warrior[] targets = findTarget(false, false, Rules.Quantitiy_Of_Targets_For_Manual_Multiple_Target_Choosing);
+        Warrior[] targets = null;
+        try {
+            targets = findTarget(false, false, Rules.Quantitiy_Of_Targets_For_Manual_Multiple_Target_Choosing);
 //        warrior.attack(targets, null, null, this.enemyTeam, this.team);
+        } catch (Exception e) {
+        }
         return new Act(ActionType.Attack, warrior, targets, null, null);
     }
 
     private void acquireAbilities() {
-        if (Rules.DIFFICUALTY == DIFFICUALTY.Easy) return;
-        for (Warrior upgrader : this.team) {
-            for (Ability ability : upgrader.abilities) {
-                ability.acquire(upgrader, this.team);
-                ability.forceUpgrade(upgrader, getUpgradeNumber(ability), this.enemyTeam, this.team);
+        try {
+            if (Rules.DIFFICUALTY == DIFFICUALTY.Easy) return;
+            for (Warrior upgrader : this.team) {
+                for (Ability ability : upgrader.abilities) {
+                    ability.acquire(upgrader, this.team);
+                    ability.forceUpgrade(upgrader, getUpgradeNumber(ability), this.enemyTeam, this.team);
+                }
             }
+        } catch (Exception e) {
         }
     }
 
     private Integer getUpgradeNumber(Ability ability) {
+        try {
         BST<Upgrade> upgrades = ability.getUpgrades();
         int min = upgrades.getMinElement().getNumberOfUpgrade();
         int max = upgrades.getMaxElement().getNumberOfUpgrade();
@@ -286,6 +317,8 @@ public class ArtificialBrain implements Serializable {
                 return random.nextInt(max - min + 1) + min;
             case NightMare:
                 return random.nextInt(max - min + 1) / 3 * -1 + max;
+        }
+        } catch (Exception e) {
         }
         return null;
     }
