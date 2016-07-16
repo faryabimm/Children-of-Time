@@ -4,8 +4,10 @@ import com.childrenOfTime.model.Equip.ItemComps.Item;
 import com.childrenOfTime.model.Warriors.Warrior;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static com.childrenOfTime.view.IOHandler.printOutput;
 
@@ -31,6 +33,10 @@ public class Store implements Serializable {
         this.canBate = canBate;
         this.canInflatePrices = canInflatePrices;
         this.inflationPercentPer15Minutes = inflationPercentPer15Minutes;
+    }
+
+    public ArrayList<Item> getItems() {
+        return items.keySet().stream().collect(Collectors.toCollection(ArrayList::new));
     }
 
     private void resetTimer() {

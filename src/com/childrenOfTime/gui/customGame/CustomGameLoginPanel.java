@@ -1,6 +1,7 @@
 package com.childrenOfTime.gui.customGame;
 
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
+import com.childrenOfTime.gui.customizedElements.CustomizedJImage;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
 import com.childrenOfTime.model.ChildrenOfTime;
 
@@ -25,6 +26,13 @@ public class CustomGameLoginPanel extends MenuScreenPanel {
                 ChildrenOfTime.PREFERRED_HEIGHT - 2*CustomizedJButton.BUTTON_HEIGHT - 2*ELEMENT_GAP);
 
         cancel.addActionListener(e -> ChildrenOfTime.changeContentPane(new CustomGameMenuScreenPanel()));
+
+
+        CustomizedJImage mainMenuArt = new CustomizedJImage("src/ui/Children Of Time Art Assets/COT (58).png", 200, 200);
+        this.add(mainMenuArt);
+        mainMenuArt.setLocation(ChildrenOfTime.PREFERRED_WIDTH - 200 - ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 200 - ELEMENT_GAP);
+
+
 
         emerge();
     }

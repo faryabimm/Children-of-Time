@@ -3,6 +3,7 @@ package com.childrenOfTime.gui.customGame;
 import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.gui.MainMenuScreenPanel;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
+import com.childrenOfTime.gui.customizedElements.CustomizedJImage;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
 import com.childrenOfTime.model.ChildrenOfTime;
 
@@ -48,6 +49,12 @@ public class CustomGameUserHubPanel extends MenuScreenPanel {
             ChildrenOfTime.changeContentPane(new CustomGameMenuScreenPanel());
         });
         openEditor.addActionListener(e -> ChildrenOfTime.changeContentPane(new CusomGameEditorMenu()));
+        CustomizedJImage mainMenuArt = new CustomizedJImage("src/ui/Children Of Time Art Assets/COT (58).png", 200, 200);
+        this.add(mainMenuArt);
+        mainMenuArt.setLocation(ChildrenOfTime.PREFERRED_WIDTH - 200 - ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 200 - ELEMENT_GAP);
+
+
+
         emerge();
     }
 

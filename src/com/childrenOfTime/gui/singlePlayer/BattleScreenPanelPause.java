@@ -1,7 +1,9 @@
 package com.childrenOfTime.gui.singlePlayer;
 
+import com.childrenOfTime.gui.announcementPanels.ModalAnnouncer;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
+import com.childrenOfTime.gui.singlePlayer.battleScreen.BattleScreenPanel;
 import com.childrenOfTime.model.ChildrenOfTime;
 
 import javax.swing.*;
@@ -17,8 +19,10 @@ public class BattleScreenPanelPause extends MenuScreenPanel {
     public static final int GAP = 100;
 
     private BattleScreenPanel battleScreenPanel;
+    private ModalAnnouncer father;
 
-    public BattleScreenPanelPause(BattleScreenPanel battleScreenPanel) {
+    public BattleScreenPanelPause(BattleScreenPanel battleScreenPanel, ModalAnnouncer father) {
+        this.father = father;
         this.battleScreenPanel = battleScreenPanel;
     }
 
@@ -42,11 +46,9 @@ public class BattleScreenPanelPause extends MenuScreenPanel {
                 ChildrenOfTime.PREFERRED_HEIGHT * 2 / 3);
         resume.setLocation(ChildrenOfTime.PREFERRED_WIDTH / 2 + CustomizedJButton.BUTTON_WIDTH / 2 + ELEMENT_GAP,
                 ChildrenOfTime.PREFERRED_HEIGHT * 2 / 3);
-        resume.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ChildrenOfTime.changeContentPaneNOANIMATION(BattleScreenPanel.lastState);
-            }
+        resume.addActionListener(e -> {
+            father.dispose();
+//                ChildrenOfTime.changeContentPaneNOANIMATION(BattleScreenPanel.lastState);
         });
 
         map.addActionListener(new ActionListener() {

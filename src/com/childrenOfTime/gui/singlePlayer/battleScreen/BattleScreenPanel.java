@@ -1,4 +1,4 @@
-package com.childrenOfTime.gui.singlePlayer;
+package com.childrenOfTime.gui.singlePlayer.battleScreen;
 
 import com.childrenOfTime.controller.GameEngine;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
@@ -8,12 +8,9 @@ import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
 import com.childrenOfTime.gui.customizedListeners.MouseClickListener;
 import com.childrenOfTime.gui.fillForms.BattleActionChooserDialog;
 import com.childrenOfTime.gui.notification.NotificationType;
-import com.childrenOfTime.model.Battle;
-import com.childrenOfTime.model.ChildrenOfTime;
+import com.childrenOfTime.model.*;
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
-import com.childrenOfTime.model.Player;
-import com.childrenOfTime.model.PlayerType;
 import com.childrenOfTime.model.Warriors.ActionType;
 import com.childrenOfTime.model.Warriors.Warrior;
 import com.childrenOfTime.utilities.GUIUtils;
@@ -26,15 +23,26 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class BattleScreenPanel extends JPanel {
 
     public static BattleScreenPanel lastState;
 
+    public static BattleScreenPanel instance;
+
+    public static boolean isPlayersTurn = true;
+
     private Battle battle;
     private ArrayList<Warrior> warriors;
 
     private Player userPlayer;
+    private ArtificialBrain AI;
+    private Player computerPlayer;
+
+    public BodyPanel getBodyPanel() {
+        return bodyPanel;
+    }
 
     private BodyPanel bodyPanel;
 
@@ -65,6 +73,10 @@ public class BattleScreenPanel extends JPanel {
     public void changeBodyPane(JPanel newBodyPane) {
         BodyPanel currentBodyPane = bodyPanel;
         BodyPanel.lastState = bodyPanel;
+
+        BorderLayout layout = (BorderLayout) instance.getLayout();
+
+        instance.remove(layout.getLayoutComponent(BorderLayout.CENTER));
         add(newBodyPane, BorderLayout.CENTER);
         ChildrenOfTime.frame.pack();
         ChildrenOfTime.frame.setLocationRelativeTo(null);
@@ -74,6 +86,11 @@ public class BattleScreenPanel extends JPanel {
     }
 
     public void revertChangeContentPane() {
+
+        BorderLayout layout = (BorderLayout) instance.getLayout();
+
+        instance.remove(layout.getLayoutComponent(BorderLayout.CENTER));
+
         add(BodyPanel.lastState, BorderLayout.CENTER);
         ChildrenOfTime.frame.pack();
         ChildrenOfTime.frame.setLocationRelativeTo(null);
@@ -84,11 +101,12 @@ public class BattleScreenPanel extends JPanel {
 
     public BattleScreenPanel(Battle battle, ArrayList<Warrior> warriors, Player userPlayer) {
 
-
-        lastState = this;
-        this.userPlayer = userPlayer;
+        instance = this;
         this.battle = battle;
         this.warriors = warriors;
+        this.userPlayer = userPlayer;
+        this.computerPlayer = new Player(battle.getDefualtFoes(), "Computer", PlayerType.Computer);
+        this.AI = new ArtificialBrain(computerPlayer, userPlayer);
         this.setLayout(new BorderLayout());
         this.setPreferredSize(BattleScreenPanelStaticData.BATTLE_SCREEN_PANEL_DIMENTION);
         this.setBackground(ChildrenOfTime.GREY);
@@ -105,6 +123,20 @@ public class BattleScreenPanel extends JPanel {
         this.add(infoPanel, BorderLayout.NORTH);
         this.add(leftWarriorIndicatiorPanel, BorderLayout.WEST);
         this.add(rightWarriorIndicatiorPanel, BorderLayout.EAST);
+    }
+
+    public void playAITurn() {
+        LinkedList<Act> aiActs = AI.playATurn();
+
+        for (Act aiAct : aiActs) {
+            bodyPanel.setRightWarriorImage(aiAct.getPerformer().getImage());
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            AI.doTheAct(aiAct);
+        }
     }
 
 }
@@ -170,15 +202,23 @@ class BodyPanel extends JPanel {
         initializePanel();
     }
 
+    public void setLeftWarriorImage(ImageIcon image) {
+        leftWarriorImage.setIcon(image);
+    }
+
+    public void setRightWarriorImage(ImageIcon image) {
+        rightWarriorImage.setIcon(image);
+    }
+
 
     private void initializePanel() {
 
         this.add(leftWarriorImage);
         this.add(rightWarriorImage);
 
+
         leftWarriorImage.setLocation(DOWN_AND_SIDES_GAP, BattleScreenPanelStaticData.WARRIOR_INDICATOR_PANEL_HEIGHT - WARRIOR_IMAGES_SIZE);
         rightWarriorImage.setLocation(BattleScreenPanelStaticData.BODY_PANEL_WIDTH - DOWN_AND_SIDES_GAP - WARRIOR_IMAGES_SIZE, BattleScreenPanelStaticData.WARRIOR_INDICATOR_PANEL_HEIGHT - WARRIOR_IMAGES_SIZE);
-
 
     }
 
@@ -316,12 +356,15 @@ class WarriorChoosingPanel extends JPanel {
                             GUIUtils.showNotification("You cant play with your Rival team's Warriors!", NotificationType.ERROR);
                         } else {
                             Warrior target = ((WarriorIndicatorElement) e.getComponent()).getWarrior();
+
+                            BattleScreenPanel.instance.getBodyPanel().setLeftWarriorImage(target.getImage());
+
                             GUIUtils.showNotification("Warrior " + target.getName() + " (" + target.getInfo().getClassName() + ") " + target.getId() + " has been selected. Choose the operation", NotificationType.NORMAL);
                             new BattleActionChooserDialog(target, battleScreenPanel);
                         }
                         System.out.println(e.getComponent().getClass());
 
-                        System.out.println("MAN CLICK SHODAM");
+
                     }
                 };
 
@@ -400,6 +443,7 @@ class WarriorChoosingPanel extends JPanel {
 }
 class InfoIndicatorPanel extends JPanel {
 
+
     public static final int BORDER_GAP = 20;
 
     public static final int PAUSE_BUTTON_WIDTH = 60;
@@ -414,7 +458,21 @@ class InfoIndicatorPanel extends JPanel {
 
     private Warrior leftSideWarrior;
     private Warrior rightSideWarrior;
-    private JButton pauseButton = new CustomizedJButton("||");
+    private JButton pauseButton = new CustomizedJButton("40");
+
+
+    private Timer turnTimer = new Timer(1000, e -> {
+
+        if (pauseButton.getText().equals("0")) {
+
+            BattleScreenPanel.instance.playAITurn();
+            pauseButton.setText("40");
+            BattleScreenPanel.isPlayersTurn = !BattleScreenPanel.isPlayersTurn;
+        } else {
+            pauseButton.setText(String.valueOf(Integer.parseInt(pauseButton.getText()) - 1));
+            BattleScreenPanel.instance.repaint();
+        }
+    });
 
 
     private CustomizedJImage leftUserAvatar = new CustomizedJImage("src/ui/icon/avatar.png", USER_AVATAR_DIMENTION, USER_AVATAR_DIMENTION);
@@ -482,10 +540,10 @@ class InfoIndicatorPanel extends JPanel {
     }
 
     private void initializePanel() {
-
+        turnTimer.start();
         pauseButton.setSize(PAUSE_BUTTON_DIMENSION);
 
-        Font pauseButtonFont = new Font(null, Font.BOLD, 28);
+        Font pauseButtonFont = new Font(null, Font.BOLD, 12);
         pauseButton.setFont(pauseButtonFont);
         pauseButton.setVerticalAlignment(SwingConstants.CENTER);
         pauseButton.setHorizontalAlignment(SwingConstants.CENTER);
@@ -507,7 +565,7 @@ class InfoIndicatorPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 BattleScreenPanel battleScreenPanel = (BattleScreenPanel) ChildrenOfTime.frame.getContentPane();
-                ChildrenOfTime.changeContentPane(new BattleScreenPanelPause(battleScreenPanel));
+                BattleScreenPanel.lastState = battleScreenPanel;
 
             }
         }); //TODO IMPLEMENT

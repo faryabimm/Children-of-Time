@@ -2,6 +2,7 @@ package com.childrenOfTime.gui.customGame;
 
 import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
+import com.childrenOfTime.gui.customizedElements.CustomizedJImage;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
 import com.childrenOfTime.gui.customizedElements.Scenario;
 import com.childrenOfTime.gui.fillForms.*;
@@ -39,7 +40,7 @@ public class CusomGameEditorMenu extends MenuScreenPanel {
 
         JButton customEffect = new CustomizedJButton("new Effect");
         JButton customStore = new CustomizedJButton("new Store");
-//        JButton customFoe = new CustomizedJButton("new Foe");
+        JButton customStory = new CustomizedJButton("new Story");
         JButton customScenario = new CustomizedJButton("new Scenario");
         JButton customBattle = new CustomizedJButton("new Battle");
         JButton customWarriorClass = new CustomizedJButton("new WarriorClass");
@@ -58,7 +59,7 @@ public class CusomGameEditorMenu extends MenuScreenPanel {
         this.add(customWarriorClass);
         this.add(customBattle);
         this.add(customScenario);
-//        this.add(customFoe);
+        this.add(customStory);
         this.add(customStore);
         this.add(customEffect);
 
@@ -67,7 +68,7 @@ public class CusomGameEditorMenu extends MenuScreenPanel {
         customAbility.setLocation(ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 3*CustomizedJButton.BUTTON_HEIGHT - 3*ELEMENT_GAP);
         customWarrior.setLocation(ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 4*CustomizedJButton.BUTTON_HEIGHT - 4*ELEMENT_GAP);
         customWarriorClass.setLocation(ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 5*CustomizedJButton.BUTTON_HEIGHT - 5*ELEMENT_GAP);
-//        customFoe.setLocation(2*ELEMENT_GAP + CustomizedJButton.BUTTON_WIDTH, ChildrenOfTime.PREFERRED_HEIGHT - CustomizedJButton.BUTTON_HEIGHT - ELEMENT_GAP);
+        customStory.setLocation(2 * ELEMENT_GAP + CustomizedJButton.BUTTON_WIDTH, ChildrenOfTime.PREFERRED_HEIGHT - CustomizedJButton.BUTTON_HEIGHT - ELEMENT_GAP);
         customStore.setLocation(2*ELEMENT_GAP + CustomizedJButton.BUTTON_WIDTH, ChildrenOfTime.PREFERRED_HEIGHT - 2*CustomizedJButton.BUTTON_HEIGHT - 2*ELEMENT_GAP);
         customEffect.setLocation(2*ELEMENT_GAP + CustomizedJButton.BUTTON_WIDTH, ChildrenOfTime.PREFERRED_HEIGHT - 3*CustomizedJButton.BUTTON_HEIGHT - 3*ELEMENT_GAP);
         customBattle.setLocation(2*ELEMENT_GAP + CustomizedJButton.BUTTON_WIDTH, ChildrenOfTime.PREFERRED_HEIGHT - 4*CustomizedJButton.BUTTON_HEIGHT - 4*ELEMENT_GAP);
@@ -265,6 +266,22 @@ public class CusomGameEditorMenu extends MenuScreenPanel {
 
             }
         });
+        customStory.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CusomGameEditorMenu.this.fade();
+                new NewStoryCreationDialog();
+            }
+        });
+
+
+        CustomizedJImage mainMenuArt = new CustomizedJImage("src/ui/Children Of Time Art Assets/COT (33).png", 200, 200);
+        this.add(mainMenuArt);
+        mainMenuArt.setLocation(ChildrenOfTime.PREFERRED_WIDTH - 200 - ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 200 - ELEMENT_GAP);
+
+
+
+
         emerge();
     }
 }

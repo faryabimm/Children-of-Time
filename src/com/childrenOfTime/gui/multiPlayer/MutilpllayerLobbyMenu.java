@@ -3,6 +3,7 @@ package com.childrenOfTime.gui.multiPlayer;
 import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.gui.MainMenuScreenPanel;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
+import com.childrenOfTime.gui.customizedElements.CustomizedJImage;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
 import com.childrenOfTime.gui.customizedListeners.KeyTypeListener;
 import com.childrenOfTime.gui.fillForms.MultiplayerChatDialog;
@@ -94,6 +95,14 @@ public class MutilpllayerLobbyMenu extends MenuScreenPanel {
         initiateABattle.addKeyListener(listener);
 
         closeTheServer.addActionListener(e -> MultiPlayer.getInstacne().forceStopConnection());
+
+        CustomizedJImage mainMenuArt = new CustomizedJImage("src/ui/Children Of Time Art Assets/COT (16).png", 200, 200);
+        this.add(mainMenuArt);
+        mainMenuArt.setLocation(ChildrenOfTime.PREFERRED_WIDTH - 200 - ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 200 - ELEMENT_GAP);
+
+
+
+
         emerge();
     }
 

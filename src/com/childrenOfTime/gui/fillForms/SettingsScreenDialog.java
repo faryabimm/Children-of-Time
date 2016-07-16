@@ -1,6 +1,8 @@
 package com.childrenOfTime.gui.fillForms;
 
+import com.childrenOfTime.controller.GameEngine;
 import com.childrenOfTime.gui.MainMenuScreenPanel;
+import com.childrenOfTime.gui.announcementPanels.GameOverAnnouncementPanel;
 import com.childrenOfTime.gui.notification.NotificationType;
 import com.childrenOfTime.model.ChildrenOfTime;
 import com.childrenOfTime.model.DIFFICUALTY;
@@ -42,6 +44,7 @@ public class SettingsScreenDialog extends JDialog {
     private JCheckBox refilRatesCanBeCheckBox;
     private JCheckBox intelligentEnemyDamageTakingCheckBox;
     private JCheckBox giveRewardBasedOnCheckBox;
+    private JCheckBox playMusicCheckBox;
 
     public SettingsScreenDialog() {
 
@@ -185,9 +188,6 @@ public class SettingsScreenDialog extends JDialog {
             }
         });
 
-        this.pack();
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
         intelligentEnemyDamageTakingCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -220,9 +220,14 @@ public class SettingsScreenDialog extends JDialog {
                 Rules.giveRandomRewardByDifferentiationBetweenWinnerAndLoser = giveRewardBasedOnCheckBox.isSelected();
             }
         });
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
 
     private void loadTheForm() {
+
+//        playMusicCheckBox.setSelected(GameEngine.);
 
         if (Rules.INITIAL_MONEY != Rules.INITIAL_MONEY_DEFAULT || Rules.INITIAL_XP != Rules.INITIAL_XP_DEFAULT || Rules.INITIAL_IMMORTALITY_POTION != Rules.INITIAL_IMMORTALITY_POTION_DEFAULT) {
             changeScenarioSInitialCheckBox.setSelected(true);

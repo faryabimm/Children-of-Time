@@ -140,7 +140,6 @@ public class Ability implements Castable, TurnBase, Serializable {
 
     public Upgrade getUpgradeByNumber(Integer i) {
         Object returnedUp = Upgrades.getVar(new Upgrade(i));
-        ;
         if (returnedUp == null) throw new RuntimeException(" Such an Upgrade doesn't exist ! ");
         return (Upgrade) returnedUp;
 

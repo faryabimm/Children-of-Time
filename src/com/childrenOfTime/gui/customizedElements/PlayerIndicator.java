@@ -1,8 +1,12 @@
 package com.childrenOfTime.gui.customizedElements;
 
+import com.childrenOfTime.gui.announcementPanels.ModalAnnouncer;
+import com.childrenOfTime.gui.announcementPanels.StoryAnnouncementPanel;
 import com.childrenOfTime.gui.customGame.CustomScenarioBuilderPanel;
+import com.childrenOfTime.gui.fillForms.StoreDialog;
+import com.childrenOfTime.gui.fillForms.UpgradeDialog;
 import com.childrenOfTime.gui.fillForms.dataHolders.CustomScenarioInfoHolder;
-import com.childrenOfTime.gui.singlePlayer.BattleScreenPanel;
+import com.childrenOfTime.gui.singlePlayer.battleScreen.BattleScreenPanel;
 import com.childrenOfTime.model.*;
 import com.childrenOfTime.model.Warriors.Warrior;
 
@@ -122,31 +126,33 @@ public class PlayerIndicator {
                 loadBattle(scenario.getIJ(I, J).getBattle(), infoHolder.playerWarriors, playingPlayer);
                 break;
             case STORE:
-                loadStore(scenario.getIJ(I, J).getStore(), infoHolder.playerWarriors, playingPlayer);
+                loadStore(scenario.getIJ(I, J).getStore(), playingPlayer);
                 break;
             case STORY:
                 loadStory(scenario.getIJ(I, J).getStory());
                 break;
             case UPGRADEPLACE:
-                loadUpgradeScreen(infoHolder.playerWarriors, playingPlayer);
+                loadUpgradeScreen(playingPlayer);
                 break;
         }
     }
 
-    private void loadUpgradeScreen(ArrayList<Warrior> playerWarriors, Player playingPlayer) {
-
+    private void loadUpgradeScreen(Player playingPlayer) {
+        new UpgradeDialog(playingPlayer);
     }
     private void loadStory(Story story) {
-
+        new ModalAnnouncer(new StoryAnnouncementPanel(story));
     }
 
-    private void loadStore(Store store, ArrayList<Warrior> playerWarriors, Player playingPlayer) {
-
+    private void loadStore(Store store, Player playingPlayer) {
+        new StoreDialog(playingPlayer, store);
     }
 
     private void loadBattle(Battle battle, ArrayList<Warrior> playerWarriors, Player playingPlayer) {
-        BattleScreenPanel battleScreenPanel = new BattleScreenPanel(battle, playerWarriors, playingPlayer);
-        ChildrenOfTime.changeContentPaneNOANIMATION(battleScreenPanel);
+//        BattleScreenPanel.lastState = new BattleScreenPanel(battle, playerWarriors, playingPlayer);
+        new ModalAnnouncer(new BattleScreenPanel(battle, playerWarriors, playingPlayer));
+//        ChildrenOfTime.changeContentPaneNOANIMATION(BattleScreenPanel.lastState);
+//        SinglePlayerGame.lastState.setPageOpacity(1f);
     }
     public int getX() {
         return X;

@@ -3,8 +3,10 @@ package com.childrenOfTime.gui.fillForms;
 import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.gui.customizedElements.ScenarioCell;
 import com.childrenOfTime.gui.customizedElements.ScenarioCellType;
+import com.childrenOfTime.gui.customizedListeners.KeyTypeListener;
 import com.childrenOfTime.gui.fillForms.dataHolders.BattleWrapper;
 import com.childrenOfTime.gui.fillForms.dataHolders.StoreWrapper;
+import com.childrenOfTime.gui.fillForms.dataHolders.StoryWrapper;
 import com.childrenOfTime.model.Battle;
 import com.childrenOfTime.model.Store;
 import com.childrenOfTime.utilities.GUIUtils;
@@ -74,11 +76,30 @@ public class BlockPickerDialog extends JDialog {
             }
         });
         contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        this.addKeyListener(new KeyTypeListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                switch (e.getKeyChar()) {
+                    case 'w':
+                        targetCell.reset();
+                        targetCell.setIcon(GUIUtils.getScaledIcon(CustomGameDAO.textures.get("wall"), ScenarioCell.SCENARIO_CELL_DIMENTION, ScenarioCell.SCENARIO_CELL_DIMENTION, 0));
+                        targetCell.setCellType(ScenarioCellType.WALL);
+                        dispose();
+                        break;
+                    case 'g':
+                        targetCell.reset();
+                        targetCell.setIcon(GUIUtils.getScaledIcon(CustomGameDAO.textures.get("ground1"), ScenarioCell.SCENARIO_CELL_DIMENTION, ScenarioCell.SCENARIO_CELL_DIMENTION, 0));
+                        targetCell.setCellType(ScenarioCellType.GROUND);
+                        dispose();
+                        break;
+                }
+            }
+        });
+
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-
-
 
     }
 
@@ -105,6 +126,9 @@ public class BlockPickerDialog extends JDialog {
             targetCell.reset();
             targetCell.setIcon(GUIUtils.getScaledIcon(CustomGameDAO.textures.get("story"), ScenarioCell.SCENARIO_CELL_DIMENTION, ScenarioCell.SCENARIO_CELL_DIMENTION, 0));
             targetCell.setCellType(ScenarioCellType.STORY);
+            StoryWrapper storyWrapper = new StoryWrapper();
+            new StoryChooserDialog(storyWrapper);
+            targetCell.setStory(storyWrapper.story);
         }
         if (radioButton7.isSelected()) {
             targetCell.reset();

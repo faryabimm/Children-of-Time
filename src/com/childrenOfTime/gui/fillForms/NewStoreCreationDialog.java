@@ -5,6 +5,7 @@ import com.childrenOfTime.gui.customGame.CusomGameEditorMenu;
 import com.childrenOfTime.gui.fillForms.dataHolders.StoreDataHolder;
 import com.childrenOfTime.model.ChildrenOfTime;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
+import com.childrenOfTime.model.Warriors.Warrior;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -75,15 +76,20 @@ public class NewStoreCreationDialog extends JDialog {
         });
 
 
-        this.pack();
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
         addItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Item toAdd = CustomGameDAO.currentUserCustomItems.get(comboBox1.getSelectedIndex());
+                if (!dataHolder.storeItems.contains(toAdd)) {
+                    dataHolder.storeItems.add(toAdd);
+                    label1.setText(label1.getText() + " " + toAdd.getName());
+                }
 
             }
         });
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
 
     private void onOK() {

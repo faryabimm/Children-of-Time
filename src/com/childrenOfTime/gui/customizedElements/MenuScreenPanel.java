@@ -2,7 +2,6 @@ package com.childrenOfTime.gui.customizedElements;
 
 import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.gui.LoadingScreenPanel;
-import com.childrenOfTime.gui.singlePlayer.BattleScreenPanel;
 import com.childrenOfTime.model.ChildrenOfTime;
 
 import javax.swing.*;
@@ -17,6 +16,10 @@ public abstract class MenuScreenPanel extends JPanel {
     public static final int ELEMENT_GAP = 20;
     public static final int PREFFERED_AVATAR_SIZE = 100;
     public static final int PREFFERED_ELEMENT_ICON_SIZE = 50;
+
+    public void setPageOpacity(float pageOpacity) {
+        this.pageOpacity = pageOpacity;
+    }
 
     protected float pageOpacity = 0f;
 
@@ -78,8 +81,8 @@ public abstract class MenuScreenPanel extends JPanel {
         }
 
 //        if (!(this instanceof BattleScreenPanel)) {
-//            this.add(userNameLabel);
-//            this.add(userAvatar);
+        this.add(userNameLabel);
+        this.add(userAvatar);
 //        }
 
 

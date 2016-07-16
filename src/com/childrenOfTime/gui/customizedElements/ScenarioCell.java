@@ -105,6 +105,6 @@ public class ScenarioCell extends JLabel implements Serializable {
 
     public Story getStory() {
 
-        return null;
+        return story;
     }
 }

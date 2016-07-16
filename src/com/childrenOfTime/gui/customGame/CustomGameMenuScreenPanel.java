@@ -3,6 +3,7 @@ import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.cgd.User;
 import com.childrenOfTime.gui.MainMenuScreenPanel;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
+import com.childrenOfTime.gui.customizedElements.CustomizedJImage;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
 import com.childrenOfTime.gui.fillForms.SignInForm;
 import com.childrenOfTime.gui.fillForms.SignUpForm;
@@ -60,6 +61,15 @@ public class CustomGameMenuScreenPanel extends MenuScreenPanel {
             ChildrenOfTime.changeContentPane(new CustomGameUserHubPanel());
             GUIUtils.showNotification("Welcome Back Mohammadmahdi!", NotificationType.DEVELOPER);
         });
+
+        CustomizedJImage mainMenuArt = new CustomizedJImage("src/ui/Children Of Time Art Assets/COT (12).png", 200, 200);
+        this.add(mainMenuArt);
+        mainMenuArt.setLocation(ChildrenOfTime.PREFERRED_WIDTH - 200 - ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 200 - ELEMENT_GAP);
+
+
+
+
+
         emerge();
     }
 

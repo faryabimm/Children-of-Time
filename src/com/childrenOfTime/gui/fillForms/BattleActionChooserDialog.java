@@ -3,7 +3,7 @@ package com.childrenOfTime.gui.fillForms;
 import com.childrenOfTime.gui.fillForms.dataHolders.AbilityWrapper;
 import com.childrenOfTime.gui.fillForms.dataHolders.ItemWrapper;
 import com.childrenOfTime.gui.notification.NotificationType;
-import com.childrenOfTime.gui.singlePlayer.BattleScreenPanel;
+import com.childrenOfTime.gui.singlePlayer.battleScreen.BattleScreenPanel;
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
 import com.childrenOfTime.model.Warriors.ActionType;

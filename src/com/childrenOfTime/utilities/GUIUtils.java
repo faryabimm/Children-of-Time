@@ -11,6 +11,7 @@ import com.childrenOfTime.model.Equip.Effect;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
 import com.childrenOfTime.gui.customizedElements.Scenario;
 import com.childrenOfTime.model.Store;
+import com.childrenOfTime.model.Story;
 import com.childrenOfTime.model.Warriors.HeroClass;
 import com.childrenOfTime.model.Warriors.Warrior;
 
@@ -94,6 +95,13 @@ public class GUIUtils {
             CustomGameDAO.currentUserCustomStores = (ArrayList<Store>) objectIO8.readObject();
             System.out.println("deserialized");
             objectIO8.close();
+
+
+            ObjectInputStream objectIO9 = new ObjectInputStream(new FileInputStream(
+                    new File(CustomGameDAO.currentUserCGDataPath + "stories.dat")));
+            CustomGameDAO.currentUserCustomStories = (ArrayList<Story>) objectIO9.readObject();
+            System.out.println("deserialized");
+            objectIO9.close();
 
 
         } catch (FileNotFoundException e) {

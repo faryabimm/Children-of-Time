@@ -86,7 +86,7 @@ public class Hypnosis1 extends JComponent implements Runnable {
     public static void main(String[] args) {
         JFrame f = new JFrame("Hypnosis");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.add(new Hypnosis1(4));
+        f.add(new Hypnosis1(1));
         f.setSize(300, 300);
         f.setVisible(true);
     }

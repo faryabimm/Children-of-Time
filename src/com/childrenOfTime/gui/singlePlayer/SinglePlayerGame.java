@@ -14,12 +14,14 @@ import com.childrenOfTime.utilities.GUIUtils;
 import javax.swing.*;
 import java.awt.*;
 
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
 /**
  * Created by mohammadmahdi on 7/12/16.
  */
 public class SinglePlayerGame extends MenuScreenPanel {
+
 
     private PlayerIndicator indicator;
     private MapScreenListener controller;
@@ -31,8 +33,8 @@ public class SinglePlayerGame extends MenuScreenPanel {
 
     public SinglePlayerGame(CustomScenarioInfoHolder infoHolder) {
 
-        playingPlayer = new Player(infoHolder.playerWarriors, CustomGameDAO.getCurrentUser().getUserName(), PlayerType.Human);
         lastState = this;
+        playingPlayer = new Player(infoHolder.playerWarriors, CustomGameDAO.getCurrentUser().getUserName(), PlayerType.Human);
         this.infoHolder = infoHolder;
         indicator = new PlayerIndicator(infoHolder, playingPlayer);
         initializeCells();
@@ -70,10 +72,29 @@ public class SinglePlayerGame extends MenuScreenPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
         Graphics2D g2d = (Graphics2D) g;
+
+
+        AffineTransform newTransform = new AffineTransform();
+
+        newTransform.translate(400, 50);
+        newTransform.scale(1, 0.5);
+        newTransform.rotate(Math.toRadians(45));
+
+        AffineTransform undoTransform = new AffineTransform();
+        undoTransform.rotate(Math.toRadians(-45));
+        undoTransform.scale(1, 2);
+        undoTransform.translate(-400, -50);
+
+        g2d.transform(newTransform);
+
 
         paintMap(g2d);
         paintIndicator(g2d);
+
+
+        g2d.transform(undoTransform);
     }
 
     private void paintMap(Graphics2D g2d) {
@@ -87,11 +108,16 @@ public class SinglePlayerGame extends MenuScreenPanel {
     }
 
     private void paintIndicator(Graphics2D g2d) {
+
+
         g2d.setColor(Color.red);
 
         g2d.fillRoundRect(indicator.getX(), indicator.getY(), PlayerIndicator.PLAYER_INDICATOR_DIAMETER
                 , PlayerIndicator.PLAYER_INDICATOR_DIAMETER, PlayerIndicator.PLAYER_INDICATOR_DIAMETER,
                 PlayerIndicator.PLAYER_INDICATOR_DIAMETER);
+
+
     }
+
 
 }

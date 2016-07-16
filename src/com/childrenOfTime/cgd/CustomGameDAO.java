@@ -39,7 +39,7 @@ public class CustomGameDAO {
     public static ArrayList<Warrior> currentUserCustomWarriors = new ArrayList<>();
     public static ArrayList<HeroClass> currentUserCustomWarriorClasses = new ArrayList<>();
     public static ArrayList<Store> currentUserCustomStores = new ArrayList<>();
-
+    public static ArrayList<Story> currentUserCustomStories = new ArrayList<>();
 
 
     static {
@@ -107,6 +107,7 @@ public class CustomGameDAO {
         new File(currentUserCGDataPath + "warriorClasses" + ".dat").createNewFile();
         new File(currentUserCGDataPath + "warriors" + ".dat").createNewFile();
         new File(currentUserCGDataPath + "stores" + ".dat").createNewFile();
+        new File(currentUserCGDataPath + "stories" + ".dat").createNewFile();
 
         currentUserCustomEffects = new ArrayList<>();
         currentUserCustomAbilities = new ArrayList<>();
@@ -116,6 +117,7 @@ public class CustomGameDAO {
         currentUserCustomWarriors = new ArrayList<>();
         currentUserCustomWarriorClasses = new ArrayList<>();
         currentUserCustomStores = new ArrayList<>();
+        currentUserCustomStories = new ArrayList<>();
 
         GUIUtils.serializeUserObject(currentUserCustomEffects,"effects");
         GUIUtils.serializeUserObject(currentUserCustomEffects, "abilities");
@@ -125,6 +127,7 @@ public class CustomGameDAO {
         GUIUtils.serializeUserObject(currentUserCustomWarriors, "warriors");
         GUIUtils.serializeUserObject(currentUserCustomWarriorClasses, "warriorClasses");
         GUIUtils.serializeUserObject(currentUserCustomStores, "stores");
+        GUIUtils.serializeUserObject(currentUserCustomStores, "stories");
 
     }
 }

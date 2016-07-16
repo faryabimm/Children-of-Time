@@ -32,9 +32,9 @@ public class Isometric extends JPanel {
         colors[1] = Color.GREEN;
         colors[2] = Color.BLUE;
 
-        List<Color> colorList = new ArrayList<Color>();
-        List<float[]> quads = new ArrayList<float[]>();
-        List<Boolean> isTile = new ArrayList<Boolean>();
+        List<Color> colorList = new ArrayList<>();
+        List<float[]> quads = new ArrayList<>();
+        List<Boolean> isTile = new ArrayList<>();
 
         // create tile grid
         for (int y = 0; y < tileCount; y++) {

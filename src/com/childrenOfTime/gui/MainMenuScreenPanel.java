@@ -1,6 +1,9 @@
 package com.childrenOfTime.gui;
 
 import com.childrenOfTime.cgd.CustomGameDAO;
+import com.childrenOfTime.controller.GameEngine;
+import com.childrenOfTime.gui.announcementPanels.ModalAnnouncer;
+import com.childrenOfTime.gui.announcementPanels.StoryAnnouncementPanel;
 import com.childrenOfTime.gui.customGame.CustomGameMenuScreenPanel;
 import com.childrenOfTime.gui.customGame.CustomGameUserHubPanel;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
@@ -11,12 +14,17 @@ import com.childrenOfTime.gui.multiPlayer.MultiPlayerConnectionScreenPanel;
 import com.childrenOfTime.gui.notification.NotificationType;
 import com.childrenOfTime.gui.singlePlayer.SinglePlayerMenuScreenPanel;
 import com.childrenOfTime.model.ChildrenOfTime;
+import com.childrenOfTime.model.Story;
 import com.childrenOfTime.utilities.GUIUtils;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 /**
  * Created by mohammadmahdi on 7/7/16.
@@ -28,6 +36,7 @@ public class MainMenuScreenPanel extends MenuScreenPanel {
     public static final int MAIN_MENU_ART_HEIGHT = 408;
 
     public static boolean isFirstRun = true;
+
 
     @Override
     public void initialize() {
@@ -51,17 +60,15 @@ public class MainMenuScreenPanel extends MenuScreenPanel {
         quitButton.setLocation(ELEMENT_GAP,
                 ChildrenOfTime.PREFERRED_HEIGHT - CustomizedJButton.BUTTON_HEIGHT - ELEMENT_GAP);
         settingsButton.setLocation(ELEMENT_GAP,
-                ChildrenOfTime.PREFERRED_HEIGHT - 2*CustomizedJButton.BUTTON_HEIGHT - 2*ELEMENT_GAP);
+                ChildrenOfTime.PREFERRED_HEIGHT - 2 * CustomizedJButton.BUTTON_HEIGHT - 2 * ELEMENT_GAP);
         customGameButton.setLocation(ELEMENT_GAP,
-                ChildrenOfTime.PREFERRED_HEIGHT - 3*CustomizedJButton.BUTTON_HEIGHT - 3*ELEMENT_GAP);
+                ChildrenOfTime.PREFERRED_HEIGHT - 3 * CustomizedJButton.BUTTON_HEIGHT - 3 * ELEMENT_GAP);
         pvpGameModeButton.setLocation(ELEMENT_GAP,
-                ChildrenOfTime.PREFERRED_HEIGHT - 4*CustomizedJButton.BUTTON_HEIGHT - 4*ELEMENT_GAP);
+                ChildrenOfTime.PREFERRED_HEIGHT - 4 * CustomizedJButton.BUTTON_HEIGHT - 4 * ELEMENT_GAP);
         singlePlayerButton.setLocation(ELEMENT_GAP,
-                ChildrenOfTime.PREFERRED_HEIGHT - 5*CustomizedJButton.BUTTON_HEIGHT - 5*ELEMENT_GAP);
+                ChildrenOfTime.PREFERRED_HEIGHT - 5 * CustomizedJButton.BUTTON_HEIGHT - 5 * ELEMENT_GAP);
 
         mainMenuArt.setLocation(ChildrenOfTime.PREFERRED_WIDTH - MAIN_MENU_ART_WIDTH, ChildrenOfTime.PREFERRED_HEIGHT - MAIN_MENU_ART_HEIGHT);
-
-
 
 
         quitButton.addActionListener(e -> System.exit(0));
@@ -86,6 +93,9 @@ public class MainMenuScreenPanel extends MenuScreenPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ChildrenOfTime.changeContentPane(new SinglePlayerMenuScreenPanel());
+                new ModalAnnouncer(new StoryAnnouncementPanel(new Story("welcome!", "Hello, and welcome to witness result of days " +
+                        "of continues work and restless effort, welcome to \"CHILDREN OF TIME\"! We hope you enjoy it!" +
+                        " Mohammadmahdi Faryabi - Saeed Haddadan")));
             }
         });
         pvpGameModeButton.addActionListener(new ActionListener() {
@@ -104,5 +114,9 @@ public class MainMenuScreenPanel extends MenuScreenPanel {
             GUIUtils.showNotification("Welcome!", NotificationType.NORMAL);
             isFirstRun = false;
         }
+
+
+        GameEngine.playThemeMusic();
+
     }
 }
