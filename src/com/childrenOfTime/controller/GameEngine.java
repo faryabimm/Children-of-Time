@@ -30,13 +30,17 @@ public class GameEngine {
     }
 
     public static void main(String[] args) {
-        GameEngine gameEngine = new GameEngine();
         try {
-            gameEngine.startGame();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (FontFormatException e) {
-            e.printStackTrace();
+            GameEngine gameEngine = new GameEngine();
+            try {
+                gameEngine.startGame();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (FontFormatException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            //DO NOTHING
         }
     }
 

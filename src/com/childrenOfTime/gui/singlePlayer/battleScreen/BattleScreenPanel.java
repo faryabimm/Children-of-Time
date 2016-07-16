@@ -209,11 +209,11 @@ class BodyPanel extends JPanel {
     }
 
     public void setLeftWarriorImage(ImageIcon image) {
-        leftWarriorImage.setIcon(image);
+        leftWarriorImage.setIcon(GUIUtils.getScaledIcon(image, WARRIOR_IMAGES_SIZE, WARRIOR_IMAGES_SIZE, 0));
     }
 
     public void setRightWarriorImage(ImageIcon image) {
-        rightWarriorImage.setIcon(image);
+        rightWarriorImage.setIcon(GUIUtils.getScaledIcon(image, WARRIOR_IMAGES_SIZE, WARRIOR_IMAGES_SIZE, 0));
     }
 
 
