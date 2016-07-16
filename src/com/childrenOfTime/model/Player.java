@@ -85,20 +85,20 @@ public class Player implements TurnBase, Serializable {
 
         Thread immortalityRequest = new Thread(() -> {
             while (true) {
+                System.out.println("Ajab rasmie");
                 try {
 
-                for (Warrior myHero : myTeam) {
-                    if (myHero.needsImo()) {
-                        //TODO Set Try catch
-                        boolean opinion = this.immprtalityPotions - 1 >= 0;
-                        myHero.setIsPlayerOk(opinion);
-                        if (!opinion) {
-                            GUIUtils.showNotification("IMMO : Zero ! ", NotificationType.ERROR);
-                        } else {
-                            useImmortalityPotion();
+                    for (Warrior myHero : myTeam) {
+                        if (myHero.needsImo()) {
+                            boolean opinion = this.immprtalityPotions - 1 >= 0;
+                            myHero.setIsPlayerOk(opinion);
+                            if (!opinion) {
+                                GUIUtils.showNotification("IMMO : Zero ! ", NotificationType.ERROR);
+                            } else {
+                                useImmortalityPotion();
+                            }
                         }
                     }
-                }
 
                 } catch (Exception e) {
                     printOutput(e.getMessage(), NotificationType.ERROR);
@@ -106,9 +106,9 @@ public class Player implements TurnBase, Serializable {
             }
         });
 
-        immortalityRequest.setPriority(Thread.NORM_PRIORITY);
-        immortalityRequest.setDaemon(false);
-        immortalityRequest.start();
+        immortalityRequest.setPriority(Thread.MAX_PRIORITY);
+        immortalityRequest.setDaemon(true);
+//        immortalityRequest.start();
     }
 
 
