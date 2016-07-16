@@ -1,6 +1,7 @@
 package com.childrenOfTime.gui.singlePlayer.battleScreen;
 
 import com.childrenOfTime.controller.GameEngine;
+import com.childrenOfTime.gui.announcementPanels.ModalAnnouncer;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
 import com.childrenOfTime.gui.customizedElements.CustomizedJImage;
 import com.childrenOfTime.gui.customizedElements.CustomizedJLabel;
@@ -8,6 +9,7 @@ import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
 import com.childrenOfTime.gui.customizedListeners.MouseClickListener;
 import com.childrenOfTime.gui.fillForms.BattleActionChooserDialog;
 import com.childrenOfTime.gui.notification.NotificationType;
+import com.childrenOfTime.gui.singlePlayer.BattleScreenPanelPause;
 import com.childrenOfTime.model.*;
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
@@ -130,11 +132,6 @@ public class BattleScreenPanel extends JPanel {
 
         for (Act aiAct : aiActs) {
             bodyPanel.setRightWarriorImage(aiAct.getPerformer().getImage());
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             AI.doTheAct(aiAct);
         }
     }
@@ -273,8 +270,14 @@ class WarriorChoosingPanel extends JPanel {
             public void mouseClicked(MouseEvent e) {
 
                 Warrior selectedWarrior = ((WarriorIndicatorElement) e.getComponent()).getWarrior();
+                boolean alredyExisting = false;
 
-                if (selectedWarriors.contains(selectedWarrior)) {
+                for (Warrior warrior : selectedWarriors) {
+                    if (warrior.equals(selectedWarrior) && warrior.getId() == selectedWarrior.getId())
+                        alredyExisting = true;
+                }
+
+                if (alredyExisting) {
                     GUIUtils.showNotification("this warrior: " + selectedWarrior.getName() + " (" + selectedWarrior.getInfo().getClassName() + ") "
                             + selectedWarrior.getId() + "is already chosen! choose another one.", NotificationType.ERROR);
                 } else {
@@ -564,9 +567,9 @@ class InfoIndicatorPanel extends JPanel {
         pauseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                BattleScreenPanel battleScreenPanel = (BattleScreenPanel) ChildrenOfTime.frame.getContentPane();
-                BattleScreenPanel.lastState = battleScreenPanel;
-
+//                BattleScreenPanel battleScreenPanel = (BattleScreenPanel) ChildrenOfTime.frame.getContentPane();
+//                BattleScreenPanel.lastState = battleScreenPanel;
+                new ModalAnnouncer(new BattleScreenPanelPause(BattleScreenPanel.instance));
             }
         }); //TODO IMPLEMENT
     }

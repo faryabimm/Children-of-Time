@@ -1,5 +1,6 @@
 package com.childrenOfTime.gui.singlePlayer;
 
+import com.childrenOfTime.gui.announcementPanels.GameOverAnnouncementPanel;
 import com.childrenOfTime.gui.announcementPanels.ModalAnnouncer;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
@@ -21,8 +22,8 @@ public class BattleScreenPanelPause extends MenuScreenPanel {
     private BattleScreenPanel battleScreenPanel;
     private ModalAnnouncer father;
 
-    public BattleScreenPanelPause(BattleScreenPanel battleScreenPanel, ModalAnnouncer father) {
-        this.father = father;
+    public BattleScreenPanelPause(BattleScreenPanel battleScreenPanel) {
+
         this.battleScreenPanel = battleScreenPanel;
     }
 
@@ -30,40 +31,37 @@ public class BattleScreenPanelPause extends MenuScreenPanel {
     public void initialize() {
 
         JButton resume = new CustomizedJButton("Resume");
-        JButton map = new CustomizedJButton("Back to Map");
+//        JButton map = new CustomizedJButton("Back to Map");
         JButton quit = new CustomizedJButton("Quit Scenario");
 
         quit.setBackground(Color.red);
         quit.setForeground(Color.yellow);
 
         this.add(resume);
-        this.add(map);
+//        this.add(map);
         this.add(quit);
 
         quit.setLocation(ChildrenOfTime.PREFERRED_WIDTH / 2 - CustomizedJButton.BUTTON_WIDTH * 3 / 2 - ELEMENT_GAP,
                 ChildrenOfTime.PREFERRED_HEIGHT * 2 / 3);
-        map.setLocation(ChildrenOfTime.PREFERRED_WIDTH / 2 - CustomizedJButton.BUTTON_WIDTH / 2,
-                ChildrenOfTime.PREFERRED_HEIGHT * 2 / 3);
+//        map.setLocation(ChildrenOfTime.PREFERRED_WIDTH / 2 - CustomizedJButton.BUTTON_WIDTH / 2,
+//                ChildrenOfTime.PREFERRED_HEIGHT * 2 / 3);
         resume.setLocation(ChildrenOfTime.PREFERRED_WIDTH / 2 + CustomizedJButton.BUTTON_WIDTH / 2 + ELEMENT_GAP,
                 ChildrenOfTime.PREFERRED_HEIGHT * 2 / 3);
         resume.addActionListener(e -> {
-            father.dispose();
+            ((ModalAnnouncer) this.getParent()).dispose();
 //                ChildrenOfTime.changeContentPaneNOANIMATION(BattleScreenPanel.lastState);
         });
 
-        map.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ChildrenOfTime.changeContentPane(SinglePlayerGame.lastState);
-                SinglePlayerGame.lastState.fade();
-                SinglePlayerGame.lastState.emerge();
-            }
-        });
-        quit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ChildrenOfTime.changeContentPane(new SinglePlayerMenuScreenPanel());
-            }
+//        map.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                ChildrenOfTime.changeContentPane(SinglePlayerGame.lastState);
+//                SinglePlayerGame.lastState.fade();
+//                SinglePlayerGame.lastState.emerge();
+//            }
+//        });
+        quit.addActionListener(e -> {
+            new ModalAnnouncer(new GameOverAnnouncementPanel());
         });
 
         emerge();
