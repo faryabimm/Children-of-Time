@@ -274,13 +274,9 @@ public class CusomGameEditorMenu extends MenuScreenPanel {
             }
         });
 
-
         CustomizedJImage mainMenuArt = new CustomizedJImage("src/ui/Children Of Time Art Assets/COT (33).png", 200, 200);
         this.add(mainMenuArt);
         mainMenuArt.setLocation(ChildrenOfTime.PREFERRED_WIDTH - 200 - ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 200 - ELEMENT_GAP);
-
-
-
 
         emerge();
     }
