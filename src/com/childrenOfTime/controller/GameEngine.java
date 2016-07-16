@@ -17,7 +17,6 @@ import java.io.IOException;
 public class GameEngine {
 
     public static final Toolkit DEFAULT_TOOLKIT = Toolkit.getDefaultToolkit();
-    public static boolean themeMusiceIsPlaying = false;
 
     private static Clip themeMusicClip;
     public static boolean musicPlayBackAllowed = true;
@@ -42,13 +41,14 @@ public class GameEngine {
     }
 
     public static void stopThemeMusic() {
+        musicPlayBackAllowed = false;
+        themeMusicClip.stop();
 
     }
 
 
     public static void playThemeMusic() {
-        if (!GameEngine.themeMusiceIsPlaying && musicPlayBackAllowed) {
-            GameEngine.themeMusiceIsPlaying = true;
+        if (themeMusicClip == null || !themeMusicClip.isActive() && musicPlayBackAllowed) {
             try {
                 AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(
                         new File("src/ui/music/theme_music.wav").getAbsoluteFile());

@@ -220,6 +220,19 @@ public class SettingsScreenDialog extends JDialog {
                 Rules.giveRandomRewardByDifferentiationBetweenWinnerAndLoser = giveRewardBasedOnCheckBox.isSelected();
             }
         });
+        playMusicCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (GameEngine.musicPlayBackAllowed) {
+                    GameEngine.musicPlayBackAllowed = false;
+                    GameEngine.stopThemeMusic();
+                } else {
+                    GameEngine.musicPlayBackAllowed = true;
+                    GameEngine.playThemeMusic();
+
+                }
+            }
+        });
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -227,7 +240,7 @@ public class SettingsScreenDialog extends JDialog {
 
     private void loadTheForm() {
 
-//        playMusicCheckBox.setSelected(GameEngine.);
+        playMusicCheckBox.setSelected(GameEngine.musicPlayBackAllowed);
 
         if (Rules.INITIAL_MONEY != Rules.INITIAL_MONEY_DEFAULT || Rules.INITIAL_XP != Rules.INITIAL_XP_DEFAULT || Rules.INITIAL_IMMORTALITY_POTION != Rules.INITIAL_IMMORTALITY_POTION_DEFAULT) {
             changeScenarioSInitialCheckBox.setSelected(true);

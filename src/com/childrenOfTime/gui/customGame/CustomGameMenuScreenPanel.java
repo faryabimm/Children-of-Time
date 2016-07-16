@@ -22,7 +22,7 @@ public class CustomGameMenuScreenPanel extends MenuScreenPanel {
     @Override
     public void initialize() {
         JButton developer = new CustomizedJButton("Developer ;)");
-        JButton signUp = new CustomizedJButton("Sing Up");
+        JButton signUp = new CustomizedJButton("Sign Up");
         JButton signIn = new CustomizedJButton("Sign In");
         JButton goBack = new CustomizedJButton("Return to Main Menu");
 

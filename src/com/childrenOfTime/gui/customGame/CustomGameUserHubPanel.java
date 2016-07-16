@@ -22,7 +22,6 @@ public class CustomGameUserHubPanel extends MenuScreenPanel {
         JButton openEditor = new CustomizedJButton("Open Editor");
 
 
-        JButton states = new CustomizedJButton("States");
         JButton signOut = new CustomizedJButton("Sign Out");
         JButton back = new CustomizedJButton("Back to Main Menu");
 
@@ -32,14 +31,12 @@ public class CustomGameUserHubPanel extends MenuScreenPanel {
 
         this.add(back);
         this.add(signOut);
-        this.add(states);
         this.add(openEditor);
 
 
         back.setLocation(ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - CustomizedJButton.BUTTON_HEIGHT - ELEMENT_GAP);
         signOut.setLocation(ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 2*CustomizedJButton.BUTTON_HEIGHT - 2*ELEMENT_GAP);
-        states.setLocation(ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 3*CustomizedJButton.BUTTON_HEIGHT - 3*ELEMENT_GAP);
-        openEditor.setLocation(ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 4*CustomizedJButton.BUTTON_HEIGHT - 4*ELEMENT_GAP);
+        openEditor.setLocation(ELEMENT_GAP, ChildrenOfTime.PREFERRED_HEIGHT - 3 * CustomizedJButton.BUTTON_HEIGHT - 3 * ELEMENT_GAP);
 
 
 
