@@ -69,10 +69,10 @@ public class WarriorChooserDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Warrior toAdd = CustomGameDAO.currentUserCustomWarriors.get(comboBox1.getSelectedIndex());
-                if (!selectedWarriors.contains(toAdd)) {
+//                if (!selectedWarriors.contains(toAdd)) {
                     selectedWarriors.add(toAdd);
                     label1.setText(label1.getText() + " " + toAdd.getName());
-                }
+//                }
             }
         });
         this.pack();
