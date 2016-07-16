@@ -29,6 +29,11 @@ public class Item implements Castable, TurnBase {
     private ItemType type;
     private ArrayList<Effect> effects;
     private Messages messages;
+
+    public Target getTargetType() {
+        return targetType;
+    }
+
     private Target targetType;
     public int currentPrice;
     private boolean isInCoolDown = false;

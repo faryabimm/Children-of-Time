@@ -331,7 +331,7 @@ class WarriorChoosingPanel extends JPanel {
         this.add(okButton);
 
 
-        counterLabel = new CustomizedJLabel("selected: " + 0 + " warriors");
+        counterLabel = new CustomizedJLabel("selected: no warriors");
         counterLabel.setLocation((BattleScreenPanelStaticData.BODY_PANEL_WIDTH - CustomizedJLabel.LABEL_WIDTH) / 2,
                 (BattleScreenPanelStaticData.WARRIOR_INDICATOR_PANEL_HEIGHT - CustomizedJButton.BUTTON_HEIGHT) / 2 - CustomizedJLabel.LABEL_HEIGHT - MenuScreenPanel.ELEMENT_GAP);
         this.add(counterLabel);
@@ -435,7 +435,7 @@ class WarriorChoosingPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        counterLabel.setText("selected: " + selectedWarriors.size() + " warriors");
+        counterLabel.setText("selected: " + selectedWarriors.size() + "/" + maxNumberOfChoosableWarriors + " warriors");
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(ChildrenOfTime.GREY);
         g2d.fillRect(0, 0, BattleScreenPanelStaticData.BODY_PANEL_WIDTH, BattleScreenPanelStaticData.WARRIOR_INDICATOR_PANEL_HEIGHT);

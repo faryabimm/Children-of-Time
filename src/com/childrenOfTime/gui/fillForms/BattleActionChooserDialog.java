@@ -6,6 +6,7 @@ import com.childrenOfTime.gui.notification.NotificationType;
 import com.childrenOfTime.gui.singlePlayer.battleScreen.BattleScreenPanel;
 import com.childrenOfTime.model.Equip.AbilComps.Ability;
 import com.childrenOfTime.model.Equip.ItemComps.Item;
+import com.childrenOfTime.model.Rules;
 import com.childrenOfTime.model.Warriors.ActionType;
 import com.childrenOfTime.model.Warriors.Warrior;
 import com.childrenOfTime.utilities.GUIUtils;
@@ -50,7 +51,7 @@ public class BattleActionChooserDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 actionType = ActionType.Attack;
                 dispose();
-                chooseTargets(1000/*TODO*/, warrior, actionType, null, null);
+                chooseTargets(Rules.Quantitiy_Of_Targets_For_Manual_Multiple_Target_Choosing, warrior, actionType, null, null);
             }
         });
         burnEPButton.addActionListener(new ActionListener() {
@@ -61,7 +62,7 @@ public class BattleActionChooserDialog extends JDialog {
                 } else {
                     actionType = ActionType.BurnEP;
                     dispose();
-                    chooseTargets(1000/*TODO*/, warrior, actionType, null, null);
+                    chooseTargets(Rules.Quantitiy_Of_Targets_For_Manual_Multiple_Target_Choosing, warrior, actionType, null, null);
                 }
             }
         });
@@ -73,7 +74,7 @@ public class BattleActionChooserDialog extends JDialog {
                 new AbilityChooserByWarriorDialog(warrior, selectedAbility);
                 actionType = ActionType.AbilityCast;
                 dispose();
-                chooseTargets(1000/*TODO*/, warrior, actionType, selectedAbility.ability, null);
+                chooseTargets(1, warrior, actionType, selectedAbility.ability, null);
             }
         });
         useAnItemButton.addActionListener(new ActionListener() {
@@ -84,7 +85,8 @@ public class BattleActionChooserDialog extends JDialog {
                 new ItemChooserByWarriorDialog(warrior, selectedItem);
                 actionType = ActionType.UseItem;
                 dispose();
-                chooseTargets(1000/*TODO*/, warrior, actionType, null, selectedItem.item);
+
+                chooseTargets(selectedItem.item.getTargetType().getNumberOftargetsNeededToChoose(), warrior, actionType, null, selectedItem.item);
             }
         });
 
