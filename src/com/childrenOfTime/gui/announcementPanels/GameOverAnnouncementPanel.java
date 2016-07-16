@@ -41,6 +41,7 @@ public class GameOverAnnouncementPanel extends MenuScreenPanel {
             public void keyTyped(KeyEvent e) {
 
                 announcer.dispose();
+                System.exit(0);
             }
         });
     }
