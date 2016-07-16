@@ -107,7 +107,10 @@ public class BattleScreenPanel extends JPanel {
         BodyPanel.lastState.requestFocus();
     }
 
-    public BattleScreenPanel(Battle battle, ArrayList<Warrior> warriors, Player userPlayer) {
+    ModalAnnouncer father;
+
+    public BattleScreenPanel(Battle battle, ArrayList<Warrior> warriors, Player userPlayer, ModalAnnouncer announcer) {
+        this.father = announcer;
 
         instance = this;
         this.battle = battle;
@@ -479,12 +482,15 @@ class InfoIndicatorPanel extends JPanel {
             BattleScreenPanel.isPlayersTurn = !BattleScreenPanel.isPlayersTurn;
         } else {
             if (BattleScreenPanel.instance.getUserPlayer().isDefeated()) {
-                new ModalAnnouncer(new GameOverAnnouncementPanel());
+
+                ModalAnnouncer announcer = new ModalAnnouncer();
+                BattleScreenPanel.instance.father.dispose();
+                announcer.addPanel(new GameOverAnnouncementPanel(announcer));
                 ((ModalAnnouncer) this.getParent()).dispose();
             }
             if (BattleScreenPanel.instance.getComputerPlayer().isDefeated()) {
                 GUIUtils.showNotification("You Won!", NotificationType.GOOD);
-                ((ModalAnnouncer) this.getParent()).dispose();
+                BattleScreenPanel.instance.father.dispose();
             }
             pauseButton.setText(String.valueOf(Integer.parseInt(pauseButton.getText()) - 1));
             BattleScreenPanel.instance.repaint();
@@ -583,7 +589,8 @@ class InfoIndicatorPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
 //                BattleScreenPanel battleScreenPanel = (BattleScreenPanel) ChildrenOfTime.frame.getContentPane();
 //                BattleScreenPanel.lastState = battleScreenPanel;
-                new ModalAnnouncer(new BattleScreenPanelPause(BattleScreenPanel.instance));
+                ModalAnnouncer announcer = new ModalAnnouncer();
+                announcer.addPanel(new BattleScreenPanelPause(announcer));
             }
         }); //TODO IMPLEMENT
     }

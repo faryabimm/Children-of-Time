@@ -1,5 +1,6 @@
 package com.childrenOfTime.gui.singlePlayer;
 
+import com.childrenOfTime.gui.MainMenuScreenPanel;
 import com.childrenOfTime.gui.announcementPanels.GameOverAnnouncementPanel;
 import com.childrenOfTime.gui.announcementPanels.ModalAnnouncer;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
@@ -22,9 +23,9 @@ public class BattleScreenPanelPause extends MenuScreenPanel {
     private BattleScreenPanel battleScreenPanel;
     private ModalAnnouncer father;
 
-    public BattleScreenPanelPause(BattleScreenPanel battleScreenPanel) {
+    public BattleScreenPanelPause(ModalAnnouncer battleScreenPanel) {
 
-        this.battleScreenPanel = battleScreenPanel;
+        this.father = battleScreenPanel;
     }
 
     @Override
@@ -61,7 +62,11 @@ public class BattleScreenPanelPause extends MenuScreenPanel {
 //            }
 //        });
         quit.addActionListener(e -> {
-            new ModalAnnouncer(new GameOverAnnouncementPanel());
+
+            ChildrenOfTime.changeContentPane(new MainMenuScreenPanel());
+            father.dispose();
+            ModalAnnouncer announcer = new ModalAnnouncer();
+            announcer.addPanel(new GameOverAnnouncementPanel(announcer));
         });
 
         emerge();

@@ -141,7 +141,10 @@ public class PlayerIndicator {
         new UpgradeDialog(playingPlayer);
     }
     private void loadStory(Story story) {
-        new ModalAnnouncer(new StoryAnnouncementPanel(story));
+
+        ModalAnnouncer announcer = new ModalAnnouncer();
+        announcer.addPanel(new StoryAnnouncementPanel(story));
+
     }
 
     private void loadStore(Store store, Player playingPlayer) {
@@ -150,7 +153,9 @@ public class PlayerIndicator {
 
     private void loadBattle(Battle battle, ArrayList<Warrior> playerWarriors, Player playingPlayer) {
 //        BattleScreenPanel.lastState = new BattleScreenPanel(battle, playerWarriors, playingPlayer);
-        new ModalAnnouncer(new BattleScreenPanel(battle, playerWarriors, playingPlayer));
+        ModalAnnouncer announcer = new ModalAnnouncer();
+        announcer.addPanel(new BattleScreenPanel(battle, playerWarriors, playingPlayer, announcer));
+
 //        ChildrenOfTime.changeContentPaneNOANIMATION(BattleScreenPanel.lastState);
 //        SinglePlayerGame.lastState.setPageOpacity(1f);
     }

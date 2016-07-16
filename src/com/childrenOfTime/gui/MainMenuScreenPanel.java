@@ -93,7 +93,8 @@ public class MainMenuScreenPanel extends MenuScreenPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ChildrenOfTime.changeContentPane(new SinglePlayerMenuScreenPanel());
-                new ModalAnnouncer(new StoryAnnouncementPanel(new Story("welcome!", "Hello, and welcome to witness result of days " +
+                ModalAnnouncer announcer = new ModalAnnouncer();
+                announcer.addPanel(new StoryAnnouncementPanel(new Story("welcome!", "Hello, and welcome to witness result of days " +
                         "of continues work and restless effort, welcome to \"CHILDREN OF TIME\"! We hope you enjoy it!" +
                         " Mohammadmahdi Faryabi - Saeed Haddadan")));
             }

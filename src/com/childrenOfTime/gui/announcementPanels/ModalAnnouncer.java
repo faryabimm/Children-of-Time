@@ -11,9 +11,7 @@ import java.awt.event.*;
  */
 public class ModalAnnouncer extends JDialog {
 
-
-    public ModalAnnouncer(JPanel panel) {
-
+    public void addPanel(JPanel panel) {
         setModal(true);
 
         setContentPane(panel);
@@ -37,6 +35,11 @@ public class ModalAnnouncer extends JDialog {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         this.repaint();
+    }
+
+
+    public ModalAnnouncer() {
+
     }
 
     private void onCancel() {

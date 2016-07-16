@@ -93,7 +93,8 @@ public class SinglePlayerMenuScreenPanel extends MenuScreenPanel {
                 ChildrenOfTime.changeContentPane(target);
                 CustomGameDAO.setCurrentUser(null);
 
-                new ModalAnnouncer(new StoryAnnouncementPanel(new Story("welcome!", "You’ve entered the castle, it takes a while for your eyes to get used to the darkness but\n" +
+                ModalAnnouncer announcer = new ModalAnnouncer();
+                announcer.addPanel(new StoryAnnouncementPanel(new Story("welcome!", "You’ve entered the castle, it takes a while for your eyes to get used to the darkness but\n" +
                         "the horrifying halo of your enemies is vaguely visible. Angel’s unsettling presence and\n" +
                         "the growling of thugs tell you that your first battle has BEGUN!")));
             }

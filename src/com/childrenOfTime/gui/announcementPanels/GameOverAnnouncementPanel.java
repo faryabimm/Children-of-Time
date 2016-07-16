@@ -17,6 +17,12 @@ import java.awt.event.*;
 public class GameOverAnnouncementPanel extends MenuScreenPanel {
 
 
+    ModalAnnouncer announcer;
+
+    public GameOverAnnouncementPanel(ModalAnnouncer announcer) {
+        this.announcer = announcer;
+    }
+
     @Override
     public void initialize() {
         emerge();
@@ -33,7 +39,8 @@ public class GameOverAnnouncementPanel extends MenuScreenPanel {
         this.addKeyListener(new KeyTypeListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-                ChildrenOfTime.changeContentPane(new MainMenuScreenPanel());
+
+                announcer.dispose();
             }
         });
     }
