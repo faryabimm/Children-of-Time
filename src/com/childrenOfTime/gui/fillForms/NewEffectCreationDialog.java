@@ -43,6 +43,8 @@ public class NewEffectCreationDialog extends JDialog {
     private JRadioButton allEnemiesRadioButton;
     private JRadioButton theChosenEnemyRadioButton;
     private JTextField textField18;
+    private JTextField a0TextField1;
+    private JTextField a0TextField;
 
     EffectDataHolder dataHolder;
 
@@ -170,6 +172,8 @@ public class NewEffectCreationDialog extends JDialog {
         dataHolder.EPCoefficient = Double.parseDouble(textField9.getText());
         dataHolder.HRRCoefficient = Double.parseDouble(textField10.getText());
         dataHolder.MMRRCoefficient = Double.parseDouble(textField11.getText());
+        dataHolder.MHCoefficient = Double.parseDouble(a0TextField1.getText());
+
         dataHolder.APIncrement = Integer.parseInt(textField3.getText());
         dataHolder.HIncrement = Integer.parseInt(textField12.getText());
         dataHolder.MPIncrement = Integer.parseInt(textField13.getText());
@@ -177,6 +181,7 @@ public class NewEffectCreationDialog extends JDialog {
         dataHolder.EPIncrement = Integer.parseInt(textField15.getText());
         dataHolder.HRRIncrement = Integer.parseInt(textField16.getText());
         dataHolder.MMRRIncrement = Integer.parseInt(textField17.getText());
+        dataHolder.MHIncrement = Integer.parseInt(a0TextField.getText());
     }
 
 

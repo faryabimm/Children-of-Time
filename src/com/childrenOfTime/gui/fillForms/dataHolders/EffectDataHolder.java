@@ -32,6 +32,9 @@ public class EffectDataHolder {
     public double MMRRCoefficient;
     public int MMRRIncrement;
 
+    public double MHCoefficient;
+    public int MHIncrement;
+
 
 
     public String toString() {

@@ -163,10 +163,10 @@ public class CusomGameEditorMenu extends MenuScreenPanel {
 
                 new NewEffectCreationDialog(true, dataHolder);
 
-                Integer delta[] = {dataHolder.APIncrement, dataHolder.HRRIncrement, dataHolder.MPIncrement, dataHolder.MMPIncrement,
-                        dataHolder.EPIncrement, dataHolder.HRRIncrement, dataHolder.MMRRIncrement};
-                Double factor[] = {dataHolder.APCoefficient, dataHolder.HCoefficient, dataHolder.MPCoefficient, dataHolder.MMPCoefficient,
-                        dataHolder.EPCoefficient, dataHolder.HRRCoefficient, dataHolder.MMRRCoefficient};
+                Integer delta[] = {dataHolder.APIncrement, dataHolder.HIncrement, dataHolder.MHIncrement, dataHolder.HRRIncrement, dataHolder.MPIncrement, dataHolder.MMPIncrement,
+                        dataHolder.MMRRIncrement, dataHolder.EPIncrement};
+                Double factor[] = {dataHolder.APCoefficient, dataHolder.HCoefficient, dataHolder.MHCoefficient, dataHolder.HRRCoefficient, dataHolder.MPCoefficient, dataHolder.MMPCoefficient,
+                        dataHolder.MMRRCoefficient, dataHolder.EPCoefficient};
 
 
                 Effect createdEffect = new Effect(dataHolder.name, new EffectType(dataHolder.automaticTargetSelection, dataHolder.applyUponAttack,

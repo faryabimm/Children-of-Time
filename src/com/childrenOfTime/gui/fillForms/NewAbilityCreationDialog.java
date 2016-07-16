@@ -2,6 +2,7 @@ package com.childrenOfTime.gui.fillForms;
 
 import com.childrenOfTime.gui.customGame.CusomGameEditorMenu;
 import com.childrenOfTime.gui.fillForms.dataHolders.AbilityDataHolder;
+import com.childrenOfTime.gui.fillForms.dataHolders.UpgradeWrapper;
 import com.childrenOfTime.model.ChildrenOfTime;
 import com.childrenOfTime.model.Equip.AbilComps.Upgrade;
 import com.childrenOfTime.model.Equip.Target;
@@ -66,10 +67,11 @@ public class NewAbilityCreationDialog extends JDialog {
         upgradesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Upgrade toAdd = null;
+//                Upgrade toAdd = null;
+                UpgradeWrapper toAdd = new UpgradeWrapper();
                 new AddUpgradeToAbilityDialog(toAdd);
-                if (!dataHolder.upgrades.contains(toAdd)) {
-                    dataHolder.upgrades.add(toAdd);
+                if (!dataHolder.upgrades.contains(toAdd.upgrade)) {
+                    dataHolder.upgrades.add(toAdd.upgrade);
                 }
             }
         });

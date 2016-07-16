@@ -1,5 +1,6 @@
 package com.childrenOfTime.gui.fillForms;
 
+import com.childrenOfTime.gui.fillForms.dataHolders.UpgradeWrapper;
 import com.childrenOfTime.model.Equip.AbilComps.Upgrade;
 import com.childrenOfTime.model.Equip.Effect;
 import com.childrenOfTime.model.Equip.ItemComps.Messages;
@@ -26,11 +27,11 @@ public class AddUpgradeToAbilityDialog extends JDialog {
     private JCheckBox hasRequirementsCheckBox;
     private JButton addEffectsButton;
 
-    Upgrade toAdd;
+    UpgradeWrapper toAdd;
 
     ArrayList<Effect> addedEffects = new ArrayList<>();
 
-    public AddUpgradeToAbilityDialog(Upgrade toAdd) {
+    public AddUpgradeToAbilityDialog(UpgradeWrapper toAdd) {
 
         this.toAdd = toAdd;
 
@@ -98,7 +99,7 @@ public class AddUpgradeToAbilityDialog extends JDialog {
         boolean hasRequirements = hasRequirementsCheckBox.isSelected();
         String requirements[] = textField7.getText().split("\\s");
 
-        toAdd = new Upgrade(upgradeID, coolDownTime, XPCostToUpgrade, EPCOstToCast, MPCOstToCast, isActive, isRecastable, addedEffects, isBaseUpgrade, requirements);
+        toAdd.upgrade = new Upgrade(upgradeID, coolDownTime, XPCostToUpgrade, EPCOstToCast, MPCOstToCast, isActive, isRecastable, addedEffects, isBaseUpgrade, requirements);
 
 
 // add your code here
