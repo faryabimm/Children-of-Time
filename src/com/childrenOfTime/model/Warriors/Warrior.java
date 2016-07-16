@@ -401,6 +401,7 @@ public class Warrior implements Serializable, TurnBase {
             if (new Random().nextBoolean()) {
                 isDead = false;
                 currentHealth = getMaxHealth();
+                GUIUtils.showNotification("Immortality is used !", NotificationType.GOOD);
             }
 
 //            if (false) {
