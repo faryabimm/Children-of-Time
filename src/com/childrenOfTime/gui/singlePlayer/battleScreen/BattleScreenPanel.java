@@ -1,6 +1,7 @@
 package com.childrenOfTime.gui.singlePlayer.battleScreen;
 
 import com.childrenOfTime.controller.GameEngine;
+import com.childrenOfTime.gui.announcementPanels.GameOverAnnouncementPanel;
 import com.childrenOfTime.gui.announcementPanels.ModalAnnouncer;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
 import com.childrenOfTime.gui.customizedElements.CustomizedJImage;
@@ -40,6 +41,11 @@ public class BattleScreenPanel extends JPanel {
 
     private Player userPlayer;
     private ArtificialBrain AI;
+
+    public Player getComputerPlayer() {
+        return computerPlayer;
+    }
+
     private Player computerPlayer;
 
     public BodyPanel getBodyPanel() {
@@ -472,6 +478,14 @@ class InfoIndicatorPanel extends JPanel {
             pauseButton.setText("40");
             BattleScreenPanel.isPlayersTurn = !BattleScreenPanel.isPlayersTurn;
         } else {
+            if (BattleScreenPanel.instance.getUserPlayer().isDefeated()) {
+                new ModalAnnouncer(new GameOverAnnouncementPanel());
+                ((ModalAnnouncer) this.getParent()).dispose();
+            }
+            if (BattleScreenPanel.instance.getComputerPlayer().isDefeated()) {
+                GUIUtils.showNotification("You Won!", NotificationType.GOOD);
+                ((ModalAnnouncer) this.getParent()).dispose();
+            }
             pauseButton.setText(String.valueOf(Integer.parseInt(pauseButton.getText()) - 1));
             BattleScreenPanel.instance.repaint();
         }
