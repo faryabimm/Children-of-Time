@@ -4,7 +4,6 @@ import com.childrenOfTime.cgd.CustomGameDAO;
 import com.childrenOfTime.gui.customizedElements.CustomizedJButton;
 import com.childrenOfTime.gui.customizedElements.CustomizedJImage;
 import com.childrenOfTime.gui.customizedElements.MenuScreenPanel;
-import com.childrenOfTime.gui.customizedElements.Scenario;
 import com.childrenOfTime.gui.fillForms.*;
 import com.childrenOfTime.gui.fillForms.dataHolders.*;
 import com.childrenOfTime.model.*;
@@ -172,7 +171,7 @@ public class CusomGameEditorMenu extends MenuScreenPanel {
                 Effect createdEffect = new Effect(dataHolder.name, new EffectType(dataHolder.automaticTargetSelection, dataHolder.applyUponAttack,
                         dataHolder.autoRepeatable, !dataHolder.temporaryEffect, dataHolder.indefiniteExcecution,
                         dataHolder.wearOffEffectsAfterExcecution), new AlterPackage(delta, factor,
-                        dataHolder.indefiniteExcecutionPercent), dataHolder.automaticTargetType, dataHolder.indefiniteExcecutionPercent,
+                        dataHolder.indefiniteExcecutionPercent), dataHolder.TargetType, dataHolder.indefiniteExcecutionPercent,
                         dataHolder.temporaryEffectTurnCount, dataHolder.autoRepeatableTurnCount);
                 GUIUtils.deserializeUserFiles();
                 CustomGameDAO.currentUserCustomEffects.add(createdEffect);

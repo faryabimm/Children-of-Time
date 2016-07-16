@@ -45,6 +45,7 @@ public class NewEffectCreationDialog extends JDialog {
     private JTextField textField18;
     private JTextField a0TextField1;
     private JTextField a0TextField;
+    private JRadioButton singleTeammateRadioButton;
 
     EffectDataHolder dataHolder;
 
@@ -60,6 +61,7 @@ public class NewEffectCreationDialog extends JDialog {
         radioGroup.add(theEnemyRadioButton);
         radioGroup.add(allEnemiesRadioButton);
         radioGroup.add(theChosenEnemyRadioButton);
+        radioGroup.add(singleTeammateRadioButton);
 
         this.dataHolder = dataHolder;
         this.invokedDirectly = invokedDirectly;
@@ -94,18 +96,19 @@ public class NewEffectCreationDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 if (automaticTargetCheckBox.isSelected()) {
                     himselfRadioButton.setEnabled(true);
-                    theEnemyRadioButton.setEnabled(true);
+                    theEnemyRadioButton.setEnabled(false);
+                    singleTeammateRadioButton.setEnabled(false);
                     allTeammatesRadioButton.setEnabled(true);
                     allEnemiesRadioButton.setEnabled(true);
                     theChosenEnemyRadioButton.setEnabled(true);
 
                 } else {
                     himselfRadioButton.setEnabled(false);
-                    theEnemyRadioButton.setEnabled(false);
-                    allTeammatesRadioButton.setEnabled(false);
-                    allEnemiesRadioButton.setEnabled(false);
+                    singleTeammateRadioButton.setEnabled(true);
+                    theEnemyRadioButton.setEnabled(true);
+                    allTeammatesRadioButton.setEnabled(true);
+                    allEnemiesRadioButton.setEnabled(true);
                     theChosenEnemyRadioButton.setEnabled(false);
-
                 }
             }
         });
@@ -158,11 +161,12 @@ public class NewEffectCreationDialog extends JDialog {
         dataHolder.wearOffEffectsAfterExcecution = wearOffEffectsAfteCheckBox.isSelected();
         dataHolder.automaticTargetSelection = automaticTargetCheckBox.isSelected();
 
-        if (himselfRadioButton.isSelected()) dataHolder.automaticTargetType = Target.HimSelf;
-        if (theEnemyRadioButton.isSelected()) dataHolder.automaticTargetType = Target.SingleEnemy;
-        if (allTeammatesRadioButton.isSelected()) dataHolder.automaticTargetType = Target.AllTeammates;
-        if (allEnemiesRadioButton.isSelected()) dataHolder.automaticTargetType = Target.AllEnemies;
-        if (theChosenEnemyRadioButton.isSelected()) dataHolder.automaticTargetType = Target.theAttackedOne;
+        if (himselfRadioButton.isSelected()) dataHolder.TargetType = Target.HimSelf;
+        if (theEnemyRadioButton.isSelected()) dataHolder.TargetType = Target.SingleEnemy;
+        if (allTeammatesRadioButton.isSelected()) dataHolder.TargetType = Target.AllTeammates;
+        if (allEnemiesRadioButton.isSelected()) dataHolder.TargetType = Target.AllEnemies;
+        if (theChosenEnemyRadioButton.isSelected()) dataHolder.TargetType = Target.theAttackedOne;
+        if (singleTeammateRadioButton.isSelected()) dataHolder.TargetType = Target.SingleEnemy;
 
 
         dataHolder.APCoefficient = Double.parseDouble(textField1.getText());

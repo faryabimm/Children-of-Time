@@ -16,7 +16,7 @@ public class EffectDataHolder {
     public int indefiniteExcecutionPercent;
     public boolean wearOffEffectsAfterExcecution;
     public boolean automaticTargetSelection;
-    public Target automaticTargetType;
+    public Target TargetType;
     public double APCoefficient;
     public int APIncrement;
     public double HCoefficient;
