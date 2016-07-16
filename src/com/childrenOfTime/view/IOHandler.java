@@ -1,5 +1,8 @@
 package com.childrenOfTime.view;
 
+import com.childrenOfTime.gui.notification.NotificationType;
+import com.childrenOfTime.utilities.GUIUtils;
+
 import java.util.Scanner;
 
 /**
@@ -11,8 +14,15 @@ public class IOHandler {
 
     public static void printOutput(String output) {
 
-        System.out.println(output);
+        GUIUtils.showNotification(output, NotificationType.MESSAGE);
     }
+
+
+    public static void printOutput(String output, NotificationType notificationType) {
+
+        GUIUtils.showNotification(output, notificationType);
+    }
+
 
     public static String getInput() {
         String toReturn = scanner.nextLine();
